@@ -267,12 +267,21 @@ Die endgültige Preislogik steht in:
 
 ### 8.6 Pakete
 
-| Paket | Menge | Zielpreis | Rolle |
-|---|---:|---:|---|
-| Starter | 1.000 Stück | 149 € | Einstieg / Testbestellung |
-| Growth | 5.000 Stück | 399 € | Hauptpaket |
-| Pro | 10.000 Stück | 699 € | Skalierung |
-| Business | 20.000+ Stück | Angebot | B2B-Großmenge |
+Die kanonische Preis- und Mengenlogik liegt in:
+
+```txt
+/docs/04-PRICING-AND-MARGIN-MODEL.md
+```
+
+Für dieses Produkt gelten kommerziell diese Paketstufen:
+
+| Paket | Menge | Rolle |
+|---|---:|---|
+| Starter | 1.000 Stück | Einstieg / Testbestellung |
+| Reorder Ready | 2.000 Stück | Nachbestellfreundliche Standardmenge |
+| Growth | 5.000 Stück | Hauptpaket |
+| Pro | 10.000 Stück | Skalierung |
+| Business | 20.000+ Stück | B2B-Großmenge / Angebot |
 
 ### 8.7 Nachbestellbarkeit
 
@@ -367,12 +376,21 @@ Wenn transparente PP-Etiketten später andere Kosten haben, müssen Preislogik u
 
 ### 9.6 Pakete
 
-| Paket | Menge | Zielpreis | Rolle |
-|---|---:|---:|---|
-| Starter | 1.000 Stück | 149 € | Einstieg / Testbestellung |
-| Growth | 5.000 Stück | 399 € | Hauptpaket |
-| Pro | 10.000 Stück | 699 € | Skalierung |
-| Business | 20.000+ Stück | Angebot | B2B-Großmenge |
+Die kanonische Preis- und Mengenlogik liegt in:
+
+```txt
+/docs/04-PRICING-AND-MARGIN-MODEL.md
+```
+
+Für dieses Produkt gelten kommerziell diese Paketstufen:
+
+| Paket | Menge | Rolle |
+|---|---:|---|
+| Starter | 1.000 Stück | Premium-Einstieg / Testbestellung |
+| Reorder Ready | 2.000 Stück | Premium-Nachbestellpfad |
+| Growth | 5.000 Stück | Hauptpaket |
+| Pro | 10.000 Stück | Skalierung |
+| Business | 20.000+ Stück | B2B-Großmenge / Angebot |
 
 ### 9.7 Nachbestellbarkeit
 
@@ -686,6 +704,7 @@ Erlaubte feste Pakete:
 
 ```txt
 1.000
+2.000
 5.000
 10.000
 ```
@@ -715,6 +734,7 @@ Erlaubte Pakete:
 
 ```txt
 1.000
+2.000
 5.000
 10.000
 ```
@@ -744,7 +764,9 @@ config/pricing.ts
 
 oder später datenbankgestützt.
 
-Produktkonfiguration soll enthalten:
+Produktkonfiguration soll Mengenstaffeln aus `/docs/04-PRICING-AND-MARGIN-MODEL.md` referenzieren.
+
+Produktkonfiguration kann zum Beispiel enthalten:
 
 ```ts
 {
@@ -755,9 +777,10 @@ Produktkonfiguration soll enthalten:
   material: "OPAQUE_PP",
   size: "100x200",
   packages: [
-    { quantity: 1000, priceEur: 149, role: "starter", label: "Starter" },
-    { quantity: 5000, priceEur: 399, role: "growth", label: "Growth" },
-    { quantity: 10000, priceEur: 699, role: "pro", label: "Pro" }
+    { quantity: 1000, priceKey: "starter", label: "Starter" },
+    { quantity: 2000, priceKey: "reorder_ready", label: "Reorder Ready" },
+    { quantity: 5000, priceKey: "growth", label: "Growth" },
+    { quantity: 10000, priceKey: "pro", label: "Pro" }
   ],
   quoteThreshold: 20000,
   uploadRequired: true,

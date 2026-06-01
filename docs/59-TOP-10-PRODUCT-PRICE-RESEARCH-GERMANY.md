@@ -44,7 +44,7 @@ This file gives:
 
 1. Labelpilot.de’s first Top 10 product list.
 2. Cost assumptions.
-3. Recommended Labelpilot.de prices.
+3. Recommended Labelpilot.de price architecture.
 4. Competitor price visibility status.
 5. Expected market price bands.
 6. Margin logic.
@@ -210,22 +210,19 @@ low-value hobby labels
 
 ---
 
-## 6. Top 10 Products — Recommended Labelpilot Prices
+## 6. Top 10 Products - Pricing Research Interpretation
 
-| # | Product / SKU | Target Buyer | Quantity | Our Recommended Price ex VAT | Our Recommended Price incl. 19% VAT | Why This Price |
-|---:|---|---|---:|---:|---:|---|
-| 1 | Sample Box — PP + Thermal Materials | B2B lead qualification | 1 box | €19 | €22.61 | Filters low-quality leads; can be credited on first order |
-| 2 | Opake PP 100×200 mm Roll Labels — Starter | food/supplement trial | 1,000 | €149 | €177.31 | Entry product; high support/shipping burden |
-| 3 | Opake PP 100×200 mm Roll Labels — Reorder Ready | core B2B package | 2,000 | €229 | €272.51 | Better repeat tier than 1,000; good for micro brands |
-| 4 | Opake PP 100×200 mm Roll Labels — Growth | core B2B package | 5,000 | €399 | €474.81 | Main package; strong margin if ops controlled |
-| 5 | Opake PP 100×200 mm Roll Labels — Pro | scaling brand | 10,000 | €699 | €831.81 | Anchor package; quote above this |
-| 6 | Transparente PP 100×200 mm Roll Labels — Starter | beverage/premium packaging | 1,000 | €169 | €201.11 | Transparent PP should carry premium |
-| 7 | Transparente PP 100×200 mm Roll Labels — Growth | beverage/supplement/beauty | 5,000 | €449 | €534.31 | Premium material positioning |
-| 8 | Supplement Variable Data PP 100×200 — 5,000 + 50 rows | supplement brands | 5,000 + batch | €599 | €712.81 | Software-enabled SKU; high differentiation |
-| 9 | Thermal Shipping Labels 100×150 mm | cross-sell e-commerce | 5,000 | €119 | €141.61 | Commodity cross-sell; do not overinvest |
-| 10 | Eco Thermal Labels 100×100 mm | cross-sell warehouse/fulfillment | 5,000 | €99 | €117.81 | Commodity cross-sell; retention add-on |
+This document is market and competitor research.
 
----
+It is not the canonical customer-facing price source.
+
+Final commercial Labelpilot package pricing lives in:
+
+```txt
+/docs/04-PRICING-AND-MARGIN-MODEL.md
+```
+
+The purpose of this section is to explain why the canonical commercial table in `04` is positioned the way it is.
 
 ## 7. Recommended Quote Thresholds
 
@@ -278,18 +275,28 @@ Because exact competitor prices change dynamically, use these planning bands unt
 
 These are **market planning bands**, not verified fixed quotes.
 
-| Product | Expected Competitor Band ex VAT | Our Price ex VAT | Position |
-|---|---:|---:|---|
-| Sample Box | €0–€39 | €19 | qualified lead filter |
-| Opake PP 100×200 1,000 | €120–€250 | €149 | competitive entry |
-| Opake PP 100×200 2,000 | €180–€350 | €229 | competitive |
-| Opake PP 100×200 5,000 | €300–€650 | €399 | middle; value via reorder |
-| Opake PP 100×200 10,000 | €550–€1,100 | €699 | middle; quote if needed |
-| Transparent PP 100×200 1,000 | €150–€320 | €169 | aggressive premium entry |
-| Transparent PP 100×200 5,000 | €380–€800 | €449 | competitive premium |
-| Supplement Variable Data 5,000 + 50 rows | often quote/manual | €599 | differentiated, not commodity |
-| Thermal Shipping 100×150 5,000 | €60–€180 | €119 | cross-sell only |
-| Eco Thermal 100×100 5,000 | €50–€150 | €99 | cross-sell only |
+Commercial package pricing is canonically owned by:
+
+```txt
+/docs/04-PRICING-AND-MARGIN-MODEL.md
+```
+
+This research document should only describe competitor bands and strategic positioning.
+
+| Product | Expected Competitor Band ex VAT | Labelpilot commercial reference | Position |
+|---|---:|---|---|
+| Sample Box | €0–€39 | See `/docs/04-PRICING-AND-MARGIN-MODEL.md` | qualified lead filter |
+| Opaque PP 100×200 1,000 | €120–€250 | See canonical pricing table | competitive entry |
+| Opaque PP 100×200 2,000 | €180–€350 | See canonical pricing table | competitive |
+| Opaque PP 100×200 5,000 | €300–€650 | See canonical pricing table | middle; value via reorder |
+| Opaque PP 100×200 10,000 | €550–€1,100 | See canonical pricing table | middle; quote if needed |
+| Transparent PP 100×200 1,000 | €150–€320 | See canonical pricing table | aggressive premium entry |
+| Transparent PP 100×200 2,000 | market gap / often custom | OPEN QUESTION in canonical pricing table | do not invent before owner decision |
+| Transparent PP 100×200 5,000 | €380–€800 | See canonical pricing table | competitive premium |
+| Transparent PP 100×200 10,000 | €650–€1,200 | See canonical pricing table | premium scaling package |
+| Supplement Variable Data 5,000 + 50 rows | often quote/manual | See canonical pricing table | differentiated, not commodity |
+| Thermal Shipping 100×150 5,000 | €60–€180 | See canonical pricing table | cross-sell only |
+| Eco Thermal 100×100 5,000 | €50–€150 | See canonical pricing table | cross-sell only |
 
 ---
 
@@ -312,7 +319,7 @@ These are **market planning bands**, not verified fixed quotes.
 
 ## 11. Product-by-Product Strategy
 
-## 11.1 Sample Box — €19 ex VAT
+## 11.1 Sample Box — Entry Offer Note
 
 ### Role
 
@@ -325,7 +332,7 @@ Free sample box attracts low-quality leads.
 ### Strategy
 
 ```txt
-€19 paid
+paid or qualified-lead gated
 credit back on first order above €399
 ```
 
@@ -347,7 +354,7 @@ push quote/order
 
 ---
 
-## 11.2 Opake PP 100×200 — 1,000 — €149 ex VAT
+## 11.2 Opake PP 100×200 — 1,000 — Entry Positioning Note
 
 ### Role
 
@@ -363,11 +370,7 @@ Production:
 1,000 × €0.020 = €20
 ```
 
-Recommended selling:
-
-```txt
-€149
-```
+Commercial selling price is owned by `/docs/04-PRICING-AND-MARGIN-MODEL.md`.
 
 Do not sell lower unless customer is likely to reorder.
 
@@ -383,7 +386,7 @@ Für wie viele Monate soll dieser Etikettenbestand reichen?
 
 ---
 
-## 11.3 Opake PP 100×200 — 2,000 — €229 ex VAT
+## 11.3 Opake PP 100×200 — 2,000 — Reorder Tier Note
 
 ### Role
 
@@ -395,25 +398,21 @@ Production:
 2,000 × €0.020 = €40
 ```
 
-Recommended selling:
-
-```txt
-€229
-```
+Commercial selling price is owned by `/docs/04-PRICING-AND-MARGIN-MODEL.md`.
 
 ### Why include 2,000?
 
-Because the user explicitly wants reorder like:
+Because reorder demand often sounds like:
 
 ```txt
-“Aynısından 2000 adet”
+Bitte 2.000 Stück vom gleichen Etikett nachbestellen.
 ```
 
-This should be a standard reorder option.
+This should remain a standard reorder option and align with the canonical package ladder.
 
 ---
 
-## 11.4 Opake PP 100×200 — 5,000 — €399 ex VAT
+## 11.4 Opake PP 100×200 — 5,000 — Core Package Note
 
 ### Role
 
@@ -425,17 +424,7 @@ Production:
 5,000 × €0.020 = €100
 ```
 
-Recommended selling:
-
-```txt
-€399
-```
-
-Gross before shipping/support:
-
-```txt
-€299
-```
+Commercial selling price is owned by `/docs/04-PRICING-AND-MARGIN-MODEL.md`.
 
 This is attractive if operations are automated.
 
@@ -445,7 +434,7 @@ Make this the default “Growth” package.
 
 ---
 
-## 11.5 Opake PP 100×200 — 10,000 — €699 ex VAT
+## 11.5 Opake PP 100×200 — 10,000 — Scaling Package Note
 
 ### Role
 
@@ -457,17 +446,7 @@ Production:
 10,000 × €0.020 = €200
 ```
 
-Recommended selling:
-
-```txt
-€699
-```
-
-Gross before shipping/support:
-
-```txt
-€499
-```
+Commercial selling price is owned by `/docs/04-PRICING-AND-MARGIN-MODEL.md`.
 
 ### Strategy
 
@@ -477,7 +456,7 @@ For larger customers, quote instead of fixed price.
 
 ---
 
-## 11.6 Transparent PP 100×200 — 1,000 — €169 ex VAT
+## 11.6 Transparent PP 100×200 — 1,000 — Positioning Note
 
 ### Role
 
@@ -498,7 +477,7 @@ glass bottles/jars
 
 ---
 
-## 11.7 Transparent PP 100×200 — 5,000 — €449 ex VAT
+## 11.7 Transparent PP 100×200 — 5,000 — Market Positioning Note
 
 ### Role
 
@@ -508,11 +487,15 @@ Main transparent premium package.
 
 Avoid underpricing. Transparent is visual/premium.
 
+Final commercial pricing for this package is owned by `/docs/04-PRICING-AND-MARGIN-MODEL.md`.
+
+The previous `€449` candidate is superseded by the canonical `€429` decision recorded there.
+
 Use sample box to reduce uncertainty.
 
 ---
 
-## 11.8 Supplement Variable Data PP 100×200 — €599 ex VAT
+## 11.8 Supplement Variable Data PP 100×200 — Strategic Premium Note
 
 ### Role
 
@@ -536,29 +519,20 @@ Competitors may print labels, but this SKU sells workflow.
 
 ### Price logic
 
-Base 5,000 transparent/opaque PP:
+Commercial pricing is owned by `/docs/04-PRICING-AND-MARGIN-MODEL.md`.
+
+This research document only preserves the logic:
 
 ```txt
-€399–€449
-```
-
-Variable data automation premium:
-
-```txt
-+€150–€200
-```
-
-Recommended:
-
-```txt
-€599
+base PP package
++ variable-data workflow premium
 ```
 
 This should not be discounted.
 
 ---
 
-## 11.9 Thermal Shipping Labels 100×150 — 5,000 — €119 ex VAT
+## 11.9 Thermal Shipping Labels 100×150 — 5,000 — Cross-Sell Note
 
 ### Role
 
@@ -574,7 +548,7 @@ Do not spend SEO/ads budget heavily here.
 
 ---
 
-## 11.10 Eco Thermal Labels 100×100 — 5,000 — €99 ex VAT
+## 11.10 Eco Thermal Labels 100×100 — 5,000 — Cross-Sell Note
 
 ### Role
 
@@ -604,24 +578,13 @@ Pro
 B2B Quote
 ```
 
-Example:
+Example commercial package logic is owned by:
 
-| Package | Quantity | Price ex VAT |
-|---|---:|---:|
-| Starter | 1,000 | €149 |
-| Reorder Ready | 2,000 | €229 |
-| Growth | 5,000 | €399 |
-| Pro | 10,000 | €699 |
-| B2B Quote | 20,000+ | Quote |
+```txt
+/docs/04-PRICING-AND-MARGIN-MODEL.md
+```
 
-Transparent PP:
-
-| Package | Quantity | Price ex VAT |
-|---|---:|---:|
-| Starter | 1,000 | €169 |
-| Growth | 5,000 | €449 |
-| Pro | 10,000 | €799 |
-| B2B Quote | 20,000+ | Quote |
+Use this research document for market evidence, competitor framing, and package rationale only.
 
 ---
 

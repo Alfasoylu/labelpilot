@@ -46,7 +46,7 @@ Long-term goal:
 | Production | Turkey |
 | Year 3 | Germany hub pilot |
 | Year 4+ | Full Germany hub if metrics justify |
-| 10-year target | €100,000+ monthly net profit |
+| 10-year target | €100,000+ monthly contribution |
 
 ---
 
@@ -250,19 +250,20 @@ These are working assumptions.
 
 ### 10.1 Main PP Label Packages
 
-| Package | Quantity | Product | Target customer | Target price |
-|---|---:|---|---|---:|
-| Starter | 1,000 | 100×200 mm PP label | Paid trial / small buyer | €149 |
-| Growth | 5,000 | 100×200 mm PP label | Main micro B2B buyer | €399 |
-| Pro | 10,000 | 100×200 mm PP label | Growing B2B brand | €699 |
-| Business | 20,000+ | 100×200 mm PP label | Repeat B2B account | Quote |
+| Package | Quantity | Product | Target customer | Pricing role |
+|---|---:|---|---|---|
+| Starter | 1,000 | 100x200 mm PP label | Paid trial / small buyer | Fixed price |
+| Reorder Ready | 2,000 | 100x200 mm PP label | Micro-brand repeat path | Fixed price |
+| Growth | 5,000 | 100x200 mm PP label | Main micro B2B buyer | Fixed price |
+| Pro | 10,000 | 100x200 mm PP label | Growing B2B brand | Fixed price |
+| Business | 20,000+ | 100x200 mm PP label | Repeat B2B account | Quote |
 
 ### 10.2 Material Variants
 
 | Material | Pricing rule |
 |---|---|
 | Opaque PP | Base price |
-| Transparent PP | Same initially; later surcharge if needed |
+| Transparent PP | Premium pricing per canonical table in Section 14.1 |
 | Premium finish | Not in MVP unless margin model is confirmed |
 
 ### 10.3 Thermal Cross-Sell Packages
@@ -570,18 +571,24 @@ Offer as quote or business package after operational confidence.
 
 ## 14. Pricing Table for MVP
 
-### 14.1 Customer-Facing Price Table
+### 14.1 Canonical Customer-Facing Price Table
 
-| Package | Quantity | Opaque PP | Transparent PP | Best for |
-|---|---:|---:|---:|---|
-| Starter | 1,000 | €149 | €149–€169 | Paid trial |
-| Growth | 5,000 | €399 | €429 | Main micro B2B |
-| Pro | 10,000 | €699 | €749 | Growing brand |
-| Business | 20,000+ | Quote | Quote | Repeat account |
+This is the single canonical commercial package and price table for PP labels.
 
-Transparent PP can initially match opaque PP to reduce complexity.
+Other docs may reference this table, but they should not restate competing customer-facing price tables.
 
-Later add surcharge if production or quality loss requires it.
+| Product | Package | Quantity | Customer-facing price ex VAT | Status | Best for |
+|---|---|---:|---:|---|---|
+| Opaque PP 100x200 | Starter | 1,000 | €149 | Final | Paid trial |
+| Opaque PP 100x200 | Reorder Ready | 2,000 | €229 | Final | Micro-brand repeat path |
+| Opaque PP 100x200 | Growth | 5,000 | €399 | Final | Main micro B2B |
+| Opaque PP 100x200 | Pro | 10,000 | €699 | Final | Growing brand |
+| Opaque PP 100x200 | Business | 20,000+ | Quote | Final | Repeat account |
+| Transparent PP 100x200 | Starter | 1,000 | €169 | Final | Premium paid trial |
+| Transparent PP 100x200 | Reorder Ready | 2,000 | OPEN QUESTION | Provisional | Owner decision still required |
+| Transparent PP 100x200 | Growth | 5,000 | €429 | Final | Premium main micro B2B |
+| Transparent PP 100x200 | Pro | 10,000 | €749 | Final | Premium growing brand |
+| Transparent PP 100x200 | Business | 20,000+ | Quote | Final | Premium repeat account |
 
 ### 14.2 Price Psychology
 
@@ -591,11 +598,12 @@ Example display:
 
 | Package | Price | Unit price |
 |---|---:|---:|
-| 1,000 | €149 | €0.149 / label |
+| 1,000 | €149 | €0.1490 / label |
+| 2,000 | €229 | €0.1145 / label |
 | 5,000 | €399 | €0.0798 / label |
 | 10,000 | €699 | €0.0699 / label |
 
-This pushes customers away from 1,000 and toward 5,000+.
+This pushes customers away from 1,000 and toward 2,000+ and 5,000+.
 
 ---
 
@@ -729,7 +737,7 @@ This is why the customer file, artwork, specifications and reorder flow are stra
 
 ## 20. Monthly Profit Target Model
 
-### 20.1 €10,000 Monthly Net Contribution Scenario
+### 20.1 €10,000 Monthly Contribution Scenario
 
 | Package | Orders/month | Profit/order | Monthly contribution |
 |---|---:|---:|---:|
@@ -743,7 +751,7 @@ After fixed overhead, this can support early profitability.
 
 ---
 
-### 20.2 €100,000 Monthly Net Profit Scenario
+### 20.2 €100k Monthly Contribution Scenario
 
 Target order composition:
 
@@ -756,10 +764,12 @@ Target order composition:
 | Reorder uplift | 150 | €207 average | €31,050 |
 | Gross contribution |  |  | €128,925 |
 
-To reach €100,000 net profit, fixed overhead must stay below roughly:
+This is a contribution scenario, not a guaranteed net-profit scenario.
+
+Indicative operating implication:
 
 ```txt
-€25,000–€30,000/month
+fixed overhead should stay below roughly €25,000-€30,000/month
 ```
 
 This means:
@@ -823,6 +833,15 @@ Target:
 | Monthly net profit | €20,000–€35,000 |
 | Repeat rate | 35%+ |
 
+### Interim Net Profit Target
+
+Near- to mid-term net-profit framing should use the validated Year 2-3 range:
+
+```txt
+Year 2 monthly net profit target: €8,000-€18,000
+Year 3 monthly net profit target: €20,000-€35,000
+```
+
 ### Year 4+
 
 Focus:
@@ -836,7 +855,7 @@ Target:
 
 | Metric | Target |
 |---|---:|
-| Monthly net profit long-term | €100,000+ |
+| Monthly contribution long-term | €100,000+ |
 | Main profit source | Repeat B2B orders |
 
 ---

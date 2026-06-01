@@ -110,7 +110,7 @@ All customer-facing copy must be German in MVP.
 
 | Metric | Target |
 |---|---:|
-| Monthly net profit | €100,000+ |
+| Monthly contribution | €100,000+ |
 | Main market | Germany |
 | Website language | German |
 | Expansion market | DACH, then EU |

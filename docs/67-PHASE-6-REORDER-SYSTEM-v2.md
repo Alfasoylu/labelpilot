@@ -46,7 +46,7 @@ Software reorder cost:
 30 seconds customer action + automated admin queue
 ```
 
-Higher reorder rate = higher LTV = path to €100k/month net profit.
+Higher reorder rate = higher LTV = path to €100k/month contribution.
 
 ---
 

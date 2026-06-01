@@ -15,7 +15,7 @@ It is the source of truth for:
 - Which products are not allowed
 - How the reorder model works
 - How B2B and B2C flows are separated
-- How the business can scale toward €100,000+ monthly net profit
+- How the business can scale toward €100,000+ monthly contribution
 
 Codex must read this file before implementing pricing, product pages, checkout, quote flow, reorder logic, customer portal, admin panel, SEO pages or business-related UI.
 
@@ -686,7 +686,7 @@ Initial target metrics:
 | Reprint/error rate | Under 2.5% |
 | Year 1 monthly revenue | €10,000–€30,000 |
 | Year 2 monthly net profit | €8,000–€18,000 |
-| Long-term monthly net profit | €100,000+ |
+| Long-term monthly contribution | €100,000+ |
 
 ---
 
@@ -761,14 +761,14 @@ Expected result:
 
 Goal:
 
-- Reach €100,000+ monthly net profit
+- Reach €100,000+ monthly contribution
 - Expand to DACH / EU if Germany is proven
 - Add managed label supply accounts
 - Build scalable reorder and account infrastructure
 
 Expected result:
 
-- €100,000+ monthly net profit if B2B repeat system works
+- €100,000+ monthly contribution if B2B repeat system works
 
 ---
 
@@ -940,7 +940,7 @@ The long-term profit engine is:
 
 > Repeat B2B orders from saved artwork and saved specifications.
 
-The path to €100,000+ monthly net profit depends on:
+The path to €100,000+ monthly contribution depends on:
 
 1. B2B order size
 2. Repeat order rate
