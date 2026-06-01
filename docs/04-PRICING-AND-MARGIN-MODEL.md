@@ -585,7 +585,7 @@ Other docs may reference this table, but they should not restate competing custo
 | Opaque PP 100x200 | Pro | 10,000 | €699 | Final | Growing brand |
 | Opaque PP 100x200 | Business | 20,000+ | Quote | Final | Repeat account |
 | Transparent PP 100x200 | Starter | 1,000 | €169 | Final | Premium paid trial |
-| Transparent PP 100x200 | Reorder Ready | 2,000 | OPEN QUESTION | Provisional | Owner decision still required |
+| Transparent PP 100x200 | Reorder Ready | 2,000 | €254 | Final | Premium micro-brand repeat path |
 | Transparent PP 100x200 | Growth | 5,000 | €429 | Final | Premium main micro B2B |
 | Transparent PP 100x200 | Pro | 10,000 | €749 | Final | Premium growing brand |
 | Transparent PP 100x200 | Business | 20,000+ | Quote | Final | Premium repeat account |

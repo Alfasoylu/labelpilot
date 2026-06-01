@@ -119,7 +119,7 @@ The owner has explicitly locked the following decisions. These are no longer ope
 1. Canonical phase order is the timeline in `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md`.
 2. Canonical package ladder is `1,000 / 2,000 / 5,000 / 10,000`, with `20,000+` handled as quote-only.
 3. Opaque PP pricing is fixed at `€149 / €229 / €399 / €699` for `1,000 / 2,000 / 5,000 / 10,000`.
-4. Transparent PP pricing is fixed at `€169 / OPEN QUESTION / €429 / €749` for `1,000 / 2,000 / 5,000 / 10,000`; transparent `2,000` remains unresolved and provisional.
+4. Transparent PP pricing is fixed at `€169 / €254 / €429 / €749` for `1,000 / 2,000 / 5,000 / 10,000`.
 5. `€100k` is framed as a three-rung ladder: (a) **long-term north-star = €100,000+/month NET profit (~Year 8–10)**; (b) the `04 §20.2` €100k figure is a **contribution milestone** (mid-term), explicitly NOT net profit; (c) interim **net-profit** targets are the Year 2–3 ranges (~€8k–35k/month). Keep the `04 §20.2` scenario labeled "contribution"; do NOT relabel the long-term net-profit north-star to contribution.
 6. MVP auth and storage are locked to Supabase Auth + Supabase Storage. Clerk and UploadThing are alternatives considered, not active implementation paths.
 7. Canonical public app URL env var is `NEXT_PUBLIC_APP_URL`. `EMAIL_FROM` and `EMAIL_REPLY_TO` are active email env vars.

@@ -291,7 +291,7 @@ This research document should only describe competitor bands and strategic posit
 | Opaque PP 100×200 5,000 | €300–€650 | See canonical pricing table | middle; value via reorder |
 | Opaque PP 100×200 10,000 | €550–€1,100 | See canonical pricing table | middle; quote if needed |
 | Transparent PP 100×200 1,000 | €150–€320 | See canonical pricing table | aggressive premium entry |
-| Transparent PP 100×200 2,000 | market gap / often custom | OPEN QUESTION in canonical pricing table | do not invent before owner decision |
+| Transparent PP 100×200 2,000 | market gap / often custom | See canonical pricing table | premium micro-brand repeat path |
 | Transparent PP 100×200 5,000 | €380–€800 | See canonical pricing table | competitive premium |
 | Transparent PP 100×200 10,000 | €650–€1,200 | See canonical pricing table | premium scaling package |
 | Supplement Variable Data 5,000 + 50 rows | often quote/manual | See canonical pricing table | differentiated, not commodity |
