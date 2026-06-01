@@ -57,9 +57,9 @@ Every technical decision must support:
 | Backend | Next.js Route Handlers / Server Actions |
 | Database | Supabase PostgreSQL |
 | ORM | Prisma |
-| Auth | Supabase Auth or Clerk |
+| Auth | Supabase Auth |
 | Payments | Stripe Checkout + Stripe Webhooks |
-| File Storage | Supabase Storage or UploadThing |
+| File Storage | Supabase Storage |
 | Email | Resend |
 | Hosting | Vercel |
 | Repository | GitHub |
@@ -67,6 +67,11 @@ Every technical decision must support:
 | SEO | Native Next.js metadata + sitemap + structured data |
 
 Final stack decisions must stay consistent with `/docs/10-TECH-STACK.md`.
+
+Alternatives considered (not used in MVP):
+
+- Clerk for auth
+- UploadThing for file storage
 
 ---
 
@@ -78,7 +83,6 @@ Recommended root structure:
 labelpilot/
 ├── app/
 │   ├── (public)/
-│   ├── (shop)/
 │   ├── (account)/
 │   ├── (admin)/
 │   ├── api/
@@ -143,12 +147,12 @@ Public routes must be:
 
 ---
 
-### 5.2 Shop Routes
+### 5.2 Public Product and Checkout Routes
 
-Shop routes handle product discovery and purchase intent.
+Product discovery and checkout pages live under the canonical `(public)` route group.
 
 ```txt
-app/(shop)/
+app/(public)/
 ├── produkte/
 │   ├── page.tsx
 │   ├── pp-etiketten-100x200/
@@ -271,18 +275,19 @@ Business logic should be organized into domain modules.
 ```txt
 lib/
 ├── auth/
-├── config/
 ├── db/
 ├── email/
+├── env/
 ├── files/
+├── leads/
 ├── orders/
 ├── pricing/
 ├── products/
+├── proofing/
 ├── quotes/
+├── reorder/
 ├── seo/
 ├── stripe/
-├── uploads/
-├── users/
 └── validation/
 ```
 
@@ -291,18 +296,19 @@ lib/
 | Module | Responsibility |
 |---|---|
 | `auth` | Session, role checks, account helpers |
-| `config` | Business constants, environment validation |
 | `db` | Prisma client and database helpers |
 | `email` | Resend templates and triggers |
+| `env` | Environment parsing and validation |
 | `files` | File validation and storage helpers |
+| `leads` | Lead capture and GTM pipeline helpers |
 | `orders` | Order creation, status transitions |
 | `pricing` | Price calculation rules |
 | `products` | Product catalog and product config |
+| `proofing` | Proof approval and correction workflows |
 | `quotes` | Quote request logic |
+| `reorder` | Saved-design and repeat-order workflows |
 | `seo` | Metadata, schema, sitemap helpers |
 | `stripe` | Checkout/session/webhook logic |
-| `uploads` | Artwork upload metadata |
-| `users` | Customer and admin helpers |
 | `validation` | Zod schemas and input validation |
 
 ---

@@ -71,9 +71,8 @@ app/
   robots.ts
   globals.css
   (public)/
-  (shop)/
   (account)/
-  admin/
+  (admin)/
   api/
 ```
 
@@ -103,7 +102,7 @@ components/
   product/
   forms/
   order/
-  admin/
+  (admin)/
   account/
 ```
 
@@ -340,9 +339,9 @@ Suggested:
 
 ```txt
 (public) = SEO/public pages
-(shop) = checkout/product config later
+(public) also owns product and checkout pages
 (account) = customer portal
-admin = admin panel
+(admin) = admin panel
 api = API routes
 ```
 

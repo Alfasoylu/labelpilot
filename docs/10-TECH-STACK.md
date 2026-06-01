@@ -274,7 +274,7 @@ Admin protection is mandatory.
 
 Do not expose admin routes without role checks.
 
-If Supabase Auth becomes limiting later, Clerk can be evaluated.
+Alternatives considered (not used in MVP): Clerk can be evaluated later if Supabase Auth becomes limiting.
 
 ---
 
@@ -336,7 +336,7 @@ Rules:
 - Validate file extension and MIME type server-side.
 - Virus scanning can be added later if needed.
 
-If Supabase Storage becomes limiting, evaluate UploadThing or S3-compatible storage.
+Alternatives considered (not used in MVP): UploadThing or S3-compatible storage can be evaluated later if Supabase Storage becomes limiting.
 
 Detailed file upload flow belongs in:
 
@@ -518,7 +518,7 @@ Recommended structure:
 
 ```txt
 /app
-  /(marketing)
+  /(public)
     /de
       /page.tsx
       /lebensmittel-etiketten
@@ -530,11 +530,10 @@ Recommended structure:
       /musterbox
       /angebot-anfordern
       /nachbestellen
-  /(shop)
     /produkte
     /checkout
     /order-success
-  /(customer)
+  /(account)
     /konto
     /bestellungen
     /nachbestellen
@@ -563,13 +562,18 @@ Recommended structure:
 /lib
   /auth
   /db
-  /stripe
+  /email
+  /env
+  /files
+  /leads
+  /orders
   /pricing
   /products
-  /orders
-  /files
-  /email
+  /proofing
+  /quotes
+  /reorder
   /seo
+  /stripe
   /validation
 
 /prisma
@@ -590,7 +594,7 @@ Required API routes:
 
 | Route | Purpose |
 |---|---|
-| `/api/stripe/create-checkout-session` | Create Stripe Checkout session |
+| `/api/checkout/create-session` | Create Stripe Checkout session |
 | `/api/stripe/webhook` | Verify Stripe webhook |
 | `/api/upload/artwork` | Upload artwork |
 | `/api/upload/proof` | Admin proof upload |
@@ -797,7 +801,7 @@ Required environment variables:
 ```txt
 DATABASE_URL=
 DIRECT_URL=
-NEXT_PUBLIC_SITE_URL=
+NEXT_PUBLIC_APP_URL=
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
@@ -805,6 +809,8 @@ STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 RESEND_API_KEY=
+EMAIL_FROM=
+EMAIL_REPLY_TO=
 ADMIN_EMAIL=
 ```
 

@@ -100,14 +100,7 @@ Allowed English:
 
 ## 5. Auth Provider Decision
 
-Recommended MVP options:
-
-```txt
-Supabase Auth
-Clerk
-```
-
-Preferred if using Supabase PostgreSQL and Supabase Storage:
+Canonical MVP auth provider:
 
 ```txt
 Supabase Auth
@@ -120,7 +113,7 @@ Why:
 3. Works well with private storage.
 4. Reduces vendor sprawl.
 
-Clerk is acceptable if developer speed is higher, but do not use two auth systems simultaneously unless explicitly designed.
+Alternatives considered (not used in MVP): Clerk may be evaluated later, but do not use two auth systems simultaneously unless explicitly designed.
 
 ---
 

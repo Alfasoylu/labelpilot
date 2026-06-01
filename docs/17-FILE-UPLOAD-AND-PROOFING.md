@@ -245,12 +245,15 @@ This disclaimer is mandatory.
 
 ## 10. File Storage Architecture
 
-Recommended storage providers:
+Canonical MVP storage provider:
 
 1. Supabase Storage
-2. UploadThing
 
 Final decision belongs in `/docs/10-TECH-STACK.md`.
+
+Alternatives considered (not used in MVP):
+
+1. UploadThing
 
 Storage rules:
 

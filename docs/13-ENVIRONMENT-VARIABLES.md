@@ -15,7 +15,7 @@ The application will use:
 - Supabase PostgreSQL
 - Prisma
 - Stripe
-- Supabase Storage or UploadThing
+- Supabase Storage
 - Resend
 - GA4 / Search Console / optional Plausible
 
@@ -194,11 +194,11 @@ datasource db {
 
 ## 8. AUTH Variables
 
-Auth provider decision may be Supabase Auth or Clerk.
+Canonical MVP auth provider is Supabase Auth.
 
 ### 8.1 Supabase Auth Variables
 
-If using Supabase Auth:
+Use Supabase Auth in MVP:
 
 ```txt
 NEXT_PUBLIC_SUPABASE_URL=
@@ -214,9 +214,9 @@ Rules:
 4. Never expose service role key to browser.
 5. Use service role only in protected server routes.
 
-### 8.2 Clerk Variables
+### 8.2 Alternatives Considered (Not Used in MVP): Clerk Variables
 
-If using Clerk instead:
+If Clerk is evaluated later instead:
 
 ```txt
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
@@ -229,9 +229,9 @@ Rules:
 2. Secret key server-only.
 3. Do not mix Clerk and Supabase Auth unless intentionally designed.
 
-### 8.3 MVP Recommendation
+### 8.3 MVP Rule
 
-Use one auth provider.
+Use Supabase Auth only in MVP.
 
 Do not implement multiple auth systems in MVP.
 
@@ -272,11 +272,10 @@ STRIPE_ACCOUNT_COUNTRY=DE
 
 Use one storage provider.
 
-Recommended options:
+Canonical MVP storage provider:
 
 ```txt
 Supabase Storage
-UploadThing
 ```
 
 ### 10.1 Supabase Storage
@@ -303,9 +302,9 @@ Rules:
 3. Do not expose private file URLs.
 4. Service role key server-only.
 
-### 10.2 UploadThing
+### 10.2 Alternatives Considered (Not Used in MVP): UploadThing
 
-If using UploadThing:
+If UploadThing is evaluated later instead:
 
 ```txt
 UPLOADTHING_SECRET=
@@ -320,9 +319,9 @@ Rules:
 
 ### 10.3 Provider Choice Rule
 
-Do not configure both Supabase Storage and UploadThing unless explicitly needed.
+Use Supabase Storage in MVP.
 
-Pick one for MVP.
+Do not configure both Supabase Storage and UploadThing unless explicitly needed in a later phase.
 
 ---
 
