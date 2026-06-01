@@ -46,7 +46,7 @@ Long-term goal:
 | Production | Turkey |
 | Year 3 | Germany hub pilot |
 | Year 4+ | Full Germany hub if metrics justify |
-| 10-year target | €100,000+ monthly contribution |
+| 10-year target (north-star) | €100,000+ monthly net profit |
 
 ---
 
@@ -855,7 +855,8 @@ Target:
 
 | Metric | Target |
 |---|---:|
-| Monthly contribution long-term | €100,000+ |
+| Mid-term monthly contribution milestone | €100,000+ |
+| Long-term monthly net profit (north-star) | €100,000+ |
 | Main profit source | Repeat B2B orders |
 
 ---

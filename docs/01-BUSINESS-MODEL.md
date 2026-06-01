@@ -685,8 +685,9 @@ Initial target metrics:
 | Delivery complaint rate | Under 5% |
 | Reprint/error rate | Under 2.5% |
 | Year 1 monthly revenue | €10,000–€30,000 |
-| Year 2 monthly net profit | €8,000–€18,000 |
-| Long-term monthly contribution | €100,000+ |
+| Year 2–3 monthly net profit (interim) | €8,000–€35,000 |
+| Mid-term monthly contribution milestone | €100,000+ |
+| Long-term monthly net profit (north-star, ~Year 8–10) | €100,000+ |
 
 ---
 
@@ -761,14 +762,14 @@ Expected result:
 
 Goal:
 
-- Reach €100,000+ monthly contribution
+- Reach €100,000+ monthly contribution (mid-term milestone), then push toward €100,000+ monthly **net profit** (long-term north-star)
 - Expand to DACH / EU if Germany is proven
 - Add managed label supply accounts
 - Build scalable reorder and account infrastructure
 
 Expected result:
 
-- €100,000+ monthly contribution if B2B repeat system works
+- €100,000+ monthly net profit if the B2B repeat system works at full scale (contribution reaches this level earlier; net follows after overhead, tax, customs)
 
 ---
 

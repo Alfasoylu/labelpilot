@@ -110,7 +110,9 @@ All customer-facing copy must be German in MVP.
 
 | Metric | Target |
 |---|---:|
-| Monthly contribution | €100,000+ |
+| Long-term net profit (north-star, ~Year 8–10) | €100,000+/month |
+| Mid-term contribution milestone | €100,000+/month |
+| Interim net profit (Year 2–3) | €8,000–35,000/month |
 | Main market | Germany |
 | Website language | German |
 | Expansion market | DACH, then EU |
