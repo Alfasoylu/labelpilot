@@ -113,7 +113,8 @@ export async function submitQuoteRequest(
           sourcePage: "/de/angebot-anfordern",
         },
       });
-    } catch {
+    } catch (error) {
+      console.error("[quote-request] DB write failed:", error);
       warnings.push(
         "Die Anfrage konnte aktuell nicht in der Datenbank gespeichert werden.",
       );
