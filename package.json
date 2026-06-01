@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "check:lang": "node scripts/check-language.mjs",
+    "prebuild": "node scripts/check-language.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
