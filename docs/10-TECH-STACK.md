@@ -837,7 +837,7 @@ Deployment flow:
 
 Detailed deployment guide belongs in:
 
-`/docs/75-VERCEL-DEPLOYMENT-GUIDE.md`
+`/docs/40-VERCEL-DEPLOYMENT-CHECKLIST.md`
 
 ---
 
@@ -863,7 +863,7 @@ Minimum tests before production:
 
 Detailed QA belongs in:
 
-`/docs/70-QA-CHECKLIST.md`
+`/docs/37-QA-TESTING-CHECKLIST.md`
 
 ---
 

@@ -77,6 +77,8 @@ mixed-language pages
 
 Private account routes may use `/konto`, but they are noindex and must not appear in sitemap.
 
+Campaign landing pages may use `/lp/[slug]`, but they are German-only paid-traffic pages and must stay `noindex`, excluded from sitemap, and non-canonical.
+
 ---
 
 ## 5. Canonical Domain
@@ -226,6 +228,8 @@ The sitemap must exclude:
 /konto/*
 /checkout
 /checkout/*
+/lp
+/lp/*
 /api
 /api/*
 /checkout/success
@@ -241,6 +245,8 @@ search result pages
 ```
 
 No private customer or admin route may appear in sitemap.
+
+No `/lp/*` campaign landing page may appear in sitemap.
 
 ---
 
@@ -497,6 +503,8 @@ Commercial pages remain priority.
 ## 19. Checkout Route Rules
 
 Checkout routes must be noindex.
+
+Campaign landing pages under `/lp/[slug]` must also be noindex and must never outrank `/de/*` canonical SEO pages.
 
 Examples:
 

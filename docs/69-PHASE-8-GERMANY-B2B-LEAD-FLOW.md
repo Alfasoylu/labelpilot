@@ -59,7 +59,7 @@ Before implementing Phase 8, Codex must read:
 ```txt
 /docs/00-PROJECT-BRIEF.md
 /docs/01-BUSINESS-MODEL.md
-/docs/03-PRODUCT-STRATEGY.md
+/docs/03-PRODUCT-STRATEGY-v2.md
 /docs/04-PRICING-AND-MARGIN-MODEL.md
 /docs/20-SEO-STRATEGY-2026.md
 /docs/21-GEO-AI-SEARCH-STRATEGY.md

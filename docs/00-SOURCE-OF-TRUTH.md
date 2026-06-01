@@ -112,7 +112,27 @@ The older `62..69` / `43..51` scheme is retained only as legacy file numbering.
 
 ---
 
-## 5. Missing-File Register
+## 5. Resolved Decisions
+
+The owner has explicitly locked the following decisions. These are no longer open questions.
+
+1. Canonical phase order is the timeline in `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md`.
+2. Canonical package ladder is `1,000 / 2,000 / 5,000 / 10,000`, with `20,000+` handled as quote-only.
+3. Opaque PP pricing is fixed at `€149 / €229 / €399 / €699` for `1,000 / 2,000 / 5,000 / 10,000`.
+4. Transparent PP pricing is fixed at `€169 / OPEN QUESTION / €429 / €749` for `1,000 / 2,000 / 5,000 / 10,000`; transparent `2,000` remains unresolved and provisional.
+5. The `€100k` north-star is a monthly contribution scenario, not a monthly net-profit scenario; interim net-profit targets remain the Year 2-3 ranges already documented.
+6. MVP auth and storage are locked to Supabase Auth + Supabase Storage. Clerk and UploadThing are alternatives considered, not active implementation paths.
+7. Canonical public app URL env var is `NEXT_PUBLIC_APP_URL`. `EMAIL_FROM` and `EMAIL_REPLY_TO` are active email env vars.
+8. Canonical checkout session route is `/api/checkout/create-session`. Stripe webhook remains `/api/stripe/webhook`.
+9. Canonical route groups are `(public)`, `(account)`, and `(admin)`.
+10. Canonical `OrderStatus` includes `CORRECTION_REQUIRED`, `PAYMENT_FAILED`, `ON_HOLD`, and `QUOTE_REQUESTED`. Payment event naming uses `stripeEventId`.
+11. Ads / campaign landing pages live at `/lp/[slug]`, must remain German-language, must be `noindex`, must not enter sitemap, and must never become canonical winners.
+12. `63-PHASE-2-SEO-FOUNDATION.md` now exists and is the canonical Phase 2 phase doc.
+13. GTM docs `53/54/55/56/57` are future docs, not yet written, and must not block current implementation planning.
+
+---
+
+## 6. Missing-File Register
 
 This register covers repo-local documentation references that point to files not present on disk.
 
@@ -120,24 +140,20 @@ Non-local `/docs/...` strings in `73` and `74` that actually refer to Google doc
 
 | Missing File | Referenced By | Section |
 |---|---|---|
-| `63-PHASE-2-SEO-FOUNDATION.md` | `22-PROGRAMMATIC-SEO-PLAN.md` | `## 3. Required Source Documents` |
-| `63-PHASE-2-SEO-FOUNDATION.md` | `44-CODEX-PHASE-2-SEO-EXECUTION-PROMPT.md` | `## 2. Mandatory Reading` |
-| `63-PHASE-2-SEO-FOUNDATION.md` | `68-PHASE-7-GEO-CONTENT-ENGINE.md` | `## 3. Required Source Documents` |
-| `63-PHASE-2-SEO-FOUNDATION.md` | `69-PHASE-8-GERMANY-B2B-LEAD-FLOW.md` | `## 3. Required Source Documents` |
-| `53-GOOGLE-ADS-PLAN-GERMANY.md` | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | `## 4.7 Marketing / GTM Docs` |
-| `54-LANDING-PAGE-COPY-BANK.md` | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | `## 4.5 SEO / GEO / Content Docs` |
-| `54-LANDING-PAGE-COPY-BANK.md` | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | `## Docs to Read` under canonical Phase 1 |
-| `55-COLD-EMAIL-TEMPLATES-GERMANY.md` | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | `## 4.7 Marketing / GTM Docs` |
-| `55-COLD-EMAIL-TEMPLATES-GERMANY.md` | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | `## Docs to Read` under canonical Phase 3 |
-| `56-COMPETITOR-RESEARCH-FRAMEWORK.md` | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | `## 4.7 Marketing / GTM Docs` |
-| `57-90-DAY-GTM-PLAN.md` | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | `## 4.7 Marketing / GTM Docs` |
-| `57-90-DAY-GTM-PLAN.md` | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | `## Docs to Read` under canonical Phase 3 |
-| `75-VERCEL-DEPLOYMENT-GUIDE.md` | `10-TECH-STACK.md` | `## 28. Deployment Requirements` |
-| `70-QA-CHECKLIST.md` | `10-TECH-STACK.md` | `## 29. Testing Requirements` |
+
+Future / not yet written GTM docs tracked intentionally, but non-blocking:
+
+| Future Doc | Referenced By | Notes |
+|---|---|---|
+| `53-GOOGLE-ADS-PLAN-GERMANY.md` | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | Future GTM planning doc; not required for current implementation start. |
+| `54-LANDING-PAGE-COPY-BANK.md` | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | Future campaign copy bank; not required now. |
+| `55-COLD-EMAIL-TEMPLATES-GERMANY.md` | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | Future outbound enablement doc; not required now. |
+| `56-COMPETITOR-RESEARCH-FRAMEWORK.md` | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | Future research operating doc; not required now. |
+| `57-90-DAY-GTM-PLAN.md` | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | Future GTM planning doc; not required now. |
 
 ---
 
-## 6. Domain Precedence Hierarchy
+## 7. Domain Precedence Hierarchy
 
 Use the following winner table when two domain docs disagree.
 
@@ -177,7 +193,7 @@ Use the following winner table when two domain docs disagree.
 | Repo structure | `39-REPO-SETUP-AND-FOLDER-STRUCTURE.md` | Folder/layout conventions |
 | Phase sequencing | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | Canonical build order |
 
-### 6.1 Explicit Winner Rules
+### 7.1 Explicit Winner Rules
 
 When there is a conflict, apply these specific rules:
 
@@ -197,7 +213,7 @@ If one document proposes a product or package that is not allowed by `30-PRODUCT
 
 ---
 
-## 7. Working Rule For Future Edits
+## 8. Working Rule For Future Edits
 
 Before adding or changing any implementation-facing doc:
 
@@ -208,12 +224,13 @@ Before adding or changing any implementation-facing doc:
 
 ---
 
-## 8. Current Reconciliation State
+## 9. Current Reconciliation State
 
 Current state after this reconciliation pass:
 
 - SEO and GEO full-content duplicates have been consolidated into canonical filenames.
 - The v2 precedence rule is formalized.
 - The `74` phase ordering is now the canonical scheme.
+- Owner-locked decisions for pricing, routes, env naming, status naming, and Ads landing-page governance are now recorded here.
 - Missing referenced docs are registered here instead of being guessed into existence.
 - Legacy docs remain preserved for history until intentionally retired.

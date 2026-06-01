@@ -98,6 +98,20 @@ Example:
 /de/transparente-pp-etiketten
 ```
 
+Campaign / Ads landing pages use a separate path family:
+
+```txt
+/lp/[slug]
+```
+
+Rules for `/lp/[slug]` pages:
+
+1. Content must still be German.
+2. They are campaign landing pages, not organic SEO winners.
+3. They must remain `noindex`.
+4. They must not be added to sitemap.
+5. They must not become canonical winners over `/de/*` SEO pages.
+
 ---
 
 ## 5. SEO Market Positioning
