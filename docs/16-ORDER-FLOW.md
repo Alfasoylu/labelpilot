@@ -116,16 +116,13 @@ REPRINT_REQUIRED
 Optional future statuses:
 
 ```txt
-QUOTE_REQUESTED
 QUOTE_SENT
 QUOTE_ACCEPTED
-PAYMENT_FAILED
-ON_HOLD
 PARTIALLY_SHIPPED
 RETURNED
 ```
 
-MVP can avoid optional statuses unless needed.
+Canonical active additions are `QUOTE_REQUESTED`, `PAYMENT_FAILED`, and `ON_HOLD`.
 
 ---
 
@@ -384,7 +381,7 @@ If file has issues:
 
 - Artwork file status becomes `CORRECTION_REQUIRED`.
 - Customer receives email.
-- Order stays in `FILE_REVIEW` or moves to `ON_HOLD` if future status exists.
+- Order stays in `FILE_REVIEW` or moves to `ON_HOLD` when operationally blocked.
 - Customer uploads replacement file.
 - Admin reviews again.
 

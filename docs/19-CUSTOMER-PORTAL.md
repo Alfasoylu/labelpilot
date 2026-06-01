@@ -265,9 +265,13 @@ Map internal statuses to German customer-facing labels.
 | Internal Status | German Label |
 |---|---|
 | DRAFT | Entwurf |
+| QUOTE_REQUESTED | Angebot angefragt |
 | PENDING_PAYMENT | Zahlung offen |
 | PAID | Zahlung bestätigt |
+| PAYMENT_FAILED | Zahlung fehlgeschlagen |
 | FILE_REVIEW | Druckdatei wird geprüft |
+| CORRECTION_REQUIRED | Korrektur erforderlich |
+| ON_HOLD | Angehalten |
 | PROOF_REQUIRED | Proof wird vorbereitet |
 | WAITING_CUSTOMER_APPROVAL | Proof wartet auf Freigabe |
 | APPROVED_FOR_PRODUCTION | Für Produktion freigegeben |

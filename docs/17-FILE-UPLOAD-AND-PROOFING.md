@@ -516,9 +516,9 @@ Order: FILE_REVIEW
 
 ### 16.5 Put On Hold
 
-Optional future workflow.
+Optional operational workflow.
 
-MVP may avoid a dedicated ON_HOLD status.
+If used, `PUT_ON_HOLD` maps to the canonical `OrderStatus.ON_HOLD`.
 
 ---
 

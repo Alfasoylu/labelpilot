@@ -217,11 +217,14 @@ Show:
 
 ```txt
 Neue Bestellungen
+Angebot angefragt
 Zahlung offen
+Zahlung fehlgeschlagen
 Bezahlt
 Dateiprüfung
 Korrektur erforderlich
 Proof wartet auf Freigabe
+Angehalten
 Freigegeben für Produktion
 In Produktion
 Versandbereit
@@ -270,12 +273,15 @@ Required filters:
 
 ```txt
 Alle
+Angebot angefragt
 Zahlung offen
+Zahlung fehlgeschlagen
 Bezahlt
 Dateiprüfung
 Korrektur erforderlich
 Proof erforderlich
 Wartet auf Kundenfreigabe
+Angehalten
 Freigegeben für Produktion
 In Produktion
 Versandbereit

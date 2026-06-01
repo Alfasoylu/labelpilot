@@ -287,7 +287,7 @@ Payment
 - currency
 - status
 - provider
-- rawEventId
+- stripeEventId
 - paidAt
 - createdAt
 - updatedAt
@@ -423,7 +423,7 @@ If stripeEventId already exists and status is PROCESSED:
 If `payment_intent.payment_failed` occurs:
 
 - Create/update Payment record as `FAILED`.
-- Keep order as `PENDING_PAYMENT` or mark as `PAYMENT_FAILED` if that status exists.
+- Mark order as `PAYMENT_FAILED`.
 - Do not start production.
 - Send optional payment failed email later.
 
@@ -665,7 +665,7 @@ PAYMENT_FAILED
 REFUNDED
 ```
 
-If `PAYMENT_FAILED` is not an order status, use Payment status filter.
+`PAYMENT_FAILED` is part of the canonical `OrderStatus` enum and should be available as an order-status filter.
 
 ---
 
