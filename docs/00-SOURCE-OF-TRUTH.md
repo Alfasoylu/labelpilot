@@ -76,7 +76,7 @@ The older `62..69` / `43..51` scheme is retained only as legacy file numbering.
 |---|---|---|---|---|
 | 0 | Repository and planning setup | None | None | Canonical in `74`; no dedicated numbered phase doc or prompt exists. This reconciliation task serves as the docs-only precursor. |
 | 1 | Public MVP lead capture | `62-PHASE-1-MVP.md` | `43-CODEX-PHASE-1-EXECUTION-PROMPT.md` | Aligned. Prompt still cites some superseded inputs by legacy filename. |
-| 2 | SEO / GEO foundation | Missing: `63-PHASE-2-SEO-FOUNDATION.md` | `44-CODEX-PHASE-2-SEO-EXECUTION-PROMPT.md` | Mismatch: canonical phase exists, but phase doc is missing. Legacy GEO assets `68` and `49` overlap this scope but are numbered as later phases. |
+| 2 | SEO / GEO foundation | `63-PHASE-2-SEO-FOUNDATION.md` | `44-CODEX-PHASE-2-SEO-EXECUTION-PROMPT.md` | Canonical phase doc now exists. Legacy GEO assets `68` and `49` still overlap this scope but retain legacy numbering. |
 | 3 | Leads, analytics and GTM readiness | Missing | `50-CODEX-PHASE-8-B2B-LEAD-FLOW-EXECUTION-PROMPT.md` | Mismatch: canonical Phase 3 exists in `74`, but only a legacy “Phase 8” prompt exists. No dedicated numbered phase doc exists. |
 | 4 | Stripe fixed package checkout | `64-PHASE-3-STRIPE-ORDER-FLOW.md` | `45-CODEX-PHASE-3-STRIPE-EXECUTION-PROMPT.md` | Mismatch: content aligns to canonical Phase 4, but legacy files are numbered Phase 3. |
 | 5 | Artwork management v1 | No dedicated numbered phase doc; supporting doc `70-ARTWORK-MANAGEMENT-SYSTEM.md` | None | Mismatch: canonical Phase 5 exists in `74`, but the numbered phase file set jumps from 4 to 5 Admin. |

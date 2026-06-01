@@ -1,3 +1,5 @@
+# Canonical phase = 3 (per doc 74).
+
 # 50-CODEX-PHASE-8-B2B-LEAD-FLOW-EXECUTION-PROMPT.md
 
 # Labelpilot.de — Codex Phase 8 B2B Lead Flow Execution Prompt

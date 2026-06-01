@@ -1,3 +1,5 @@
+# Canonical phase = 2 (per doc 74).
+
 # 44-CODEX-PHASE-2-SEO-EXECUTION-PROMPT.md
 
 # Labelpilot.de — Codex Phase 2 SEO Execution Prompt

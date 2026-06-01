@@ -1,3 +1,5 @@
+# Canonical phase = 1 (per doc 74).
+
 # 62-PHASE-1-MVP.md
 
 # Labelpilot.de — Phase 1 MVP Implementation Plan

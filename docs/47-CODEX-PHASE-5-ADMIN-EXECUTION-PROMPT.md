@@ -1,3 +1,5 @@
+# Canonical phase = 6 (per doc 74).
+
 # 47-CODEX-PHASE-5-ADMIN-EXECUTION-PROMPT.md
 
 # Labelpilot.de — Codex Phase 5 Admin Execution Prompt

@@ -1,3 +1,5 @@
+# Canonical phase = 6 (per doc 74).
+
 # 66-PHASE-5-ADMIN-PANEL.md
 
 # Labelpilot.de — Phase 5 Admin Panel

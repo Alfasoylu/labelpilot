@@ -1,3 +1,5 @@
+# Canonical phase = 12 (per doc 74).
+
 # 51-CODEX-PROGRAMMATIC-SEO-EXECUTION-PROMPT.md
 
 # Labelpilot.de — Codex Programmatic SEO Execution Prompt

@@ -1,3 +1,5 @@
+# Canonical phase = 5 (per doc 74).
+
 # 46-CODEX-PHASE-4-UPLOAD-PROOF-EXECUTION-PROMPT.md
 
 # Labelpilot.de — Codex Phase 4 Upload and Proof Execution Prompt

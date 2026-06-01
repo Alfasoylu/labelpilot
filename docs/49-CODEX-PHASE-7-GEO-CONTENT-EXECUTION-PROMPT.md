@@ -1,3 +1,5 @@
+# Canonical phase = 2 (per doc 74).
+
 # 49-CODEX-PHASE-7-GEO-CONTENT-EXECUTION-PROMPT.md
 
 # Labelpilot.de — Codex Phase 7 GEO Content Execution Prompt

@@ -1,3 +1,5 @@
+# Canonical phase = 5 (per doc 74).
+
 # 65-PHASE-4-FILE-UPLOAD-PROOFING.md
 
 # Labelpilot.de — Phase 4 File Upload and Proofing

@@ -1,3 +1,5 @@
+# Canonical phase = 4 (per doc 74).
+
 # 64-PHASE-3-STRIPE-ORDER-FLOW.md
 
 # Labelpilot.de — Phase 3 Stripe Order Flow

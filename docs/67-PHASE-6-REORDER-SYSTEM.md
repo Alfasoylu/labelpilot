@@ -1,3 +1,5 @@
+# Canonical phase = 7 (per doc 74).
+
 # 67-PHASE-6-REORDER-SYSTEM.md
 
 # Labelpilot.de — Phase 6 Reorder System

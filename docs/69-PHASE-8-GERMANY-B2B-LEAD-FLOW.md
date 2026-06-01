@@ -1,3 +1,5 @@
+# Canonical phase = 3 (per doc 74).
+
 # 69-PHASE-8-GERMANY-B2B-LEAD-FLOW.md
 
 # Labelpilot.de — Phase 8 Germany B2B Lead Flow

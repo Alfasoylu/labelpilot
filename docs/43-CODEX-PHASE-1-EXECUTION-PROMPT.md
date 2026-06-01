@@ -1,3 +1,5 @@
+# Canonical phase = 1 (per doc 74).
+
 # 43-CODEX-PHASE-1-EXECUTION-PROMPT.md
 
 # Labelpilot.de — Codex Phase 1 Execution Prompt

@@ -1,3 +1,5 @@
+# Canonical phase = 7 (per doc 74).
+
 # 48-CODEX-PHASE-6-REORDER-EXECUTION-PROMPT.md
 
 # Labelpilot.de — Codex Phase 6 Reorder Execution Prompt

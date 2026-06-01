@@ -1,3 +1,5 @@
+# Canonical phase = 4 (per doc 74).
+
 # 45-CODEX-PHASE-3-STRIPE-EXECUTION-PROMPT.md
 
 # Labelpilot.de — Codex Phase 3 Stripe Execution Prompt

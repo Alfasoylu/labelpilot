@@ -1,3 +1,5 @@
+# Canonical phase = 2 (per doc 74).
+
 # 68-PHASE-7-GEO-CONTENT-ENGINE.md
 
 # Labelpilot.de — Phase 7 GEO Content Engine
