@@ -1262,3 +1262,4 @@ The wrong schema supports only:
 > simple product checkout without file/proof/reorder history.
 
 Labelpilot.de’s long-term value depends on saved customer label data. The database must protect that asset from day one.
+> SUPERSEDED — see `12-DATABASE-SCHEMA-v2.md`. Kept for history. See `/docs/00-SOURCE-OF-TRUTH.md`.

@@ -846,3 +846,4 @@ Schema v2 accepted when:
 The v2 schema must make Labelpilot.de a memory system for customer labels.
 
 If the system cannot instantly find a customer’s old label and reorder it, the schema failed.
+> AUTHORITATIVE. Supersedes `12-DATABASE-SCHEMA.md`. See `/docs/00-SOURCE-OF-TRUTH.md`.

@@ -797,3 +797,4 @@ The wrong implementation:
 > Customer only sees a basic profile and must restart every order from zero.
 
 If Labelpilot.de wants high LTV, the customer portal must make reorders easier than first orders.
+> SUPERSEDED — see `19-CUSTOMER-PORTAL-v2.md`. Kept for history. See `/docs/00-SOURCE-OF-TRUTH.md`.

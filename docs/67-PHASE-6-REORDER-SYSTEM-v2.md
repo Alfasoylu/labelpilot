@@ -369,3 +369,4 @@ Reorder v2 accepted when:
 Reorder v2 is the economic engine.
 
 If a repeat order takes more than 1 minute for the customer, the product is not strong enough.
+> AUTHORITATIVE. Supersedes `67-PHASE-6-REORDER-SYSTEM.md`. See `/docs/00-SOURCE-OF-TRUTH.md`.

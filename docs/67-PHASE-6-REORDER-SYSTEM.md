@@ -843,3 +843,4 @@ The wrong implementation:
 > Every repeat order starts from zero.
 
 If Labelpilot.de cannot make repeat orders easier than the first order, the business loses its long-term profit engine.
+> SUPERSEDED — see `67-PHASE-6-REORDER-SYSTEM-v2.md`. Kept for history. See `/docs/00-SOURCE-OF-TRUTH.md`.

@@ -503,3 +503,4 @@ The customer portal must become the customer’s label operating system.
 If the portal only shows order history, it is too weak.
 
 The portal must make repeat orders faster than manual matbaa communication.
+> AUTHORITATIVE. Supersedes `19-CUSTOMER-PORTAL.md`. See `/docs/00-SOURCE-OF-TRUTH.md`.

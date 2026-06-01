@@ -1047,3 +1047,4 @@ The first commercial target is:
 > Sell 5,000-unit PP label packages to German B2B customers and convert them into repeat buyers.
 
 The product strategy is successful only if Labelpilot.de becomes a repeat-order supplier, not a one-time print vendor.
+> SUPERSEDED — see `03-PRODUCT-STRATEGY-v2.md`. Kept for history. See `/docs/00-SOURCE-OF-TRUTH.md`.
