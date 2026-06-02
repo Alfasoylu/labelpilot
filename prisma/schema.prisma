@@ -274,6 +274,7 @@ model ProofFile {
   mimeType                  String
   sizeBytes                 Int
   status                    ProofFileStatus @default(PENDING_ADMIN_UPLOAD)
+  adminNote                 String?
   customerApprovedAt        DateTime?
   customerApprovalIp        String?
   customerChangeRequestNote String?
