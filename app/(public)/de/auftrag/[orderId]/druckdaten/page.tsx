@@ -2,13 +2,18 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import { ArtworkUploadForm } from "@/components/orders/ArtworkUploadForm";
+import { ProofApprovalPanel } from "@/components/orders/ProofApprovalPanel";
 import { getPrismaClient } from "@/lib/db/prisma";
-import { getArtworkFileRequirementsText } from "@/lib/file-validation/artwork";
+import {
+  getArtworkFileRequirementsText,
+  getProofFileRequirementsText,
+} from "@/lib/file-validation/artwork";
 import {
   getArtworkFileStatusLabel,
   getArtworkStatusLabel,
   getMaterialLabel,
   getOrderStatusLabel,
+  getProofFileStatusLabel,
 } from "@/lib/orders/artwork";
 import { getPackageById } from "@/lib/commerce/packages";
 
@@ -58,6 +63,11 @@ export default async function OrderArtworkPage({
           createdAt: "desc",
         },
       },
+      proofFiles: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
 
@@ -73,6 +83,16 @@ export default async function OrderArtworkPage({
     statusLabel: getArtworkFileStatusLabel(file.status),
     createdAtLabel: formatDateLabel(file.createdAt),
     downloadHref: `/api/orders/${order.id}/artwork/${file.id}?token=${encodeURIComponent(token)}`,
+  }));
+  const proofs = order.proofFiles.map((proof: (typeof order.proofFiles)[number]) => ({
+    id: proof.id,
+    fileName: proof.fileName,
+    sizeBytes: proof.sizeBytes,
+    status: proof.status,
+    statusLabel: getProofFileStatusLabel(proof.status),
+    createdAtLabel: formatDateLabel(proof.createdAt),
+    customerChangeRequestNote: proof.customerChangeRequestNote,
+    downloadHref: `/api/orders/${order.id}/proofs/${proof.id}?token=${encodeURIComponent(token)}`,
   }));
 
   return (
@@ -126,6 +146,14 @@ export default async function OrderArtworkPage({
         canUpload={order.status !== "PENDING_PAYMENT" && order.status !== "PAYMENT_FAILED" && order.status !== "CANCELLED"}
         requirementsText={getArtworkFileRequirementsText()}
         initialFiles={files}
+      />
+
+      <ProofApprovalPanel
+        orderId={order.id}
+        token={token}
+        canRespond={order.status === "WAITING_CUSTOMER_APPROVAL"}
+        requirementsText={getProofFileRequirementsText()}
+        initialProofs={proofs}
       />
     </div>
   );
