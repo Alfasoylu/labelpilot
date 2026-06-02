@@ -1172,6 +1172,56 @@ Strategic read:
 2. The screenshots confirm that Labelprint24 does not just hide price — it exposes a **fully parameterized industrial pricing model**.
 3. This strengthens our earlier conclusion: Labelpilot should not try to out-catalog Labelprint24. It should win on narrower scope, saved artwork, repeat ordering speed, and price-transparency for the chosen core SKU.
 
+### 27.5.3 Labelprint24 — live calculator deep-dive (browsed 2026-06-03)
+
+Browsed the live English calculator (`/en/products/roll-labels-1`). Labelprint24 is **"Powered by All4Labels"** and frames itself as **"Premium Quality since 1961"**, **"order direct from the manufacturer"**, **48-hour express**, production **from 2 working days**. A serious, trust-led B2B label manufacturer — study it for adoptable UX, not for catalog breadth.
+
+**Material taxonomy (confirmed live from the calculator):**
+
+| Material group | Specifications offered (verbatim) |
+|---|---|
+| Paper | matt permanent · matt removable · **matt opaque** · natural textured white · **matt freezer-safe** · gloss · natural textured cream · recycled matt · grass paper · **matt wash-off** |
+| **PP film** | white gloss permanent · white gloss removable · white matt permanent · white matt removable · **white gloss permanent freezer-safe** · **transparent gloss permanent 0.05 mm** · **silver permanent** |
+| PE film | (separate group) |
+| PVC film | (separate group) |
+| direct thermal paper | (thermal) |
+| fluorescent paper | green / red / yellow |
+| metallised paper | silver / gold |
+
+Each material spec exposes **Application / Temperature range / Suitable for / Note** metadata (e.g. matt paper opaque → "Indoor, dry; −20 to +80 °C; rigid containers (glass, metal, hard plastic); suitable for thermal-transfer, wax ribbons available"). Strong honest buyer guidance.
+
+**Confirmed price points (genuine manual captures, same product URL):**
+
+| Material | Size | Qty | Country | Net | Gross | Delivery |
+|---|---|---|---:|---:|---:|---|
+| Paper, matt opaque, permanent | **100×200 mm** | 1.000 | DE | **€142,77** | €169,90 (19%) | included |
+| PP film, transparent gloss 0.05 mm, permanent | 100×148 mm | 1.000 | DE | **€290,18** | €345,31 (19%) | included |
+| Paper, matt opaque | 20×20 mm | 1.000 | UK | £35,83 | £43,00 (20%) | included |
+
+Caveat: programmatic material switching did **not** reliably recompute the live price (Paper→PP at 20×20 mm moved only £35,83 → £35,80), confirming the calculator is **server/AJAX-driven** — the **white-PP 100×200 mm price must be captured by genuine manual interaction** (still the missing like-for-like, per §27.7). Currency + VAT follow the **delivery country** (UK 20% £ vs DE 19% €). Reference data point for us: at the one confirmed 100×200 mm capture, their **paper** price is €142,77 net; our opaque **PP** 100×200 mm @1.000 is €179 net — i.e. we are modestly above their *paper* but PP costs more than paper, so a like-for-like white-PP capture is still required before any conclusion.
+
+**Price-influencing factors (visible on the calculator):** quantity · number of artwork versions · material group · material specification · format/size (W 10–312 mm × H 10–700 mm) · shape (rect / oval-round) · corner radius (0–10 mm) · roll configuration · UV varnish · protective laminate · hot-foil stamping · tactile warning triangle · professional artwork check (**€15**) · thermal-transfer suitability (**€10**) · barcode verification (**€25**) · printed proof · production speed (standard 5 days / 48 h express) · delivery country · currency · own-print-data vs online-designer.
+
+**Structure / design / ease-of-use (why it converts):**
+- **Persistent right-hand "Cost summary" rail** with live recompute: Base price → **Total net** (emphasised, orange) → VAT (by country) → **Total incl. VAT** → **"Delivery included!"** — net + gross + shipping clarity at a glance.
+- **Two print-data paths up front:** "Own print data" vs "Use online designer" radio.
+- **Low-friction conversion ladder besides Add-to-cart:** "Send quote to email", "Send Guide line by email", "Print data requirements" (→ /en/data-check), "Contact Support", "AI-Live-Chat".
+- **Reassurance microcopy:** "Your information will not be lost, our support team will receive your previous calculation."
+- **Size presets + custom:** quick presets (round 30–150 mm, many rect/square incl. 100×148, 200×200) PLUS free width/height; "Cutter size" preset line.
+- **At-a-glance product header:** Production lead time · Materials · Size · Options · Online Designer · Printing Technology icons.
+- **Trust framing:** "since 1961", "direct from the manufacturer", payment methods shown (Vorkasse / PayPal / Visa / Mastercard / Amex), express badges, "Powered by All4Labels".
+
+**Candidate features Labelpilot MAY adopt** *(needs founder approval; stay within locked scope — NO full configurator / online designer / large cart, per §25 and docs 62 & 72; approved items → track in `74-CODEX-CLAUDE-BACKLOG...`):*
+1. **Live net → VAT → gross → "Versand inklusive" cost summary** styled as a summary block on our fixed packages (we already show net+gross; add the explicit "inkl. MwSt" total + "Versand inklusive" line). Low effort, high trust.
+2. **"Angebot per E-Mail senden"** (send-quote-to-email) on package/quote pages — captures hesitant B2B buyers without forcing checkout; fits our quote-first model.
+3. **Dedicated "Druckdaten-Anforderungen" page/link** (like their Print-data-requirements) — reinforces our Druckdatenprüfung promise.
+4. **Material-suitability metadata** (Anwendung / Temperaturbereich / Geeignet für / Hinweis) for opaque vs transparent — honest buyer guidance, pure content, no engine.
+5. **Reassurance microcopy** ("Ihre Angaben gehen nicht verloren…") near forms.
+
+**Do NOT adopt:** full parameterized configurator, online designer/editor, self-serve hot-foil / laminate / contour / broad material catalog — these violate §25 and docs 62 & 72 (MVP scope). Route all such requests to "Individuelles B2B-Angebot."
+
+**Strategic read:** Labelprint24 wins on **depth + a serious calculator UX + manufacturer trust**. We should NOT out-catalog them; adopt the **trust + transparency UX patterns** (cost clarity, send-quote, data-requirements, material guidance) on our **narrow, fixed-price, reorder-first** core — that is our defensible difference.
+
 ### 27.6 Source URLs (fetched 2026-06-03)
 
 WIRmachenDRUCK exact audit URLs added on 2026-06-03:
