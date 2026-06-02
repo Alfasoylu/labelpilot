@@ -148,19 +148,72 @@ export const PRICING_CONFIG = {
 
 ---
 
-## 6. Known Production Costs
+## 6. Degressive Production Cost Model
 
-Current known production costs:
+These are the current planning guardrails for the large `100×200 mm` PP label.
 
-| Product | Size | Production cost |
-|---|---:|---:|
-| Eco thermal roll label | 100×100 mm | €0.012 / unit |
-| Opaque PP printed label | 100×200 mm | €0.020 / unit |
-| Transparent PP printed label | 100×200 mm | €0.020 / unit initially |
+Important:
 
-Transparent PP may cost more in reality.
+```txt
+HIGH-SIDE PLACEHOLDER ESTIMATES
+internet-researched in Turkey
+rough working FX basis: ~53 TRY / EUR
+NOT verified supplier quotes
+replace with real tiered supplier quotes after first orders
+ex-works Turkey production cost only
+recoverable KDV excluded
+lamination + freight/import added separately
+```
 
-Until exact supplier quote is confirmed, use the same estimate but keep material-level override possible.
+### 6.1 Degressive Ex-Works Unit Cost Ladder
+
+The `100×200 mm` format is large at roughly `200 cm²`.
+
+Tooling amortization is assumed inside the `1,000` row.
+
+| Material | 1,000 | 2,000 | 5,000 | 10,000 |
+|---|---:|---:|---:|---:|
+| Opaque PP 100×200 | €0.13 / unit | €0.09 / unit | €0.06 / unit | €0.05 / unit |
+| Transparent PP 100×200 | €0.16 / unit | €0.11 / unit | €0.08 / unit | €0.07 / unit |
+
+### 6.2 Cost Driver Matrix
+
+| Cost driver | Direction / magnitude | Operational note |
+|---|---|---|
+| Quantity | Strong degression; low quantity much higher per-unit because setup/tooling is amortized over fewer labels | Main reason `1,000` is structurally weak and `5,000+` is preferred |
+| Size / area | Larger area increases material use and run length | `100×200 mm` is a large label, so tiny-label market headlines are not comparable |
+| Material | Transparent PP is roughly `+30%` to `+35%` vs opaque PP | Reflected in the placeholder ladder above |
+| White underprint | `+€0.005–0.01 / unit` | Transparent only; paid add-on / quote by owner decision |
+| Lamination / premium finishing | Film lamination / soft-touch / foil starts around `+€0.02 / unit` and up | Protective standard varnish may be part of normal print finishing, but premium finishing is quote territory |
+| Cut / tooling | Digital contour can be near `€0` incremental; physical die / tooling is one-time `~€47–66` | Tooling is amortized into first runs and should drop on repeat of the same artwork/spec |
+| Colour complexity | Standard CMYK is base; spot/Pantone/extra white pushes to surcharge / quote | Keep MVP fixed ladder on standard CMYK |
+| Print method | Digital is realistic up to roughly `20k–50k`; flexo only becomes cheaper at very high volume after plate fees | Quote-only volumes may switch economics materially |
+| Freight TR→DE + import handling | Roughly `+€0.005–0.02 / unit` depending on consolidated vs parcel logic | Modeled separately in Sections 8, 12 and 13 |
+| One-time tooling | `~€47–66` one-time | Repeat of the same approved artwork/spec should avoid re-charging this internally |
+
+Realistic unit-cost range for custom roll labels:
+
+```txt
+~€0.05 / unit at high volume, simple specification
+up to €0.50+ / unit at low quantity, large format, special finishes, or inefficient setup
+```
+
+### 6.3 Historical Note
+
+The earlier flat planning placeholder:
+
+```txt
+€0.020 / unit
+```
+
+is removed from the active cost model and kept only as historical planning context.
+
+Thermal planning remains separate and non-core:
+
+```txt
+100×100 eco thermal = €0.012 / unit
+100×150 thermal shipping label estimated = €0.015–€0.018 / unit
+```
 
 ---
 
@@ -371,7 +424,7 @@ Formula basis used consistently in Sections 12, 13, 19 and 20:
 ```txt
 listed_net_price = canonical package price
 gross_reference_price = listed_net_price * 1.19
-production_cost = quantity * €0.020
+production_cost = quantity * material-specific tiered unit cost from Section 6.1
 weight_kg = quantity * 3 g / 1000
 payment_cost = gross_reference_price * 0.04
 reprint_fire_buffer = gross_reference_price * 0.02
@@ -397,34 +450,35 @@ reorder_contribution =
 
 Assumptions:
 
-| Item | Value |
-|---|---:|
-| Quantity | 1,000 |
-| Unit production cost | €0.020 |
-| Production cost | €20 |
-| Unit weight | 3 g |
-| Total weight | 3 kg |
-| Direct shipping | €10/kg |
-| Shipping cost | €30 |
-| Listed net price | €179 |
-| Gross reference price (for payment fee estimate) | €213.01 |
-| Payment estimate (4% of gross) | €8.52 |
-| Handling | €3 |
-| Fire/reprint buffer (2% of gross) | €4.26 |
-| CAC | €30 |
+| Item | Opaque PP | Transparent PP |
+|---|---:|---:|
+| Quantity | 1,000 | 1,000 |
+| Unit production cost | €0.13 | €0.16 |
+| Production cost | €130 | €160 |
+| Unit weight | 3 g | 3 g |
+| Total weight | 3 kg | 3 kg |
+| Direct shipping | €10/kg | €10/kg |
+| Shipping cost | €30 | €30 |
+| Listed net price | €179 | €199 |
+| Gross reference price (for payment fee estimate) | €213.01 | €236.81 |
+| Payment estimate (4% of gross) | €8.52 | €9.47 |
+| Handling | €3 | €3 |
+| Fire/reprint buffer (2% of gross) | €4.26 | €4.74 |
+| CAC | €30 | €30 |
 
 Result:
 
-| Metric | Value |
-|---|---:|
-| First-order contribution | €83.22 |
-| Reorder contribution with €5 CRM cost | €108.22 |
-| Business role | Entry product / paid trial |
+| Metric | Opaque PP | Transparent PP |
+|---|---:|---:|
+| First-order contribution | -€26.78 | -€38.21 |
+| Reorder contribution with €5 CRM cost | -€1.78 | -€13.21 |
+| Business role | Acquisition / paid-trial tier only | Loss-leading unless supported by add-ons or better supplier quotes |
 
 Decision:
 
 ```txt
-Allowed, but not the main profit engine. The higher price improves viability, but direct shipping still constrains margin.
+Expected to be thin or negative on this high-side cost basis.
+Use only as an acquisition tier, not as a profit engine.
 ```
 
 ---
@@ -433,32 +487,33 @@ Allowed, but not the main profit engine. The higher price improves viability, bu
 
 Direct shipping assumptions:
 
-| Item | Value |
-|---|---:|
-| Quantity | 5,000 |
-| Production cost | €100 |
-| Weight | 15 kg |
-| Direct shipping cost | €150 |
-| Listed net price | €479 |
-| Gross reference price (for payment fee estimate) | €570.01 |
-| Payment estimate (4% of gross) | €22.80 |
-| Handling | €8 |
-| Fire/reprint buffer (2% of gross) | €11.40 |
-| Acquisition cost | €45 |
+| Item | Opaque PP | Transparent PP |
+|---|---:|---:|
+| Quantity | 5,000 | 5,000 |
+| Unit production cost | €0.06 | €0.08 |
+| Production cost | €300 | €400 |
+| Weight | 15 kg | 15 kg |
+| Direct shipping cost | €150 | €150 |
+| Listed net price | €479 | €519 |
+| Gross reference price (for payment fee estimate) | €570.01 | €617.61 |
+| Payment estimate (4% of gross) | €22.80 | €24.70 |
+| Handling | €8 | €8 |
+| Fire/reprint buffer (2% of gross) | €11.40 | €12.35 |
+| Acquisition cost | €45 | €45 |
 
 Result:
 
-| Metric | Value |
-|---|---:|
-| First-order contribution | €141.80 |
-| Reorder contribution with €5 CRM cost | €181.80 |
-| Business role | Acceptable but not ideal with direct shipping |
+| Metric | Opaque PP | Transparent PP |
+|---|---:|---:|
+| First-order contribution | -€58.20 | -€121.05 |
+| Reorder contribution with €5 CRM cost | -€18.20 | -€81.05 |
+| Business role | Commercially weak with parcel shipping | Not viable with direct parcel shipping on this cost basis |
 
 Decision:
 
 ```txt
-Now economically viable, but still materially weaker than consolidated shipping.
-Better with consolidated logistics.
+Do not scale `5,000` direct-parcel orders under this cost model.
+Margin only starts to recover when logistics are consolidated.
 ```
 
 ---
@@ -467,32 +522,33 @@ Better with consolidated logistics.
 
 Direct shipping assumptions:
 
-| Item | Value |
-|---|---:|
-| Quantity | 10,000 |
-| Production cost | €200 |
-| Weight | 30 kg |
-| Direct shipping cost | €300 |
-| Listed net price | €799 |
-| Gross reference price (for payment fee estimate) | €950.81 |
-| Payment estimate (4% of gross) | €38.03 |
-| Handling | €12 |
-| Fire/reprint buffer (2% of gross) | €19.02 |
-| Acquisition cost | €60 |
+| Item | Opaque PP | Transparent PP |
+|---|---:|---:|
+| Quantity | 10,000 | 10,000 |
+| Unit production cost | €0.05 | €0.07 |
+| Production cost | €500 | €700 |
+| Weight | 30 kg | 30 kg |
+| Direct shipping cost | €300 | €300 |
+| Listed net price | €799 | €849 |
+| Gross reference price (for payment fee estimate) | €950.81 | €1,010.31 |
+| Payment estimate (4% of gross) | €38.03 | €40.41 |
+| Handling | €12 | €12 |
+| Fire/reprint buffer (2% of gross) | €19.02 | €20.21 |
+| Acquisition cost | €60 | €60 |
 
 Result:
 
-| Metric | Value |
-|---|---:|
-| First-order contribution | €169.95 |
-| Reorder contribution with €5 CRM cost | €224.95 |
-| Business role | Weak if direct parcel shipping is used |
+| Metric | Opaque PP | Transparent PP |
+|---|---:|---:|
+| First-order contribution | -€130.05 | -€283.62 |
+| Reorder contribution with €5 CRM cost | -€75.05 | -€228.62 |
+| Business role | Not viable with direct parcel shipping | Not viable with direct parcel shipping |
 
 Decision:
 
 ```txt
-The raise improves direct-shipping economics, but consolidated logistics remain strategically better for scale.
-Use consolidated logistics.
+Large-format `10,000` direct parcel shipping is structurally unattractive on this model.
+Use consolidated logistics or quote logic.
 ```
 
 ---
@@ -503,33 +559,35 @@ Use consolidated logistics.
 
 Consolidated shipping assumptions:
 
-| Item | Value |
-|---|---:|
-| Quantity | 5,000 |
-| Production cost | €100 |
-| Weight | 15 kg |
-| Pallet effective shipping | €2/kg |
-| Shipping cost | €30 |
-| Germany handling / distribution buffer | €25 |
-| Listed net price | €479 |
-| Gross reference price (for payment fee estimate) | €570.01 |
-| Payment estimate (4% of gross) | €22.80 |
-| Handling | €8 |
-| Fire/reprint buffer (2% of gross) | €11.40 |
-| Acquisition cost | €45 |
+| Item | Opaque PP | Transparent PP |
+|---|---:|---:|
+| Quantity | 5,000 | 5,000 |
+| Unit production cost | €0.06 | €0.08 |
+| Production cost | €300 | €400 |
+| Weight | 15 kg | 15 kg |
+| Pallet effective shipping | €2/kg | €2/kg |
+| Shipping cost | €30 | €30 |
+| Germany handling / distribution buffer | €25 | €25 |
+| Listed net price | €479 | €519 |
+| Gross reference price (for payment fee estimate) | €570.01 | €617.61 |
+| Payment estimate (4% of gross) | €22.80 | €24.70 |
+| Handling | €8 | €8 |
+| Fire/reprint buffer (2% of gross) | €11.40 | €12.35 |
+| Acquisition cost | €45 | €45 |
 
 Result:
 
-| Metric | Value |
-|---|---:|
-| First-order contribution | €236.80 |
-| Reorder contribution with €5 CRM cost | €276.80 |
-| Business role | Main product |
+| Metric | Opaque PP | Transparent PP |
+|---|---:|---:|
+| First-order contribution | €36.80 | -€26.05 |
+| Reorder contribution with €5 CRM cost | €76.80 | €13.95 |
+| Business role | First profitable core tier | Borderline and only partly rescued by reorder |
 
 Decision:
 
 ```txt
-This is the core package.
+Profit starts to appear here for opaque PP once logistics are consolidated.
+Transparent PP still needs better supplier quotes, paid add-ons, or quote handling.
 ```
 
 ---
@@ -538,33 +596,35 @@ This is the core package.
 
 Consolidated shipping assumptions:
 
-| Item | Value |
-|---|---:|
-| Quantity | 10,000 |
-| Production cost | €200 |
-| Weight | 30 kg |
-| Pallet effective shipping | €2/kg |
-| Shipping cost | €60 |
-| Germany handling / distribution buffer | €35 |
-| Listed net price | €799 |
-| Gross reference price (for payment fee estimate) | €950.81 |
-| Payment estimate (4% of gross) | €38.03 |
-| Handling | €12 |
-| Fire/reprint buffer (2% of gross) | €19.02 |
-| Acquisition cost | €60 |
+| Item | Opaque PP | Transparent PP |
+|---|---:|---:|
+| Quantity | 10,000 | 10,000 |
+| Unit production cost | €0.05 | €0.07 |
+| Production cost | €500 | €700 |
+| Weight | 30 kg | 30 kg |
+| Pallet effective shipping | €2/kg | €2/kg |
+| Shipping cost | €60 | €60 |
+| Germany handling / distribution buffer | €35 | €35 |
+| Listed net price | €799 | €849 |
+| Gross reference price (for payment fee estimate) | €950.81 | €1,010.31 |
+| Payment estimate (4% of gross) | €38.03 | €40.41 |
+| Handling | €12 | €12 |
+| Fire/reprint buffer (2% of gross) | €19.02 | €20.21 |
+| Acquisition cost | €60 | €60 |
 
 Result:
 
-| Metric | Value |
-|---|---:|
-| First-order contribution | €374.95 |
-| Reorder contribution with €5 CRM cost | €429.95 |
-| Business role | Scale product |
+| Metric | Opaque PP | Transparent PP |
+|---|---:|---:|
+| First-order contribution | €74.95 | -€78.62 |
+| Reorder contribution with €5 CRM cost | €129.95 | -€23.62 |
+| Business role | Best current fixed-tier contribution engine | Not viable on this high-side placeholder cost basis |
 
 Decision:
 
 ```txt
-This is the best scalable fixed package.
+Opaque `10,000` is the best current fixed-tier contribution engine.
+Transparent `10,000` needs supplier-cost validation or quote logic before it can be treated as a scale package.
 ```
 
 ---
@@ -576,7 +636,7 @@ Consolidated shipping assumptions:
 | Item | Value |
 |---|---:|
 | Quantity | 20,000 |
-| Production cost | €400 |
+| Production cost | OPEN QUESTION |
 | Weight | 60 kg |
 | Pallet effective shipping | €2/kg |
 | Shipping cost | €120 |
@@ -874,17 +934,20 @@ Example:
 
 | Package | First-order contribution | Reorder contribution |
 |---|---:|---:|
-| 1,000 Starter direct | €83.22 | €108.22 |
-| 5,000 Growth consolidated | €236.80 | €276.80 |
-| 10,000 Pro consolidated | €374.95 | €429.95 |
+| 1,000 Starter direct opaque | -€26.78 | -€1.78 |
+| 1,000 Starter direct transparent | -€38.21 | -€13.21 |
+| 5,000 Growth consolidated opaque | €36.80 | €76.80 |
+| 5,000 Growth consolidated transparent | -€26.05 | €13.95 |
+| 10,000 Pro consolidated opaque | €74.95 | €129.95 |
+| 10,000 Pro consolidated transparent | -€78.62 | -€23.62 |
 | 20,000 Business consolidated | OPEN QUESTION | OPEN QUESTION |
 
 A customer who orders 5,000 labels three times per year:
 
 ```txt
-First order contribution = €236.80
-Two reorder contributions = 2 × €276.80 = €553.60
-12-month contribution = €790.40
+First order contribution = €36.80
+Two reorder contributions = 2 × €76.80 = €153.60
+12-month contribution = €190.40
 ```
 
 This is why the customer file, artwork, specifications and reorder flow are strategic assets.
@@ -895,13 +958,21 @@ This is why the customer file, artwork, specifications and reorder flow are stra
 
 ### 20.1 €10,000 Monthly Contribution Scenario
 
+Scenario basis:
+
+```txt
+opaque PP core mix only
+consolidated logistics on 5,000 and 10,000 tiers
+starter omitted because it is negative on this cost basis
+transparent tiers excluded from the milestone model because the current placeholder cost basis does not produce a scalable positive contribution
+```
+
 | Package | Orders/month | Contribution/order | Monthly contribution |
 |---|---:|---:|---:|
-| Starter | 40 | €83.22 | €3,328.80 |
-| Growth | 35 | €236.80 | €8,288.00 |
-| Pro | 10 | €374.95 | €3,749.50 |
-| Reorders | 10 | €276.80 | €2,768.00 |
-| Total contribution |  |  | €18,134.30 |
+| Growth 5,000 opaque | 90 | €36.80 | €3,312.00 |
+| Pro 10,000 opaque | 50 | €74.95 | €3,747.50 |
+| Reorders 5,000 opaque | 40 | €76.80 | €3,072.00 |
+| Total contribution |  |  | €10,131.50 |
 
 After fixed overhead, this can support early profitability.
 
@@ -909,20 +980,19 @@ After fixed overhead, this can support early profitability.
 
 ### 20.2 €100k Monthly Contribution Scenario
 
-Target order composition using only canonical fixed-price tiers:
+Target order composition using the current positive-contribution fixed tiers:
 
 | Package | Orders/month | Contribution/order | Monthly contribution |
 |---|---:|---:|---:|
-| Starter | 300 | €83.22 | €24,966.00 |
-| Growth | 250 | €236.80 | €59,200.00 |
-| Pro | 120 | €374.95 | €44,994.00 |
-| Business 20,000+ | 25 | OPEN QUESTION | OPEN QUESTION |
-| Reorder uplift | 150 | €276.80 average | €41,520.00 |
-| Subtotal from fixed-price tiers only |  |  | €170,680.00 |
+| Growth 5,000 opaque | 500 | €36.80 | €18,400.00 |
+| Pro 10,000 opaque | 400 | €74.95 | €29,980.00 |
+| Reorder uplift 5,000 opaque | 675 | €76.80 | €51,840.00 |
+| Business 20,000+ | OPEN QUESTION | OPEN QUESTION | OPEN QUESTION |
+| Total contribution from derivable fixed tiers |  |  | €100,220.00 |
 
 This is a contribution scenario, not a guaranteed net-profit scenario.
 
-The subtotal already clears the `€100k/month contribution` milestone before any quote-only `20,000+` business orders are added.
+The derivable fixed-tier mix clears the `€100k/month contribution` milestone without relying on quote-only `20,000+` orders.
 
 Indicative operating implication:
 

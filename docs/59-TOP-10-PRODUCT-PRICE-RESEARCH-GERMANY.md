@@ -63,7 +63,8 @@ Launch with the Top 10 below, but do **not** compete as the cheapest German onli
 Your production assumptions:
 
 ```txt
-100×200 PP label printed cost = €0.020 / unit
+100×200 PP label production cost is no longer modeled as a flat unit cost
+use the degressive high-side placeholder ladder in 04 §6
 100×100 thermal label printed cost = €0.012 / unit
 Parcel shipping = €10 / kg
 Partial pallet = €500 / 250 kg = €2 / kg
@@ -149,23 +150,35 @@ These are planning assumptions until real shipment weights are measured.
 
 ## 4.1 PP 100×200 Label
 
-Base production cost:
+Production-cost basis for PP 100×200:
 
 ```txt
-€0.020 / unit
+See 04 §6:
+opaque PP = €0.13 / €0.09 / €0.06 / €0.05 at 1k / 2k / 5k / 10k
+transparent PP = €0.16 / €0.11 / €0.08 / €0.07 at 1k / 2k / 5k / 10k
+high-side placeholder estimates only
+replace with real supplier quotes before scaling
 ```
 
 Estimated loaded cost assumptions:
 
-| Quantity | Production | Estimated Direct Parcel / Ops Add-on | Estimated Pallet / Ops Add-on | Notes |
-|---:|---:|---:|---:|---|
-| 1,000 | €20 | €35–€55 | not relevant | parcel minimum hurts margin |
-| 2,000 | €40 | €45–€70 | not relevant | useful reorder tier |
-| 5,000 | €100 | €85–€120 | €45–€70 | direct parcel less attractive |
-| 10,000 | €200 | €130–€180 | €75–€110 | pallet/consolidation improves margin |
-| 20,000 | €400 | quote only | quote only | must quote |
+| Quantity | Opaque production basis | Transparent production basis | Estimated Direct Parcel / Ops Add-on | Estimated Pallet / Ops Add-on | Notes |
+|---:|---:|---:|---:|---:|---|
+| 1,000 | €130 | €160 | €35–€55 | not relevant | parcel minimum hurts margin; high-side placeholder basis |
+| 2,000 | €180 | €220 | €45–€70 | not relevant | useful reorder tier; contribution still needs exact handling/CAC model |
+| 5,000 | €300 | €400 | €85–€120 | €45–€70 | direct parcel less attractive |
+| 10,000 | €500 | €700 | €130–€180 | €75–€110 | pallet/consolidation improves margin |
+| 20,000 | quote-only | quote-only | quote only | quote only | must quote with real supplier pricing |
 
 The add-on includes estimated shipping, packaging, payment fee, support/file review buffer.
+
+Action / OPEN QUESTION:
+
+```txt
+Obtain real tiered supplier quotes for opaque + transparent PP at 1k / 2k / 5k / 10k,
+with and without lamination, plus one-time tooling fee,
+to replace the placeholder production-cost ladder in 04 §6 before scaling paid acquisition.
+```
 
 ## 4.2 Thermal Labels
 
@@ -362,12 +375,12 @@ Entry SKU.
 
 ### Margin issue
 
-1,000 units has low production cost but high support/shipping burden.
+1,000 units has high per-unit production cost plus high support/shipping burden.
 
 Production:
 
 ```txt
-1,000 × €0.020 = €20
+1,000 × €0.13 = €130
 ```
 
 Commercial selling price is owned by `/docs/04-PRICING-AND-MARGIN-MODEL.md`.
@@ -395,7 +408,7 @@ Better micro-brand reorder tier.
 Production:
 
 ```txt
-2,000 × €0.020 = €40
+2,000 × €0.09 = €180
 ```
 
 Commercial selling price is owned by `/docs/04-PRICING-AND-MARGIN-MODEL.md`.
@@ -421,7 +434,7 @@ Main product.
 Production:
 
 ```txt
-5,000 × €0.020 = €100
+5,000 × €0.06 = €300
 ```
 
 Commercial selling price is owned by `/docs/04-PRICING-AND-MARGIN-MODEL.md`.
@@ -443,7 +456,7 @@ Scaling customer package.
 Production:
 
 ```txt
-10,000 × €0.020 = €200
+10,000 × €0.05 = €500
 ```
 
 Commercial selling price is owned by `/docs/04-PRICING-AND-MARGIN-MODEL.md`.
