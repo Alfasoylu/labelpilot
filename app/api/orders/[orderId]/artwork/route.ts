@@ -74,12 +74,9 @@ export async function POST(
 
   try {
     const storagePath = await uploadArtwork(order.id, file, validation.sanitizedFileName);
-    const nextOrderStatus =
-      order.status === "PENDING_PAYMENT" ||
-      order.status === "PAYMENT_FAILED" ||
-      order.status === "CANCELLED"
-        ? order.status
-        : "FILE_REVIEW";
+    // PENDING_PAYMENT / PAYMENT_FAILED / CANCELLED are already rejected with 409
+    // above, so any reachable upload moves the order into technical file review.
+    const nextOrderStatus = "FILE_REVIEW" as const;
     const createdFile = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       await tx.proofFile.updateMany({
         where: {
