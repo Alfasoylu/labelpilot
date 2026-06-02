@@ -107,7 +107,7 @@ const productImageAssets = {
   },
 } as const;
 
-export function HomePage({ page, navigation }: HomePageProps) {
+export function HomePage({ page }: HomePageProps) {
   const homepageTrustItems = [
     {
       title: "Für wiederkehrende Bestellungen gebaut",
@@ -164,12 +164,13 @@ export function HomePage({ page, navigation }: HomePageProps) {
           title="Für Food, Beverage, Supplement und Private Label."
           lead={page.highlights[1]}
         >
-          <div className="card-grid">
-            {navigation
-              .filter((item) =>
-                ["/de/lebensmittel-etiketten", "/de/supplement-etiketten", "/de/getraenke-etiketten"].includes(item.href),
-              )
-              .map((item) => (
+          <div className="two-column image-supported-grid">
+            <div className="card-grid">
+              {[
+                { label: "Lebensmittel-Etiketten", href: "/de/lebensmittel-etiketten" },
+                { label: "Getränke-Etiketten", href: "/de/getraenke-etiketten" },
+                { label: "Supplement-Etiketten", href: "/de/supplement-etiketten" },
+              ].map((item) => (
                 <ProductCard
                   key={item.href}
                   title={item.label}
@@ -177,6 +178,12 @@ export function HomePage({ page, navigation }: HomePageProps) {
                   href={item.href}
                 />
               ))}
+            </div>
+            <EditorialImage
+              {...productImageAssets.industries}
+              caption="PP-Etiketten für Lebensmittel-, Getränke-, Supplement- und Private-Label-Produkte."
+              sizes="(max-width: 1024px) 100vw, 520px"
+            />
           </div>
         </Section>
 
