@@ -9,7 +9,7 @@ type SuccessPageProps = {
   }>;
 };
 
-async function getOrderNumber(sessionId?: string) {
+async function getSuccessPageData(sessionId?: string) {
   if (!sessionId) {
     return null;
   }
@@ -25,15 +25,28 @@ async function getOrderNumber(sessionId?: string) {
 
     const prisma = getPrismaClient();
     if (!prisma) {
-      return session.metadata?.orderNumber ?? null;
+      return {
+        orderNumber: session.metadata?.orderNumber ?? null,
+        uploadHref: null,
+      };
     }
 
     const order = await prisma.order.findUnique({
       where: { id: orderId },
-      select: { orderNumber: true },
+      select: {
+        id: true,
+        orderNumber: true,
+        uploadToken: true,
+      },
     });
 
-    return order?.orderNumber ?? session.metadata?.orderNumber ?? null;
+    return {
+      orderNumber: order?.orderNumber ?? session.metadata?.orderNumber ?? null,
+      uploadHref:
+        order?.uploadToken && order.id
+          ? `/de/auftrag/${order.id}/druckdaten?token=${encodeURIComponent(order.uploadToken)}`
+          : null,
+    };
   } catch {
     return null;
   }
@@ -41,22 +54,27 @@ async function getOrderNumber(sessionId?: string) {
 
 export default async function CheckoutSuccessPage({ searchParams }: SuccessPageProps) {
   const params = await searchParams;
-  const orderNumber = await getOrderNumber(params.session_id);
+  const successData = await getSuccessPageData(params.session_id);
 
   return (
     <div className="container section-stack">
       <article className="legal-card">
         <span className="eyebrow">Checkout</span>
         <h1>Zahlung eingegangen bzw. wird bestaetigt.</h1>
-        <p>Wir pruefen Ihre Druckdaten vor der Produktion.</p>
-        {orderNumber ? (
-          <p className="price-note">Bestellnummer: {orderNumber}</p>
+        <p>Der naechste Schritt ist das Hochladen Ihrer Druckdaten.</p>
+        {successData?.orderNumber ? (
+          <p className="price-note">Bestellnummer: {successData.orderNumber}</p>
         ) : (
           <p className="price-note">
             Die finale Zahlungsbestaetigung erfolgt ueber den verifizierten Stripe-Webhook.
           </p>
         )}
         <div className="cta-row">
+          {successData?.uploadHref ? (
+            <Link href={successData.uploadHref} className="cta-link">
+              Druckdaten hochladen
+            </Link>
+          ) : null}
           <Link href="/de/opake-pp-etiketten" className="secondary-link">
             Zu den Produkten
           </Link>
