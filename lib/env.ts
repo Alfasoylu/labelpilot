@@ -17,6 +17,7 @@ type ServerEnv = {
   RESEND_API_KEY?: string;
   EMAIL_FROM?: string;
   EMAIL_REPLY_TO?: string;
+  ADMIN_NOTIFY_EMAIL?: string;
 };
 
 function normalize(value?: string) {
@@ -52,6 +53,7 @@ export function getServerEnv(): ServerEnv {
     RESEND_API_KEY: normalize(process.env.RESEND_API_KEY),
     EMAIL_FROM: normalize(process.env.EMAIL_FROM),
     EMAIL_REPLY_TO: normalize(process.env.EMAIL_REPLY_TO),
+    ADMIN_NOTIFY_EMAIL: normalize(process.env.ADMIN_NOTIFY_EMAIL),
   };
 }
 

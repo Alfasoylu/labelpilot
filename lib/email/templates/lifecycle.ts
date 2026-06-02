@@ -163,3 +163,33 @@ export function proofApproved(input: {
     }),
   };
 }
+
+export function artworkUploadedOpsNotification(input: {
+  orderNumber: string;
+  customerEmail: string;
+  orderId: string;
+}): TemplateResult {
+  const baseUrl = getPublicEnv().NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
+  const adminOrderLink = `${baseUrl}/admin/orders/${input.orderId}`;
+  const subject = `Neue Druckdaten fuer ${input.orderNumber}`;
+  const text = [
+    `Fuer die Bestellung ${input.orderNumber} wurden neue Druckdaten hochgeladen.`,
+    `Kunden-E-Mail: ${input.customerEmail}`,
+    "",
+    `Admin-Link: ${adminOrderLink}`,
+  ].join("\n");
+
+  return {
+    subject,
+    text,
+    html: renderShell({
+      heading: "Neue Druckdaten eingegangen.",
+      intro: `Fuer die Bestellung ${input.orderNumber} liegt eine neue Datei vor.`,
+      actionLabel: "Bestellung im Admin oeffnen",
+      actionHref: adminOrderLink,
+      bodyHtml: `
+        <p style="margin:0;">Kunden-E-Mail: ${escapeHtml(input.customerEmail)}</p>
+      `,
+    }),
+  };
+}

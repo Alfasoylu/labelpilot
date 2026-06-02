@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import type { Prisma } from "@prisma/client";
 
 import { getPrismaClient } from "@/lib/db/prisma";
+import { getServerEnv } from "@/lib/env";
+import { sendEmail } from "@/lib/email/send";
+import { artworkUploadedOpsNotification } from "@/lib/email/templates/lifecycle";
 import { validateArtworkFile } from "@/lib/file-validation/artwork";
 import { getArtworkFileStatusLabel } from "@/lib/orders/artwork";
 import { uploadArtwork } from "@/lib/storage/artwork";
@@ -49,7 +52,9 @@ export async function POST(
     where: { id: orderId },
     select: {
       id: true,
+      orderNumber: true,
       status: true,
+      customerEmail: true,
       uploadToken: true,
       artworkStatus: true,
     },
@@ -124,6 +129,23 @@ export async function POST(
 
       return artworkFile;
     });
+
+    const adminNotifyEmail = getServerEnv().ADMIN_NOTIFY_EMAIL;
+
+    if (adminNotifyEmail && order.customerEmail) {
+      const template = artworkUploadedOpsNotification({
+        orderNumber: order.orderNumber,
+        customerEmail: order.customerEmail,
+        orderId: order.id,
+      });
+
+      await sendEmail({
+        to: adminNotifyEmail,
+        subject: template.subject,
+        html: template.html,
+        text: template.text,
+      });
+    }
 
     return NextResponse.json({
       message: "Datei erfolgreich hochgeladen. Die Datei wird geprueft.",
