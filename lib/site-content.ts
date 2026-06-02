@@ -2,6 +2,8 @@ export type PackageTier = {
   label: string;
   quantity: string;
   priceLabel: string;
+  grossLabel?: string;
+  shippingLabel?: string;
   note: string;
   description: string;
   badge?: string;
@@ -114,6 +116,60 @@ export type SitemapEntry = {
     | "never";
 };
 
+function formatEuro(value: number) {
+  return new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+function buildFixedTier(input: {
+  label: string;
+  quantity: number;
+  net: number;
+  note: string;
+  description: string;
+  badge?: string;
+  popular?: boolean;
+}) {
+  return {
+    label: input.label,
+    quantity: `${input.quantity.toLocaleString("de-DE")} Stück`,
+    priceLabel: `${formatEuro(input.net)} netto`,
+    grossLabel: `${formatEuro(input.net * 1.19)} brutto`,
+    shippingLabel: "inkl. Versand nach Deutschland",
+    note: input.note,
+    description: input.description,
+    badge: input.badge,
+    popular: input.popular,
+  } satisfies PackageTier;
+}
+
+export const pricingValueBundleLine =
+  "Alle Pakete enthalten technische Druckdatenprüfung, Versand nach Deutschland und die Speicherung freigegebener Druckdaten für die 30-Sekunden-Nachbestellung.";
+
+export const fixedPriceIncludedRows = [
+  { label: "Format", value: "100×200 mm (10×20 cm), rechteckig, auf Rolle" },
+  { label: "Design", value: "1 Design / 1 Artwork pro Auftrag" },
+  { label: "Material", value: "Genanntes PP-Material mit permanentem Klebstoff" },
+  { label: "Druck", value: "4/0-farbiger CMYK-Digitaldruck ohne Einrichtungs- oder Klischeekosten" },
+  { label: "Finish", value: "Genau ein Finish: glänzend oder matt" },
+  { label: "Prüfung", value: "Kostenlose Standard-Datenprüfung plus 1 Proof-Runde" },
+  { label: "Versand", value: "Versand nach Deutschland" },
+  { label: "Nachbestellung", value: "Gleiche gespeicherte Spezifikation zum gleichen Paketpreis" },
+];
+
+export const fixedPriceExcludedRows = [
+  { label: "Weißunterdruck", value: "Bei transparentem Material kostenpflichtiger Zusatz / Angebot" },
+  { label: "Veredelung", value: "Laminierung, Lack, Metallic oder Folie nicht enthalten" },
+  { label: "Variable Daten", value: "Lot- / SKT-Nummerierung und andere variable Daten nicht enthalten" },
+  { label: "Form / Schnitt", value: "Kontur- und Sonderformen laufen über Angebot" },
+  { label: "Weitere SKUs", value: "Zusätzliche Designs oder mehrere SKUs nicht im Fixpreis" },
+  { label: "Express", value: "Express-Produktion oder Express-Versand nur per Angebot" },
+];
+
 const quoteLink: CtaLink = {
   label: "Angebot anfordern",
   href: "/de/angebot-anfordern",
@@ -130,89 +186,91 @@ const fileLink: CtaLink = {
 };
 
 export const opaquePackages: PackageTier[] = [
-  {
+  buildFixedTier({
     label: "Starter",
-    quantity: "1.000 Stück",
-    priceLabel: "€149",
+    quantity: 1000,
+    net: 179,
     note: "Einstieg",
-    description: "Für erste Tests und kleinere Produktchargen.",
-  },
-  {
+    description: "Großes 100×200-mm-Format als bezahlter Ersttest mit klarer Spezifikation.",
+  }),
+  buildFixedTier({
     label: "Reorder Ready",
-    quantity: "2.000 Stück",
-    priceLabel: "€229",
+    quantity: 2000,
+    net: 279,
     note: "Nachbestellfreundlich",
-    description: "Sinnvoll für wiederkehrende Mikro-Chargen.",
+    description: "Sinnvoll für kleinere Wiederholungen derselben gespeicherten Produktlinie.",
     badge: "Beliebt für Wiederholungen",
-  },
-  {
+  }),
+  buildFixedTier({
     label: "Growth",
-    quantity: "5.000 Stück",
-    priceLabel: "€399",
+    quantity: 5000,
+    net: 479,
     note: "Hauptpaket",
     description:
-      "Die wirtschaftliche Kernmenge für regelmäßige B2B-Bestellungen.",
+      "Der Kernpreis für wiederkehrende B2B-Bestellungen im großen 100×200-mm-Format.",
     badge: "Beste Balance",
     popular: true,
-  },
-  {
+  }),
+  buildFixedTier({
     label: "Pro",
-    quantity: "10.000 Stück",
-    priceLabel: "€699",
+    quantity: 10000,
+    net: 799,
     note: "Skalierung",
     description:
-      "Für wachsende Produktlinien mit wiederholbaren Spezifikationen.",
-  },
+      "Für Marken, die dieselbe freigegebene Spezifikation in höheren Mengen wiederholen.",
+  }),
   {
     label: "Business",
     quantity: "20.000+ Stück",
     priceLabel: "Angebot",
+    shippingLabel: "Individuelles B2B-Angebot anfordern",
     note: "Großmenge",
-    description: "Individuelles B2B-Angebot statt Standard-Checkout.",
+    description: "Für Sondergrößen, große Abrufe, mehrere SKUs oder Spezialanforderungen.",
   },
 ];
 
 export const transparentPackages: PackageTier[] = [
-  {
+  buildFixedTier({
     label: "Starter",
-    quantity: "1.000 Stück",
-    priceLabel: "€169",
+    quantity: 1000,
+    net: 199,
     note: "Premium-Einstieg",
-    description: "Für erste Tests mit transparenter Optik.",
-  },
-  {
+    description: "Für erste Tests mit transparenter Optik im großen 100×200-mm-Format.",
+  }),
+  buildFixedTier({
     label: "Reorder Ready",
-    quantity: "2.000 Stück",
-    priceLabel: "€254",
+    quantity: 2000,
+    net: 309,
     note: "Premium-Nachbestellung",
     description:
-      "Für Marken, die wiederkehrend kleinere Chargen brauchen.",
+      "Für kleinere Wiederholungen mit transparenter Produktoptik und gespeicherter Spezifikation.",
     badge: "Reorder-Ready",
-  },
-  {
+  }),
+  buildFixedTier({
     label: "Growth",
-    quantity: "5.000 Stück",
-    priceLabel: "€429",
+    quantity: 5000,
+    net: 519,
     note: "Hauptpaket",
     description:
-      "Die bevorzugte Menge für skalierbare Premium-Verpackungen.",
+      "Die bevorzugte Menge für transparente Premium-Verpackungen mit sichtbarer Materialwirkung.",
     badge: "Kernpaket",
     popular: true,
-  },
-  {
+  }),
+  buildFixedTier({
     label: "Pro",
-    quantity: "10.000 Stück",
-    priceLabel: "€749",
+    quantity: 10000,
+    net: 849,
     note: "Skalierung",
-    description: "Für höhere Auflagen mit stabiler Produktoptik.",
-  },
+    description: "Für höhere Auflagen mit stabiler Flaschen-, Glas- oder Dosenoptik.",
+  }),
   {
     label: "Business",
     quantity: "20.000+ Stück",
     priceLabel: "Angebot",
+    shippingLabel: "Individuelles B2B-Angebot anfordern",
     note: "Großmenge",
     description:
-      "Individuelles Angebot für größere Abrufe und Rahmenmengen.",
+      "Für größere Abrufe, Weißunterdruck, Spezialveredelung oder komplexere transparente Jobs.",
   },
 ];
 
@@ -600,6 +658,7 @@ const topLevelPages: PublicPageData[] = [
     heroBullets: [
       "Kanonische Preisstaffel mit 1.000, 2.000, 5.000, 10.000 und 20.000+.",
       "5.000 Stück bleiben das zentrale Kernpaket für skalierbare B2B-Bestellungen.",
+      "Alle Fixpreise werden netto und brutto gezeigt und enthalten den Versand nach Deutschland.",
       "20.000+ läuft nicht in einen Standard-Checkout, sondern in den Angebotsprozess.",
     ],
     sidebarTitle: "Produktfokus",
@@ -612,7 +671,7 @@ const topLevelPages: PublicPageData[] = [
     secondaryCta: sampleLink,
     packageHeading: "Kanonische Preisstaffel für transparente PP-Etiketten",
     packageLead:
-      "Diese Tabelle folgt der gelockten Preisstaffel. Transparente PP-Etiketten werden bewusst oberhalb der opaken Variante positioniert.",
+      "Die festen Pakete zeigen das große 100×200-mm-Format, 1 Design pro Auftrag, Standard-Datenprüfung, 1 Proof-Runde und Versand nach Deutschland. Weißunterdruck ist nicht enthalten und läuft als Zusatz über das Angebot.",
     packageTable: transparentPackages,
     sections: [
       {
@@ -644,7 +703,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Warum ist transparentes PP teurer als opakes PP?",
         answer:
-          "Die Dokumentation positioniert transparente PP-Etiketten bewusst als Premium-Variante. Diese Preisdifferenz bleibt auf der Seite sichtbar und konsistent.",
+          "Transparentes PP ist als Premium-Variante positioniert. Zusätzlich ist Weißunterdruck nicht im Fixpreis enthalten und wird bei Bedarf separat angeboten.",
       },
       {
         question: "Ist 2.000 Stück direkt vorgesehen?",
@@ -678,6 +737,7 @@ const topLevelPages: PublicPageData[] = [
     heroBullets: [
       "Das Standardprodukt für kontrastreiche Druckmotive und klare Deckkraft.",
       "Kanonische Preisstaffel mit 2.000er-Reorder-Stufe statt Lücke zwischen 1.000 und 5.000.",
+      "Alle Fixpreise werden netto und brutto gezeigt und enthalten den Versand nach Deutschland.",
       "Das 5.000er-Paket ist die wirtschaftliche Hauptmenge im MVP.",
     ],
     sidebarTitle: "Produktfokus",
@@ -690,7 +750,7 @@ const topLevelPages: PublicPageData[] = [
     secondaryCta: fileLink,
     packageHeading: "Kanonische Preisstaffel für opake PP-Etiketten",
     packageLead:
-      "Diese Tabelle übernimmt die zentrale Preisdefinition aus dem Pricing-Modell. Damit bleiben Produkt, Katalog und Angebotssprache konsistent.",
+      "Diese Tabelle zeigt die festen Pakete als All-in-Preis für das große 100×200-mm-Format inkl. Standard-Datenprüfung, 1 Proof-Runde und Versand nach Deutschland.",
     packageTable: opaquePackages,
     sections: [
       {
@@ -717,6 +777,11 @@ const topLevelPages: PublicPageData[] = [
         question: "Ist opakes PP das Hauptprodukt im MVP?",
         answer:
           "Ja. Opake und transparente PP-Rollenetiketten bilden gemeinsam den Kern, wobei opak die Standardlösung für viele wiederkehrende Produktetiketten ist.",
+      },
+      {
+        question: "Was ist im Fixpreis bereits enthalten?",
+        answer:
+          "Enthalten sind das 100×200-mm-Rollenetikett, 1 Design, das gewählte PP-Material, permanenter Klebstoff, CMYK-Digitaldruck, ein Finish, Standard-Datenprüfung, 1 Proof-Runde und Versand nach Deutschland.",
       },
       {
         question: "Kann ich damit auch Getränkeflaschen etikettieren?",

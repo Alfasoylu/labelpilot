@@ -28,6 +28,11 @@ import type {
   RelatedLink,
   SiteNavigationItem,
 } from "@/lib/site-content";
+import {
+  fixedPriceExcludedRows,
+  fixedPriceIncludedRows,
+  pricingValueBundleLine,
+} from "@/lib/site-content";
 
 type HomePageProps = {
   page: HomePageData;
@@ -325,6 +330,29 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
               <PricingCard key={`${page.slug}-${tier.quantity}`} tier={tier} />
             ))}
           </div>
+          <p className="price-note">{pricingValueBundleLine}</p>
+        </Section>
+      ) : null}
+
+      {hasFixedPriceScope(page.path) ? (
+        <Section
+          eyebrow="Leistungsumfang"
+          title="Im Preis enthalten und nicht enthalten"
+          lead="Die festen Pakete zeigen bewusst offen, was im Standardpreis enthalten ist und wann der Weg in ein individuelles B2B-Angebot führt."
+        >
+          <div className="two-column">
+            <SpecTable title="Im Preis enthalten" rows={fixedPriceIncludedRows} />
+            <SpecTable title="Nicht enthalten" rows={fixedPriceExcludedRows} />
+          </div>
+          {page.path === "/de/transparente-pp-etiketten" ? (
+            <div className="surface-card">
+              <h2>Wichtiger Hinweis zu transparentem Material</h2>
+              <p>
+                Weißunterdruck auf transparentem Material ist nicht im Fixpreis enthalten
+                und läuft als kostenpflichtiger Zusatz über das individuelle B2B-Angebot.
+              </p>
+            </div>
+          ) : null}
         </Section>
       ) : null}
 
@@ -1034,10 +1062,28 @@ function buildFeatureItemsFromSections(page: PublicPageData) {
 }
 
 function buildSpecRows(page: PublicPageData) {
-  const rows = [
-    { label: "Seitentyp", value: page.kind },
-    { label: "Pfad", value: page.path },
-  ];
+  const rows: Array<{ label: string; value: string }> = [];
+
+  if (page.path === "/de/opake-pp-etiketten") {
+    rows.push(
+      { label: "Format", value: "100×200 mm (10×20 cm), rechteckig, auf Rolle" },
+      { label: "Material", value: "Opakes PP mit permanentem Klebstoff" },
+      { label: "Preisbild", value: "netto + brutto sichtbar, inkl. Versand nach Deutschland" },
+      { label: "Standardumfang", value: "1 Design, CMYK-Digitaldruck, 1 Finish, Datenprüfung + 1 Proof" },
+    );
+  } else if (page.path === "/de/transparente-pp-etiketten") {
+    rows.push(
+      { label: "Format", value: "100×200 mm (10×20 cm), rechteckig, auf Rolle" },
+      { label: "Material", value: "Transparentes PP mit permanentem Klebstoff" },
+      { label: "Preisbild", value: "netto + brutto sichtbar, inkl. Versand nach Deutschland" },
+      { label: "Wichtiger Zusatz", value: "Weißunterdruck ist nicht im Fixpreis enthalten" },
+    );
+  } else {
+    rows.push(
+      { label: "Seitentyp", value: page.kind },
+      { label: "Pfad", value: page.path },
+    );
+  }
 
   if (page.packageTable?.length) {
     rows.push({
@@ -1054,7 +1100,15 @@ function buildSpecRows(page: PublicPageData) {
     rows.push({ label: "Einsatz", value: page.sidebarBullets[1] });
   }
 
+  if (hasFixedPriceScope(page.path)) {
+    rows.push({ label: "Angebotsfall", value: "ab 20.000 Stück oder bei Sonderumfang" });
+  }
+
   return rows;
+}
+
+function hasFixedPriceScope(path: string) {
+  return path === "/de/opake-pp-etiketten" || path === "/de/transparente-pp-etiketten";
 }
 
 function buildIndustryComparisonRows(page: PublicPageData) {

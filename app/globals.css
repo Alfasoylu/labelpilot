@@ -434,6 +434,13 @@ textarea {
   color: var(--text-strong);
 }
 
+.price-subline {
+  margin: 8px 0 0;
+  color: var(--text-soft);
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+
 .price-note,
 .muted-label,
 .meta-line {

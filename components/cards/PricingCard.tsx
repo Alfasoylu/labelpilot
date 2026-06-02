@@ -14,6 +14,8 @@ export function PricingCard({ tier }: PricingCardProps) {
         <span>{tier.note}</span>
       </div>
       <p className="price">{tier.priceLabel}</p>
+      {tier.grossLabel ? <p className="price-subline">{tier.grossLabel} inkl. 19% MwSt.</p> : null}
+      {tier.shippingLabel ? <p className="price-subline">{tier.shippingLabel}</p> : null}
       <p className="price-note">{tier.description}</p>
     </article>
   );
