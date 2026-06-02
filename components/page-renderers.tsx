@@ -1447,6 +1447,13 @@ function getProductPageImage(path: string) {
         caption: "Produktlinie mit PP-Rollenetiketten auf Flasche, Beutel, Supplement-Flasche und Tiegel.",
       };
     case "/de/transparente-pp-etiketten":
+      return {
+        src: "/images/editorial/home-transparent-pp-bottle.webp",
+        alt: "Klare Glasflasche mit transparentem PP-Etikett, Glas und Inhalt durch das Etikett sichtbar",
+        title: "Transparentes PP im realen Einsatz",
+        lead: "Das transparente Etikett bleibt klar lesbar und lässt Glas und Inhalt sichtbar – die typische Premium-Optik für Flaschen und Gläser.",
+        caption: "Transparentes PP-Etikett auf einer Glasflasche – sichtbares Glas, saubere Kanten.",
+      };
     case "/de/opake-pp-etiketten":
       return {
         ...productImageAssets.compare,
