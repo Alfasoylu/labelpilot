@@ -38,3 +38,6 @@ Thumbs.db
 .claude/
 .idea/
 .vscode/
+
+# Local-only image drop folder (raw art before webp conversion)
+incoming-art/

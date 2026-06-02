@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ProductCard } from "@/components/cards/ProductCard";
 import { PricingCard } from "@/components/cards/PricingCard";
 import { SampleBoxCard } from "@/components/cards/SampleBoxCard";
-import { SavedDesignReorderVisual } from "@/components/marketing/SavedDesignReorderVisual";
 import { FaqAccordion } from "@/components/faq/FaqAccordion";
 import { Section } from "@/components/layout/Section";
 import { LegalNoticeBox } from "@/components/legal/LegalNoticeBox";
@@ -326,30 +325,19 @@ export function HomePage({ page }: HomePageProps) {
             </p>
           </div>
           <div className="material-split__visual">
-            <div className="material-photo-stack">
-              <figure className="material-photo-card material-photo-card--opaque">
-                <Image
-                  src="/images/editorial/opaque-pp-material-closeup.webp"
-                  alt="Opake PP-Etiketten mit matter Oberfläche auf Produktverpackung"
-                  width={600}
-                  height={600}
-                  sizes="(max-width: 1024px) 100vw, 340px"
-                  className="material-photo-card__img"
-                />
-                <figcaption className="material-photo-card__caption">Opak PP</figcaption>
-              </figure>
-              <figure className="material-photo-card material-photo-card--clear">
-                <Image
-                  src="/images/editorial/transparent-pp-label-glass.webp"
-                  alt="Transparente PP-Etiketten auf Glasflasche mit sichtbarer Filmkante"
-                  width={600}
-                  height={600}
-                  sizes="(max-width: 1024px) 100vw, 300px"
-                  className="material-photo-card__img"
-                />
-                <figcaption className="material-photo-card__caption">Transparent PP</figcaption>
-              </figure>
-            </div>
+            <figure className="material-photo-single">
+              <Image
+                src="/images/editorial/home-material-opaque-vs-transparent.webp"
+                alt="Opakes PP-Etikett auf matter Dose neben transparentem PP-Etikett auf Glasflasche, davor je ein PP-Materialstreifen"
+                width={1200}
+                height={675}
+                sizes="(max-width: 1024px) 100vw, 560px"
+                className="material-photo-single__img"
+              />
+              <figcaption className="material-photo-single__caption">
+                Links opak, rechts transparent – mit PP-Materialstreifen.
+              </figcaption>
+            </figure>
           </div>
           <div className="material-split__table">
             <ComparisonTable
@@ -369,7 +357,12 @@ export function HomePage({ page }: HomePageProps) {
           title="Einmal freigeben. Später schneller nachbestellen."
           lead="Nicht jedes Mal neu hochladen. Nicht jedes Mal dieselbe Datei suchen."
         >
-          <SavedDesignReorderVisual />
+          <EditorialImage
+            src="/images/editorial/home-reorder-saved-artwork.webp"
+            alt="Rolle bedruckter PP-Etiketten neben Proofbögen, Spezifikationskarten, Archivbox und passendem Produktglas"
+            caption="Freigegebene Druckdaten und gespeicherte Spezifikation – bereit für die nächste Bestellung."
+            sizes="(max-width: 1024px) 100vw, 960px"
+          />
         </Section>
 
         <Section
@@ -423,9 +416,9 @@ export function HomePage({ page }: HomePageProps) {
               ))}
             </div>
             <EditorialImage
-              src="/images/editorial/micro-brand-product-lineup.webp"
-              alt="Getränke-, Honig-, Supplement- und Kaffee-Produkte mit individuell bedruckten PP-Etiketten"
-              caption="Produkte kleiner Marken mit individuell bedruckten PP-Rollenetiketten."
+              src="/images/editorial/home-branchen-product-group.webp"
+              alt="Honigglas, Getränkeflasche, Supplement-Dose und Kaffeebeutel mit PP-Etiketten, davor eine Rolle blanko PP-Etiketten"
+              caption="Honig, Getränke, Supplement und Kaffee – dieselbe PP-Etikettenproduktion."
               sizes="(max-width: 1024px) 100vw, 520px"
             />
           </div>
@@ -451,8 +444,8 @@ export function HomePage({ page }: HomePageProps) {
           </div>
           <figure className="sample-box-photo">
             <Image
-              src="/images/editorial/sample-box-material-kit.webp"
-              alt="Musterbox mit opaken und transparenten PP-Etikettenmustern und Materialstreifen"
+              src="/images/editorial/home-musterbox-sample-kit.webp"
+              alt="Geöffnete Musterbox mit opaken und transparenten PP-Etikettenrollen, Materialmustern und einer Rolle blanko Etiketten"
               width={1200}
               height={900}
               sizes="(max-width: 1024px) 100vw, 520px"
@@ -465,14 +458,30 @@ export function HomePage({ page }: HomePageProps) {
           <FaqAccordion faqs={homepageFaqs} />
         </Section>
 
-        <ContentCta
-          title="Bereit für professionelle Rollenetiketten?"
-          body="Fordern Sie eine Musterbox an oder stellen Sie eine Etikettenanfrage."
-          primaryLabel="PP-Etiketten anfragen"
-          primaryHref="/de/angebot-anfordern"
-          secondaryLabel="Musterbox anfordern"
-          secondaryHref="/de/musterbox"
-        />
+        <section className="cta-editorial">
+          <div className="cta-editorial__media">
+            <Image
+              src="/images/editorial/home-cta-label-roll-macro.webp"
+              alt="Nahaufnahme einer Rolle blanko gestanzter PP-Rollenetiketten"
+              fill
+              sizes="100vw"
+              className="cta-editorial__img"
+            />
+          </div>
+          <div className="cta-editorial__content">
+            <span className="eyebrow">Nächster Schritt</span>
+            <h2>Bereit für professionelle Rollenetiketten?</h2>
+            <p>Fordern Sie eine Musterbox an oder stellen Sie eine Etikettenanfrage.</p>
+            <div className="hero-actions">
+              <Link href="/de/angebot-anfordern" className="cta-link">
+                PP-Etiketten anfragen
+              </Link>
+              <Link href="/de/musterbox" className="secondary-link">
+                Musterbox anfordern
+              </Link>
+            </div>
+          </div>
+        </section>
       </div>
     </>
   );

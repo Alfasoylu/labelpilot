@@ -30,8 +30,8 @@ export function BrandHero({ title, lead }: BrandHeroProps) {
       <div className="hero-split__visual">
         <figure className="hero-product-photo">
           <Image
-            src="/images/editorial/label-roll-closeup.webp"
-            alt="Rolle mit blanko gestanzten PP-Rollenetiketten in Nahaufnahme"
+            src="/images/editorial/home-hero-label-roll-cluster.webp"
+            alt="Rolle blanko gestanzter PP-Rollenetiketten neben Getränkeflasche, Honigglas und Supplement-Dose"
             width={900}
             height={1125}
             priority
