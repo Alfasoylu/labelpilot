@@ -1005,6 +1005,36 @@ Do not build complex settings before needed.
 
 ---
 
+## 30A. Pricing Cost-Parameter Screen (custom-size engine) — PROPOSAL (needs founder approval)
+
+Route: `/admin/settings/pricing` (ADMIN role only).
+
+Purpose: let the operator enter the **cost basis** that powers the custom-size **"enter your size → get a price"** engine (formula spec in `04-PRICING-AND-MARGIN-MODEL.md` §29). Customers never see these values — only the computed sell price.
+
+Editable fields — **per material row** (Opak PP, Transparent PP, …):
+
+```txt
+Material cost per m² (€)
+Digital print cost per m² (€)        — digital has NO plate
+Flexo print cost per m² (€)
+Flexo plate (Kalıp/Cliché) cost (€)  — fixed per job; optional × number of colours
+Waste factor (%)                     — flexo setup waste usually higher
+Target margin (%)  (or markup)
+Minimum order value (€)
+Optional setup fee (€)
+```
+
+Global: VAT %, shipping rule, price-rounding step, custom-size limits (max W/H, max quantity, quote-fallback triggers).
+
+Requirements:
+1. **Server-side validation:** all costs > 0; margin within sane bounds; W/H/quantity limits coherent.
+2. **Built-in test calculator:** enter material + width + height + quantity → preview **digital cost vs flexo cost (+plate)**, the **chosen (cheaper) method**, and the resulting **net + gross sell price** — BEFORE saving.
+3. **Audit + versioning:** every change logged (who / when / old → new); previous values recoverable; a change must **never** silently re-price already-placed orders.
+4. ADMIN role only; values stored server-side; never sent to the public client except as a single computed price.
+5. No destructive reset; explicit Save with confirmation; show "last updated by / at".
+
+---
+
 ## 31. Security Requirements
 
 Non-negotiable:

@@ -1254,3 +1254,46 @@ white-ink-heavy transparent, lamination / soft-touch, foil / metallic, removable
 
 ### 28.4 Founder decision
 Approve the §28.1 numbers (esp. Designservice €40 / free ≥ €2.000 / free own-data, and physical proof €10) → then update §14 included-scope table, SoT #15, and doc 30. Full dimension gap-analysis + same-page UX + roadmap live in `59` §28.
+
+---
+
+## 29. PROPOSAL — Custom-size area pricing engine (digital vs flexo, plate-aware) — NEEDS FOUNDER APPROVAL
+
+> **Status: PROPOSAL / phased.** Enables a self-serve **"enter your size → get a price"** path (today custom size is quote-only per docs 07/30). Extends §22. No live behaviour until approved **and** real cost params are entered by the operator. The admin cost-input screen spec lives in `18-ADMIN-PANEL.md` §30A.
+
+### 29.1 Principle
+Price every custom job from **area (m²)** and let the engine pick the **cheaper print method automatically**:
+- **Digital:** per-area running cost, **no plate** → cheapest at low quantity / small area.
+- **Flexo:** lower per-area running cost **plus a fixed plate (Kalıp/Cliché) cost** → cheapest at high quantity / large area, once the plate amortizes.
+
+The customer always gets the **lower** of the two; we keep target margin. The chosen method is **internal** (never shown to the customer).
+
+### 29.2 Admin-set cost parameters (per material; entered in admin §30A)
+`material_cost_per_m2` · `digital_print_cost_per_m2` · `flexo_print_cost_per_m2` · `flexo_plate_cost` (fixed per job; optional × number of colours) · `waste_factor_%` · `target_margin` · `min_order_value` · optional `setup_fee`. Global: VAT 19 %, shipping rule, price-rounding step.
+
+### 29.3 Formula
+```txt
+label_area_m2  = (width_mm * height_mm) / 1_000_000
+total_area_m2  = label_area_m2 * quantity * (1 + waste_factor)
+
+material_cost  = material_cost_per_m2 * total_area_m2
+digital_cost   = material_cost + digital_print_cost_per_m2 * total_area_m2              // NO plate
+flexo_cost     = material_cost + flexo_print_cost_per_m2  * total_area_m2 + flexo_plate_cost
+
+production_cost = min(digital_cost, flexo_cost)        // method = argmin (internal only)
+sell_net        = production_cost / (1 - target_margin_pct)
+sell_net        = max(sell_net, min_order_value)       // floor
+sell_net        = round_to_step(sell_net)
+sell_gross      = sell_net * 1.19                      // DE; shipping included (or + weight rule)
+```
+**Crossover is automatic:** the engine computes both digital and flexo every time and picks the lower, so the digital→flexo break-even quantity needs no hard-coded threshold — it falls out of the plate-cost amortization.
+
+### 29.4 Guardrails
+- Real cost params must be entered by the operator before go-live (replaces the placeholder ladder in §6; ties to the open supplier-quote action).
+- Cost params are **never** exposed to the customer — only the computed net + gross sell price + lead time.
+- Above defined limits (size / quantity / colours / special material / finish / foil / white-ink-heavy) → fall back to **"Individuelles B2B-Angebot"** (§17 / §25).
+- Output matches standard UI: net + gross, "Versand nach Deutschland inklusive", Druckdatenprüfung + 1 digitaler Proof inklusive.
+- Engine **centralized** (§22); reorder reuses the same engine at **€0 re-setup** (no flexo plate re-charge if the same plate is stored).
+
+### 29.5 Founder decision
+Approve the model → (a) build admin §30A cost-input screen, (b) implement the engine in the centralized pricing module (§22), (c) gate it behind real cost params + the quote-fallback limits. The fixed 100×200 packages stay the simple default path; this engine powers the optional custom-size path.
