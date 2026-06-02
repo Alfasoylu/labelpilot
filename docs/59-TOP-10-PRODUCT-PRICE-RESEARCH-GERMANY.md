@@ -1196,9 +1196,18 @@ Each material spec exposes **Application / Temperature range / Suitable for / No
 |---|---|---|---:|---:|---:|---|
 | Paper, matt opaque, permanent | **100×200 mm** | 1.000 | DE | **€142,77** | €169,90 (19%) | included |
 | PP film, transparent gloss 0.05 mm, permanent | 100×148 mm | 1.000 | DE | **€290,18** | €345,31 (19%) | included |
+| **PP film, white, gloss, permanent (≈ our opaque PP)** | **100×200 mm** | 1.000 | UK (20% VAT) | **€175,05 label-only** · €190,05 with +€15 artwork-check | €228,06 (20%) | included |
 | Paper, matt opaque | 20×20 mm | 1.000 | UK | £35,83 | £43,00 (20%) | included |
 
-Caveat: programmatic material switching did **not** reliably recompute the live price (Paper→PP at 20×20 mm moved only £35,83 → £35,80), confirming the calculator is **server/AJAX-driven** — the **white-PP 100×200 mm price must be captured by genuine manual interaction** (still the missing like-for-like, per §27.7). Currency + VAT follow the **delivery country** (UK 20% £ vs DE 19% €). Reference data point for us: at the one confirmed 100×200 mm capture, their **paper** price is €142,77 net; our opaque **PP** 100×200 mm @1.000 is €179 net — i.e. we are modestly above their *paper* but PP costs more than paper, so a like-for-like white-PP capture is still required before any conclusion.
+Caveat / update: the calculator is **server/AJAX-driven** (a programmatic Paper→PP switch barely moved the price), so figures must come from genuine manual interaction. Currency + VAT rate follow the **delivery country** (UK 20% vs DE 19%); the **net** price is VAT-rate-independent and therefore the comparable basis.
+
+**Key like-for-like CAPTURED 2026-06-03 (manual):** **PP film, white, gloss, permanent — 100×200 mm — 1.000 = €175,05 net (label only)**; +€15 professional artwork check = **€190,05 net** (Total incl. 20% VAT €228,06; delivery included). This is the white-PP / opaque-PP benchmark the report had flagged as missing.
+
+Two confirmed reads we can use:
+- **PP-vs-paper premium at 100×200 mm / 1.000:** white PP €175,05 net vs paper opaque €142,77 net ≈ **+23%** (replaces the unreliable etiketten-drucken "+30%").
+- **Like-for-like vs Labelpilot:** their white PP 100×200 mm / 1.000 = €175,05 net label-only (or €190,05 with their paid €15 data check); our **opaque PP @1.000 = €179 net WITH Druckdatenprüfung already included** → see §27.8.
+
+**Still open:** the 100×200 mm **5.000** tier (Labelprint24), and Flyeralarm + print24 at 100×200 mm (per §27.7).
 
 **Price-influencing factors (visible on the calculator):** quantity · number of artwork versions · material group · material specification · format/size (W 10–312 mm × H 10–700 mm) · shape (rect / oval-round) · corner radius (0–10 mm) · roll configuration · UV varnish · protective laminate · hot-foil stamping · tactile warning triangle · professional artwork check (**€15**) · thermal-transfer suitability (**€10**) · barcode verification (**€25**) · printed proof · production speed (standard 5 days / 48 h express) · delivery country · currency · own-print-data vs online-designer.
 
@@ -1270,7 +1279,7 @@ Any competitor price recorded or relied on in this section MUST be backed by a s
 | Data check included? | Yes |
 | Final price | Yes |
 
-**Still-required real benchmark (unchanged conclusion):** valid head-to-head pricing requires configurator screenshots for **Labelprint24, Flyeralarm and print24 at 100×200 mm white PP, 1.000 and 5.000 units** (net + gross, shipping + data-check state). This is the only like-for-like comparison and is still missing for the 5.000 tier.
+**Benchmark status (updated 2026-06-03):** Labelprint24 **100×200 mm white PP @1.000 is now captured** (€175,05 net label-only / €190,05 net with their €15 data check — see §27.5.3 & §27.8). **Still required:** Labelprint24 @**5.000**, and **Flyeralarm + print24** at 100×200 mm white PP @1.000 and 5.000 (net + gross, shipping + data-check state).
 
 ### 27.8 Comparison with our own live site (observational only — no price change)
 
@@ -1279,6 +1288,6 @@ Linked canonical files: `04-PRICING-AND-MARGIN-MODEL.md` (prices), `30-PRODUCT-C
 Read against the website data above:
 
 1. **We are NOT demonstrably overpriced — the cheap-looking competitor headlines are not like-for-like.** They are tiny (40×70 mm, round 2–10 cm), "ab"/starting, and/or possibly blank-label. A real printed 100×200 mm PP job in any of their configurators would be far above those headlines.
-2. **Closest CONFIRMED capture says we are cheaper:** Labelprint24's own calculator (§27.3 / §27.5.2) shows **transparent PP, 100×148 mm, 1.000 units = €290,18 net (DE)**. Our transparent PP at the **larger** 100×200 mm, 1.000 units = **€199 net** — i.e. ~€91 cheaper for ~35% more label area. At the one fully-verified competitor data point, Labelpilot is **below** Labelprint24. *(Size not identical — 148 vs 200 cm² — but this is the closest confirmed real capture and it favours us.)*
+2. **TRUE like-for-like now confirmed (captured 2026-06-03) — we are at parity-to-cheaper:** Labelprint24 **white PP gloss, exactly 100×200 mm, 1.000 = €175,05 net label-only**, or **€190,05 net** including their **€15 paid** artwork check. Our **opaque PP** (= white PP) 100×200 mm @1.000 = **€179 net, with Druckdatenprüfung ALREADY included.** So: on bare label we are ~€4 (≈2%) above; on the real like-for-like that includes the data check (which we bundle and they charge €15 for), **we are ~€11 (≈6%) cheaper.** Labelpilot is **not overpriced** at the exact like-for-like point. *(Secondary corroboration: their transparent PP 100×148 mm @1.000 = €290,18 net vs our transparent 100×200 mm @1.000 = €199 net — cheaper for more area.)*
 3. **At 5.000 the picture is unconfirmed.** The WMD area-normalized estimate (§27.5.1) puts opaque 5k ≈ €291 net / transparent 5k ≈ €376 net at 100×200 mm; our €479 / €519 net sit above that rough small-format-derived figure. This is **not** a confirmed like-for-like price (it is a 71×96 mm format scaled by area and excludes our included data check, proof, storage and reorder system), so it must not be used to conclude we are overpriced — capture the real 100×200 mm / 5.000 screenshots first (§27.7).
 4. **Net:** keep prices as-is. Where confirmed data exists we look competitive-to-cheap; where it is missing, do not act on "ab"/starting/blank numbers. No price change is made from this report (reaffirms §21 and point 6 of the 2026-06-03 correction).
