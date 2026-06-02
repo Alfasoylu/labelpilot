@@ -24,7 +24,9 @@ import { ComparisonTable } from "@/components/tables/ComparisonTable";
 import { SpecTable } from "@/components/tables/SpecTable";
 import { QuoteRequestForm } from "@/components/quote-request-form";
 import type {
+  FAQ,
   HomePageData,
+  PackageTier,
   PublicPageData,
   RelatedLink,
   SiteNavigationItem,
@@ -32,6 +34,7 @@ import type {
 import {
   fixedPriceExcludedRows,
   fixedPriceIncludedRows,
+  opaquePackages,
   pricingValueBundleLine,
 } from "@/lib/site-content";
 
@@ -107,24 +110,98 @@ const productImageAssets = {
   },
 } as const;
 
+type HomepagePackage = {
+  tier: PackageTier;
+  checkout?: {
+    packageId: string;
+    productSlug: "opake-pp-etiketten" | "transparente-pp-etiketten";
+    material: "OPAQUE" | "TRANSPARENT";
+    quantity: number;
+  };
+};
+
+const homepagePackages: HomepagePackage[] = [
+  {
+    tier: opaquePackages[0],
+    checkout: {
+      packageId: "opaque-pp-100x200-1000",
+      productSlug: "opake-pp-etiketten",
+      material: "OPAQUE",
+      quantity: 1000,
+    },
+  },
+  {
+    tier: opaquePackages[2],
+    checkout: {
+      packageId: "opaque-pp-100x200-5000",
+      productSlug: "opake-pp-etiketten",
+      material: "OPAQUE",
+      quantity: 5000,
+    },
+  },
+  {
+    tier: opaquePackages[3],
+    checkout: {
+      packageId: "opaque-pp-100x200-10000",
+      productSlug: "opake-pp-etiketten",
+      material: "OPAQUE",
+      quantity: 10000,
+    },
+  },
+  { tier: opaquePackages[4] },
+];
+
+const homepageOrderingSteps = [
+  { title: "Etikett auswählen", body: "Opak oder transparent, passend zur Verpackung." },
+  { title: "Menge & Material", body: "Mengenpaket und Finish festlegen." },
+  { title: "Druckdaten hochladen", body: "PDF, AI, EPS oder SVG – wir prüfen die Daten." },
+  { title: "Proof freigeben", body: "Freigabe vor der Produktion." },
+  { title: "Produktion & Versand", body: "Produktion und Versand nach Deutschland." },
+];
+
+const homepageMaterialComparison = {
+  columns: ["Kriterium", "Opakes PP", "Transparentes PP"],
+  rows: [
+    ["Optik", "Deckend, kräftige Farben", "Klar, sichtbarer Untergrund"],
+    ["Beste Verpackung", "Beutel, Dosen, Tiegel", "Glas, Flaschen, klare Behälter"],
+    ["Typische Marken", "Supplement, Lebensmittel", "Getränke, Premium-Linien"],
+    ["Wann wählen", "Pflichtangaben deckend zeigen", "Verpackung sichtbar lassen"],
+  ],
+};
+
+const homepageFaqs: FAQ[] = [
+  {
+    question: "Welche Druckdaten werden benötigt?",
+    answer: "PDF, AI, EPS, SVG, PNG oder JPG mit 3 mm Beschnitt. Wir prüfen die Daten vor der Produktion.",
+  },
+  {
+    question: "Kann ich dieselben Etiketten später nachbestellen?",
+    answer: "Ja. Freigegebene Druckdaten, Material und Maß bleiben gespeichert – die Nachbestellung startet schneller.",
+  },
+  {
+    question: "Gibt es transparente und opake PP-Etiketten?",
+    answer: "Ja. Opak für deckende Optik, transparent für sichtbare Verpackung.",
+  },
+  {
+    question: "Für welche Produkte eignen sich PP-Rollenetiketten?",
+    answer: "Für Lebensmittel-, Getränke- und Supplement-Marken sowie Private Label.",
+  },
+  {
+    question: "Gibt es einen Proof vor der Produktion?",
+    answer: "Ja. Eine Proof-Runde gehört zu jedem Paket. Die Produktion startet erst nach Ihrer Freigabe.",
+  },
+  {
+    question: "Wann sollte ich ein Angebot anfordern?",
+    answer: "Ab 20.000 Stück, bei mehreren Designs, Sonderformen oder Veredelung.",
+  },
+];
+
 export function HomePage({ page }: HomePageProps) {
   const homepageTrustItems = [
-    {
-      title: "Für wiederkehrende Bestellungen gebaut",
-      body: "Freigegebene Daten bleiben nutzbar.",
-    },
-    {
-      title: "Opak, transparent, sauber verarbeitet",
-      body: "Materialwahl ohne Umwege erklärt.",
-    },
-    {
-      title: "Für deutsche Einkaufsprozesse gedacht",
-      body: "Klare Pakete statt Konfigurator-Lärm.",
-    },
-    {
-      title: "Sonderfälle laufen über Angebot",
-      body: "Standards klar, Abweichungen strukturiert.",
-    },
+    { title: "PP opak & transparent", body: "Zwei Materialien für jede Verpackung." },
+    { title: "Druckdaten gespeichert", body: "Freigegebene Version bleibt nutzbar." },
+    { title: "Proof vor Produktion", body: "Produktion erst nach Ihrer Freigabe." },
+    { title: "Angebot ab 20.000 Stück", body: "Großmengen sauber kalkuliert." },
   ];
 
   return (
@@ -135,29 +212,60 @@ export function HomePage({ page }: HomePageProps) {
         <TrustBar items={homepageTrustItems} />
 
         <Section
-          eyebrow="Kernprodukte"
-          title="Opak, transparent oder zuerst sauber vergleichen."
-          lead={page.highlights[0]}
+          eyebrow="Pakete & Preise"
+          title="Klare Mengenpakete für Produktetiketten."
+          lead="5.000 Stück ist das empfohlene Standardpaket für wiederkehrende Bestellungen."
         >
-          <div className="card-grid">
-            {page.topicCards.map((card, index) => (
-              <ProductCard
-                key={card.href}
-                title={card.title}
-                body={card.body}
-                href={card.href}
-                badge={index === 0 ? "Kernprodukt" : index === 1 ? "Materialwahl" : "Orientierung"}
-                featured={index === 0}
+          <div className="package-grid">
+            {homepagePackages.map((item) => (
+              <PricingCard
+                key={item.tier.label}
+                tier={item.tier}
+                checkoutPackage={item.checkout}
               />
             ))}
+          </div>
+          <p className="package-note">{pricingValueBundleLine}</p>
+        </Section>
+
+        <Section
+          eyebrow="Materialien"
+          title="Opak oder transparent — je nach Verpackung."
+          lead="Zwei PP-Materialien für unterschiedliche Produktoptik."
+        >
+          <div className="two-column image-supported-grid">
+            <ComparisonTable
+              title="PP opak vs. PP transparent"
+              lead="Wann welches Material sinnvoll ist."
+              columns={homepageMaterialComparison.columns}
+              rows={homepageMaterialComparison.rows}
+            />
+            <EditorialImage
+              {...productImageAssets.compare}
+              caption="Transparentes PP auf Glasflasche neben opakem PP auf Standbeutel."
+              sizes="(max-width: 1024px) 100vw, 520px"
+            />
           </div>
         </Section>
 
         <ReorderWorkflowBlock
-          title="Material wählen. Druck freigeben. Nachbestellen."
-          lead="Wiederkehrende Bestellungen ohne neue Abstimmung."
-          steps={page.steps.map((step) => step.body)}
+          title="Einmal freigeben. Später schneller nachbestellen."
+          lead="Freigegebene Druckdaten, Material und Maß bleiben gespeichert – wiederkehrende Etiketten ohne neue Abstimmung."
+          steps={[
+            "Druckdaten hochladen",
+            "Proof freigeben",
+            "Spezifikation wird gespeichert",
+            "Etiketten nachbestellen",
+          ]}
         />
+
+        <Section
+          eyebrow="Ablauf"
+          title="Vom Etikett bis zur Produktion."
+          lead="Ein klarer Weg ohne Rückfragen-Schleifen."
+        >
+          <ProcessSteps steps={homepageOrderingSteps} />
+        </Section>
 
         <Section
           eyebrow="Branchen"
@@ -187,13 +295,40 @@ export function HomePage({ page }: HomePageProps) {
           </div>
         </Section>
 
+        <Section eyebrow="Vor der ersten Menge" title="Material prüfen oder direkt anfragen.">
+          <div className="two-column">
+            <SampleBoxCard
+              title="Material zuerst prüfen?"
+              body="Mit der Musterbox vergleichen Sie opake und transparente PP-Etiketten, bevor Sie größere Mengen bestellen."
+              href="/de/musterbox"
+            />
+            <div className="surface-card">
+              <span className="eyebrow">Großmengen</span>
+              <h2>Mehrere Sorten oder 20.000+ Etiketten?</h2>
+              <p>
+                Für größere Mengen, mehrere Designs oder wiederkehrende Bestellungen
+                erstellen wir ein klares B2B-Angebot.
+              </p>
+              <div className="hero-actions">
+                <Link href="/de/angebot-anfordern" className="cta-link">
+                  Angebot anfordern
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        <Section eyebrow="Fragen" title="Häufige Fragen zu PP-Rollenetiketten.">
+          <FaqAccordion faqs={homepageFaqs} />
+        </Section>
+
         <ContentCta
-          title="Für Marken, die Etiketten regelmäßig brauchen."
-          body={page.highlights[2]}
-          primaryLabel="Angebot anfordern"
-          primaryHref="/de/angebot-anfordern"
-          secondaryLabel="Musterbox"
-          secondaryHref="/de/musterbox"
+          title="Bereit für professionelle Rollenetiketten?"
+          body="PP-Etiketten konfigurieren oder ein B2B-Angebot anfordern."
+          primaryLabel="PP-Etiketten konfigurieren"
+          primaryHref="/de/opake-pp-etiketten"
+          secondaryLabel="Angebot anfordern"
+          secondaryHref="/de/angebot-anfordern"
         />
       </div>
     </>

@@ -266,6 +266,16 @@ textarea {
   width: min(100%, 680px);
 }
 
+.brand-hero__eyebrow {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: rgba(248, 250, 252, 0.72);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
 .brand-hero__title {
   margin: 0;
   color: #f8fafc;
@@ -367,6 +377,32 @@ textarea {
 
 .trust-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.package-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1024px) {
+  .package-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .package-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.package-note {
+  margin-top: 18px;
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 .hero-panel,
