@@ -4,6 +4,9 @@ import Link from "next/link";
 import { ProductCard } from "@/components/cards/ProductCard";
 import { PricingCard } from "@/components/cards/PricingCard";
 import { SampleBoxCard } from "@/components/cards/SampleBoxCard";
+import { MaterialComparisonShowcase } from "@/components/marketing/MaterialComparisonShowcase";
+import { SampleBoxVisual } from "@/components/marketing/SampleBoxVisual";
+import { SavedDesignReorderVisual } from "@/components/marketing/SavedDesignReorderVisual";
 import { FaqAccordion } from "@/components/faq/FaqAccordion";
 import { Section } from "@/components/layout/Section";
 import { LegalNoticeBox } from "@/components/legal/LegalNoticeBox";
@@ -159,16 +162,6 @@ const homepageOrderingSteps = [
   { title: "Produktion & Versand", body: "Produktion und Versand nach Deutschland." },
 ];
 
-const homepageMaterialComparison = {
-  columns: ["Kriterium", "Opakes PP", "Transparentes PP"],
-  rows: [
-    ["Optik", "Deckend, kräftige Farben", "Klar, sichtbarer Untergrund"],
-    ["Beste Verpackung", "Beutel, Dosen, Tiegel", "Glas, Flaschen, klare Behälter"],
-    ["Typische Marken", "Supplement, Lebensmittel", "Getränke, Premium-Linien"],
-    ["Wann wählen", "Pflichtangaben deckend zeigen", "Verpackung sichtbar lassen"],
-  ],
-};
-
 const homepageFaqs: FAQ[] = [
   {
     question: "Welche Druckdaten werden benötigt?",
@@ -228,36 +221,36 @@ export function HomePage({ page }: HomePageProps) {
           <p className="package-note">{pricingValueBundleLine}</p>
         </Section>
 
-        <Section
-          eyebrow="Materialien"
-          title="Opak oder transparent — je nach Verpackung."
-          lead="Zwei PP-Materialien für unterschiedliche Produktoptik."
-        >
-          <div className="two-column image-supported-grid">
+        <section className="split-6040">
+          <MaterialComparisonShowcase />
+          <div className="split-6040__aside">
+            <div className="section-header">
+              <span className="eyebrow">Materialien</span>
+              <h2>Material wählen, bevor die Datei in Produktion geht.</h2>
+              <p>
+                Opak für deckende Farben. Transparent für Flaschen, Gläser und
+                Produkte, bei denen der Inhalt sichtbar bleiben soll.
+              </p>
+            </div>
             <ComparisonTable
-              title="PP opak vs. PP transparent"
-              lead="Wann welches Material sinnvoll ist."
-              columns={homepageMaterialComparison.columns}
-              rows={homepageMaterialComparison.rows}
-            />
-            <EditorialImage
-              {...productImageAssets.compare}
-              caption="Transparentes PP auf Glasflasche neben opakem PP auf Standbeutel."
-              sizes="(max-width: 1024px) 100vw, 520px"
+              title="Material im Überblick"
+              lead="Wirkung und typische Nutzung."
+              columns={["Material", "Wirkung", "Typische Nutzung"]}
+              rows={[
+                ["Opak PP", "deckend, stabil", "Dosen, Beutel, Gläser"],
+                ["Transparent PP", "klar, hochwertig", "Flaschen, Gläser, Premium-Produkte"],
+              ]}
             />
           </div>
-        </Section>
+        </section>
 
-        <ReorderWorkflowBlock
+        <Section
+          eyebrow="Nachbestellen"
           title="Einmal freigeben. Später schneller nachbestellen."
-          lead="Freigegebene Druckdaten, Material und Maß bleiben gespeichert – wiederkehrende Etiketten ohne neue Abstimmung."
-          steps={[
-            "Druckdaten hochladen",
-            "Proof freigeben",
-            "Spezifikation wird gespeichert",
-            "Etiketten nachbestellen",
-          ]}
-        />
+          lead="Nicht jedes Mal neu hochladen. Nicht jedes Mal dieselbe Datei suchen."
+        >
+          <SavedDesignReorderVisual />
+        </Section>
 
         <Section
           eyebrow="Ablauf"
@@ -295,28 +288,26 @@ export function HomePage({ page }: HomePageProps) {
           </div>
         </Section>
 
-        <Section eyebrow="Vor der ersten Menge" title="Material prüfen oder direkt anfragen.">
-          <div className="two-column">
-            <SampleBoxCard
-              title="Material zuerst prüfen?"
-              body="Mit der Musterbox vergleichen Sie opake und transparente PP-Etiketten, bevor Sie größere Mengen bestellen."
-              href="/de/musterbox"
-            />
-            <div className="surface-card">
-              <span className="eyebrow">Großmengen</span>
-              <h2>Mehrere Sorten oder 20.000+ Etiketten?</h2>
-              <p>
-                Für größere Mengen, mehrere Designs oder wiederkehrende Bestellungen
-                erstellen wir ein klares B2B-Angebot.
-              </p>
-              <div className="hero-actions">
-                <Link href="/de/angebot-anfordern" className="cta-link">
-                  Angebot anfordern
-                </Link>
-              </div>
+        <section className="two-column">
+          <div className="section-header">
+            <span className="eyebrow">Musterbox</span>
+            <h2>Material zuerst prüfen. Dann bestellen.</h2>
+            <p>
+              Fordern Sie eine Musterbox an, prüfen Sie opake und transparente
+              PP-Materialien und entscheiden Sie danach über die passende
+              Etikettenproduktion.
+            </p>
+            <div className="hero-actions">
+              <Link href="/de/musterbox" className="cta-link">
+                Musterbox anfordern
+              </Link>
+              <Link href="/de/angebot-anfordern" className="secondary-link">
+                Individuelles Angebot
+              </Link>
             </div>
           </div>
-        </Section>
+          <SampleBoxVisual />
+        </section>
 
         <Section eyebrow="Fragen" title="Häufige Fragen zu PP-Rollenetiketten.">
           <FaqAccordion faqs={homepageFaqs} />

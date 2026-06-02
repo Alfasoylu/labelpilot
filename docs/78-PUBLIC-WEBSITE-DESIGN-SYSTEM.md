@@ -145,7 +145,7 @@ Product price, not a SaaS subscription. Starter 1.000 / Reorder Ready 2.000 / **
 - [x] Instrument Sans + IBM Plex Sans + IBM Plex Mono via `next/font/google`.
 - [x] Headings → Instrument Sans; eyebrows/prices → brass mono; CTA → deep ink; warm soft shadows.
 - [x] Pricing: Growth emphasised (brass ring, scale, "Empfohlen für Wiederbestellungen"); checkout preserved.
-- [x] Hero copy + CTAs aligned; full navy product-image hero.
-- [ ] Per-section asymmetric layout pass (hero 7/5 + floating spec label, material 60/40 module, reorder timeline) — follow-up.
-- [ ] Stronger real product/material imagery on material, sample-box, reorder — follow-up.
-- [x] `npm run build`, `check:lang` pass; routes/SEO/Stripe untouched.
+- [x] Hero copy + CTAs aligned.
+- [x] **Implemented layout pass (asymmetric):** Hero rebuilt to a 7/5 split on ivory with a CSS `LabelRollVisual` (label roll + material swatches + saved-design card + "Freigegeben"/"Nachbestellbar"/"100×200 mm" labels) replacing the full-bleed photo hero — no dashboard. Material section is a 60/40 editorial split (`MaterialComparisonShowcase` overlapping opaque/transparent panels + heading-in-side-column + spec table). Reorder section is `SavedDesignReorderVisual` (saved-design card + 5-step vertical timeline, last node brass) — no icon-card grid. Sample/Musterbox is a material-first block (copy + Musterbox/Angebot CTAs + `SampleBoxVisual` envelope/strips). New isolated components under `components/marketing/*`; scoped CSS in `globals.css` (`lpv-roll/-mat/-reorder/-sample`, `.hero-split`, `.split-6040`). No token/font/CTA/pricing/checkout changes.
+- [ ] Stronger real product/material photography on material, sample-box, reorder — follow-up (current visuals are clean CSS/SVG).
+- [x] `npm run build`, `check:lang` pass; routes/SEO/Stripe/checkout untouched.

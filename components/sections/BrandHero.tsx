@@ -1,5 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
+
+import { LabelRollVisual } from "@/components/marketing/LabelRollVisual";
 
 type BrandHeroProps = {
   title: string;
@@ -8,32 +9,27 @@ type BrandHeroProps = {
 
 export function BrandHero({ title, lead }: BrandHeroProps) {
   return (
-    <section className="brand-hero">
-      <div className="brand-hero__image">
-        <Image
-          src="/images/startseite-hero-pp-rollenetiketten.webp"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="brand-hero__media"
-        />
-      </div>
-      <div className="brand-hero__overlay" />
-      <div className="brand-hero__inner">
-        <div className="brand-hero__content">
-          <span className="brand-hero__eyebrow">PP-Rollenetiketten für Produktmarken</span>
-          <h1 className="brand-hero__title">{title}</h1>
-          <p className="brand-hero__lead">{lead}</p>
-          <div className="brand-hero__actions">
-            <Link href="/de/opake-pp-etiketten" className="brand-hero__cta brand-hero__cta--primary">
-              Jetzt konfigurieren
-            </Link>
-            <Link href="/de/musterbox" className="brand-hero__cta brand-hero__cta--secondary">
-              Musterbox anfordern
-            </Link>
-          </div>
+    <section className="hero-split container">
+      <div className="hero-split__content">
+        <span className="eyebrow">PP-Rollenetiketten für Produktmarken</span>
+        <h1 className="hero-split__title">{title}</h1>
+        <p className="hero-split__lead">{lead}</p>
+        <div className="hero-split__actions">
+          <Link href="/de/opake-pp-etiketten" className="cta-link">
+            Jetzt konfigurieren
+          </Link>
+          <Link href="/de/musterbox" className="secondary-link">
+            Musterbox anfordern
+          </Link>
         </div>
+        <ul className="hero-split__trust">
+          <li>Technische Druckdatenprüfung</li>
+          <li>Proof vor Produktion</li>
+          <li>Versand nach Deutschland</li>
+        </ul>
+      </div>
+      <div className="hero-split__visual">
+        <LabelRollVisual />
       </div>
     </section>
   );
