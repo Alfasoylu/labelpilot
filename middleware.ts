@@ -1,13 +1,17 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const unauthorizedResponse = new NextResponse("Sie haben keinen Zugriff auf diesen Bereich.", {
-  status: 401,
-  headers: {
-    "WWW-Authenticate": 'Basic realm="Labelpilot Admin"',
-    "X-Robots-Tag": "noindex, nofollow",
-  },
-});
+function unauthorizedResponse() {
+  // Build a fresh response per request: a single shared NextResponse body
+  // (ReadableStream) cannot be re-sent on subsequent requests.
+  return new NextResponse("Sie haben keinen Zugriff auf diesen Bereich.", {
+    status: 401,
+    headers: {
+      "WWW-Authenticate": 'Basic realm="Labelpilot Admin"',
+      "X-Robots-Tag": "noindex, nofollow",
+    },
+  });
+}
 
 function constantTimeEqual(left: string, right: string) {
   const encoder = new TextEncoder();
@@ -62,7 +66,7 @@ export function middleware(request: NextRequest) {
   const credentials = getAdminCredentials();
 
   if (!credentials) {
-    return unauthorizedResponse;
+    return unauthorizedResponse();
   }
 
   const provided = parseBasicAuthHeader(request.headers.get("authorization"));
@@ -72,7 +76,7 @@ export function middleware(request: NextRequest) {
     !constantTimeEqual(provided.user, credentials.user) ||
     !constantTimeEqual(provided.password, credentials.password)
   ) {
-    return unauthorizedResponse;
+    return unauthorizedResponse();
   }
 
   const response = NextResponse.next();
