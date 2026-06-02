@@ -129,6 +129,7 @@ The owner has explicitly locked the following decisions. These are no longer ope
 11. Ads / campaign landing pages live at `/lp/[slug]`, must remain German-language, must be `noindex`, must not enter sitemap, and must never become canonical winners.
 12. `63-PHASE-2-SEO-FOUNDATION.md` now exists and is the canonical Phase 2 phase doc.
 13. GTM docs `53/54/55/56/57` are future docs, not yet written, and must not block current implementation planning.
+14. UI design direction is LOCKED to `76-UI-DESIGN-SYSTEM-GERMAN-B2B.md`: modern German B2B SaaS look — navy/slate text (`#0B1220`/`#111827`), Trust Blue primary CTA (`#2563EB`), white/soft-grey backgrounds (`#F8FAFC`/`#FFFFFF`), subtle borders. This SUPERSEDES the earlier warm terracotta/cream palette. The redesign (`77-CODEX-UI-REDESIGN-PROMPT.md`) is UI-only (no backend/Stripe/new pages), must preserve all routes/SEO, and must keep the Phase-2 `Ratgeber` + `Glossar` hubs in the nav. Hero uses a CSS "stored-design / reorder" moat card, not stock photos.
 
 ---
 
