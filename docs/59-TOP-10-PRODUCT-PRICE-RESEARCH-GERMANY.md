@@ -956,7 +956,7 @@ Common market variants we deliberately do NOT expose (all routed to quote per §
 |---|---|---|---|---|
 | WIRmachenDRUCK | round labels **2–7 cm** | **ab 0,01 €/Stück** | brutto, inkl. DE-Versand | per-unit teaser at max volume |
 | WIRmachenDRUCK | round labels **8–10 cm** | **ab 0,02 €/Stück** | brutto, inkl. DE-Versand | per-unit teaser |
-| Labelprint24 | **unspecified** spec | **34,24 €** | netto, inkl. Versand | single illustrative calculator sample, no stated size/qty |
+| Labelprint24 | `1.000`, `PP film, transparent, gloss, permanent adhesive, 0.05 mm`, `100 × 148 mm rectangular`, `1 artwork version` | **£260.05 net / £312.06 gross** *(UK screenshot)* and **€290.18 net / €345.31 gross** *(DE screenshot)* | country-dependent VAT/currency | live calculator capture from the same product URL; not like-for-like with our `100×200 mm` |
 | etiketten-drucken.de | **PP-Folie weiß, 40×70 mm** | 1.000 = **85,97 €** · 2.500 = **113,99 €** · 5.000 = **160,56 €** | brutto inkl. MwSt | full table |
 | etiketten-drucken.de | **PP-Folie transparent, 40×70 mm** | 1.000 = **110,80 €** · 2.500 = **147,81 €** · 5.000 = **209,33 €** | brutto inkl. MwSt | transparent ≈ **+29–30%** vs white at every tier |
 | StickerApp (.com) | size unspecified | 139 = **$56** … 2.000 = **$156** | not stated (USD) | sticker-first, no 100×200 product |
@@ -1030,6 +1030,146 @@ Working read:
    - `10x20 cm` No-Label-Look free-size calculator
 4. The new `opake` free-size link should stay in the audit set, but only as an exact-size paper floor check. It must not be used as a like-for-like opaque-PP price anchor.
 
+### 27.5.2 Labelprint24 configurator capture — structure, selected variant, and price factors
+
+This addendum records the exact structure and visible pricing logic from the live Labelprint24 calculator URL shared in this thread:
+
+```txt
+https://www.labelprint24.com/en/products/roll-labels-1?label_material_group=2&label_material=20
+```
+
+#### Captured screenshot state
+
+The provided screenshots show the following selected configuration:
+
+| Field | Observed value |
+|---|---|
+| Quantity | `1,000` |
+| Number of artwork versions | `1` |
+| Material | `PP film` |
+| Material specification | `PP film, transparent, gloss, permanent adhesive, 0.05 mm` |
+| Format | `100 × 148 - rectangular` |
+| Shape | `Rectangular` |
+| Width | `100 mm` |
+| Height | `148 mm` |
+| Corner radius | `2 mm` |
+| Cutter size | `100 mm × 148 mm / Rectangular / 2 mm Corner radius` |
+| Print data mode | `Own print data` |
+| UV varnish | `gloss varnish` |
+| Protective laminate | `no laminate` |
+| Hot foil stamping | `no hot foil stamping` |
+| Tactile warning triangle | `no tactile warning triangle` |
+| Production time | `Standard Production: 5 Business days (+ delivery time)` |
+| Delivery country | `Germany` in the later screenshot |
+| Currency | `Euro` in the later screenshot |
+
+Observed cost summary from the screenshots:
+
+| Screenshot state | Base / Total net | VAT | Total incl. VAT | Delivery |
+|---|---:|---:|---:|---|
+| Initial `/en` screenshot, UK tax/currency view | `£260.05` | `£52.01` (`VAT 20% UK`) | `£312.06` | included |
+| Later screenshot with `Germany` + `Euro` selected | `€290.18` | `€55.13` (`VAT 19% DE`) | `€345.31` | included |
+
+Interpretation:
+
+1. Labelprint24's visible price is not only product-spec dependent; it is also **delivery-country / VAT / currency dependent**.
+2. The screenshoted Labelprint24 price is for **transparent PP 100×148 mm**, not our `100×200 mm` product.
+3. This is therefore a useful calculator benchmark, but **not** a direct like-for-like price anchor.
+
+#### Pricing-page structure
+
+Labelprint24's product page behaves like a dense industrial label configurator with a persistent summary rail rather than a simple product card.
+
+Visible layout pattern:
+
+1. **Left column configurator**
+   - quantity
+   - artwork versions
+   - material
+   - material specification
+   - label shape / format / width / height / corner radius / cutter size
+   - roll configuration
+   - finish settings
+   - embellishment
+   - additional options
+   - delivery terms
+2. **Right sticky cost summary**
+   - base price
+   - total net
+   - VAT by delivery country
+   - total incl. VAT
+   - delivery included note
+   - print-data mode selector
+   - add-to-cart / quote / guideline / print-data-requirements actions
+
+This is strategically important because the page looks and behaves like a true B2B calculator, not a generic sticker PDP.
+
+#### Variant structure observed
+
+From the live page content and screenshots, Labelprint24 exposes at least the following variant dimensions on this roll-label configurator:
+
+```txt
+quantity
+number of artwork versions
+material group
+material specification
+format
+shape
+width
+height
+corner radius
+cutter size
+roll configuration
+UV varnish
+protective laminate
+embellishment
+additional services
+production time
+delivery country
+currency
+print-data mode
+```
+
+The page content also confirms broader roll-label capability:
+
+```txt
+paper, PP, PE, PVC
+rectangular, oval, round, special shape
+choice of roll core and winding direction
+film finishing / varnish / laminate
+digital and flexo positioning
+free dispatch
+48-hour express production messaging
+```
+
+#### Price-impacting factors visible on the page
+
+The screenshots and page content make the following price drivers explicit:
+
+1. quantity
+2. number of artwork versions
+3. material
+4. material specification
+5. width and height
+6. corner radius / cutter geometry
+7. roll configuration
+8. UV varnish
+9. protective laminate
+10. embellishment options
+11. professional artwork check (`15 EUR`)
+12. suitable for thermal transfer printing (`10 EUR`)
+13. barcode verification (`25 EUR`)
+14. printed proof
+15. production speed
+16. delivery country
+17. currency
+
+Strategic read:
+
+1. Labelprint24 is still the strongest direct competitor because it combines **real label depth** with a serious calculator UX.
+2. The screenshots confirm that Labelprint24 does not just hide price — it exposes a **fully parameterized industrial pricing model**.
+3. This strengthens our earlier conclusion: Labelpilot should not try to out-catalog Labelprint24. It should win on narrower scope, saved artwork, repeat ordering speed, and price-transparency for the chosen core SKU.
+
 ### 27.6 Source URLs (fetched 2026-06-03)
 
 WIRmachenDRUCK exact audit URLs added on 2026-06-03:
@@ -1044,6 +1184,7 @@ https://www.wir-machen-druck.de/hochwertige-opake-etiketten-auf-rolle-mit-freier
 Labelprint24:        labelprint24.com/de/products/roll-labels-1
                      labelprint24.com/de/products/pp-labels-615
                      labelprint24.com/de/category/printed-labels-17
+                     labelprint24.com/en/products/roll-labels-1?label_material_group=2&label_material=20
 WIRmachenDRUCK:      wir-machen-druck.de/etiketten-auf-rolle-...,category,17017.html
                      wir-machen-druck.de/standardetiketten-auf-rolle-...,category,20649.html
                      wir-machen-druck.de/runde-formate-guenstig-drucken,category,29558.html
