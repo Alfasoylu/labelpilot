@@ -11,6 +11,7 @@ type ProofFileItem = {
   statusLabel: string;
   downloadHref: string;
   createdAtLabel: string;
+  adminNote?: string | null;
   customerChangeRequestNote?: string | null;
 };
 
@@ -42,9 +43,7 @@ export function ProofApprovalPanel({
   });
   const [isPending, setIsPending] = useState(false);
 
-  const activeProof = proofs.find(
-    (proof) => proof.status === "WAITING_CUSTOMER_APPROVAL",
-  );
+  const activeProof = proofs.find((proof) => proof.status === "WAITING_CUSTOMER_APPROVAL");
 
   async function submitDecision(decision: "approve" | "request_changes", note = "") {
     if (!activeProof) {
@@ -82,8 +81,7 @@ export function ProofApprovalPanel({
         setDecisionState({
           type: "error",
           message:
-            payload?.error ??
-            "Rueckmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+            payload?.error ?? "Rueckmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
         });
         return;
       }
@@ -93,8 +91,7 @@ export function ProofApprovalPanel({
           proof.id === activeProof.id
             ? {
                 ...proof,
-                status:
-                  decision === "approve" ? "APPROVED" : "CHANGES_REQUESTED",
+                status: decision === "approve" ? "APPROVED" : "CHANGES_REQUESTED",
                 statusLabel: payload.proofStatusLabel ?? proof.statusLabel,
                 customerChangeRequestNote:
                   decision === "request_changes" ? note : proof.customerChangeRequestNote,
@@ -154,6 +151,7 @@ export function ProofApprovalPanel({
               <p className="price-note">
                 {proof.statusLabel} · {proof.createdAtLabel} · {formatFileSize(proof.sizeBytes)}
               </p>
+              {proof.adminNote ? <p className="field-hint">Hinweis: {proof.adminNote}</p> : null}
               {proof.customerChangeRequestNote ? (
                 <p className="field-hint">Aenderungswunsch: {proof.customerChangeRequestNote}</p>
               ) : null}

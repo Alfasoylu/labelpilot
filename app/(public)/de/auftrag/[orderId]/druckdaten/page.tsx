@@ -68,6 +68,11 @@ export default async function OrderArtworkPage({
           createdAt: "desc",
         },
       },
+      statusEvents: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
 
@@ -76,6 +81,9 @@ export default async function OrderArtworkPage({
   }
 
   const pkg = getPackageById(order.packageId);
+  const latestCorrectionEvent = order.statusEvents.find(
+    (event: (typeof order.statusEvents)[number]) => event.status === "CORRECTION_REQUIRED" && event.note,
+  );
   const files = order.artworkFiles.map((file: (typeof order.artworkFiles)[number]) => ({
     id: file.id,
     fileName: file.fileName,
@@ -91,6 +99,7 @@ export default async function OrderArtworkPage({
     status: proof.status,
     statusLabel: getProofFileStatusLabel(proof.status),
     createdAtLabel: formatDateLabel(proof.createdAt),
+    adminNote: proof.adminNote,
     customerChangeRequestNote: proof.customerChangeRequestNote,
     downloadHref: `/api/orders/${order.id}/proofs/${proof.id}?token=${encodeURIComponent(token)}`,
   }));
@@ -147,6 +156,13 @@ export default async function OrderArtworkPage({
         requirementsText={getArtworkFileRequirementsText()}
         initialFiles={files}
       />
+
+      {latestCorrectionEvent?.note ? (
+        <article className="surface-card">
+          <h2>Korrekturhinweis</h2>
+          <p>{latestCorrectionEvent.note}</p>
+        </article>
+      ) : null}
 
       <ProofApprovalPanel
         orderId={order.id}
