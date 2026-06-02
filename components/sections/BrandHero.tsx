@@ -1,6 +1,5 @@
+import Image from "next/image";
 import Link from "next/link";
-
-import { LabelRollVisual } from "@/components/marketing/LabelRollVisual";
 
 type BrandHeroProps = {
   title: string;
@@ -29,7 +28,21 @@ export function BrandHero({ title, lead }: BrandHeroProps) {
         </ul>
       </div>
       <div className="hero-split__visual">
-        <LabelRollVisual />
+        <figure className="hero-product-photo">
+          <Image
+            src="/images/editorial/label-roll-closeup.webp"
+            alt="Rolle mit blanko gestanzten PP-Rollenetiketten in Nahaufnahme"
+            width={900}
+            height={1125}
+            priority
+            sizes="(max-width: 1024px) 100vw, 465px"
+            className="hero-product-photo__img"
+          />
+          <div className="hero-product-photo__badge">
+            <span className="hero-product-photo__badge-dim">100×200 mm</span>
+            <span className="hero-product-photo__badge-pill">Nachbestellbar</span>
+          </div>
+        </figure>
       </div>
     </section>
   );

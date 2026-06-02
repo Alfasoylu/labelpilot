@@ -4,8 +4,6 @@ import Link from "next/link";
 import { ProductCard } from "@/components/cards/ProductCard";
 import { PricingCard } from "@/components/cards/PricingCard";
 import { SampleBoxCard } from "@/components/cards/SampleBoxCard";
-import { MaterialComparisonShowcase } from "@/components/marketing/MaterialComparisonShowcase";
-import { SampleBoxVisual } from "@/components/marketing/SampleBoxVisual";
 import { SavedDesignReorderVisual } from "@/components/marketing/SavedDesignReorderVisual";
 import { FaqAccordion } from "@/components/faq/FaqAccordion";
 import { Section } from "@/components/layout/Section";
@@ -231,7 +229,30 @@ export function HomePage({ page }: HomePageProps) {
             </p>
           </div>
           <div className="material-split__visual">
-            <MaterialComparisonShowcase />
+            <div className="material-photo-stack">
+              <figure className="material-photo-card material-photo-card--opaque">
+                <Image
+                  src="/images/editorial/opaque-pp-material-closeup.webp"
+                  alt="Opake PP-Etiketten mit matter Oberfläche auf Produktverpackung"
+                  width={600}
+                  height={600}
+                  sizes="(max-width: 1024px) 100vw, 340px"
+                  className="material-photo-card__img"
+                />
+                <figcaption className="material-photo-card__caption">Opak PP</figcaption>
+              </figure>
+              <figure className="material-photo-card material-photo-card--clear">
+                <Image
+                  src="/images/editorial/transparent-pp-label-glass.webp"
+                  alt="Transparente PP-Etiketten auf Glasflasche mit sichtbarer Filmkante"
+                  width={600}
+                  height={600}
+                  sizes="(max-width: 1024px) 100vw, 300px"
+                  className="material-photo-card__img"
+                />
+                <figcaption className="material-photo-card__caption">Transparent PP</figcaption>
+              </figure>
+            </div>
           </div>
           <div className="material-split__table">
             <ComparisonTable
@@ -283,8 +304,9 @@ export function HomePage({ page }: HomePageProps) {
               ))}
             </div>
             <EditorialImage
-              {...productImageAssets.industries}
-              caption="PP-Etiketten für Lebensmittel-, Getränke-, Supplement- und Private-Label-Produkte."
+              src="/images/editorial/micro-brand-product-lineup.webp"
+              alt="Getränke-, Honig-, Supplement- und Kaffee-Produkte mit individuell bedruckten PP-Etiketten"
+              caption="Produkte kleiner Marken mit individuell bedruckten PP-Rollenetiketten."
               sizes="(max-width: 1024px) 100vw, 520px"
             />
           </div>
@@ -308,7 +330,16 @@ export function HomePage({ page }: HomePageProps) {
               </Link>
             </div>
           </div>
-          <SampleBoxVisual />
+          <figure className="sample-box-photo">
+            <Image
+              src="/images/editorial/sample-box-material-kit.webp"
+              alt="Musterbox mit opaken und transparenten PP-Etikettenmustern und Materialstreifen"
+              width={1200}
+              height={900}
+              sizes="(max-width: 1024px) 100vw, 520px"
+              className="sample-box-photo__img"
+            />
+          </figure>
         </section>
 
         <Section eyebrow="Fragen" title="Häufige Fragen zu PP-Rollenetiketten.">
