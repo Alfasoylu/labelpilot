@@ -254,10 +254,10 @@ export function buildCanonicalMetadata(
       url: buildAbsoluteUrl(path),
       images: [
         {
-          url: buildAbsoluteUrl(
-            "/images/editorial/micro-brand-product-lineup.webp",
-          ),
-          alt: "Produkte kleiner Marken mit individuell bedruckten PP-Rollenetiketten von Labelpilot.de",
+          url: buildAbsoluteUrl("/images/og-default-labelpilot-1200x630.png"),
+          width: 1200,
+          height: 630,
+          alt: "labelpilot.de — PP-Rollenetiketten für Produktmarken",
         },
       ],
     },
@@ -266,7 +266,7 @@ export function buildCanonicalMetadata(
       title: entry.openGraphTitle ?? title,
       description: entry.openGraphDescription ?? description,
       images: [
-        buildAbsoluteUrl("/images/editorial/micro-brand-product-lineup.webp"),
+        buildAbsoluteUrl("/images/og-default-labelpilot-1200x630.png"),
       ],
     },
   };

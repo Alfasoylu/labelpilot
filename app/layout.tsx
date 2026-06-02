@@ -44,15 +44,17 @@ export const metadata: Metadata = {
     description: "B2B-Etikettenplattform für deutsche Marken.",
     images: [
       {
-        url: buildAbsoluteUrl("/images/editorial/micro-brand-product-lineup.webp"),
-        alt: "Labelpilot.de — PP-Rollenetiketten für Produktmarken",
+        url: buildAbsoluteUrl("/images/og-default-labelpilot-1200x630.png"),
+        width: 1200,
+        height: 630,
+        alt: "labelpilot.de — PP-Rollenetiketten für Produktmarken",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     images: [
-      buildAbsoluteUrl("/images/editorial/micro-brand-product-lineup.webp"),
+      buildAbsoluteUrl("/images/og-default-labelpilot-1200x630.png"),
     ],
   },
 };
