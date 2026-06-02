@@ -158,16 +158,33 @@ Use shadcn/ui for:
 
 Design direction:
 
-- Clean German B2B SaaS-commerce feel
+- Premium German B2B roll-label manufacturing interface with SaaS-like ordering clarity
+- Visual-first, text-light, technical, confident, low-noise
 - Fast, trustworthy, minimal
 - No decorative overdesign
 - Strong typography
-- Clear price tables
+- Clear price tables and spec/comparison tables
 - Clear product comparison sections
-- Strong trust blocks
+- Strong trust blocks (Musterbox, gespeicherte Druckdaten, Proof vor Produktion)
 - Mobile-first
 
 Do not create a cheap-looking print shop UI.
+
+Do not build a generic "clean SaaS" / "SaaS-commerce" landing page, a playful sticker site, a cheap-exporter look, or an AI-generated icon-card-grid landing page. The public site must read as a premium professional roll-label manufacturer.
+
+### Design Implementation Rules
+
+These rules keep the public-facing UI consistent and protect the existing platform logic:
+
+- Use central design tokens (colors, spacing, typography, radius) — no per-section hardcoded values.
+- Build with reusable marketing components in `components/marketing/*` — one shared visual system, not a new style per section.
+- No bespoke one-off styles per section; do not invent a new look for each block.
+- Preserve the stack: Next.js App Router + Tailwind + shadcn/ui. Do not swap or add UI frameworks.
+- No heavy animation libraries; rely on light CSS/Tailwind transitions only (see Section 31).
+- Public pages are visual-first: product imagery, roll-label visuals, label-on-packaging mockups, material close-ups, spec/comparison tables, pricing cards, configurator preview, sample-box visuals, reorder-flow diagrams, process steps. Avoid large text blocks, repeated icon cards, and decorative gradient blobs.
+- Avoid dashboard-looking visuals on public pages unless they directly explain saved artwork (gespeicherte Druckdaten) or the reorder flow.
+- Do not break the pricing engine, checkout, upload, quote, auth, admin, or SEO metadata when restyling. Visual changes must not touch business logic or route behavior.
+- Public UI is German-only; never mix in English CTAs or Turkish copy.
 
 ---
 

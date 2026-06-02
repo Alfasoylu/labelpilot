@@ -195,19 +195,24 @@ BAD_FIT
 
 ## 9. Outreach Angle
 
-Good German angle:
+Good German angle (concrete, product-led, no buzzwords):
 
 ```txt
-Wir helfen kleinen Lebensmittel-, Getränke- und Supplement-Marken dabei, PP-Rollenetiketten mit gespeicherten Druckdaten einfacher nachzubestellen.
+Wir produzieren PP-Rollenetiketten (opak/transparent) für Lebensmittel-, Getränke- und Supplement-Marken. Druckdaten werden gespeichert, Nachbestellungen gehen schneller.
 ```
 
 Do not lead with:
 
 ```txt
 We are cheapest.
+günstigste Lösung / Komplettlösung für Ihre Marke
 ```
 
-Lead with repeat order + material + B2B clarity.
+Avoid buzzwords ("innovative Lösung", "Komplettlösung", "Partner für Ihre Marke", "premium Qualität").
+
+Lead with concrete product + repeat order: PP-Rollenetiketten, opak/transparent, gespeicherte Druckdaten, schneller nachbestellen.
+
+Never claim German/local production (production is in Turkey); no unsupported Germany trust claims.
 
 ---
 
@@ -226,13 +231,16 @@ no fake personalization
 no exaggerated claims
 ```
 
-CTA options:
+CTA options (German only, canonical):
 
 ```txt
 Musterbox anfordern
-B2B-Angebot anfordern
+Angebot anfordern
+PP-Etiketten konfigurieren
 kurz Etikettenbedarf prüfen
 ```
+
+Never use English CTAs.
 
 ---
 

@@ -39,6 +39,36 @@ Labelpilot.de should win qualified B2B intent, not irrelevant traffic.
 
 ---
 
+## 2a. Visual-First SEO Rule (Mandatory)
+
+Keyword strategy defines **intent and targeting**, not page format.
+
+Every keyword/SEO page must present its content **visually**, not as a text wall.
+
+Required structure on each keyword page:
+
+```txt
+short direct-answer block (1-2 short German sentences)
+product spec table (Material, Größe, Auflage, Lieferform)
+comparison table where intent is comparison (PP vs Papier, transparent vs opak)
+FAQ accordion (concise German questions and answers)
+visual proof (Rollenetiketten-, Material- oder Packaging-Mockups)
+clear German CTA (Jetzt konfigurieren, Musterbox anfordern, Angebot anfordern)
+internal links to primary, reorder and quote pages
+```
+
+Hard limits:
+
+- No paragraph longer than 2 desktop lines.
+- No repeated keyword stuffing to hit a density target.
+- No thin or duplicated AI-generated pages spun up only for a keyword variant.
+- One keyword cluster = one substantive page; variants are covered inside that page, not as near-duplicate pages.
+- Indexable German content stays, but it is delivered through tables, accordions and answer blocks — never long essays.
+
+A page may target high intent and still fail if it reads as an SEO text wall. Visual-first delivery is a launch requirement, not optional polish.
+
+---
+
 ## 3. Language Rule
 
 All target keywords for MVP are German.
@@ -700,7 +730,7 @@ Welche Druckdaten brauche ich für Rollenetiketten?
 B2B Anbieter für Produktetiketten in Deutschland
 ```
 
-Pages should include direct answer blocks to support these.
+Pages should include short direct-answer blocks to support these, structured per the Visual-First SEO Rule (Section 2a) — concise German answer block plus spec/comparison table and FAQ, never a long essay.
 
 ---
 
@@ -752,6 +782,8 @@ Keyword map is accepted when:
 | File requirement keywords included | PASS |
 | Comparison keywords included | PASS |
 | Keyword map supports programmatic SEO | PASS |
+| Pages structured visually (answer block, tables, FAQ) | PASS |
+| No text walls / keyword stuffing / thin AI pages | PASS |
 
 ---
 
@@ -767,6 +799,7 @@ Codex must:
 6. Do not create pages for avoided keywords.
 7. Use P0 before P1/P2.
 8. Update this file if keyword/page targeting changes.
+9. Build every keyword page visual-first per Section 2a (answer block, spec/comparison tables, FAQ accordion, internal links) — never as a text wall, keyword-stuffed page, or thin AI duplicate.
 
 ---
 

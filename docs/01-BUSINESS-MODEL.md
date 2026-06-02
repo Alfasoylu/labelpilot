@@ -25,7 +25,7 @@ Codex must read this file before implementing pricing, product pages, checkout, 
 
 The business is a Germany-focused B2B-first label supply platform.
 
-The platform sells custom printed PP roll product labels and thermal logistics labels to German food, beverage, supplement and micro-manufacturing brands.
+The platform sells custom printed PP roll product labels (opaque and transparent) as the main product, plus thermal logistics labels as a secondary cross-sell, to German food, beverage, supplement and micro-manufacturing brands.
 
 The core business is not one-time printing.
 
@@ -33,7 +33,7 @@ The core business is:
 
 > Saved artwork + saved specifications + easy reorder + repeat B2B supply.
 
-The company will initially produce in Turkey and ship to Germany. In later stages, it may operate a Germany hub for faster delivery, returns, trust and B2B account growth.
+The company produces in Turkey and ships to Germany. Positioning is German-facing (German market, German-language UI, German B2B relationship), not "Made in Germany". Production location must not be hidden or misrepresented. In later stages, the company may operate a Germany hub for faster delivery, returns, trust and B2B account growth.
 
 ---
 
@@ -64,11 +64,13 @@ This business is:
 - A B2B label supply platform
 - A recurring order system
 - A Germany-focused niche supplier
-- A custom PP label seller
-- A reorder infrastructure for micro brands
+- A custom PP roll-label seller (opaque + transparent)
+- A reorder infrastructure for micro brands, built on saved artwork and saved specifications (the strategic moat)
 - A hybrid of e-commerce, B2B sales and production coordination
 
-The business should feel like a professional German-facing label partner, not a generic Turkish print shop.
+The Musterbox (sample box) is the primary trust tool that converts cautious first-time B2B buyers. Thermal labels are a secondary cross-sell and must never be positioned as the core offer.
+
+The business should read as a professional German-facing roll-label manufacturer with clear, SaaS-like ordering — not a generic online print shop, not a broad print marketplace, and not a cheap exporter.
 
 ---
 
@@ -170,21 +172,24 @@ Avoid customers who:
 
 The main product is:
 
-**100×200 mm custom printed PP roll labels**
+**100×200 mm (10×20 cm) custom printed PP roll labels**
 
 Material variants:
 
 1. Opaque PP
 2. Transparent PP
 
-Primary package quantities:
+Primary package quantities (canonical ladder per `/docs/00-SOURCE-OF-TRUTH.md`):
 
 | Package | Quantity | Strategic role |
 |---|---:|---|
 | Starter | 1,000 labels | Paid trial / acquisition |
-| Growth | 5,000 labels | Main B2B product |
+| — | 2,000 labels | Step-up from trial |
+| Growth | 5,000 labels | Main B2B product (default / recommended) |
 | Pro | 10,000 labels | Scaling product |
-| Business | 20,000+ labels | Quote-based B2B account |
+| Quote | 20,000+ labels | Quote-based B2B account (quote-only) |
+
+Fixed-price packages cover the four online tiers `1,000 / 2,000 / 5,000 / 10,000`. `20,000+` is always handled as a quote, not a fixed online price.
 
 ---
 
@@ -243,9 +248,10 @@ Initial working prices:
 | Package | Quantity | Product | Target price |
 |---|---:|---|---:|
 | Starter | 1,000 | 100×200 mm PP labels | See `/docs/04-PRICING-AND-MARGIN-MODEL.md` |
+| — | 2,000 | 100×200 mm PP labels | See `/docs/04-PRICING-AND-MARGIN-MODEL.md` |
 | Growth | 5,000 | 100×200 mm PP labels | See `/docs/04-PRICING-AND-MARGIN-MODEL.md` |
 | Pro | 10,000 | 100×200 mm PP labels | See `/docs/04-PRICING-AND-MARGIN-MODEL.md` |
-| Business | 20,000+ | 100×200 mm PP labels | Quote request |
+| Quote | 20,000+ | 100×200 mm PP labels | Quote request |
 
 Rules:
 

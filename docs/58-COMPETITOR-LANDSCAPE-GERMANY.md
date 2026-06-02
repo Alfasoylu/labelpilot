@@ -1079,16 +1079,19 @@ Do not copy:
 - playful sticker-store tone
 - Turkish-exporter / generic matbaa look
 
-Our design direction remains:
+Our design direction remains (see the canonical "Public Website Design Direction" section below for the full rule set):
 
 ```txt
-German B2B SaaS
-navy / slate typography
-Trust Blue CTA
-white / soft-grey surfaces
-calculator-like price cards
-stored-design / reorder moat
+premium, professional German roll-label manufacturer
+SaaS-like ordering clarity, NOT a "clean SaaS" landing page
+navy / slate typography on white / soft-grey surfaces
+Trust Blue CTA (German labels only)
+visual-first: product photography, label-on-packaging mockups, material close-ups
+spec / comparison tables and calculator-like price cards
+stored-design / reorder moat shown only where it explains saved artwork + reorder
 ```
+
+This benchmark list is for INTERNAL study only. Competitor names must never appear in public website copy, and no competitor layout, tone or page may be cloned.
 
 ## 19. Competitor Ranking Update
 
@@ -1112,6 +1115,132 @@ stored-design / reorder moat
 Every major competitor hides the real price behind a configurator.
 Labelpilot.de wins by showing transparent indicative tiers and the exact inclusion scope up front.
 ```
+
+---
+
+## 20. Public Website Design Direction
+
+This section governs how the competitor landscape informs the PUBLIC website. It is the binding design direction for public pages and overrides any older "look/feel" notes elsewhere in this file.
+
+CRITICAL GUARDRAILS:
+
+- STUDY mature sector websites for craft. NEVER copy a competitor's layout, tone, page or wording.
+- Competitor names must NEVER appear in public website copy, meta tags, comparison blocks or CTAs. Competitor references stay internal to this doc.
+- Do not instruct or imply cloning any competitor. We borrow discipline (clarity, structure, trust), not designs.
+
+Positioning the public site must read as: a PREMIUM, PROFESSIONAL GERMAN ROLL-LABEL MANUFACTURER with SaaS-like ordering clarity. NOT a "clean SaaS"/"SaaS-commerce" landing page, NOT a generic online print shop, NOT a playful sticker site, NOT a cheap exporter, NOT a SaaS template full of fake cards, NOT an AI-generated icon-card-grid landing page.
+
+Core message: "We produce professional roll labels for product brands, keep ordering clear, and make repeat orders easier."
+
+### 20.1 Study (do NOT copy) — what mature sector sites do well
+
+Study the CRAFT of strong roll-label and serious B2B manufacturer sites for:
+
+```txt
+strong, real product photography (roll labels, labels on packaging)
+clear material presentation (opak vs transparent, finishes, close-ups)
+short, technical copy (specs over adjectives)
+visible, scannable product categories
+simple configurator-like ordering flow
+concrete trust signals (process, proof-before-production, support)
+sample request flows (Musterbox)
+production / process clarity (upload → proof → production → reorder)
+clean B2B typography and calm layout
+scannable product pages built on spec/comparison tables
+```
+
+### 20.2 Do NOT copy — patterns to reject
+
+```txt
+broad catalog clutter (flyers, cards, posters, textile, full print catalog)
+playful sticker-store tone or sticker culture
+generic low-price print-shop positioning ("cheapest", price-war framing)
+fake SaaS feature cards / invented dashboards unrelated to reorder
+AI-generated repeated icon grids ("3 icon cards explaining benefits")
+excessive text blocks and long essays
+overused decorative gradients / gradient blobs
+generic "solutions for your business" / "your trusted partner" language
+Turkish-exporter / generic matbaa look
+any reproduction of a competitor's exact layout, sections or copy
+```
+
+### 20.3 Visual-first principle
+
+Public pages are visual-first, text-light, technical, confident and low-noise.
+
+RELY ON:
+
+```txt
+product imagery and roll-label visuals
+label-on-packaging mockups
+material close-ups (opak / transparent, finishes)
+spec and comparison tables
+pricing cards / indicative tiers
+configurator preview blocks
+sample-box (Musterbox) visuals
+reorder-flow diagrams and process steps
+saved-artwork visuals ONLY where they directly explain reorder
+```
+
+AVOID:
+
+```txt
+large text blocks and paragraphs over 2 desktop lines
+repeated icon cards / icon-grid sections
+decorative or AI gradient blobs
+generic illustrations and stock-feel abstractions
+abstract SaaS dashboard mockups not tied to saved artwork / reorder
+```
+
+### 20.4 Public copy rules (German only)
+
+All public-facing copy is GERMAN only. Never use English CTAs, and never claim German/local production while production is in Turkey.
+
+```txt
+eyebrow: 2–5 words
+headline: 5–10 words
+supporting text: max 2 short sentences, each <= 18–24 words
+bullets: 3–5 concrete items, <= 5 words where possible
+prefer comparison / spec TABLES and visuals over paragraphs
+no paragraph longer than 2 desktop lines
+```
+
+BANNED buzzwords (English examples of the tone to avoid): "innovative solution", "seamless experience", "cutting-edge", "empower your brand", "tailored solutions", "premium quality solutions", "your trusted partner", "revolutionize", "discover the future".
+
+Use concrete German B2B phrasing: PP-Rollenetiketten, opak/transparent, Druckdaten hochladen, Proof vor Produktion, gespeicherte Druckdaten, schneller nachbestellen, Musterbox anfordern, Angebot anfordern.
+
+German CTAs only: Jetzt konfigurieren, PP-Etiketten konfigurieren, Musterbox anfordern, Angebot anfordern, Etiketten nachbestellen.
+
+### 20.5 AI-website patterns to remove
+
+If the public site shows any of these "AI-generated landing page" tells, remove or rebuild them:
+
+```txt
+repeated 3/4/6 icon-card grids explaining generic benefits
+hero with a big gradient blob and a vague one-liner
+"Features" section of identical cards with lorem-style copy
+fake product/dashboard screenshots unrelated to saved artwork/reorder
+stacked text sections with no product imagery or tables
+generic "solutions for your business" framing
+decorative gradients used instead of real product visuals
+```
+
+Replace them with: real roll-label photography, label-on-packaging mockups, material close-ups, spec/comparison tables, the configurator preview, the Musterbox visual and the reorder-flow diagram.
+
+### 20.6 Product truth to preserve in visuals
+
+```txt
+PP roll labels (opak + transparent) = main product (food/beverage/supplement/coffee/honey/spice micro-brands)
+thermal labels = secondary cross-sell only, must not dominate
+5.000 Stück = main commercial package (visual default / recommended)
+Musterbox = trust tool
+saved artwork + repeat order = strategic moat
+20.000+ / complex orders = quote path (Angebot anfordern)
+```
+
+Implementation: use central design tokens and reusable marketing components (one shared visual system, not a new style per section). Do not break the pricing engine, checkout, upload, quote, auth, admin or SEO metadata.
+
+---
 
 Research used public pages and search results available at the time of creation.
 

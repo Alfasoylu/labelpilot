@@ -44,9 +44,42 @@ Hub timing must be controlled by numbers.
 Turkey production
 direct shipping to Germany
 quote/sample/order validation
-SEO/GEO build
+SEO/GEO build (visual-first hub pages — see §3a)
 first repeat customers
 ```
+
+### 3a. SEO/GEO Hub Page-Build Guidance
+
+The Germany SEO/GEO build is part of this roadmap, but the **public hub pages must be visual-first and structured**, not blog-like essays or thin/duplicate AI pages.
+
+Build every German hub/landing page (PP-Rollenetiketten, Lebensmitteletiketten, Supplement-Etiketten, Getränkeetiketten, transparente/opake PP-Etiketten, Etiketten nachbestellen, Musterbox, Angebot anfordern) from these blocks:
+
+```txt
+short direct answer block (2-4 lines, German)
+product/spec table (Material, opak/transparent, Größen, Mindestmenge)
+comparison table (opak vs. transparent, PP vs. Thermo cross-sell)
+visual process steps (Druckdaten hochladen → Proof → Produktion → Versand)
+product/label-on-packaging imagery, material close-ups
+pricing/configurator preview block (5.000 Stück default)
+industry use cases (Lebensmittel, Getränke, Supplement, Kaffee, Honig, Gewürze)
+FAQ accordion (concrete German B2B questions)
+internal links to related hub pages + configurator + Musterbox
+```
+
+Hub page rules:
+
+```txt
+no long essays / keyword-stuffing / thin duplicate AI pages
+no paragraph longer than 2 desktop lines
+prefer tables, visuals, FAQ over text blocks
+German-only public UI; German CTAs only
+keep keyword intent + indexable content, structured visually
+reuse components/marketing/* — one shared visual system, no per-page styles
+```
+
+These pages exist before any hub opens and stay valid after — the SEO/GEO hub is content structure, separate from the physical Germany hub economics below.
+
+---
 
 ### Year 2
 
@@ -312,6 +345,8 @@ Hub roadmap is accepted when:
 | Risks defined | PASS |
 | KPIs defined | PASS |
 | No premature hub decision | PASS |
+| SEO/GEO hub pages built visual-first + structured (§3a) | PASS |
+| No blog-essay / thin AI hub pages | PASS |
 
 ---
 

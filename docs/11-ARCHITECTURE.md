@@ -107,6 +107,76 @@ The codebase must be organized around business domains, not random components.
 
 ---
 
+### 4.1 Public Marketing Component Architecture
+
+The public UI is **visual-first**: it relies on product imagery, roll-label visuals, label-on-packaging mockups, material close-ups, spec/comparison tables, pricing cards, configurator preview blocks, sample-box visuals, and reorder-flow diagrams — not on large text blocks, repeated icon-card grids, decorative gradient blobs, or generic SaaS illustrations.
+
+Dashboard-style visuals appear **only** where they directly explain saved artwork or the reorder flow; the public site must read as a professional roll-label manufacturer with SaaS-like ordering clarity, never as a generic SaaS landing page.
+
+To keep this consistent, all public marketing UI must be built from **one shared visual system** under a dedicated component layer. No one-off styles per section; sections compose reusable blocks and primitives that read from central design tokens.
+
+```txt
+components/
+├── marketing/
+│   ├── Header.tsx
+│   ├── Hero.tsx
+│   ├── TrustStrip.tsx
+│   ├── ProductPackageCards.tsx
+│   ├── MaterialComparison.tsx
+│   ├── IndustryUseCases.tsx
+│   ├── ReorderFlow.tsx
+│   ├── OrderingProcess.tsx
+│   ├── SampleBoxCTA.tsx
+│   ├── QuoteCTA.tsx
+│   ├── FAQSection.tsx
+│   └── FinalCTA.tsx
+└── ui/                      # shared primitives
+    ├── Section.tsx
+    ├── Container.tsx
+    ├── Eyebrow.tsx
+    ├── SectionHeading.tsx
+    ├── CTAButton.tsx
+    ├── ProductVisualCard.tsx
+    ├── PricingCard.tsx
+    ├── ComparisonTable.tsx
+    └── ProcessStep.tsx
+```
+
+**Marketing section components** (`components/marketing/*`) — each is a self-contained, reusable public section:
+
+| Component | Responsibility |
+|---|---|
+| `Header` | Public navigation + primary German CTA (Jetzt konfigurieren) |
+| `Hero` | Visual-first lead block; 5.000 Stück PP-Rollenetiketten as default focus |
+| `TrustStrip` | Compact trust signals (no exaggerated/unsupported Germany claims) |
+| `ProductPackageCards` | Package/quantity cards with 5.000 Stück recommended as default |
+| `MaterialComparison` | Opak vs. transparent PP spec/comparison table |
+| `IndustryUseCases` | Food/beverage/supplement/coffee/honey/spice micro-brand use cases |
+| `ReorderFlow` | Saved-druckdaten + schneller nachbestellen flow (the strategic moat) |
+| `OrderingProcess` | Visual steps: konfigurieren → Druckdaten hochladen → Proof → Produktion |
+| `SampleBoxCTA` | Musterbox anfordern trust block |
+| `QuoteCTA` | Angebot anfordern path for 20.000+/complex orders |
+| `FAQSection` | German FAQ accordion (FAQPage structured data) |
+| `FinalCTA` | Closing conversion block with German CTA |
+
+**Shared primitives** (`components/ui/*`) — the building blocks every marketing section composes:
+
+| Primitive | Responsibility |
+|---|---|
+| `Section` | Vertical rhythm + background wrapper for one page section |
+| `Container` | Max-width content alignment |
+| `Eyebrow` | Short 2–5 word German eyebrow label |
+| `SectionHeading` | 5–10 word German headline + optional short subline |
+| `CTAButton` | German-only CTA button (never English labels) |
+| `ProductVisualCard` | Product/roll-label visual tile |
+| `PricingCard` | Package price card (5.000 Stück as visual default) |
+| `ComparisonTable` | Spec/comparison table primitive (opak/transparent, sizes) |
+| `ProcessStep` | Single numbered step for ordering/reorder diagrams |
+
+Public marketing copy rendered through these components must follow the German B2B copy rules (short eyebrows, 5–10 word headings, concrete spec/comparison content, German CTAs only). This component layer is additive and must not alter the pricing engine, checkout, upload, quote, auth, admin, or SEO metadata behavior defined elsewhere in this document.
+
+---
+
 ## 5. Route Groups
 
 ### 5.1 Public Routes
@@ -144,6 +214,9 @@ Public routes must be:
 - German-first
 - Internally linked
 - Structured-data ready
+- Visual-first (product imagery, label/packaging mockups, spec/comparison tables, pricing and process visuals — not text walls or repeated icon-card grids)
+- Composed from the shared marketing component layer (see 4.1), not one-off per-page styles
+- Dashboard visuals only where they explain saved artwork / reorder
 
 ---
 

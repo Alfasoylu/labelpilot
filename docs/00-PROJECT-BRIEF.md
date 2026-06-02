@@ -12,7 +12,7 @@ Final domain:
 
 **labelpilot.de**
 
-Labelpilot.de is a Germany-focused B2B-first custom label ordering and reorder platform.
+Labelpilot.de is a Germany-focused, B2B-first producer of PP roll labels and a reorder platform. It positions as a premium, professional roll-label manufacturer with SaaS-like ordering clarity — not a generic online print shop and not a pure SaaS product.
 
 ---
 
@@ -78,31 +78,34 @@ Send file later
 
 ## 3. One-Sentence Business Definition
 
-Build a German-language, Germany-focused B2B label supply platform that sells custom PP product labels and thermal shipping labels, stores customer artwork and product specifications, and makes repeat orders fast, predictable, and profitable.
+Build a German-language, Germany-focused B2B roll-label producer and reorder platform that manufactures custom PP roll labels (with thermal labels as a secondary cross-sell), stores customer artwork and product specifications, and makes repeat orders fast, predictable, and profitable.
 
 ---
 
 ## 4. Core Business Model
 
-The business is not a generic online print shop.
+The business is not a generic online print shop, not a playful sticker site, not a cheap exporter, and not a pure SaaS template.
 
 The business is:
 
-> A German-language B2B-first label reorder infrastructure for German micro and small brands.
+> A premium German-language, B2B-first PP roll-label producer and reorder infrastructure for German micro and small brands.
+
+Positioning anchor: produce professional roll labels for product brands, keep ordering clear, and make repeat orders easier. The strategic moat is saved artwork plus one-click reorder.
 
 The site will allow customers to:
 
-1. Choose label type.
+1. Choose label type (opaque or transparent PP roll labels as the main product).
 2. Choose label size.
-3. Choose quantity.
-4. Upload artwork.
-5. Pay online or request a quote.
-6. Receive proof confirmation.
-7. Approve production.
-8. Receive shipment from Turkey or, later, Germany hub.
-9. Reorder the same label with one click.
+3. Choose quantity (5.000 Stück is the recommended commercial default; 20.000+ or complex orders go to the quote path).
+4. Upload artwork (Druckdaten hochladen).
+5. Request a Musterbox to evaluate materials before committing (key trust tool).
+6. Pay online or request a quote (Angebot anfordern).
+7. Receive proof confirmation (Proof vor Produktion).
+8. Approve production.
+9. Receive shipment from Turkey or, later, Germany hub.
+10. Reorder the same saved label with one click (Etiketten nachbestellen).
 
-All customer-facing copy must be German in MVP.
+All customer-facing copy must be German in MVP. Public pages are visual-first (product imagery, label-on-packaging mockups, material close-ups, spec/comparison tables, pricing cards, configurator preview, reorder-flow), not text-heavy or icon-card-grid SaaS layouts.
 
 ---
 
@@ -173,11 +176,11 @@ Thermo-Versandetiketten 100×150 mm
 
 This project should be built as:
 
-> A German-language Germany-focused B2B PP label reorder platform.
+> A premium German-language, Germany-focused B2B PP roll-label producer and reorder platform.
 
 Not as:
 
-> A multilingual generic online print shop.
+> A multilingual generic online print shop, a playful sticker site, a cheap exporter, or a generic SaaS landing page.
 
 The first execution target:
 
