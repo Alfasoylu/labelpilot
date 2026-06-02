@@ -63,6 +63,22 @@ enum LeadStatus {
   DISQUALIFIED
 }
 
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELLED
+  REFUNDED
+  PARTIALLY_REFUNDED
+  DISPUTED
+}
+
+enum StripeEventStatus {
+  RECEIVED
+  PROCESSED
+  ERROR
+}
+
 model QuoteRequest {
   id                 String      @id @default(cuid())
   status             QuoteStatus @default(NEW)
@@ -134,3 +150,76 @@ model Lead {
   @@index([createdAt])
 }
 
+model Order {
+  id                      String             @id @default(cuid())
+  orderNumber             String             @unique
+  status                  OrderStatus        @default(PENDING_PAYMENT)
+  productSlug             String
+  material                String
+  quantity                Int
+  packageId               String
+  amountCents             Int
+  currency                String             @default("EUR")
+  customerEmail           String
+  customerName            String?
+  companyName             String?
+  country                 String             @default("DE")
+  stripeCheckoutSessionId String?            @unique
+  stripePaymentIntentId   String?
+  customerId              String?
+  createdAt               DateTime           @default(now())
+  updatedAt               DateTime           @updatedAt
+  payments                Payment[]
+  statusEvents            OrderStatusEvent[]
+
+  @@index([status])
+  @@index([customerEmail])
+  @@index([createdAt])
+  @@index([productSlug, material, quantity])
+  @@index([packageId])
+}
+
+model Payment {
+  id                      String        @id @default(cuid())
+  orderId                 String        @unique
+  stripeCheckoutSessionId String?
+  stripePaymentIntentId   String?
+  stripeCustomerId        String?
+  amountCents             Int
+  currency                String
+  status                  PaymentStatus @default(PENDING)
+  provider                String        @default("stripe")
+  stripeEventId           String?
+  paidAt                  DateTime?
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
+  order                   Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([status])
+  @@index([stripePaymentIntentId])
+  @@index([stripeCheckoutSessionId])
+}
+
+model StripeEvent {
+  id            String            @id @default(cuid())
+  stripeEventId String            @unique
+  type          String
+  status        StripeEventStatus @default(RECEIVED)
+  errorMessage  String?
+  processedAt   DateTime?
+  createdAt     DateTime          @default(now())
+}
+
+model OrderStatusEvent {
+  id        String      @id @default(cuid())
+  orderId   String
+  status    OrderStatus
+  note      String?
+  createdAt DateTime    @default(now())
+  order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([status])
+  @@index([createdAt])
+}
