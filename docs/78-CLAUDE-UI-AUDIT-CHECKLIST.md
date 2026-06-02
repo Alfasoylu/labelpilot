@@ -2,6 +2,8 @@
 
 # Labelpilot.de — Claude UI Audit Checklist
 
+> **Audit basis (active source of truth):** judge the site against `00-SOURCE-OF-TRUTH.md` decision #14 and the warm **Ivory Industrial Premium** system in `78-PUBLIC-WEBSITE-DESIGN-SYSTEM.md` — a premium German B2B roll-label manufacturer, German-only customer UI, quote/sample/reorder conversion, anti-AI design rules, **no heavy animation/3D**, and **no generic print-category drift**. **Blue is NOT the brand colour** (proof-blue is a tiny technical accent only). Do **not** audit against the superseded navy/blue docs `76-UI-DESIGN-SYSTEM-GERMAN-B2B.md` / `77-CODEX-UI-REDESIGN-PROMPT.md`.
+
 ## 1. Purpose
 
 This document defines the UI audit checklist for Claude Code after Codex performs the redesign.
@@ -38,14 +40,18 @@ If unsure, choose the stricter verdict.
 
 ## 3. Required Reading
 
-Claude must read:
+Claude must read (active sources of truth):
 
 ```txt
-/docs/76-UI-DESIGN-SYSTEM-GERMAN-B2B.md
-/docs/77-CODEX-UI-REDESIGN-PROMPT.md
+/docs/00-SOURCE-OF-TRUTH.md                  (decision #14 — locked visual direction)
+/docs/78-PUBLIC-WEBSITE-DESIGN-SYSTEM.md     (active warm Ivory Industrial Premium system)
+/docs/rakip_analizi_ve_stil_rehberi.md       (active style guide + anti-AI rules)
+/docs/00-PROJECT-BRIEF.md                    (positioning, German-only, non-negotiables)
 /docs/73-2026-EXPERT-GEO-SEO-TIPS.md
 /docs/74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md
 ```
+
+Do NOT audit against `76-UI-DESIGN-SYSTEM-GERMAN-B2B.md` or `77-CODEX-UI-REDESIGN-PROMPT.md` — both are SUPERSEDED / historical (the old navy/blue SaaS direction) and must not be used as the design basis.
 
 ---
 
@@ -65,6 +71,9 @@ generic AI landing page
 unfinished Tailwind demo
 sticker toy website
 crowded catalog
+navy/blue SaaS identity (blue is not the brand colour)
+heavy animation / 3D / WebGL / spinning logo / parallax
+generic print categories (flyers, business cards, posters, etc.)
 ```
 
 If it looks generic, verdict is FAIL.

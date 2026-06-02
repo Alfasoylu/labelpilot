@@ -1,5 +1,9 @@
 # 77-CODEX-UI-REDESIGN-PROMPT.md
 
+> **SUPERSEDED — do not execute directly.**
+> This redesign prompt targets the abandoned navy/blue "German B2B SaaS" direction (Trust-Blue `#2563EB` primary CTA, Inter-only typography, dashboard/SaaS-card hero). That direction is dead.
+> Use `00-SOURCE-OF-TRUTH.md` decision #14 and the active warm-premium `78-PUBLIC-WEBSITE-DESIGN-SYSTEM.md` instead: Ivory Industrial Premium — warm ivory backgrounds, deep-ink CTA `#11100E`, brass accent `#B08A45`, soft warm borders, proof-blue only as a tiny technical accent (**blue is NOT the brand colour**), Instrument Sans + IBM Plex Sans/Mono. Kept for history only.
+
 # Labelpilot.de — Codex UI Redesign Prompt
 
 ## 1. Mission

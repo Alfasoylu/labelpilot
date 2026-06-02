@@ -1,6 +1,8 @@
 # 76-UI-DESIGN-SYSTEM-GERMAN-B2B.md
 
-> **SUPERSEDED (historical).** The navy/blue "German B2B SaaS" direction in this doc (Trust-Blue `#2563EB`, white/soft-grey backgrounds, Inter-style typography) has been **replaced** by the premium warm German roll-label manufacturer system in `78-PUBLIC-WEBSITE-DESIGN-SYSTEM.md` (warm ivory/charcoal palette, trust-blue `#1F4E79`, champagne accent, Fraunces + IBM Plex Sans editorial typography, asymmetric visual-first layout, anti-AI rules). See `00-SOURCE-OF-TRUTH.md` decision #14. Keep this file for history only; do not implement against it.
+> **SUPERSEDED / HISTORICAL ONLY. Do not implement from this file.**
+> The old navy/blue German B2B SaaS direction in this doc (Trust-Blue `#2563EB`, white/soft-grey backgrounds, Inter-style typography) is **no longer active**.
+> The active public design system is the warm **Ivory Industrial Premium** direction locked in `00-SOURCE-OF-TRUTH.md` decision #14 and `78-PUBLIC-WEBSITE-DESIGN-SYSTEM.md`: warm ivory/paper backgrounds, deep-ink headings + CTA `#11100E`, graphite body text, brass/sand accent `#B08A45`, soft warm borders, and proof-blue only as a small technical/proof accent — **blue is NOT the brand colour**. Typography is Instrument Sans + IBM Plex Sans/Mono (not Inter, not Fraunces). Keep this file for history only.
 
 # Labelpilot.de — UI Design System for German B2B Label Infrastructure
 

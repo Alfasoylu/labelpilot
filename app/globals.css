@@ -131,7 +131,7 @@ textarea {
   display: grid;
   place-items: center;
   border-radius: 14px;
-  background: linear-gradient(135deg, #11100e, #101827);
+  background: linear-gradient(135deg, #11100e, #2a2926);
   color: #fffdf8;
   box-shadow: var(--shadow-subtle);
   font-size: 1rem;
@@ -254,7 +254,7 @@ textarea {
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   overflow: hidden;
-  background: #0b1220;
+  background: #11100e;
 }
 
 .brand-hero__image,
@@ -269,7 +269,7 @@ textarea {
 
 .brand-hero__overlay {
   z-index: 1;
-  background: linear-gradient(90deg, rgba(11, 18, 32, 0.86), rgba(11, 18, 32, 0.52), rgba(11, 18, 32, 0.08));
+  background: linear-gradient(90deg, rgba(17, 16, 14, 0.86), rgba(17, 16, 14, 0.52), rgba(17, 16, 14, 0.08));
 }
 
 .brand-hero__inner {
@@ -457,7 +457,7 @@ textarea {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at top right, rgba(37, 99, 235, 0.14), transparent 34%);
+    radial-gradient(circle at top right, rgba(176, 138, 69, 0.14), transparent 34%);
   pointer-events: none;
 }
 
@@ -778,8 +778,8 @@ textarea {
 .field-full input:focus,
 .field-full select:focus,
 .field-full textarea:focus {
-  border-color: rgba(37, 99, 235, 0.42);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  border-color: rgba(176, 138, 69, 0.5);
+  box-shadow: 0 0 0 4px rgba(176, 138, 69, 0.16);
   outline: none;
 }
 
@@ -837,9 +837,9 @@ textarea {
   gap: 18px;
   padding: 28px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(239, 246, 255, 0.8));
-  border: 1px solid rgba(37, 99, 235, 0.16);
-  box-shadow: 0 28px 70px rgba(37, 99, 235, 0.14);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(251, 246, 236, 0.85));
+  border: 1px solid rgba(176, 138, 69, 0.18);
+  box-shadow: 0 28px 70px rgba(17, 16, 14, 0.12);
 }
 
 .hero-visual-card::before {
@@ -847,7 +847,7 @@ textarea {
   position: absolute;
   inset: 18px;
   border-radius: 24px;
-  border: 1px dashed rgba(37, 99, 235, 0.2);
+  border: 1px dashed rgba(176, 138, 69, 0.22);
   pointer-events: none;
 }
 
@@ -909,7 +909,7 @@ textarea {
 .hero-kpi {
   padding: 16px;
   border-radius: 18px;
-  background: rgba(11, 18, 32, 0.96);
+  background: rgba(17, 16, 14, 0.96);
   color: #fff;
 }
 
@@ -1061,7 +1061,7 @@ th {
 
 .cta-shell {
   background:
-    linear-gradient(135deg, rgba(11, 18, 32, 1), rgba(23, 32, 51, 0.98));
+    linear-gradient(135deg, #11100e, #241f18);
   color: #fff;
 }
 
@@ -1156,7 +1156,7 @@ th {
   }
 
   .brand-hero__overlay {
-    background: linear-gradient(90deg, rgba(11, 18, 32, 0.92), rgba(11, 18, 32, 0.65), rgba(11, 18, 32, 0.2));
+    background: linear-gradient(90deg, rgba(17, 16, 14, 0.92), rgba(17, 16, 14, 0.65), rgba(17, 16, 14, 0.2));
   }
 
   .brand-hero__inner {
