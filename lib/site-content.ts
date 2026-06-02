@@ -288,9 +288,9 @@ export const thermalPackageNotes: PackageTier[] = [
 
 export const homePageData: HomePageData = {
   eyebrow: "",
-  title: "Etiketten, die Ihre Marke tragen.",
+  title: "PP-Rollenetiketten für Produktmarken, die regelmäßig nachbestellen.",
   lead:
-    "Opake & transparente PP-Rollenetiketten — einmal freigegeben, jederzeit nachbestellbar.",
+    "Opake und transparente PP-Etiketten auf Rolle. Druckdaten hochladen, technisch prüfen lassen und später schneller mit gespeicherten Designs nachbestellen.",
   highlights: [
     "Opak, transparent, sauber verarbeitet.",
     "Für Food, Beverage, Supplement und Private Label.",

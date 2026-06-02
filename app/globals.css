@@ -1,31 +1,39 @@
 :root {
-  --bg: #f8fafc;
-  --bg-soft: #eff6ff;
-  --surface: #ffffff;
-  --surface-alt: #f8fbff;
-  --surface-strong: #eff6ff;
-  --line: #e2e8f0;
-  --line-strong: #cbd5e1;
-  --text: #0b1220;
-  --text-strong: #111827;
-  --text-soft: #172033;
-  --muted: #64748b;
-  --brand: #2563eb;
-  --brand-hover: #1d4ed8;
-  --success: #16a34a;
-  --success-soft: #f0fdf4;
-  --warning: #f59e0b;
-  --warning-soft: #fffbeb;
-  --danger: #dc2626;
-  --danger-soft: #fef2f2;
-  --shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 24px 64px rgba(15, 23, 42, 0.08);
-  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 32px rgba(15, 23, 42, 0.06);
-  --radius-xl: 32px;
-  --radius-lg: 24px;
-  --radius-md: 18px;
-  --radius-sm: 14px;
+  /* Warm premium German B2B roll-label palette (supersedes the raw SaaS blue/grey) */
+  --bg: #f7f3ea;
+  --bg-soft: #efe7d8;
+  --surface: #fffcf6;
+  --surface-alt: #fbf7ee;
+  --surface-strong: #efe7d8;
+  --line: #d8cdbb;
+  --line-strong: #b9a98f;
+  --text: #101418;
+  --text-strong: #0b1220;
+  --text-soft: #2a2f2a;
+  --muted: #5f665f;
+  --brand: #1f4e79;
+  --brand-hover: #173a5a;
+  --accent: #b8945e;
+  --accent-soft: #e7d7bd;
+  --success: #2f6b4f;
+  --success-soft: #eaf2ec;
+  --warning: #a66a2c;
+  --warning-soft: #f6ecdc;
+  --danger: #b3402f;
+  --danger-soft: #f6e7e3;
+  --shadow-subtle: 0 12px 36px rgba(16, 20, 24, 0.06);
+  --shadow-sm: 0 12px 36px rgba(16, 20, 24, 0.06);
+  --shadow-soft: 0 24px 70px rgba(16, 20, 24, 0.08);
+  --shadow-md: 0 24px 70px rgba(16, 20, 24, 0.08);
+  --shadow-float: 0 36px 90px rgba(16, 20, 24, 0.1);
+  --shadow-card: 0 1px 2px rgba(16, 20, 24, 0.04), 0 14px 38px rgba(16, 20, 24, 0.07);
+  --radius-xl: 24px;
+  --radius-lg: 18px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
   --container: 1180px;
+  --font-heading-stack: var(--font-heading), Georgia, "Times New Roman", serif;
+  --font-body-stack: var(--font-body), system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 * {
@@ -41,17 +49,21 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--text);
-  font-family:
-    Inter,
-    Geist,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  font-family: var(--font-body-stack);
+  -webkit-font-smoothing: antialiased;
   background:
-    radial-gradient(circle at top right, rgba(37, 99, 235, 0.1), transparent 26%),
-    linear-gradient(180deg, #ffffff 0%, #f8fafc 48%, #f1f5f9 100%);
+    radial-gradient(circle at top right, rgba(184, 148, 94, 0.1), transparent 30%),
+    linear-gradient(180deg, #fffcf6 0%, #f7f3ea 55%, #efe7d8 100%);
+}
+
+h1,
+h2,
+h3,
+h4,
+.brand-hero__title {
+  font-family: var(--font-heading-stack);
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 a {
@@ -78,8 +90,8 @@ textarea {
   top: 0;
   z-index: 40;
   backdrop-filter: blur(18px);
-  background: rgba(255, 255, 255, 0.88);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.88);
+  background: rgba(255, 252, 246, 0.86);
+  border-bottom: 1px solid rgba(216, 205, 187, 0.7);
 }
 
 .container {
@@ -111,11 +123,10 @@ textarea {
   height: 46px;
   display: grid;
   place-items: center;
-  border-radius: 16px;
-  background:
-    linear-gradient(135deg, rgba(37, 99, 235, 1), rgba(59, 130, 246, 0.82));
-  color: #fff;
-  box-shadow: var(--shadow-sm);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #0b1220, #1f4e79);
+  color: #fffdf8;
+  box-shadow: var(--shadow-subtle);
   font-size: 1rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -175,15 +186,16 @@ textarea {
 .cta-link,
 .cta-button {
   border: 1px solid transparent;
-  color: #fff;
-  background: linear-gradient(135deg, var(--brand), var(--brand-hover));
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.2);
+  color: #fffdf8;
+  background: var(--brand);
+  box-shadow: 0 14px 30px rgba(31, 78, 121, 0.18);
 }
 
 .cta-link:hover,
 .cta-button:hover {
   transform: translateY(-1px);
-  background: linear-gradient(135deg, var(--brand-hover), var(--brand-hover));
+  background: var(--brand-hover);
+  box-shadow: 0 18px 38px rgba(31, 78, 121, 0.22);
 }
 
 .secondary-link,
@@ -279,9 +291,9 @@ textarea {
 .brand-hero__title {
   margin: 0;
   color: #f8fafc;
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  line-height: 0.98;
-  letter-spacing: -0.04em;
+  font-size: clamp(2.6rem, 5.2vw, 4.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
 }
 
 .brand-hero__lead {
@@ -320,14 +332,14 @@ textarea {
 }
 
 .brand-hero__cta--primary {
-  background: #2563eb;
-  border-color: #2563eb;
-  color: #f8fafc;
+  background: #1f4e79;
+  border-color: #1f4e79;
+  color: #fffdf8;
 }
 
 .brand-hero__cta--primary:hover {
-  background: #1d4ed8;
-  border-color: #1d4ed8;
+  background: #173a5a;
+  border-color: #173a5a;
 }
 
 .brand-hero__cta--secondary {
@@ -445,14 +457,11 @@ textarea {
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  min-height: 34px;
-  padding: 0 14px;
-  border-radius: 999px;
-  background: var(--bg-soft);
-  color: var(--brand);
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  color: var(--accent);
+  font-family: var(--font-body-stack);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
@@ -462,8 +471,8 @@ textarea {
 .cta-shell h2 {
   margin: 18px 0 12px;
   color: var(--text-strong);
-  line-height: 1.02;
-  letter-spacing: -0.04em;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
 }
 
 .hero-panel h1,
@@ -553,7 +562,7 @@ textarea {
 .trust-item,
 .feature-card {
   border-radius: var(--radius-lg);
-  background: #ffffff;
+  background: var(--surface);
   padding: 24px;
   box-shadow: var(--shadow-card);
 }

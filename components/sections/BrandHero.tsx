@@ -27,7 +27,7 @@ export function BrandHero({ title, lead }: BrandHeroProps) {
           <p className="brand-hero__lead">{lead}</p>
           <div className="brand-hero__actions">
             <Link href="/de/opake-pp-etiketten" className="brand-hero__cta brand-hero__cta--primary">
-              PP-Etiketten konfigurieren
+              Jetzt konfigurieren
             </Link>
             <Link href="/de/musterbox" className="brand-hero__cta brand-hero__cta--secondary">
               Musterbox anfordern
