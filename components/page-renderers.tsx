@@ -358,12 +358,12 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
       {page.path === "/de/pp-rollenetiketten" ? (
         <Section
           eyebrow="Materialansicht"
-          title="Rollenqualit?t und Stanzung auf einen Blick"
-          lead="Die Rollenansicht unterst?tzt die Material- und Qualit?tsbeschreibung der Seite, ohne die Textstruktur zu verdr?ngen."
+          title="Rollenqualität und Stanzung auf einen Blick"
+          lead="Die Rollenansicht unterstützt die Material- und Qualitätsbeschreibung der Seite, ohne die Textstruktur zu verdrängen."
         >
           <EditorialImage
             {...productImageAssets.roll}
-            caption="Rollenansicht mit gestanzten PP-Etiketten f?r die Qualit?ts- und Materialeinordnung."
+            caption="Rollenansicht mit gestanzten PP-Etiketten für die Qualitäts- und Materialeinordnung."
             sizes="(max-width: 1024px) 100vw, 760px"
           />
         </Section>
