@@ -987,7 +987,58 @@ Take-away: **free DE shipping and free data check are the norm**, not a premium 
 6. **Do NOT price-war on per-unit headlines.** The only public per-unit number ("ab 0,01 €/Stück", WMD) is a 2 cm round label at up to 300,000 pcs — economically irrelevant to a 200 cm² label. Reaffirm §21 / §26.
 7. **Next quarterly action — capture the three real like-for-like benchmarks.** Only **Labelprint24, Flyeralarm, and print24** genuinely reach 100×200 mm with PP film. Capture configurator screenshots at **100×200 mm white PP, 1.000 / 5.000** (net + gross, shipping + data-check state) for these three — that is the only valid head-to-head and is still missing because all three are configurator-gated.
 
+### 27.5.1 WIRmachenDRUCK nearest-product benchmark (calculator capture + area normalization)
+
+This addendum tightens the WIRmachenDRUCK read with direct calculator capture from live product pages.
+
+Key clarification:
+
+1. WIRmachenDRUCK does have real PP-roll-label depth.
+2. The `71x96 mm` fixed-format page exposes:
+   - opaque PP
+   - transparent PP
+   - transparent PP with partial white print
+3. The `No Label Look` free-size page exposes:
+   - transparent PP / PET liner
+   - transparent PP / PET liner with white print
+4. The new `opake` free-size link is operationally useful, but its surfaced exact-size material is opake paper, not opaque PP.
+
+Area-normalization basis for the fixed-format PP page:
+
+```txt
+Labelpilot size = 100x200 mm = 20,000 mm² = 0.0200 m²
+WIRmachenDRUCK fixed PP size = 71x96 mm = 6,816 mm² = 0.006816 m²
+Normalization factor = 20,000 / 6,816 = 2.9343
+Equivalent 100x200 price = observed 71x96 price x 2.9343
+```
+
+| Source SKU | Material read | Match type | Method | 1.000 net | 5.000 net | 10.000 net | Confidence | Comment |
+|---|---|---|---|---:|---:|---:|---|---|
+| Fixed format `7,1 x 9,6 cm` | `Indoor: 60µ PP Haftfolie weiß glänzend` | nearest opaque PP | area-normalized to `100x200 mm` | `€186,94` | `€290,93` | `€541,73` | Medium | same material family, smaller size |
+| Fixed format `7,1 x 9,6 cm` | `Indoor: 50µ PP Haftfolie transparent glänzend` | nearest transparent PP | area-normalized to `100x200 mm` | `€203,87` | `€375,53` | `€710,94` | Medium | strongest same-material transparent comparison publicly reachable |
+| Fixed format `7,1 x 9,6 cm` | `Indoor: 50µ PP Haftfolie transparent glänzend mit partiellem Weißdruck` | transparent + white benchmark | area-normalized to `100x200 mm` | `€237,73` | `€544,78` | `€1.049,38` | Medium | confirms WIRmachenDRUCK supports white print and that it materially lifts price |
+| Free size `10 x 20 cm` | `No Label Look: 60µ PP Haftfolie transparent glänzend mit 30µ PET Liner` | exact-size transparent benchmark | direct calculator | `€62,80` | `€286,00` | `€572,00` | High | exact size, but no-label-look construction rather than standard transparent PP |
+| Free size `10 x 20 cm` | `Opakes Haftetikettenpapier 90 g/m²` | exact-size but wrong material | direct calculator | `€68,80` | `€312,00` | `€624,00` | Medium-Low | exact size, but paper not PP; do not treat as a true opaque-PP equivalent |
+
+Working read:
+
+1. WIRmachenDRUCK should now be treated as a real PP comparator, not only as a tiny-round-label teaser competitor.
+2. The cleanest same-material comparison currently available is:
+   - opaque PP = `71x96 mm` fixed PP page, normalized by area
+   - transparent PP = `71x96 mm` fixed PP page, normalized by area
+3. The cleanest exact-size transparent comparison currently available is:
+   - `10x20 cm` No-Label-Look free-size calculator
+4. The new `opake` free-size link should stay in the audit set, but only as an exact-size paper floor check. It must not be used as a like-for-like opaque-PP price anchor.
+
 ### 27.6 Source URLs (fetched 2026-06-03)
+
+WIRmachenDRUCK exact audit URLs added on 2026-06-03:
+
+```txt
+https://www.wir-machen-druck.de/hochwertige-etiketten-auf-rolle-rechteckig-71-x-96-cm.html
+https://www.wir-machen-druck.de/hochwertige-no-label-look-etiketten-auf-rolle-mit-freier-groesse-rechteckig.html
+https://www.wir-machen-druck.de/hochwertige-opake-etiketten-auf-rolle-mit-freier-groesse-rechteckig.html
+```
 
 ```txt
 Labelprint24:        labelprint24.com/de/products/roll-labels-1
