@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import type { Prisma } from "@prisma/client";
 
 import { getPrismaClient } from "@/lib/db/prisma";
+import { sendEmail } from "@/lib/email/send";
+import { proofApproved } from "@/lib/email/templates/lifecycle";
 import {
   getOrderStatusLabel,
   getProofFileStatusLabel,
@@ -152,6 +154,23 @@ export async function POST(
       orderStatusLabel: getOrderStatusLabel("FILE_REVIEW"),
     };
   });
+
+  if (payload.decision === "approve") {
+    if (order.customerEmail) {
+      const template = proofApproved({
+        orderNumber: order.orderNumber,
+      });
+
+      await sendEmail({
+        to: order.customerEmail,
+        subject: template.subject,
+        html: template.html,
+        text: template.text,
+      });
+    } else {
+      console.debug(`Proof-Freigabemail uebersprungen: keine E-Mail fuer ${order.id}.`);
+    }
+  }
 
   return NextResponse.json(result);
 }

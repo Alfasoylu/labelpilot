@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
 import { getPrismaClient } from "@/lib/db/prisma";
+import { sendEmail } from "@/lib/email/send";
+import { orderConfirmation } from "@/lib/email/templates/lifecycle";
 import { getStripeServerClient, getStripeWebhookSecret } from "@/lib/stripe/server";
 
 export const runtime = "nodejs";
@@ -102,6 +104,40 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
       },
     }),
   ]);
+
+  const emailReservation = await prisma.order.updateMany({
+    where: {
+      id: order.id,
+      confirmationEmailSentAt: null,
+    },
+    data: {
+      confirmationEmailSentAt: new Date(),
+    },
+  });
+
+  const customerEmail = session.customer_details?.email ?? order.customerEmail;
+
+  if (emailReservation.count !== 1) {
+    return;
+  }
+
+  if (!customerEmail) {
+    console.debug(`Bestellbestaetigung uebersprungen: keine E-Mail fuer ${order.id}.`);
+    return;
+  }
+
+  const template = orderConfirmation({
+    orderId: order.id,
+    orderNumber: order.orderNumber,
+    uploadToken: order.uploadToken,
+  });
+
+  await sendEmail({
+    to: customerEmail,
+    subject: template.subject,
+    html: template.html,
+    text: template.text,
+  });
 }
 
 async function handlePaymentFailed(event: Stripe.Event) {

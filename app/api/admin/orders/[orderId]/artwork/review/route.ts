@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import type { Prisma } from "@prisma/client";
 
 import { getPrismaClient } from "@/lib/db/prisma";
+import { sendEmail } from "@/lib/email/send";
+import { correctionRequested } from "@/lib/email/templates/lifecycle";
 
 export const runtime = "nodejs";
 
@@ -166,6 +168,26 @@ export async function POST(
       : action === "under_review"
         ? "Datei zur Pruefung markiert."
         : "Korrektur wurde angefordert.";
+
+  if (action === "request_correction") {
+    if (order.customerEmail) {
+      const template = correctionRequested({
+        orderId: order.id,
+        orderNumber: order.orderNumber,
+        uploadToken: order.uploadToken,
+        adminNote: note,
+      });
+
+      await sendEmail({
+        to: order.customerEmail,
+        subject: template.subject,
+        html: template.html,
+        text: template.text,
+      });
+    } else {
+      console.debug(`Korrekturmail uebersprungen: keine E-Mail fuer ${order.id}.`);
+    }
+  }
 
   return redirectWithMessage(request, redirectTo, {
     message: successMessage,

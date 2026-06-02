@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import type { Prisma } from "@prisma/client";
 
 import { getPrismaClient } from "@/lib/db/prisma";
+import { sendEmail } from "@/lib/email/send";
+import { proofReady } from "@/lib/email/templates/lifecycle";
 import { validateProofFile } from "@/lib/file-validation/artwork";
 import { uploadProofFile } from "@/lib/storage/artwork";
 
@@ -135,6 +137,23 @@ export async function POST(
     return redirectWithMessage(request, redirectTo, {
       error: "Proof konnte nicht hochgeladen werden.",
     });
+  }
+
+  if (order.customerEmail) {
+    const template = proofReady({
+      orderId: order.id,
+      orderNumber: order.orderNumber,
+      uploadToken: order.uploadToken,
+    });
+
+    await sendEmail({
+      to: order.customerEmail,
+      subject: template.subject,
+      html: template.html,
+      text: template.text,
+    });
+  } else {
+    console.debug(`Proof-Mail uebersprungen: keine E-Mail fuer ${order.id}.`);
   }
 
   return redirectWithMessage(request, redirectTo, {
