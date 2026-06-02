@@ -221,17 +221,19 @@ export function HomePage({ page }: HomePageProps) {
           <p className="package-note">{pricingValueBundleLine}</p>
         </Section>
 
-        <section className="split-6040">
-          <MaterialComparisonShowcase />
-          <div className="split-6040__aside">
-            <div className="section-header">
-              <span className="eyebrow">Materialien</span>
-              <h2>Material wählen, bevor die Datei in Produktion geht.</h2>
-              <p>
-                Opak für deckende Farben. Transparent für Flaschen, Gläser und
-                Produkte, bei denen der Inhalt sichtbar bleiben soll.
-              </p>
-            </div>
+        <section className="material-split">
+          <div className="material-split__head section-header">
+            <span className="eyebrow">Materialien</span>
+            <h2>Material wählen, bevor die Datei in Produktion geht.</h2>
+            <p>
+              Opak für deckende Farben. Transparent für Flaschen, Gläser und
+              Produkte, bei denen der Inhalt sichtbar bleiben soll.
+            </p>
+          </div>
+          <div className="material-split__visual">
+            <MaterialComparisonShowcase />
+          </div>
+          <div className="material-split__table">
             <ComparisonTable
               title="Material im Überblick"
               lead="Wirkung und typische Nutzung."
