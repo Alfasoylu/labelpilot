@@ -208,7 +208,7 @@ export const opaquePackages: PackageTier[] = [
     note: "Hauptpaket",
     description:
       "Der Kernpreis für wiederkehrende B2B-Bestellungen im großen 100×200-mm-Format.",
-    badge: "Beste Balance",
+    badge: "Empfohlen für Wiederbestellungen",
     popular: true,
   }),
   buildFixedTier({
@@ -253,7 +253,7 @@ export const transparentPackages: PackageTier[] = [
     note: "Hauptpaket",
     description:
       "Die bevorzugte Menge für transparente Premium-Verpackungen mit sichtbarer Materialwirkung.",
-    badge: "Kernpaket",
+    badge: "Empfohlen für Wiederbestellungen",
     popular: true,
   }),
   buildFixedTier({
