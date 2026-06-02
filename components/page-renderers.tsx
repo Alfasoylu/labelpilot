@@ -84,6 +84,26 @@ const productImageAssets = {
     src: "/images/musterbox-etiketten-muster.webp",
     alt: "Geöffnete Musterbox mit PP-Etikettenmustern in opaker und transparenter Ausführung",
   },
+  druckdatenCheck: {
+    src: "/images/druckdaten-pruefung.webp",
+    alt: "Druckdaten-Proof mit Beschnitt- und Passermarken unter einer Lupe",
+  },
+  qualityControl: {
+    src: "/images/etiketten-qualitaetskontrolle.webp",
+    alt: "Hände prüfen frisch gedruckte PP-Etiketten gegen das Licht",
+  },
+  beverages: {
+    src: "/images/getraenke-flaschenetiketten.webp",
+    alt: "Glasflaschen für Getränke mit umlaufenden PP-Etiketten",
+  },
+  foodGlass: {
+    src: "/images/lebensmittel-glasetiketten.webp",
+    alt: "Lebensmittelgläser mit Etiketten für Honig, Marmelade und Gewürze",
+  },
+  supplementData: {
+    src: "/images/supplement-etiketten-variable-daten.webp",
+    alt: "Supplement-Flaschen mit Etiketten und markierter Datenzone für Lot und SKT",
+  },
 } as const;
 
 export function HomePage({ page, navigation }: HomePageProps) {
@@ -443,15 +463,16 @@ function IndustryPage({ page, canonicalPath }: DynamicPageProps) {
         aside={<QuickAnswerCard page={page} />}
       />
 
-      {page.path === "/de/lebensmittel-etiketten" ? (
+      {getIndustryPageImage(page.path) ? (
         <Section
-          eyebrow="Branchenübersicht"
-          title="Lebensmittel-Etiketten zwischen Lesbarkeit, Oberfläche und Wiederholung"
-          lead="Die Bildfläche ergänzt die Branchenlogik und zeigt die Breite typischer Verpackungsformen ohne neue Produktversprechen."
+          eyebrow="Branchenüberblick"
+          title="Typische Verpackungen und Etikettenwirkung in dieser Branche"
+          lead="Die Bildfläche ergänzt die Branchenlogik und zeigt die typischen Verpackungsformen, ohne neue Produktversprechen zu machen."
         >
           <EditorialImage
-            {...productImageAssets.industries}
-            caption="Lebensmittelnahe Verpackungsformen mit unterschiedlichen Etikettenanforderungen."
+            src={getIndustryPageImage(page.path)!.src}
+            alt={getIndustryPageImage(page.path)!.alt}
+            caption={getIndustryPageImage(page.path)!.caption}
             sizes="(max-width: 1024px) 100vw, 760px"
           />
         </Section>
@@ -608,6 +629,27 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
               },
             ]}
           />
+        </Section>
+      ) : null}
+
+      {page.path === "/de/druckdaten" ? (
+        <Section
+          eyebrow="Datenprüfung"
+          title="Technische Druckdatenprüfung und Qualitätskontrolle"
+          lead="Vor der Produktion werden Druckdaten technisch geprüft und die Druckqualität kontrolliert — sichtbar statt nur als Aufzählung."
+        >
+          <div className="two-column">
+            <EditorialImage
+              {...productImageAssets.druckdatenCheck}
+              caption="Druckdaten-Proof mit Beschnitt- und Passermarken unter der Lupe."
+              sizes="(max-width: 1024px) 100vw, 520px"
+            />
+            <EditorialImage
+              {...productImageAssets.qualityControl}
+              caption="Sichtprüfung frisch gedruckter PP-Etiketten gegen das Licht."
+              sizes="(max-width: 1024px) 100vw, 520px"
+            />
+          </div>
         </Section>
       ) : null}
 
@@ -1174,6 +1216,34 @@ function getProductPageImage(path: string) {
       };
     default:
       return null;
+  }
+}
+
+function getIndustryPageImage(path: string) {
+  switch (path) {
+    case "/de/lebensmittel-etiketten":
+    case "/de/honig-marmelade-etiketten":
+    case "/de/gewuerz-etiketten":
+      return {
+        ...productImageAssets.foodGlass,
+        caption: "Lebensmittelgläser mit Etiketten für Honig, Marmelade und Gewürze.",
+      };
+    case "/de/getraenke-etiketten":
+    case "/de/flaschenetiketten":
+      return {
+        ...productImageAssets.beverages,
+        caption: "Glasflaschen für Getränke mit umlaufenden PP-Etiketten.",
+      };
+    case "/de/supplement-etiketten":
+      return {
+        ...productImageAssets.supplementData,
+        caption: "Supplement-Flaschen mit markierter Datenzone für spätere Lot-/SKT-Logik.",
+      };
+    default:
+      return {
+        ...productImageAssets.industries,
+        caption: "Verschiedene Verpackungsformen mit passenden PP-Etiketten.",
+      };
   }
 }
 
