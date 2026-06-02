@@ -769,6 +769,44 @@ th {
   line-height: 1.68;
 }
 
+.image-supported-grid {
+  align-items: start;
+}
+
+.content-stack {
+  display: grid;
+  gap: 20px;
+}
+
+.editorial-image-card {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow-sm);
+}
+
+.editorial-image-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1672 / 941;
+  background: var(--surface-alt);
+}
+
+.editorial-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.editorial-image-card figcaption {
+  padding: 14px 18px 18px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .cta-shell {
   background:
     linear-gradient(135deg, rgba(11, 18, 32, 1), rgba(23, 32, 51, 0.98));

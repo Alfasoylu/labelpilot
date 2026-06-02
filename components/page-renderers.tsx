@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { ProductCard } from "@/components/cards/ProductCard";
@@ -57,6 +58,29 @@ const trustItems = [
   },
 ];
 
+const productImageAssets = {
+  productLine: {
+    src: "/images/pp-rollenetiketten-produktlinie.webp",
+    alt: "Produkte mit individuell bedruckten PP-Rollenetiketten: Flasche, Standbeutel, Supplement-Flasche und Tiegel",
+  },
+  roll: {
+    src: "/images/pp-rollenetiketten-rolle.webp",
+    alt: "Rolle mit gestanzten PP-Rollenetiketten, teilweise abgerollt",
+  },
+  compare: {
+    src: "/images/transparente-vs-opake-pp-etiketten.webp",
+    alt: "Vergleich: transparentes PP-Etikett auf Glasflasche neben opakem PP-Etikett auf Standbeutel",
+  },
+  industries: {
+    src: "/images/etiketten-branchen-uebersicht.webp",
+    alt: "PP-Etiketten für Lebensmittel-, Getränke-, Supplement- und Kosmetikprodukte in der Übersicht",
+  },
+  sampleBox: {
+    src: "/images/musterbox-etiketten-muster.webp",
+    alt: "Geöffnete Musterbox mit PP-Etikettenmustern in opaker und transparenter Ausführung",
+  },
+} as const;
+
 export function HomePage({ page, navigation }: HomePageProps) {
   return (
     <div className="container section-stack">
@@ -108,17 +132,24 @@ export function HomePage({ page, navigation }: HomePageProps) {
         title="Die wichtigsten öffentlichen Einstiegspunkte"
         lead="Phase 2 hat die Produkt- und Wissensstruktur erweitert. Die UI bündelt diese jetzt als klare Kauf- und Informationswege."
       >
-        <div className="card-grid">
-          {page.topicCards.map((card, index) => (
-            <ProductCard
-              key={card.href}
-              title={card.title}
-              body={card.body}
-              href={card.href}
-              badge={index === 0 ? "Hauptprodukt" : index === 1 ? "Premium-Material" : "Wissenshub"}
-              featured={index === 0}
-            />
-          ))}
+        <div className="two-column image-supported-grid">
+          <div className="card-grid">
+            {page.topicCards.map((card, index) => (
+              <ProductCard
+                key={card.href}
+                title={card.title}
+                body={card.body}
+                href={card.href}
+                badge={index === 0 ? "Hauptprodukt" : index === 1 ? "Premium-Material" : "Wissenshub"}
+                featured={index === 0}
+              />
+            ))}
+          </div>
+          <EditorialImage
+            {...productImageAssets.productLine}
+            caption="PP-Rollenetiketten auf mehreren Verpackungstypen als visuelle Produktlinie."
+            sizes="(max-width: 1024px) 100vw, 520px"
+          />
         </div>
       </Section>
 
@@ -152,19 +183,26 @@ export function HomePage({ page, navigation }: HomePageProps) {
         title="Öffentliche Seiten mit unterschiedlicher Kauflogik"
         lead="Die Branchen-Seiten bleiben im Nav und zeigen unterschiedliche Use Cases statt derselben Textschablone."
       >
-        <div className="card-grid">
-          {navigation
-            .filter((item) =>
-              ["/de/lebensmittel-etiketten", "/de/supplement-etiketten", "/de/getraenke-etiketten"].includes(item.href),
-            )
-            .map((item) => (
-              <ProductCard
-                key={item.href}
-                title={item.label}
-                body={getIndustryTeaser(item.href)}
-                href={item.href}
-              />
-            ))}
+        <div className="two-column image-supported-grid">
+          <div className="card-grid">
+            {navigation
+              .filter((item) =>
+                ["/de/lebensmittel-etiketten", "/de/supplement-etiketten", "/de/getraenke-etiketten"].includes(item.href),
+              )
+              .map((item) => (
+                <ProductCard
+                  key={item.href}
+                  title={item.label}
+                  body={getIndustryTeaser(item.href)}
+                  href={item.href}
+                />
+              ))}
+          </div>
+          <EditorialImage
+            {...productImageAssets.industries}
+            caption="Übersicht typischer Einsatzfelder von PP-Etiketten im B2B-Kontext."
+            sizes="(max-width: 1024px) 100vw, 520px"
+          />
         </div>
       </Section>
 
@@ -261,6 +299,21 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
         </div>
       </Section>
 
+      {getProductPageImage(page.path) ? (
+        <Section
+          eyebrow="Produktansicht"
+          title={getProductPageImage(page.path)?.title ?? "Passende Produktansicht"}
+          lead={getProductPageImage(page.path)?.lead ?? "Visuelle Einordnung des Materials ohne die Hero-Logik zu ersetzen."}
+        >
+          <EditorialImage
+            src={getProductPageImage(page.path)!.src}
+            alt={getProductPageImage(page.path)!.alt}
+            caption={getProductPageImage(page.path)!.caption}
+            sizes="(max-width: 1024px) 100vw, 760px"
+          />
+        </Section>
+      ) : null}
+
       {page.packageTable?.length ? (
         <Section
           eyebrow="Pakete"
@@ -287,6 +340,34 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
         title="Warum gespeicherte Spezifikationen für Produktseiten der eigentliche Moat sind"
         lead="Die Oberfläche zeigt, dass nach der ersten Freigabe nicht alles neu erklärt werden muss."
       />
+
+      {page.path === "/de/ratgeber/transparente-vs-opake-etiketten" ? (
+        <Section
+          eyebrow="Materialvergleich"
+          title="Transparent und opak im direkten Bildvergleich"
+          lead="Die Vergleichsseite erhält eine ruhige Bildfläche, die die sichtbaren Unterschiede unterstützt statt sie zu ersetzen."
+        >
+          <EditorialImage
+            {...productImageAssets.compare}
+            caption="Direkter Materialvergleich zwischen transparenter und opaker Umsetzung."
+            sizes="(max-width: 1024px) 100vw, 760px"
+          />
+        </Section>
+      ) : null}
+
+      {page.path === "/de/pp-rollenetiketten" ? (
+        <Section
+          eyebrow="Materialansicht"
+          title="Rollenqualit?t und Stanzung auf einen Blick"
+          lead="Die Rollenansicht unterst?tzt die Material- und Qualit?tsbeschreibung der Seite, ohne die Textstruktur zu verdr?ngen."
+        >
+          <EditorialImage
+            {...productImageAssets.roll}
+            caption="Rollenansicht mit gestanzten PP-Etiketten f?r die Qualit?ts- und Materialeinordnung."
+            sizes="(max-width: 1024px) 100vw, 760px"
+          />
+        </Section>
+      ) : null}
 
       {page.faqs?.length ? (
         <Section
@@ -333,6 +414,20 @@ function IndustryPage({ page, canonicalPath }: DynamicPageProps) {
         secondaryCta={renderLink(page.secondaryCta, "secondary-link")}
         aside={<QuickAnswerCard page={page} />}
       />
+
+      {page.path === "/de/lebensmittel-etiketten" ? (
+        <Section
+          eyebrow="Branchenübersicht"
+          title="Lebensmittel-Etiketten zwischen Lesbarkeit, Oberfläche und Wiederholung"
+          lead="Die Bildfläche ergänzt die Branchenlogik und zeigt die Breite typischer Verpackungsformen ohne neue Produktversprechen."
+        >
+          <EditorialImage
+            {...productImageAssets.industries}
+            caption="Lebensmittelnahe Verpackungsformen mit unterschiedlichen Etikettenanforderungen."
+            sizes="(max-width: 1024px) 100vw, 760px"
+          />
+        </Section>
+      ) : null}
 
       <Section
         eyebrow="Empfohlene Materialien"
@@ -412,6 +507,20 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
         secondaryCta={renderLink(page.secondaryCta, "secondary-link")}
         aside={<QuickAnswerCard page={page} />}
       />
+
+      {page.path === "/de/musterbox" ? (
+        <Section
+          eyebrow="Musteransicht"
+          title="Die Musterbox als sichtbarer Materialvergleich"
+          lead="Die Bildfläche ergänzt die Erklärung der Musterbox, ohne den Hero in ein Fotolayout umzubauen."
+        >
+          <EditorialImage
+            {...productImageAssets.sampleBox}
+            caption="Die Musterbox unterstützt die Materialentscheidung vor einer größeren Freigabe."
+            sizes="(max-width: 1024px) 100vw, 760px"
+          />
+        </Section>
+      ) : null}
 
       {page.path === "/de/musterbox" ? (
         <Section
@@ -563,6 +672,20 @@ function GuidePage({ page, canonicalPath }: DynamicPageProps) {
         secondaryCta={<Link href="/de/musterbox" className="secondary-link">Musterbox anfordern</Link>}
         aside={<QuickAnswerCard page={page} />}
       />
+
+      {page.path === "/de/ratgeber/transparente-vs-opake-etiketten" ? (
+        <Section
+          eyebrow="Materialvergleich"
+          title="Transparent und opak im direkten Bildvergleich"
+          lead="Die Vergleichsseite erhält eine ruhige Bildfläche, die die sichtbaren Unterschiede unterstützt statt sie zu ersetzen."
+        >
+          <EditorialImage
+            {...productImageAssets.compare}
+            caption="Direkter Materialvergleich zwischen transparenter und opaker Umsetzung."
+            sizes="(max-width: 1024px) 100vw, 760px"
+          />
+        </Section>
+      ) : null}
 
       {page.howToSteps?.length ? (
         <Section
@@ -859,6 +982,34 @@ function QuickAnswerCard({ page }: { page: PublicPageData }) {
   );
 }
 
+function EditorialImage({
+  src,
+  alt,
+  sizes,
+  caption,
+}: {
+  src: string;
+  alt: string;
+  sizes: string;
+  caption?: string;
+}) {
+  return (
+    <figure className="editorial-image-card">
+      <div className="editorial-image-frame">
+        <Image
+          src={src}
+          alt={alt}
+          width={1672}
+          height={941}
+          sizes={sizes}
+          className="editorial-image"
+        />
+      </div>
+      {caption ? <figcaption>{caption}</figcaption> : null}
+    </figure>
+  );
+}
+
 function RelatedLinks({ links }: { links: RelatedLink[] }) {
   return (
     <div className="card-grid">
@@ -940,6 +1091,35 @@ function getIndustryTeaser(href: string) {
       return "Für Flaschen, Glas und Verpackungen, bei denen Materialoptik sichtbar in die Kaufentscheidung eingreift.";
     default:
       return "Branchenseite mit klarer Material- und Reorder-Logik.";
+  }
+}
+
+function getProductPageImage(path: string) {
+  switch (path) {
+    case "/de/pp-rollenetiketten":
+      return {
+        ...productImageAssets.productLine,
+        title: "PP-Rollenetiketten im Einsatz",
+        lead: "Die Bildfläche ergänzt den Produkteinstieg und zeigt die Materialfamilie über mehrere Verpackungstypen hinweg.",
+        caption: "Produktlinie mit PP-Rollenetiketten auf Flasche, Beutel, Supplement-Flasche und Tiegel.",
+      };
+    case "/de/transparente-pp-etiketten":
+    case "/de/opake-pp-etiketten":
+      return {
+        ...productImageAssets.compare,
+        title: "Materialvergleich im direkten Blick",
+        lead: "Die Seite zeigt transparentes und opakes PP nicht nur textlich, sondern auch in einer ruhigen Vergleichsansicht.",
+        caption: "Direkter Vergleich zwischen transparenter und opaker PP-Umsetzung.",
+      };
+    case "/de/etiketten-100x200":
+      return {
+        ...productImageAssets.roll,
+        title: "Format und Rollenlogik sichtbar gemacht",
+        lead: "Das 100x200-Format wird in einer realen Rollenansicht verankert, ohne die Seite mit technischen Renderings zu überladen.",
+        caption: "Rollenetikettenansicht für formatnahe Produkt- und Maßkommunikation.",
+      };
+    default:
+      return null;
   }
 }
 
