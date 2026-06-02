@@ -454,17 +454,6 @@ const topLevelPages: PublicPageData[] = [
           "Transparente PP-Etiketten wirken hochwertiger auf Glas und Sichtfenster-Verpackungen, wenn das Produkt selbst sichtbar bleiben soll.",
         ],
       },
-      {
-        title: "Welche nächsten Seiten wichtig sind",
-        body: [
-          "Für konkrete Verpackungen mit Glasbezug lohnt sich zusätzlich die Branchen-Seite für Flaschenetiketten.",
-        ],
-        bullets: [
-          "Materialvergleich im Ratgeber zu transparent vs. opak",
-          "Druckdaten-Seite für technische Vorbereitung",
-          "Musterbox bei Unsicherheit zur Haptik",
-        ],
-      },
     ],
     faqs: [
       {
@@ -539,12 +528,6 @@ const topLevelPages: PublicPageData[] = [
           "Transparentes PP eignet sich, wenn Flaschen oder Dosen eine reduzierte Premium-Wirkung behalten sollen.",
         ],
       },
-      {
-        title: "Sinnvolle Anschlussseiten",
-        body: [
-          "Wer Beutelverpackungen plant, sollte zusätzlich die Themenwelt zu Kaffeebeuteln und anderen flexiblen Verpackungen ansehen.",
-        ],
-      },
     ],
     faqs: [
       {
@@ -610,12 +593,6 @@ const topLevelPages: PublicPageData[] = [
         title: "Wann opak die bessere Wahl ist",
         body: [
           "Wenn starke Farbflächen, hohe Deckkraft oder klare Typografie im Vordergrund stehen, bleibt opakes PP die robustere Standardlösung.",
-        ],
-      },
-      {
-        title: "Wo tiefer erklärt wird",
-        body: [
-          "Die Materialentscheidung wird zusätzlich im Ratgeber zu transparenten und opaken Etiketten erläutert.",
         ],
       },
     ],

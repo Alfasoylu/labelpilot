@@ -556,8 +556,7 @@ function IndustryPage({ page, canonicalPath }: DynamicPageProps) {
       {getIndustryPageImage(page.path) ? (
         <Section
           eyebrow="Branchenüberblick"
-          title="Typische Verpackungen und Etikettenwirkung in dieser Branche"
-          lead="Die Bildfläche ergänzt die Branchenlogik und zeigt die typischen Verpackungsformen, ohne neue Produktversprechen zu machen."
+          title="Verpackungen und Etiketten in dieser Branche"
         >
           <EditorialImage
             src={getIndustryPageImage(page.path)!.src}
@@ -570,12 +569,11 @@ function IndustryPage({ page, canonicalPath }: DynamicPageProps) {
 
       <Section
         eyebrow="Empfohlene Materialien"
-        title="Welche Materiallogik in dieser Branche typischerweise sinnvoll ist"
-        lead="Industrieseiten werden jetzt als Beratungseinstieg inszeniert, nicht als bloße SEO-Umschreibung."
+        title="Welches Material passt – und warum"
       >
         <ComparisonTable
-          title="Orientierung für diese Verpackungswelt"
-          lead="Die Tabelle ist absichtlich einfach: sie zeigt Materialempfehlung, Nutzen und späteren Reorder-Bezug."
+          title="Material und Einsatz im Überblick"
+          lead="Empfehlung, Einsatz und Wiederbestellung pro Variante."
           columns={["Variante", "Wofür sie passt", "Warum sie wiederholbar bleibt"]}
           rows={buildIndustryComparisonRows(page)}
         />
@@ -583,29 +581,22 @@ function IndustryPage({ page, canonicalPath }: DynamicPageProps) {
 
       <Section
         eyebrow="Einsatzfälle"
-        title="Typische Anforderungen und Use Cases"
-        lead="Die Seitenstruktur macht sichtbar, dass Branchen unterschiedlich ticken und nicht nur den Produktnamen austauschen."
+        title="Typische Anforderungen"
       >
         <FeatureGrid items={buildFeatureItemsFromSections(page)} />
       </Section>
 
       <ReorderWorkflowBlock
-        title="So übersetzt sich die Branchenlogik in spätere Nachbestellung"
-        lead="Material, Maß und freigegebene Daten bleiben in dieser Darstellung nicht abstrakt, sondern werden als wiederholbarer Workflow erklärt."
+        title="Wiederbestellen, ohne jedes Mal neu zu erklären"
+        lead="Material, Maß und freigegebene Druckdaten bleiben gespeichert."
       />
 
       {page.path === "/de/supplement-etiketten" ? <VariableDataBlock /> : null}
-
-      <LegalNoticeBox
-        title="Hinweis zur öffentlichen Phase"
-        body="Diese Seite erklärt Branchenlogik, Materialempfehlung und spätere Prozessfähigkeit. Variable Daten, Upload-Workflows und Kontofunktionen werden bewusst noch nicht umgesetzt."
-      />
 
       {page.faqs?.length ? (
         <Section
           eyebrow="FAQ"
           title="Häufige Fragen aus der Branche"
-          lead="Die Antworten bleiben sichtbar und deutsch, werden aber nicht mehr als lose Absatzsammlung gezeigt."
         >
           <FaqAccordion faqs={page.faqs} />
         </Section>
@@ -614,16 +605,15 @@ function IndustryPage({ page, canonicalPath }: DynamicPageProps) {
       {page.relatedLinks?.length ? (
         <Section
           eyebrow="Verknüpfte Themen"
-          title="Produkte, Ratgeber und Service-Seiten"
-          lead="Diese Links bleiben Teil des SEO-Graphen und werden jetzt als klare B2B-Wege dargestellt."
+          title="Passende Produkte und Ratgeber"
         >
           <RelatedLinks links={page.relatedLinks} />
         </Section>
       ) : null}
 
       <ContentCta
-        title="Wenn Verpackung und Menge schon klarer sind, sollte die Branche in eine konkrete Anfrage übergehen."
-        body="So endet die Seite mit einer B2B-Aktion statt mit einer dekorativen Schlussfloskel."
+        title="Verpackung und Menge stehen fest?"
+        body="Dann erstellen wir Ihnen ein passendes B2B-Angebot – oder Sie prüfen vorab die Musterbox."
         primaryLabel="Angebot anfordern"
         primaryHref="/de/angebot-anfordern"
         secondaryLabel="Musterbox anfordern"
