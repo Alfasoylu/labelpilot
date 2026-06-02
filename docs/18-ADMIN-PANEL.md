@@ -1005,7 +1005,7 @@ Do not build complex settings before needed.
 
 ---
 
-## 30A. Pricing Cost-Parameter Screen (custom-size engine) — PROPOSAL (needs founder approval)
+## 30A. Pricing Cost-Parameter Screen (custom-size engine) — APPROVED 2026-06-03 (founder); build phased
 
 Route: `/admin/settings/pricing` (ADMIN role only).
 

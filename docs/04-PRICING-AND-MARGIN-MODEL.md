@@ -1226,9 +1226,9 @@ Then convert them into repeat customers.
 
 ---
 
-## 28. PROPOSAL — Option / Add-on Pricing Depth (2026-06-03) — NEEDS FOUNDER APPROVAL
+## 28. Option / Add-on Pricing Depth — APPROVED 2026-06-03 (founder)
 
-> **Status: PROPOSAL, not locked.** Extends §14 (which today routes most depth to "quote"). Goal: convert a small set of high-margin depth items from "quote" into **self-serve, on-page priced add-ons**, so a knowledgeable buyer can specify without a sales loop while the core stays one simple package. **Approving this updates §14, SoT decision #15, and doc 30.** No live price changes until approved.
+> **Status: APPROVED by founder 2026-06-03** (recorded as SoT decision #16). Extends §14 (which previously routed most depth to "quote"). Converts a small set of high-margin depth items from "quote" into **self-serve, on-page priced add-ons** while the core stays one simple package. **§14 included-scope table, SoT #15 and doc 30 are to be updated to match when the build lands.** Live prices/behaviour change only when built.
 > **Market evidence (captured from competitor sites — see `59` §27/§28):** Gestaltungsservice **€45,83**; Qualitätskontrolle / Probedruck **€14,00**; machine setup **€14,90**; priority/express **€6,50**; **personalization (variable data) FREE**; **data check FREE** (WMD / etiketten-drucken). Labelprint24: professional artwork check **€15**, printed proof **free**, barcode verification **€25**, charges **per artwork version**.
 
 ### 28.1 Recommended self-serve add-ons (priced, on-page)
@@ -1257,9 +1257,9 @@ Approve the §28.1 numbers (esp. Designservice €40 / free ≥ €2.000 / free 
 
 ---
 
-## 29. PROPOSAL — Custom-size area pricing engine (digital vs flexo, plate-aware) — NEEDS FOUNDER APPROVAL
+## 29. Custom-size area pricing engine (digital vs flexo, plate-aware) — APPROVED 2026-06-03 (founder); build phased
 
-> **Status: PROPOSAL / phased.** Enables a self-serve **"enter your size → get a price"** path (today custom size is quote-only per docs 07/30). Extends §22. No live behaviour until approved **and** real cost params are entered by the operator. The admin cost-input screen spec lives in `18-ADMIN-PANEL.md` §30A.
+> **Status: APPROVED by founder 2026-06-03** (SoT decision #16); **build is phased.** Enables a self-serve **"enter your size → get a price"** path (previously quote-only per docs 07/30). Extends §22. **No live behaviour until built AND real cost params are entered by the operator.** The admin cost-input screen spec lives in `18-ADMIN-PANEL.md` §30A. The fixed 100×200 packages remain the default path and keep their no-plate/no-setup spec (SoT #15 unchanged for fixed packages; the flexo plate cost applies only to the optional custom-size engine).
 
 ### 29.1 Principle
 Price every custom job from **area (m²)** and let the engine pick the **cheaper print method automatically**:
