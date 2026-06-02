@@ -39,8 +39,8 @@ export function PublicShell({
             <h2>Labelpilot.de</h2>
             <p>
               Individuell bedruckte PP-Rollenetiketten und ergänzende
-              Thermoetiketten für Lebensmittel-, Getränke- und Supplement-Marken
-              in Deutschland.
+              Thermoetiketten für Lebensmittel-, Getränke- und
+              Supplement-Marken in Deutschland.
             </p>
           </div>
           <div className="footer-grid">

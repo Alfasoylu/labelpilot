@@ -4,6 +4,7 @@ import { QuoteRequestForm } from "@/components/quote-request-form";
 import type {
   HomePageData,
   PublicPageData,
+  RelatedLink,
   SiteNavigationItem,
 } from "@/lib/site-content";
 
@@ -34,13 +35,13 @@ export function HomePage({ page, navigation }: HomePageProps) {
             <Link href="/de/angebot-anfordern" className="cta-link">
               Angebot anfordern
             </Link>
-            <Link href="/de/musterbox" className="secondary-link">
-              Musterbox ansehen
+            <Link href="/de/ratgeber" className="secondary-link">
+              Ratgeber ansehen
             </Link>
           </div>
         </div>
         <aside className="surface-card">
-          <h2>Worauf die erste Version fokussiert</h2>
+          <h2>Worauf die aktuelle Version fokussiert</h2>
           <ul className="simple-list">
             {navigation.map((item) => (
               <li key={item.href}>
@@ -49,8 +50,8 @@ export function HomePage({ page, navigation }: HomePageProps) {
             ))}
           </ul>
           <p>
-            Opake und transparente PP-Rollenetiketten bilden den Kern. Thermo-
-            Versandetiketten bleiben bewusst ein ergänzendes B2B-Cross-Sell.
+            Phase 2 stärkt die P0-Seiten mit gezielten Branchen-, Ratgeber- und
+            Glossar-Inhalten statt mit dünnen Massen-Templates.
           </p>
         </aside>
       </section>
@@ -58,11 +59,11 @@ export function HomePage({ page, navigation }: HomePageProps) {
       <section className="section-stack">
         <div className="section-header">
           <span className="eyebrow">Preislogik</span>
-          <h2>Die 5.000er-Menge ist der wirtschaftliche Kern</h2>
+          <h2>Die 5.000er-Menge bleibt der wirtschaftliche Kern</h2>
           <p>
-            Die Paketlogik folgt der kanonischen Preisstaffel für wiederkehrende
-            B2B-Bestellungen. Ab 20.000 Stück läuft der Prozess in ein
-            individuelles Angebot.
+            Die öffentliche Informationsarchitektur erklärt Material, Menge und
+            Nachbestellung so, dass kommerzielle Seiten und Wissensseiten auf
+            dieselbe Produktlogik einzahlen.
           </p>
         </div>
         <div className="pricing-grid">
@@ -99,10 +100,10 @@ export function HomePage({ page, navigation }: HomePageProps) {
       <section className="section-stack">
         <div className="section-header">
           <span className="eyebrow">Ablauf</span>
-          <h2>Von der ersten Anfrage bis zur Nachbestellung</h2>
+          <h2>Von der ersten Frage bis zur belastbaren Spezifikation</h2>
           <p>
-            Die öffentliche MVP-Version erklärt den Prozess klar und legt den
-            Fokus auf technische Prüfbarkeit und Wiederholbarkeit.
+            Produkt-, Branchen- und Wissensseiten arbeiten jetzt als
+            zusammenhängendes internes Linksystem statt als einzelne Seiten.
           </p>
         </div>
         <div className="steps-grid">
@@ -129,10 +130,7 @@ export function DynamicPage({ page, canonicalPath }: DynamicPageProps) {
 
   return (
     <div className="container section-stack">
-      <Breadcrumbs
-        currentLabel={page.title}
-        currentPath={canonicalPath}
-      />
+      <Breadcrumbs currentLabel={page.title} currentPath={canonicalPath} />
       <section className="hero-grid">
         <div className="hero-panel">
           <span className="eyebrow">{page.eyebrow}</span>
@@ -195,6 +193,19 @@ export function DynamicPage({ page, canonicalPath }: DynamicPageProps) {
         </section>
       ) : null}
 
+      {page.glossaryData ? <GlossaryDefinition page={page} /> : null}
+
+      {page.howToSteps?.length ? (
+        <section className="surface-card">
+          <h2>Schritt für Schritt</h2>
+          <ol className="status-list">
+            {page.howToSteps.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
+
       {page.sections.length ? (
         <section className="card-grid">
           {page.sections.map((section) => (
@@ -242,14 +253,43 @@ export function DynamicPage({ page, canonicalPath }: DynamicPageProps) {
         </section>
       ) : null}
 
+      {page.hubLinks?.length ? (
+        <section className="section-stack">
+          <div className="section-header">
+            <span className="eyebrow">Übersicht</span>
+            <h2>Wichtige Unterseiten</h2>
+            <p>
+              Diese Hub-Seite verknüpft alle indexierbaren Unterseiten, damit
+              keine isolierten Wissensseiten entstehen.
+            </p>
+          </div>
+          <RelatedLinks links={page.hubLinks} />
+        </section>
+      ) : null}
+
+      {page.relatedLinks?.length ? (
+        <section className="section-stack">
+          <div className="section-header">
+            <span className="eyebrow">Weiterführend</span>
+            <h2>Passende Seiten im Themencluster</h2>
+            <p>
+              Diese Verlinkungen folgen dem Hub-and-Spoke-Prinzip aus den
+              SEO-Dokumenten und verbinden kommerzielle, erklärende und
+              unterstützende Seiten.
+            </p>
+          </div>
+          <RelatedLinks links={page.relatedLinks} />
+        </section>
+      ) : null}
+
       {page.faqs?.length ? (
         <section className="section-stack">
           <div className="section-header">
             <span className="eyebrow">FAQ</span>
             <h2>Häufige Fragen</h2>
             <p>
-              Diese Antworten folgen den SEO- und Content-Vorgaben der
-              deutschen MVP-Dokumentation.
+              Die Antworten bleiben kurz, konkret und stimmen mit dem sichtbaren
+              Seiteninhalt überein.
             </p>
           </div>
           <div className="faq-grid">
@@ -266,16 +306,10 @@ export function DynamicPage({ page, canonicalPath }: DynamicPageProps) {
   );
 }
 
-function QuotePage({
-  page,
-  canonicalPath,
-}: DynamicPageProps) {
+function QuotePage({ page, canonicalPath }: DynamicPageProps) {
   return (
     <div className="container section-stack">
-      <Breadcrumbs
-        currentLabel={page.title}
-        currentPath={canonicalPath}
-      />
+      <Breadcrumbs currentLabel={page.title} currentPath={canonicalPath} />
       <section className="hero-grid">
         <div className="hero-panel">
           <span className="eyebrow">{page.eyebrow}</span>
@@ -327,16 +361,10 @@ function QuotePage({
   );
 }
 
-function LegalPage({
-  page,
-  canonicalPath,
-}: DynamicPageProps) {
+function LegalPage({ page, canonicalPath }: DynamicPageProps) {
   return (
     <div className="container section-stack">
-      <Breadcrumbs
-        currentLabel={page.title}
-        currentPath={canonicalPath}
-      />
+      <Breadcrumbs currentLabel={page.title} currentPath={canonicalPath} />
       <article className="legal-card">
         <span className="eyebrow">{page.eyebrow}</span>
         <h1>{page.title}</h1>
@@ -364,6 +392,46 @@ function LegalPage({
   );
 }
 
+function GlossaryDefinition({ page }: { page: PublicPageData }) {
+  if (!page.glossaryData) {
+    return null;
+  }
+
+  return (
+    <section className="card-grid">
+      <article className="section-card">
+        <h3>Definition</h3>
+        <p>{page.glossaryData.definition}</p>
+      </article>
+      <article className="section-card">
+        <h3>Wann es wichtig wird</h3>
+        <p>{page.glossaryData.whenItMatters}</p>
+      </article>
+      <article className="section-card">
+        <h3>Beispiel und Bezug</h3>
+        <p>{page.glossaryData.exampleUse}</p>
+        <p>{page.glossaryData.relatedProduct}</p>
+      </article>
+    </section>
+  );
+}
+
+function RelatedLinks({ links }: { links: RelatedLink[] }) {
+  return (
+    <div className="card-grid">
+      {links.map((link) => (
+        <article key={link.href} className="section-card">
+          <h3>{link.label}</h3>
+          <p>{link.description}</p>
+          <Link href={link.href} className="secondary-link">
+            Zur Seite
+          </Link>
+        </article>
+      ))}
+    </div>
+  );
+}
+
 function Breadcrumbs({
   currentLabel,
   currentPath,
@@ -371,15 +439,30 @@ function Breadcrumbs({
   currentLabel: string;
   currentPath: string;
 }) {
-  const showCurrentPath = currentPath !== "/de";
+  const items: Array<{ label: string; href?: string }> = [{ label: "Start", href: "/de" }];
+
+  if (currentPath === "/de/ratgeber") {
+    items.push({ label: "Ratgeber" });
+  } else if (currentPath.startsWith("/de/ratgeber/")) {
+    items.push({ label: "Ratgeber", href: "/de/ratgeber" });
+    items.push({ label: currentLabel });
+  } else if (currentPath === "/de/glossar") {
+    items.push({ label: "Glossar" });
+  } else if (currentPath.startsWith("/de/glossar/")) {
+    items.push({ label: "Glossar", href: "/de/glossar" });
+    items.push({ label: currentLabel });
+  } else if (currentPath !== "/de") {
+    items.push({ label: currentLabel });
+  }
 
   return (
     <nav className="breadcrumbs" aria-label="Breadcrumbs">
-      <Link href="/de">Start</Link>
-      {showCurrentPath ? <span>/</span> : null}
-      {showCurrentPath ? (
-        <span aria-current="page">{currentLabel}</span>
-      ) : null}
+      {items.map((item, index) => (
+        <span key={`${item.label}-${index}`}>
+          {item.href ? <Link href={item.href}>{item.label}</Link> : item.label}
+          {index < items.length - 1 ? " / " : ""}
+        </span>
+      ))}
     </nav>
   );
 }

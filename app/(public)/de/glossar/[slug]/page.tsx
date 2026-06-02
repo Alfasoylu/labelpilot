@@ -7,12 +7,11 @@ import {
   buildBreadcrumbSchema,
   buildCanonicalMetadata,
   buildFaqSchema,
-  buildHowToSchema,
   buildPageSchema,
   getBreadcrumbItems,
   metadataMap,
 } from "@/lib/seo";
-import { publicPageSlugs, publicPagesBySlug } from "@/lib/site-content";
+import { glossaryPageSlugs, glossaryPagesBySlug } from "@/lib/site-content";
 
 type PageProps = {
   params: Promise<{
@@ -21,14 +20,14 @@ type PageProps = {
 };
 
 export function generateStaticParams() {
-  return publicPageSlugs.map((slug) => ({ slug }));
+  return glossaryPageSlugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const page = publicPagesBySlug[slug];
+  const page = glossaryPagesBySlug[slug];
 
   if (!page) {
     return {};
@@ -37,9 +36,9 @@ export async function generateMetadata({
   return buildCanonicalMetadata(page.path, metadataMap[page.path]);
 }
 
-export default async function GermanPublicPage({ params }: PageProps) {
+export default async function GlossaryPage({ params }: PageProps) {
   const { slug } = await params;
-  const page = publicPagesBySlug[slug];
+  const page = glossaryPagesBySlug[slug];
 
   if (!page) {
     notFound();
@@ -47,7 +46,6 @@ export default async function GermanPublicPage({ params }: PageProps) {
 
   const faqSchema = page.faqs?.length ? buildFaqSchema(page.faqs) : null;
   const pageSchema = buildPageSchema(page, page.path);
-  const howToSchema = buildHowToSchema(page, page.path);
 
   return (
     <>
@@ -56,7 +54,6 @@ export default async function GermanPublicPage({ params }: PageProps) {
       />
       {pageSchema ? <JsonLd data={pageSchema} /> : null}
       {faqSchema ? <JsonLd data={faqSchema} /> : null}
-      {howToSchema ? <JsonLd data={howToSchema} /> : null}
       <DynamicPage page={page} canonicalPath={page.path} />
     </>
   );

@@ -7,9 +7,8 @@ import {
   buildOrganizationSchema,
   buildWebSiteSchema,
   metadataMap,
-  siteNavigation,
 } from "@/lib/seo";
-import { homePageData } from "@/lib/site-content";
+import { homePageData, siteNavigation } from "@/lib/site-content";
 
 export const metadata: Metadata = buildCanonicalMetadata("/de", metadataMap["/de"]);
 

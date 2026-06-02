@@ -12,7 +12,7 @@ import {
   getBreadcrumbItems,
   metadataMap,
 } from "@/lib/seo";
-import { publicPageSlugs, publicPagesBySlug } from "@/lib/site-content";
+import { guidePageSlugs, guidePagesBySlug } from "@/lib/site-content";
 
 type PageProps = {
   params: Promise<{
@@ -21,14 +21,14 @@ type PageProps = {
 };
 
 export function generateStaticParams() {
-  return publicPageSlugs.map((slug) => ({ slug }));
+  return guidePageSlugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const page = publicPagesBySlug[slug];
+  const page = guidePagesBySlug[slug];
 
   if (!page) {
     return {};
@@ -37,9 +37,9 @@ export async function generateMetadata({
   return buildCanonicalMetadata(page.path, metadataMap[page.path]);
 }
 
-export default async function GermanPublicPage({ params }: PageProps) {
+export default async function GuidePage({ params }: PageProps) {
   const { slug } = await params;
-  const page = publicPagesBySlug[slug];
+  const page = guidePagesBySlug[slug];
 
   if (!page) {
     notFound();

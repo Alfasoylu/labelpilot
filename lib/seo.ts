@@ -8,6 +8,7 @@ type MetadataEntry = {
   description: string;
   openGraphTitle?: string;
   openGraphDescription?: string;
+  openGraphType?: "website" | "article";
 };
 
 export const metadataMap: Record<string, MetadataEntry> = {
@@ -23,113 +24,71 @@ export const metadataMap: Record<string, MetadataEntry> = {
     title: "Lebensmitteletiketten drucken | Labelpilot.de",
     description:
       "Bedruckte PP-Rollenetiketten für Lebensmittelmarken in Deutschland. Geeignet für Gläser, Beutel, Flaschen und Verpackungen.",
-    openGraphTitle: "Lebensmitteletiketten drucken",
-    openGraphDescription:
-      "PP-Rollenetiketten für Lebensmittelverpackungen mit technischer Dateiprüfung und Nachbestellung.",
   },
   "/de/supplement-etiketten": {
     title: "Supplement-Etiketten drucken | Labelpilot.de",
     description:
       "PP-Rollenetiketten für Supplement-Dosen, Beutel und Flaschen. 100×200 mm, opak oder transparent, mit technischer Dateiprüfung.",
-    openGraphTitle: "Supplement-Etiketten drucken",
-    openGraphDescription:
-      "Bedruckte PP-Rollenetiketten für Supplement-Marken in Deutschland.",
   },
   "/de/getraenke-etiketten": {
     title: "Getränkeetiketten drucken | Labelpilot.de",
     description:
       "Transparente und opake PP-Rollenetiketten für Getränke, Flaschen und Glasverpackungen. Für Marken in Deutschland mit einfacher Nachbestellung.",
-    openGraphTitle: "Getränkeetiketten drucken",
-    openGraphDescription:
-      "PP-Rollenetiketten für Getränke- und Flaschenverpackungen.",
   },
   "/de/transparente-pp-etiketten": {
     title: "Transparente PP-Etiketten drucken | Labelpilot.de",
     description:
       "Transparente PP-Rollenetiketten 100×200 mm für Flaschen, Gläser und Premium-Verpackungen. Druckdaten hochladen und nachbestellen.",
-    openGraphTitle: "Transparente PP-Etiketten drucken",
-    openGraphDescription:
-      "Transparente PP-Rollenetiketten für B2B-Marken in Deutschland.",
   },
   "/de/opake-pp-etiketten": {
     title: "Opake PP-Etiketten drucken | Labelpilot.de",
     description:
       "Opake PP-Rollenetiketten 100×200 mm für Lebensmittel-, Supplement- und Produktverpackungen. Ideal für wiederkehrende B2B-Bestellungen.",
-    openGraphTitle: "Opake PP-Etiketten drucken",
-    openGraphDescription:
-      "Opake PP-Rollenetiketten für Produktverpackungen und wiederkehrende Bestellungen.",
   },
   "/de/pp-rollenetiketten": {
     title: "PP-Rollenetiketten drucken | Labelpilot.de",
     description:
       "Individuell bedruckte PP-Rollenetiketten für deutsche B2B-Marken. Opak oder transparent, 100×200 mm, mit gespeicherten Druckdaten.",
-    openGraphTitle: "PP-Rollenetiketten drucken",
-    openGraphDescription:
-      "PP-Rollenetiketten für Produktverpackungen mit gespeicherten Druckdaten.",
   },
   "/de/etiketten-100x200": {
     title: "Etiketten 100×200 mm drucken | Labelpilot.de",
     description:
       "100×200 mm PP-Rollenetiketten für Produktverpackungen. Geeignet für Lebensmittel, Getränke und Supplemente. Mengen ab 1.000 Stück.",
-    openGraphTitle: "Etiketten 100×200 mm drucken",
-    openGraphDescription:
-      "100×200 mm PP-Rollenetiketten für deutsche B2B-Produktmarken.",
   },
   "/de/thermo-versandetiketten": {
     title: "Thermo-Versandetiketten 100×150 mm | Labelpilot.de",
     description:
       "Thermo-Versandetiketten und Thermoetiketten als B2B-Ergänzung zu Produktetiketten. Für Versand, Lager und Fulfillment-Prozesse.",
-    openGraphTitle: "Thermo-Versandetiketten 100×150 mm",
-    openGraphDescription:
-      "Thermoetiketten für Versand, Lager und Fulfillment als Cross-Sell für B2B-Kunden.",
   },
   "/de/musterbox": {
     title: "Etiketten Musterbox anfordern | Labelpilot.de",
     description:
       "Fordern Sie eine Labelpilot Musterbox an und vergleichen Sie opake PP-Etiketten, transparente PP-Etiketten und Thermoetiketten.",
-    openGraphTitle: "Etiketten Musterbox anfordern",
-    openGraphDescription:
-      "Materialmuster für PP-Rollenetiketten und Thermoetiketten.",
   },
   "/de/angebot-anfordern": {
     title: "B2B-Angebot für Etiketten anfordern | Labelpilot.de",
     description:
       "Fordern Sie ein individuelles B2B-Angebot für PP-Rollenetiketten, Thermoetiketten oder größere Etikettenmengen an.",
-    openGraphTitle: "B2B-Angebot für Etiketten anfordern",
-    openGraphDescription:
-      "Individuelles Angebot für PP-Rollenetiketten und größere B2B-Mengen.",
   },
   "/de/nachbestellen": {
     title: "Etiketten nachbestellen | Labelpilot.de",
     description:
       "Bestellen Sie freigegebene Etiketten schneller erneut. Labelpilot.de speichert Druckdaten, Material, Größe und Stückzahl für Nachbestellungen.",
-    openGraphTitle: "Etiketten nachbestellen",
-    openGraphDescription:
-      "Gleiche Etiketten mit gespeicherten Druckdaten einfacher erneut bestellen.",
   },
   "/de/druckdaten": {
     title: "Druckdaten für Etiketten vorbereiten | Labelpilot.de",
     description:
       "Welche Druckdaten für PP-Rollenetiketten benötigt werden: PDF, AI, EPS, SVG, PNG, JPG oder ZIP. Mit technischer Dateiprüfung.",
-    openGraphTitle: "Druckdaten für Etiketten vorbereiten",
-    openGraphDescription:
-      "Anforderungen an Druckdateien für PP-Rollenetiketten und Proof-Freigabe.",
   },
   "/de/produktion-versand": {
     title: "Produktion und Versand nach Deutschland | Labelpilot.de",
     description:
       "Labelpilot.de produziert Etiketten kosteneffizient in der Türkei und liefert an B2B-Kunden in Deutschland. Mit späterer Hub-Option.",
-    openGraphTitle: "Produktion und Versand nach Deutschland",
-    openGraphDescription:
-      "Transparente Information zu Türkei-Produktion und Deutschland-Lieferung.",
   },
   "/de/kontakt": {
     title: "Kontakt | Labelpilot.de",
     description:
       "Kontaktieren Sie Labelpilot.de für Fragen zu PP-Rollenetiketten, Musterbox, Druckdaten, Angeboten oder Nachbestellungen.",
-    openGraphTitle: "Kontakt",
-    openGraphDescription:
-      "Kontakt für B2B-Etiketten, Musterbox, Druckdaten und Angebote.",
   },
   "/de/impressum": {
     title: "Impressum | Labelpilot.de",
@@ -145,12 +104,115 @@ export const metadataMap: Record<string, MetadataEntry> = {
   },
   "/de/versand": {
     title: "Versandinformationen | Labelpilot.de",
-    description: "Informationen zu Versand, Lieferung und Produktionsablauf bei Labelpilot.de.",
+    description:
+      "Informationen zu Versand, Lieferung und Produktionsablauf bei Labelpilot.de.",
   },
   "/de/widerruf": {
     title: "Widerruf und Sonderanfertigungen | Labelpilot.de",
     description:
       "Informationen zu Widerruf, Sonderanfertigungen, individuellen Druckprodukten und Reklamationen.",
+  },
+  "/de/kaffee-etiketten": {
+    title: "Kaffee-Etiketten drucken | Labelpilot.de",
+    description:
+      "PP-Rollenetiketten für Kaffeebeutel und Kaffeemarken. Opake Etiketten für wiederkehrende Produktverpackungen in Deutschland.",
+  },
+  "/de/gewuerz-etiketten": {
+    title: "Gewürz-Etiketten drucken | Labelpilot.de",
+    description:
+      "PP-Rollenetiketten für Gewürzgläser, Beutel und Verpackungen. Mit gespeicherten Druckdaten für spätere Nachbestellungen.",
+  },
+  "/de/honig-marmelade-etiketten": {
+    title: "Honig- und Marmeladenetiketten drucken | Labelpilot.de",
+    description:
+      "Transparente und opake PP-Rollenetiketten für Honiggläser, Marmeladengläser und kleine Lebensmittelmarken.",
+  },
+  "/de/flaschenetiketten": {
+    title: "Flaschenetiketten drucken | Labelpilot.de",
+    description:
+      "Transparente und opake PP-Rollenetiketten für Flaschen, Getränke und Glasverpackungen in Deutschland.",
+  },
+  "/de/ratgeber": {
+    title: "Ratgeber für Etiketten, Materialien und Druckdaten | Labelpilot.de",
+    description:
+      "Vergleiche, Schritt-für-Schritt-Erklärungen und Kaufhilfen zu PP-Rollenetiketten, Materialwahl, Mengen und Druckdaten.",
+  },
+  "/de/ratgeber/pp-etiketten-vs-papieretiketten": {
+    title: "PP-Etiketten vs. Papieretiketten | Labelpilot.de",
+    description:
+      "Vergleich von PP-Etiketten und Papieretiketten für Produktverpackungen. Mit Empfehlung für Lebensmittel-, Getränke- und Supplement-Marken.",
+    openGraphType: "article",
+  },
+  "/de/ratgeber/transparente-vs-opake-etiketten": {
+    title: "Transparente vs. opake Etiketten | Labelpilot.de",
+    description:
+      "Vergleich transparenter und opaker PP-Etiketten für Flaschen, Gläser, Dosen und Produktverpackungen.",
+    openGraphType: "article",
+  },
+  "/de/ratgeber/rollenetiketten-vs-bogenetiketten": {
+    title: "Rollenetiketten vs. Bogenetiketten | Labelpilot.de",
+    description:
+      "Wann Rollenetiketten für B2B-Produktmarken sinnvoller sind als Bogenetiketten – besonders bei wiederkehrenden Bestellungen.",
+    openGraphType: "article",
+  },
+  "/de/ratgeber/druckdaten-vorbereiten": {
+    title: "Druckdaten für Etiketten vorbereiten | Labelpilot.de",
+    description:
+      "So bereiten Sie Druckdaten für PP-Rollenetiketten vor. Formate, Beschnitt, Proof und technische Dateiprüfung erklärt.",
+    openGraphType: "article",
+  },
+  "/de/glossar": {
+    title: "Glossar für Etikettenbegriffe | Labelpilot.de",
+    description:
+      "Kurze, AI-lesbare Erklärungen zu Begriffen rund um PP-Rollenetiketten, Druckdaten, Proof und Nachbestellung.",
+  },
+  "/de/glossar/pp-etiketten": {
+    title: "Was sind PP-Etiketten? | Labelpilot.de",
+    description:
+      "PP-Etiketten kurz erklärt: Material, Einsatzbereiche und Relevanz für Produktverpackungen und Rollenetiketten.",
+    openGraphType: "article",
+  },
+  "/de/glossar/rollenetiketten": {
+    title: "Was sind Rollenetiketten? | Labelpilot.de",
+    description:
+      "Rollenetiketten kurz erklärt: warum sie für wiederkehrende Produktetiketten, B2B-Prozesse und Nachbestellungen relevant sind.",
+    openGraphType: "article",
+  },
+  "/de/glossar/transparente-etiketten": {
+    title: "Was sind transparente Etiketten? | Labelpilot.de",
+    description:
+      "Transparente Etiketten kurz erklärt: Materialwirkung, Sichtbarkeit und Einsatz bei Flaschen, Gläsern und Premium-Verpackungen.",
+    openGraphType: "article",
+  },
+  "/de/glossar/thermoetiketten": {
+    title: "Was sind Thermoetiketten? | Labelpilot.de",
+    description:
+      "Thermoetiketten kurz erklärt: Einsatz in Versand, Lager und Fulfillment – und warum sie im MVP nur als Cross-Sell auftreten.",
+    openGraphType: "article",
+  },
+  "/de/glossar/proof": {
+    title: "Was ist ein Proof? | Labelpilot.de",
+    description:
+      "Proof kurz erklärt: Warum die Freigabe vor Produktion wichtig ist und wie sie spätere Nachbestellungen absichert.",
+    openGraphType: "article",
+  },
+  "/de/glossar/beschnitt": {
+    title: "Was ist Beschnitt? | Labelpilot.de",
+    description:
+      "Beschnitt kurz erklärt: warum ein Sicherheitsrand in Druckdaten wichtig ist und wie er unsaubere Kanten verhindert.",
+    openGraphType: "article",
+  },
+  "/de/glossar/druckdaten": {
+    title: "Was sind Druckdaten? | Labelpilot.de",
+    description:
+      "Druckdaten kurz erklärt: welche Dateien für Etiketten gemeint sind und warum sie für Proof, Freigabe und Nachbestellung wichtig bleiben.",
+    openGraphType: "article",
+  },
+  "/de/glossar/nachbestellung": {
+    title: "Was bedeutet Nachbestellung bei Etiketten? | Labelpilot.de",
+    description:
+      "Nachbestellung kurz erklärt: warum gespeicherte Druckdaten, Material und Größe spätere Abrufe beschleunigen.",
+    openGraphType: "article",
   },
 };
 
@@ -187,7 +249,7 @@ export function buildCanonicalMetadata(
       title: entry.openGraphTitle ?? title,
       description: entry.openGraphDescription ?? description,
       locale: "de_DE",
-      type: "website",
+      type: entry.openGraphType ?? "website",
       url: buildAbsoluteUrl(path),
     },
     twitter: {
@@ -206,6 +268,7 @@ export function buildOrganizationSchema() {
     url: buildAbsoluteUrl("/de"),
     description:
       "Labelpilot.de ist eine B2B-Plattform für individuell bedruckte PP-Rollenetiketten und Thermoetiketten für Lebensmittel-, Getränke- und Supplement-Marken in Deutschland.",
+    inLanguage: "de-DE",
   };
 }
 
@@ -217,32 +280,64 @@ export function buildWebSiteSchema() {
     url: buildAbsoluteUrl("/de"),
     description:
       "Deutsche B2B-Plattform für PP-Rollenetiketten, Thermoetiketten, Druckdatenprüfung und Etiketten-Nachbestellung.",
+    inLanguage: "de-DE",
   };
 }
 
-export function buildBreadcrumbSchema(name: string, path: string) {
+export function buildBreadcrumbSchema(
+  items: Array<{ name: string; path: string }>,
+) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Start",
-        item: buildAbsoluteUrl("/de"),
-      },
-      ...(path === "/de"
-        ? []
-        : [
-            {
-              "@type": "ListItem",
-              position: 2,
-              name,
-              item: buildAbsoluteUrl(path),
-            },
-          ]),
-    ],
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: buildAbsoluteUrl(item.path),
+    })),
   };
+}
+
+export function getBreadcrumbItems(name: string, path: string) {
+  if (path === "/de") {
+    return [{ name: "Start", path: "/de" }];
+  }
+
+  if (path === "/de/ratgeber") {
+    return [
+      { name: "Start", path: "/de" },
+      { name: "Ratgeber", path: "/de/ratgeber" },
+    ];
+  }
+
+  if (path.startsWith("/de/ratgeber/")) {
+    return [
+      { name: "Start", path: "/de" },
+      { name: "Ratgeber", path: "/de/ratgeber" },
+      { name, path },
+    ];
+  }
+
+  if (path === "/de/glossar") {
+    return [
+      { name: "Start", path: "/de" },
+      { name: "Glossar", path: "/de/glossar" },
+    ];
+  }
+
+  if (path.startsWith("/de/glossar/")) {
+    return [
+      { name: "Start", path: "/de" },
+      { name: "Glossar", path: "/de/glossar" },
+      { name, path },
+    ];
+  }
+
+  return [
+    { name: "Start", path: "/de" },
+    { name, path },
+  ];
 }
 
 export function buildFaqSchema(faqs: FAQ[]) {
@@ -289,11 +384,43 @@ export function buildPageSchema(page: PublicPageData, path: string) {
         url: buildAbsoluteUrl(path),
       };
     case "collection":
+    case "hub":
       return {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
         name: page.title,
         description: page.lead,
+        url: buildAbsoluteUrl(path),
+        inLanguage: "de-DE",
+      };
+    case "guide":
+      return {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: page.title,
+        description: page.lead,
+        author: {
+          "@type": "Organization",
+          name: "Labelpilot.de",
+        },
+        publisher: {
+          "@type": "Organization",
+          name: "Labelpilot.de",
+        },
+        inLanguage: "de-DE",
+        url: buildAbsoluteUrl(path),
+      };
+    case "glossary":
+      if (!page.glossaryData) {
+        return null;
+      }
+
+      return {
+        "@context": "https://schema.org",
+        "@type": "DefinedTerm",
+        name: page.glossaryData.term,
+        description: page.glossaryData.definition,
+        inDefinedTermSet: buildAbsoluteUrl("/de/glossar"),
         url: buildAbsoluteUrl(path),
       };
     default:
@@ -301,10 +428,23 @@ export function buildPageSchema(page: PublicPageData, path: string) {
   }
 }
 
-export const siteNavigation = [
-  { label: "Produkte", href: "/de/pp-rollenetiketten" },
-  { label: "Branchen", href: "/de/lebensmittel-etiketten" },
-  { label: "Musterbox", href: "/de/musterbox" },
-  { label: "Druckdaten", href: "/de/druckdaten" },
-  { label: "Nachbestellen", href: "/de/nachbestellen" },
-];
+export function buildHowToSchema(page: PublicPageData, path: string) {
+  if (!page.howToSteps?.length) {
+    return null;
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: page.title,
+    description: page.lead,
+    step: page.howToSteps.map((step, index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      name: step,
+      text: step,
+    })),
+    inLanguage: "de-DE",
+    url: buildAbsoluteUrl(path),
+  };
+}

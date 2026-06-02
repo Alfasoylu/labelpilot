@@ -24,6 +24,10 @@ export type CtaLink = {
   href: string;
 };
 
+export type RelatedLink = CtaLink & {
+  description: string;
+};
+
 export type TableData = {
   title: string;
   lead: string;
@@ -32,6 +36,7 @@ export type TableData = {
 };
 
 export type PublicPageData = {
+  path: string;
   slug: string;
   kind:
     | "industry"
@@ -39,7 +44,10 @@ export type PublicPageData = {
     | "collection"
     | "service"
     | "quote"
-    | "legal";
+    | "legal"
+    | "guide"
+    | "glossary"
+    | "hub";
   title: string;
   eyebrow: string;
   lead: string;
@@ -54,6 +62,16 @@ export type PublicPageData = {
   sections: ContentSection[];
   table?: TableData;
   faqs?: FAQ[];
+  relatedLinks?: RelatedLink[];
+  hubLinks?: RelatedLink[];
+  glossaryData?: {
+    term: string;
+    definition: string;
+    whenItMatters: string;
+    exampleUse: string;
+    relatedProduct: string;
+  };
+  howToSteps?: string[];
 };
 
 export type HomePageData = {
@@ -83,7 +101,7 @@ type FooterGroup = {
   links: SiteNavigationItem[];
 };
 
-type SitemapEntry = {
+export type SitemapEntry = {
   path: string;
   priority: number;
   changeFrequency:
@@ -94,6 +112,21 @@ type SitemapEntry = {
     | "monthly"
     | "yearly"
     | "never";
+};
+
+const quoteLink: CtaLink = {
+  label: "Angebot anfordern",
+  href: "/de/angebot-anfordern",
+};
+
+const sampleLink: CtaLink = {
+  label: "Musterbox ansehen",
+  href: "/de/musterbox",
+};
+
+const fileLink: CtaLink = {
+  label: "Druckdaten prüfen",
+  href: "/de/druckdaten",
 };
 
 export const opaquePackages: PackageTier[] = [
@@ -117,7 +150,8 @@ export const opaquePackages: PackageTier[] = [
     quantity: "5.000 Stück",
     priceLabel: "€399",
     note: "Hauptpaket",
-    description: "Die wirtschaftliche Kernmenge für regelmäßige B2B-Bestellungen.",
+    description:
+      "Die wirtschaftliche Kernmenge für regelmäßige B2B-Bestellungen.",
     badge: "Beste Balance",
     popular: true,
   },
@@ -126,7 +160,8 @@ export const opaquePackages: PackageTier[] = [
     quantity: "10.000 Stück",
     priceLabel: "€699",
     note: "Skalierung",
-    description: "Für wachsende Produktlinien mit wiederholbaren Spezifikationen.",
+    description:
+      "Für wachsende Produktlinien mit wiederholbaren Spezifikationen.",
   },
   {
     label: "Business",
@@ -150,7 +185,8 @@ export const transparentPackages: PackageTier[] = [
     quantity: "2.000 Stück",
     priceLabel: "€254",
     note: "Premium-Nachbestellung",
-    description: "Für Marken, die wiederkehrend kleinere Chargen brauchen.",
+    description:
+      "Für Marken, die wiederkehrend kleinere Chargen brauchen.",
     badge: "Reorder-Ready",
   },
   {
@@ -158,7 +194,8 @@ export const transparentPackages: PackageTier[] = [
     quantity: "5.000 Stück",
     priceLabel: "€429",
     note: "Hauptpaket",
-    description: "Die bevorzugte Menge für skalierbare Premium-Verpackungen.",
+    description:
+      "Die bevorzugte Menge für skalierbare Premium-Verpackungen.",
     badge: "Kernpaket",
     popular: true,
   },
@@ -174,7 +211,8 @@ export const transparentPackages: PackageTier[] = [
     quantity: "20.000+ Stück",
     priceLabel: "Angebot",
     note: "Großmenge",
-    description: "Individuelles Angebot für größere Abrufe und Rahmenmengen.",
+    description:
+      "Individuelles Angebot für größere Abrufe und Rahmenmengen.",
   },
 ];
 
@@ -184,7 +222,8 @@ export const thermalPackageNotes: PackageTier[] = [
     quantity: "ab 1.000 Stück",
     priceLabel: "Angebot",
     note: "Anwendungsabhängig",
-    description: "Thermo-Versandetiketten bleiben im MVP ein ergänzendes B2B-Produkt.",
+    description:
+      "Thermo-Versandetiketten bleiben im MVP ein ergänzendes B2B-Produkt.",
     badge: "Nicht das Hauptprodukt",
   },
 ];
@@ -197,7 +236,7 @@ export const homePageData: HomePageData = {
   highlights: [
     "Opake und transparente PP-Etiketten als Kernprodukt im Format 100×200 mm.",
     "Thermo-Versandetiketten nur als ergänzendes B2B-Cross-Sell, nicht als Hauptangebot.",
-    "Quote-first Prozess für größere Mengen, wiederkehrende Abrufe und Sonderfälle.",
+    "Guide- und Glossar-Seiten erklären Material, Druckdaten und Nachbestelllogik ohne generischen Print-Shop-Lärm.",
   ],
   corePackages: opaquePackages,
   topicCards: [
@@ -208,27 +247,27 @@ export const homePageData: HomePageData = {
     },
     {
       title: "Transparente PP-Etiketten",
-      body: "Für Flaschen, Gläser und Premium-Verpackungen mit klarer Optik und wiederholbaren Specs.",
+      body: "Für Flaschen, Gläser und Premium-Verpackungen mit klarer Optik und wiederholbaren Spezifikationen.",
       href: "/de/transparente-pp-etiketten",
     },
     {
-      title: "Angebot statt Blindflug",
-      body: "Ab 20.000 Stück, für Sondergrößen oder unklare Spezifikationen läuft der Prozess strukturiert über das Angebotsformular.",
-      href: "/de/angebot-anfordern",
+      title: "Ratgeber und Glossar",
+      body: "Vergleiche, Fachbegriffe und Druckdaten-Erklärungen für deutsche B2B-Käufer mit echtem Informationsgewinn.",
+      href: "/de/ratgeber",
     },
   ],
   steps: [
     {
-      title: "1. Bedarf konkretisieren",
-      body: "Material, Größe, Menge und Verpackung werden auf den öffentlichen Produkt- und Serviceseiten sauber erklärt.",
+      title: "1. Bedarf eingrenzen",
+      body: "Produktseiten und Branchen-Seiten zeigen, welches Material und welche Mengenstaffel für die Verpackung realistisch sind.",
     },
     {
-      title: "2. Anfrage strukturiert senden",
-      body: "Das Formular erfasst B2B-relevante Daten wie Menge, Material, Wiederkehr und Druckdatenstatus.",
+      title: "2. Material sicher entscheiden",
+      body: "Ratgeber- und Glossar-Seiten klären Unterschiede zwischen opak, transparent, Rollenetiketten und Druckdatenanforderungen.",
     },
     {
-      title: "3. Wiederholbar bestellen",
-      body: "Die MVP-Kommunikation ist auf gespeicherte Spezifikationen und spätere Nachbestellungen ausgelegt.",
+      title: "3. Anfrage strukturiert senden",
+      body: "Wenn Menge, Größe oder Verpackung feststehen, führt der Weg in das Angebotsformular statt in einen unklaren Massen-Checkout.",
     },
   ],
 };
@@ -236,9 +275,9 @@ export const homePageData: HomePageData = {
 export const siteNavigation: SiteNavigationItem[] = [
   { label: "Produkte", href: "/de/pp-rollenetiketten" },
   { label: "Branchen", href: "/de/lebensmittel-etiketten" },
+  { label: "Ratgeber", href: "/de/ratgeber" },
+  { label: "Glossar", href: "/de/glossar" },
   { label: "Musterbox", href: "/de/musterbox" },
-  { label: "Druckdaten", href: "/de/druckdaten" },
-  { label: "Nachbestellen", href: "/de/nachbestellen" },
 ];
 
 export const footerLinks: FooterGroup[] = [
@@ -246,17 +285,23 @@ export const footerLinks: FooterGroup[] = [
     title: "Produkte",
     links: [
       { label: "Opake PP-Etiketten", href: "/de/opake-pp-etiketten" },
-      { label: "Transparente PP-Etiketten", href: "/de/transparente-pp-etiketten" },
-      { label: "Thermo-Versandetiketten", href: "/de/thermo-versandetiketten" },
+      {
+        label: "Transparente PP-Etiketten",
+        href: "/de/transparente-pp-etiketten",
+      },
+      {
+        label: "Thermo-Versandetiketten",
+        href: "/de/thermo-versandetiketten",
+      },
     ],
   },
   {
-    title: "Ablauf",
+    title: "Wissen",
     links: [
-      { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
-      { label: "Musterbox", href: "/de/musterbox" },
+      { label: "Ratgeber", href: "/de/ratgeber" },
+      { label: "Glossar", href: "/de/glossar" },
       { label: "Druckdaten", href: "/de/druckdaten" },
-      { label: "Produktion und Versand", href: "/de/produktion-versand" },
+      { label: "Nachbestellen", href: "/de/nachbestellen" },
     ],
   },
   {
@@ -270,13 +315,56 @@ export const footerLinks: FooterGroup[] = [
   },
 ];
 
-export const publicPagesBySlug: Record<string, PublicPageData> = {
-  "lebensmittel-etiketten": {
+const commonCommercialLinks: RelatedLink[] = [
+  {
+    label: "PP-Rollenetiketten",
+    href: "/de/pp-rollenetiketten",
+    description: "Produktübersicht für opake und transparente PP-Materialien.",
+  },
+  {
+    label: "Opake PP-Etiketten",
+    href: "/de/opake-pp-etiketten",
+    description: "Standardmaterial für deckende Motive und klare Pflichtangaben.",
+  },
+  {
+    label: "Transparente PP-Etiketten",
+    href: "/de/transparente-pp-etiketten",
+    description:
+      "Premium-Variante für Flaschen, Gläser und sichtbare Verpackungsoberflächen.",
+  },
+  {
+    label: "Angebot anfordern",
+    href: "/de/angebot-anfordern",
+    description:
+      "Für 20.000+ Stück, Sondergrößen oder mehrere Varianten im selben Projekt.",
+  },
+];
+
+const guideCommercialLinks: RelatedLink[] = [
+  ...commonCommercialLinks,
+  {
+    label: "Musterbox",
+    href: "/de/musterbox",
+    description:
+      "Sinnvoll, wenn Materialwirkung und Haptik vor der ersten Menge geklärt werden sollen.",
+  },
+  {
+    label: "Druckdaten",
+    href: "/de/druckdaten",
+    description:
+      "Technische Anforderungen für PDF, AI, EPS, SVG, PNG, JPG und ZIP.",
+  },
+];
+
+const topLevelPages: PublicPageData[] = [
+  {
+    path: "/de/lebensmittel-etiketten",
     slug: "lebensmittel-etiketten",
     kind: "industry",
     title: "Lebensmitteletiketten drucken",
     eyebrow: "Branche",
-    lead: "Bedruckte PP-Rollenetiketten für Lebensmittelmarken in Deutschland. Geeignet für Gläser, Beutel, Flaschen und klassische Verpackungen.",
+    lead:
+      "Bedruckte PP-Rollenetiketten für Lebensmittelmarken in Deutschland. Geeignet für Gläser, Beutel, Flaschen und klassische Verpackungen.",
     heroBullets: [
       "Opake oder transparente PP-Varianten für unterschiedliche Verpackungsoptiken.",
       "100×200 mm als schneller MVP-Standard für wiederkehrende Produktetiketten.",
@@ -288,8 +376,11 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
       "Honig, Gewürze, Marmelade und Feinkost",
       "Wiederkehrende Sortimente mit identischer Etikettengröße",
     ],
-    primaryCta: { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
-    secondaryCta: { label: "Opake PP ansehen", href: "/de/opake-pp-etiketten" },
+    primaryCta: quoteLink,
+    secondaryCta: {
+      label: "Opake PP ansehen",
+      href: "/de/opake-pp-etiketten",
+    },
     sections: [
       {
         title: "Warum PP für Lebensmittelverpackungen",
@@ -299,21 +390,21 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
         ],
       },
       {
-        title: "Welche Optik passt besser",
+        title: "Welche Optik besser passt",
         body: [
-          "Opake PP-Etiketten passen für starke Flächendeckung und klare Lesbarkeit.",
-          "Transparente PP-Etiketten wirken hochwertiger auf Gläsern, Flaschen und Sichtfenster-Verpackungen.",
+          "Opake PP-Etiketten helfen, wenn Pflichtangaben, Zutatenlisten und markante Farbflächen klar lesbar sein müssen.",
+          "Transparente PP-Etiketten wirken hochwertiger auf Glas und Sichtfenster-Verpackungen, wenn das Produkt selbst sichtbar bleiben soll.",
         ],
       },
       {
-        title: "Wann die Musterbox sinnvoll ist",
+        title: "Welche nächsten Seiten wichtig sind",
         body: [
-          "Wenn Materialwirkung oder Haptik noch offen sind, hilft die Musterbox vor größeren Mengen.",
+          "Für konkrete Verpackungen mit Glasbezug lohnt sich zusätzlich die Branchen-Seite für Flaschenetiketten.",
         ],
         bullets: [
-          "Materialvergleich vor Erstbestellung",
-          "Sicherere Freigabe für spätere Nachbestellungen",
-          "Klarere Entscheidung zwischen opak und transparent",
+          "Materialvergleich im Ratgeber zu transparent vs. opak",
+          "Druckdaten-Seite für technische Vorbereitung",
+          "Musterbox bei Unsicherheit zur Haptik",
         ],
       },
     ],
@@ -329,13 +420,36 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
           "Ja. Die öffentliche Produktlogik ist bewusst auf wiederholbare Größen, Materialien und Nachbestellungen ausgerichtet.",
       },
     ],
+    relatedLinks: [
+      {
+        label: "Flaschenetiketten",
+        href: "/de/flaschenetiketten",
+        description:
+          "Wenn Lebensmittel in Flaschen oder Glasgebinden verkauft werden.",
+      },
+      {
+        label: "Honig- und Marmeladenetiketten",
+        href: "/de/honig-marmelade-etiketten",
+        description:
+          "Spezialseite für Gläser, kleine Chargen und transparente Optiken.",
+      },
+      {
+        label: "Transparente vs. opake Etiketten",
+        href: "/de/ratgeber/transparente-vs-opake-etiketten",
+        description:
+          "Vergleich der Materialwirkung für Gläser, Dosen und Verpackungen.",
+      },
+      ...guideCommercialLinks,
+    ],
   },
-  "supplement-etiketten": {
+  {
+    path: "/de/supplement-etiketten",
     slug: "supplement-etiketten",
     kind: "industry",
     title: "Supplement-Etiketten drucken",
     eyebrow: "Branche",
-    lead: "PP-Rollenetiketten für Supplement-Dosen, Beutel und Flaschen. 100×200 mm, opak oder transparent, mit technischer Dateiprüfung.",
+    lead:
+      "PP-Rollenetiketten für Supplement-Dosen, Beutel und Flaschen. 100×200 mm, opak oder transparent, mit technischer Dateiprüfung.",
     heroBullets: [
       "Geeignet für wiederkehrende SKU-Strukturen im B2B-Kontext.",
       "Saubere Unterscheidung zwischen Standardprodukt und Angebotsfall.",
@@ -344,30 +458,33 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
     sidebarTitle: "Für Supplement-Marken wichtig",
     sidebarBullets: [
       "Konstante Größe über mehrere Varianten",
-      "Hohe Wiederholungsrate bei identischen Specs",
+      "Hohe Wiederholungsrate bei identischen Spezifikationen",
       "Transparente oder opake Optik je nach Verpackung",
     ],
-    primaryCta: { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
-    secondaryCta: { label: "Transparente PP ansehen", href: "/de/transparente-pp-etiketten" },
+    primaryCta: quoteLink,
+    secondaryCta: {
+      label: "Transparente PP ansehen",
+      href: "/de/transparente-pp-etiketten",
+    },
     sections: [
       {
-        title: "Struktur statt generischer Druckshop",
+        title: "Struktur statt Variantenchaos",
         body: [
-          "Supplement-Marken brauchen meist wiederkehrende Etiketten mit sauber dokumentierten Spezifikationen.",
-          "Darum fokussiert die MVP-Version nicht auf beliebige Print-Konfigurationen, sondern auf einen klaren Kern aus PP-Material, Standardformat und Nachbestelllogik.",
+          "Supplement-Marken brauchen meist wiederkehrende Etiketten mit sauber dokumentierten Spezifikationen statt beliebiger Online-Konfigurationen.",
+          "Darum fokussiert die MVP-Version auf einen klaren Kern aus PP-Material, Standardformat und Nachbestelllogik.",
         ],
       },
       {
-        title: "Opak oder transparent",
+        title: "Wann opak und wann transparent",
         body: [
-          "Opakes PP passt für klare Farbflächen, Pflichtangaben und wiedererkennbare Regaloptik.",
-          "Transparentes PP eignet sich, wenn Dosen oder Flaschen eine reduzierte Premium-Wirkung behalten sollen.",
+          "Opakes PP passt für dichte Farbflächen, Pflichtangaben und stabile Regaloptik auf Dosen und Beuteln.",
+          "Transparentes PP eignet sich, wenn Flaschen oder Dosen eine reduzierte Premium-Wirkung behalten sollen.",
         ],
       },
       {
-        title: "Ab wann Angebot sinnvoll ist",
+        title: "Sinnvolle Anschlussseiten",
         body: [
-          "Ab 20.000 Stück, bei Sondergrößen oder wenn mehrere Verpackungsformen gleichzeitig geplant sind, sollte die Anfrage direkt in den Angebotsprozess gehen.",
+          "Wer Beutelverpackungen plant, sollte zusätzlich die Themenwelt zu Kaffeebeuteln und anderen flexiblen Verpackungen ansehen.",
         ],
       },
     ],
@@ -383,13 +500,30 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
           "Ja. Dafür dient die Musterbox mit opaken, transparenten und Thermo-Beispielen als Orientierung vor größeren Mengen.",
       },
     ],
+    relatedLinks: [
+      {
+        label: "Beutel als Use Case",
+        href: "/de/kaffee-etiketten",
+        description:
+          "Kaffeebeutel liefern einen realen Vergleich für flexible Verpackungen mit opaken Etiketten.",
+      },
+      {
+        label: "PP vs. Papier",
+        href: "/de/ratgeber/pp-etiketten-vs-papieretiketten",
+        description:
+          "Warum PP bei Feuchtigkeit, Abrieb und wiederkehrenden Produktionen oft stabiler ist.",
+      },
+      ...guideCommercialLinks,
+    ],
   },
-  "getraenke-etiketten": {
+  {
+    path: "/de/getraenke-etiketten",
     slug: "getraenke-etiketten",
     kind: "industry",
     title: "Getränkeetiketten drucken",
     eyebrow: "Branche",
-    lead: "Transparente und opake PP-Rollenetiketten für Getränke, Flaschen und Glasverpackungen. Für Marken in Deutschland mit einfacher Nachbestellung.",
+    lead:
+      "Transparente und opake PP-Rollenetiketten für Getränke, Flaschen und Glasverpackungen. Für Marken in Deutschland mit einfacher Nachbestellung.",
     heroBullets: [
       "Transparente PP-Etiketten passen besonders gut zu Flaschen- und Glasoptiken.",
       "Opake Varianten bleiben sinnvoll für kontrastreiche Designs und Pflichtangaben.",
@@ -401,8 +535,11 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
       "Glasverpackungen mit transparenter Optik",
       "Wiederkehrende Abrufe über feste Mengenstufen",
     ],
-    primaryCta: { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
-    secondaryCta: { label: "Transparente PP ansehen", href: "/de/transparente-pp-etiketten" },
+    primaryCta: quoteLink,
+    secondaryCta: {
+      label: "Transparente PP ansehen",
+      href: "/de/transparente-pp-etiketten",
+    },
     sections: [
       {
         title: "Warum transparente PP-Etiketten oft dominieren",
@@ -418,9 +555,9 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
         ],
       },
       {
-        title: "Sinnvolle nächste Schritte",
+        title: "Wo tiefer erklärt wird",
         body: [
-          "Bei Unsicherheit zwischen transparenter und opaker Optik ist die Musterbox der saubere Zwischenschritt.",
+          "Die Materialentscheidung wird zusätzlich im Ratgeber zu transparenten und opaken Etiketten erläutert.",
         ],
       },
     ],
@@ -436,13 +573,30 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
           "Ja. Sobald mehrere Varianten, Mengen oder Spezifikationen zusammenkommen, ist das Angebotsformular der richtige Einstieg.",
       },
     ],
+    relatedLinks: [
+      {
+        label: "Flaschenetiketten",
+        href: "/de/flaschenetiketten",
+        description:
+          "Spezialseite mit Fokus auf Glas, Sichtbarkeit und Materialwirkung.",
+      },
+      {
+        label: "Glossar: transparente Etiketten",
+        href: "/de/glossar/transparente-etiketten",
+        description:
+          "Kurze, AI-lesbare Definition für den Unterschied zur opaken Variante.",
+      },
+      ...guideCommercialLinks,
+    ],
   },
-  "transparente-pp-etiketten": {
+  {
+    path: "/de/transparente-pp-etiketten",
     slug: "transparente-pp-etiketten",
     kind: "product",
     title: "Transparente PP-Etiketten drucken",
     eyebrow: "Produkt",
-    lead: "Transparente PP-Rollenetiketten 100×200 mm für Flaschen, Gläser und Premium-Verpackungen. Druckdaten hochladen, prüfen und später leichter nachbestellen.",
+    lead:
+      "Transparente PP-Rollenetiketten 100×200 mm für Flaschen, Gläser und Premium-Verpackungen. Druckdaten hochladen, prüfen und später leichter nachbestellen.",
     heroBullets: [
       "Kanonische Preisstaffel mit 1.000, 2.000, 5.000, 10.000 und 20.000+.",
       "5.000 Stück bleiben das zentrale Kernpaket für skalierbare B2B-Bestellungen.",
@@ -454,11 +608,11 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
       "Transparentes PP",
       "Geeignet für Premium-Verpackungen und Glasoptiken",
     ],
-    primaryCta: { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
-    secondaryCta: { label: "Musterbox ansehen", href: "/de/musterbox" },
+    primaryCta: quoteLink,
+    secondaryCta: sampleLink,
     packageHeading: "Kanonische Preisstaffel für transparente PP-Etiketten",
     packageLead:
-      "Diese Tabelle folgt der in den Dokumenten gelockten Preisstaffel. Transparente PP-Etiketten werden bewusst oberhalb der opaken Variante positioniert.",
+      "Diese Tabelle folgt der gelockten Preisstaffel. Transparente PP-Etiketten werden bewusst oberhalb der opaken Variante positioniert.",
     packageTable: transparentPackages,
     sections: [
       {
@@ -480,9 +634,9 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
         ],
       },
       {
-        title: "Wann ein Angebot nötig ist",
+        title: "Welche Folgeseiten helfen",
         body: [
-          "Sobald die Menge 20.000+ erreicht oder Sondergrößen ins Spiel kommen, wird der Fall bewusst in den Angebotsprozess überführt.",
+          "Die Branchen-Seite für Flaschenetiketten und der Materialvergleich transparent vs. opak vertiefen typische Kaufentscheidungen.",
         ],
       },
     ],
@@ -498,13 +652,29 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
           "Ja. Die kanonische Preislogik enthält eine 2.000er-Stufe als Reorder-Ready-Paket für wiederkehrende kleine Chargen.",
       },
     ],
+    relatedLinks: [
+      {
+        label: "Flaschenetiketten",
+        href: "/de/flaschenetiketten",
+        description: "Branchenseite für sichtbare Glas- und Flaschenverpackungen.",
+      },
+      {
+        label: "Transparente vs. opake Etiketten",
+        href: "/de/ratgeber/transparente-vs-opake-etiketten",
+        description:
+          "Guide mit direktem Vergleich der Materialwirkung auf Verpackungen.",
+      },
+      ...guideCommercialLinks,
+    ],
   },
-  "opake-pp-etiketten": {
+  {
+    path: "/de/opake-pp-etiketten",
     slug: "opake-pp-etiketten",
     kind: "product",
     title: "Opake PP-Etiketten drucken",
     eyebrow: "Produkt",
-    lead: "Opake PP-Rollenetiketten 100×200 mm für Lebensmittel-, Supplement- und Produktverpackungen. Ideal für wiederkehrende B2B-Bestellungen.",
+    lead:
+      "Opake PP-Rollenetiketten 100×200 mm für Lebensmittel-, Supplement- und Produktverpackungen. Ideal für wiederkehrende B2B-Bestellungen.",
     heroBullets: [
       "Das Standardprodukt für kontrastreiche Druckmotive und klare Deckkraft.",
       "Kanonische Preisstaffel mit 2.000er-Reorder-Stufe statt Lücke zwischen 1.000 und 5.000.",
@@ -516,11 +686,11 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
       "Opakes PP",
       "Geeignet für Lebensmittel, Supplemente und klassische Produktverpackungen",
     ],
-    primaryCta: { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
-    secondaryCta: { label: "Druckdaten prüfen", href: "/de/druckdaten" },
+    primaryCta: quoteLink,
+    secondaryCta: fileLink,
     packageHeading: "Kanonische Preisstaffel für opake PP-Etiketten",
     packageLead:
-      "Diese Tabelle übernimmt die zentrale Preisdefinition aus dem Pricing-Modell. Damit bleibt Produkt, Katalog und Angebotssprache konsistent.",
+      "Diese Tabelle übernimmt die zentrale Preisdefinition aus dem Pricing-Modell. Damit bleiben Produkt, Katalog und Angebotssprache konsistent.",
     packageTable: opaquePackages,
     sections: [
       {
@@ -536,9 +706,9 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
         ],
       },
       {
-        title: "Für wen 20.000+ gedacht ist",
+        title: "Welche Inhalte vertiefen die Entscheidung",
         body: [
-          "Großmengen, Rahmenabrufe oder kombinierte Anforderungen werden nicht als Standardpreis verkauft, sondern im Angebotsprozess strukturiert aufgenommen.",
+          "Für Materialvergleiche und Verpackungstypen lohnt sich die Kombination aus Branchen-Seiten und Vergleichsratgebern.",
         ],
       },
     ],
@@ -554,13 +724,30 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
           "Ja, wenn Deckkraft und klare Lesbarkeit wichtiger sind als ein transparenter Look. Für sichtbare Flaschenoptik ist die transparente Variante oft passender.",
       },
     ],
+    relatedLinks: [
+      {
+        label: "PP vs. Papier",
+        href: "/de/ratgeber/pp-etiketten-vs-papieretiketten",
+        description:
+          "Warum PP für Feuchtigkeit, Abrieb und wiederkehrende Produktlinien meist stabiler ist.",
+      },
+      {
+        label: "Gewürz-Etiketten",
+        href: "/de/gewuerz-etiketten",
+        description:
+          "Branchenspezifisches Beispiel für kleine Formate mit dichten Pflichtangaben.",
+      },
+      ...guideCommercialLinks,
+    ],
   },
-  "pp-rollenetiketten": {
+  {
+    path: "/de/pp-rollenetiketten",
     slug: "pp-rollenetiketten",
     kind: "collection",
     title: "PP-Rollenetiketten drucken",
     eyebrow: "Produktübersicht",
-    lead: "Individuell bedruckte PP-Rollenetiketten für deutsche B2B-Marken. Opak oder transparent, 100×200 mm, mit gespeicherten Druckdaten.",
+    lead:
+      "Individuell bedruckte PP-Rollenetiketten für deutsche B2B-Marken. Opak oder transparent, 100×200 mm, mit gespeicherten Druckdaten.",
     heroBullets: [
       "Zentrale Produktübersicht für den deutschen Public MVP.",
       "Verbindet Materialwahl, Preislogik, Druckdaten und Nachbestellung.",
@@ -572,8 +759,14 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
       "Transparentes PP als Premium-Variante",
       "Weiterleitung zu Angebot, Musterbox und Druckdaten",
     ],
-    primaryCta: { label: "Opake PP ansehen", href: "/de/opake-pp-etiketten" },
-    secondaryCta: { label: "Transparente PP ansehen", href: "/de/transparente-pp-etiketten" },
+    primaryCta: {
+      label: "Opake PP ansehen",
+      href: "/de/opake-pp-etiketten",
+    },
+    secondaryCta: {
+      label: "Transparente PP ansehen",
+      href: "/de/transparente-pp-etiketten",
+    },
     sections: [
       {
         title: "Der Kern des Angebots",
@@ -588,20 +781,33 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
         ],
       },
       {
-        title: "Reorder-Logik von Anfang an",
+        title: "Was Phase 2 ergänzt",
         body: [
-          "Schon die öffentliche Kommunikation ist so aufgebaut, dass spätere Nachbestellungen nicht wie neue Einzelprojekte behandelt werden müssen.",
+          "P1-Branchen-Seiten und Ratgeber vertiefen jetzt konkrete Verpackungsfälle, ohne die Produktarchitektur zu verwässern.",
         ],
       },
     ],
     table: {
       title: "Materialvergleich im MVP",
-      lead: "Die Auswahl bleibt bewusst schmal, damit Nachfrage, Preis und Nachbestellung sauber gesteuert werden können.",
+      lead:
+        "Die Auswahl bleibt bewusst schmal, damit Nachfrage, Preis und Nachbestellung sauber gesteuert werden können.",
       columns: ["Material", "Rolle", "Stärken"],
       rows: [
-        ["Opakes PP", "Standardprodukt", "Deckkraft, klare Lesbarkeit, wiederkehrende Chargen"],
-        ["Transparentes PP", "Premium-Produkt", "Reduzierte Optik, Glas- und Flaschenverpackungen"],
-        ["Thermo", "Cross-Sell", "Versand, Lager, interne Logistik als Ergänzung"],
+        [
+          "Opakes PP",
+          "Standardprodukt",
+          "Deckkraft, klare Lesbarkeit, wiederkehrende Chargen",
+        ],
+        [
+          "Transparentes PP",
+          "Premium-Produkt",
+          "Reduzierte Optik, Glas- und Flaschenverpackungen",
+        ],
+        [
+          "Thermo",
+          "Cross-Sell",
+          "Versand, Lager, interne Logistik als Ergänzung",
+        ],
       ],
     },
     faqs: [
@@ -611,13 +817,30 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
           "Die Dokumentation priorisiert einen schmalen, sauberen Kern statt eines zu breiten Sortiments. Das reduziert SEO-Drift und operative Unschärfe.",
       },
     ],
+    relatedLinks: [
+      {
+        label: "Ratgeber",
+        href: "/de/ratgeber",
+        description:
+          "Vergleichs- und Erklärseiten zu Material, Menge und Druckdaten.",
+      },
+      {
+        label: "Glossar",
+        href: "/de/glossar",
+        description:
+          "Kurze Fachbegriffe für AI-Suchen, Support-Fragen und interne Verlinkung.",
+      },
+      ...guideCommercialLinks,
+    ],
   },
-  "etiketten-100x200": {
+  {
+    path: "/de/etiketten-100x200",
     slug: "etiketten-100x200",
     kind: "collection",
     title: "Etiketten 100×200 mm drucken",
     eyebrow: "Format",
-    lead: "100×200 mm PP-Rollenetiketten für Produktverpackungen. Geeignet für Lebensmittel, Getränke und Supplemente. Mengen ab 1.000 Stück.",
+    lead:
+      "100×200 mm PP-Rollenetiketten für Produktverpackungen. Geeignet für Lebensmittel, Getränke und Supplemente. Mengen ab 1.000 Stück.",
     heroBullets: [
       "Das Standardformat des Public MVP für wiederkehrende Produktetiketten.",
       "Schnellere Vergleichbarkeit zwischen opak und transparent.",
@@ -629,8 +852,11 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
       "Einfacher Materialvergleich zwischen opak und transparent",
       "Klarer Ausgangspunkt für spätere Angebotsfälle",
     ],
-    primaryCta: { label: "Opake PP ansehen", href: "/de/opake-pp-etiketten" },
-    secondaryCta: { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
+    primaryCta: {
+      label: "Opake PP ansehen",
+      href: "/de/opake-pp-etiketten",
+    },
+    secondaryCta: quoteLink,
     sections: [
       {
         title: "Standardisierung vor Variantenexplosion",
@@ -640,25 +866,30 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
         ],
       },
       {
-        title: "Für welche Verpackungen es passt",
+        title: "Wann trotzdem ein Guide hilft",
         body: [
-          "Das Format eignet sich für viele Produktverpackungen im Lebensmittel-, Getränke- und Supplement-Bereich, solange die Etikettierfläche dazu passt.",
-        ],
-      },
-      {
-        title: "Wie man mit Sonderfällen umgeht",
-        body: [
-          "Sobald Größe, Form oder Material vom Standard abweichen, sollte die Anfrage direkt im Angebot konkretisiert werden.",
+          "Gerade bei kleinen Marken ist weniger die Größe als die Material- und Mengenentscheidung unsicher. Genau dafür existieren die Vergleichsratgeber.",
         ],
       },
     ],
+    relatedLinks: [
+      {
+        label: "PP vs. Papier",
+        href: "/de/ratgeber/pp-etiketten-vs-papieretiketten",
+        description:
+          "Materialvergleich für wiederkehrende Produktetiketten im Standardformat.",
+      },
+      ...guideCommercialLinks,
+    ],
   },
-  "thermo-versandetiketten": {
+  {
+    path: "/de/thermo-versandetiketten",
     slug: "thermo-versandetiketten",
     kind: "product",
     title: "Thermo-Versandetiketten 100×150 mm",
     eyebrow: "Cross-Sell",
-    lead: "Thermo-Versandetiketten und Thermoetiketten als B2B-Ergänzung zu Produktetiketten. Für Versand, Lager und Fulfillment-Prozesse.",
+    lead:
+      "Thermo-Versandetiketten und Thermoetiketten als B2B-Ergänzung zu Produktetiketten. Für Versand, Lager und Fulfillment-Prozesse.",
     heroBullets: [
       "Bewusst als Cross-Sell positioniert und nicht als Hauptprodukt des MVP.",
       "Typisch für Versand, Lager und Fulfillment statt klassische Markenverpackung.",
@@ -670,8 +901,11 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
       "Logistik- und Lagerprozesse",
       "Zusatzprodukt für bestehende B2B-Kunden",
     ],
-    primaryCta: { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
-    secondaryCta: { label: "PP-Rollenetiketten ansehen", href: "/de/pp-rollenetiketten" },
+    primaryCta: quoteLink,
+    secondaryCta: {
+      label: "PP-Rollenetiketten ansehen",
+      href: "/de/pp-rollenetiketten",
+    },
     packageHeading: "Cross-Sell statt Hauptprodukt",
     packageLead:
       "Die Dokumentation beschreibt Thermoetiketten als ergänzendes Produkt. Deshalb bleibt die öffentliche Darstellung im MVP bewusst angebotsbasiert.",
@@ -689,12 +923,6 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
           "Wenn Versand, Lager oder Fulfillment im selben B2B-Kontext mitgedacht werden, sind Thermo-Versandetiketten eine logische Ergänzung.",
         ],
       },
-      {
-        title: "Wie der Einstieg läuft",
-        body: [
-          "Im MVP wird der Bedarf über das Angebotsformular aufgenommen, statt eine ungesicherte öffentliche Preisstaffel vorzugeben.",
-        ],
-      },
     ],
     faqs: [
       {
@@ -703,13 +931,24 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
           "Nicht im ersten Public MVP. Die Seite dient als Produktinformation und leitet für konkrete Mengen in den Angebotsprozess.",
       },
     ],
+    relatedLinks: [
+      {
+        label: "Glossar: Thermoetiketten",
+        href: "/de/glossar/thermoetiketten",
+        description:
+          "Kurzdefinition für den Unterschied zwischen Thermoetiketten und PP-Rollenetiketten.",
+      },
+      ...guideCommercialLinks,
+    ],
   },
-  musterbox: {
+  {
+    path: "/de/musterbox",
     slug: "musterbox",
     kind: "service",
     title: "Etiketten Musterbox anfordern",
     eyebrow: "Musterbox",
-    lead: "Fordern Sie eine Labelpilot Musterbox an und vergleichen Sie opake PP-Etiketten, transparente PP-Etiketten und Thermoetiketten.",
+    lead:
+      "Fordern Sie eine Labelpilot Musterbox an und vergleichen Sie opake PP-Etiketten, transparente PP-Etiketten und Thermoetiketten.",
     heroBullets: [
       "Die Musterbox reduziert Materialunsicherheit vor größeren B2B-Bestellungen.",
       "Sie ist kein pauschales Gratis-Giveaway, sondern ein qualifizierender Zwischenschritt.",
@@ -721,8 +960,11 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
       "Unterschied zwischen opak und transparent",
       "Nächster Schritt Richtung Angebot oder Erstbestellung",
     ],
-    primaryCta: { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
-    secondaryCta: { label: "Transparente PP ansehen", href: "/de/transparente-pp-etiketten" },
+    primaryCta: quoteLink,
+    secondaryCta: {
+      label: "Transparente PP ansehen",
+      href: "/de/transparente-pp-etiketten",
+    },
     sections: [
       {
         title: "Was enthalten ist",
@@ -755,13 +997,16 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
           "Ja. Genau dafür ist die Musterbox gedacht: Material klären, dann den Angebotsprozess mit konkreteren Angaben starten.",
       },
     ],
+    relatedLinks: guideCommercialLinks,
   },
-  "angebot-anfordern": {
+  {
+    path: "/de/angebot-anfordern",
     slug: "angebot-anfordern",
     kind: "quote",
     title: "B2B-Angebot für Etiketten anfordern",
     eyebrow: "Angebot",
-    lead: "Fordern Sie ein individuelles B2B-Angebot für PP-Rollenetiketten, Thermoetiketten oder größere Etikettenmengen an.",
+    lead:
+      "Fordern Sie ein individuelles B2B-Angebot für PP-Rollenetiketten, Thermoetiketten oder größere Etikettenmengen an.",
     heroBullets: [
       "Geeignet für 20.000+ Stück, Sondergrößen, unklare Materialwahl oder wiederkehrende Abrufe.",
       "Der Prozess ist bewusst strukturiert und kein generisches Kontaktformular.",
@@ -779,11 +1024,7 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
         body: [
           "Immer dann, wenn Ihre Menge, Verpackung oder Spezifikation nicht mehr in die schmale Standardlogik des MVP passt.",
         ],
-        bullets: [
-          "20.000+ Stück",
-          "Sondergrößen oder mehrere Varianten",
-          "Unklare Materialentscheidung",
-        ],
+        bullets: ["20.000+ Stück", "Sondergrößen oder mehrere Varianten", "Unklare Materialentscheidung"],
       },
       {
         title: "Was nach der Anfrage passiert",
@@ -811,12 +1052,14 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
       },
     ],
   },
-  nachbestellen: {
+  {
+    path: "/de/nachbestellen",
     slug: "nachbestellen",
     kind: "service",
     title: "Etiketten nachbestellen",
     eyebrow: "Nachbestellung",
-    lead: "Bestellen Sie freigegebene Etiketten später schneller erneut. Labelpilot.de speichert Druckdaten, Material, Größe und Stückzahl für Nachbestellungen.",
+    lead:
+      "Bestellen Sie freigegebene Etiketten später schneller erneut. Labelpilot.de speichert Druckdaten, Material, Größe und Stückzahl für Nachbestellungen.",
     heroBullets: [
       "Im Public MVP ist dies bewusst eine Info-Seite ohne Login und ohne direkte Nachbestellaktion.",
       "Die Seite erklärt, warum gespeicherte Spezifikationen für B2B-Marken wirtschaftlich sind.",
@@ -828,8 +1071,8 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
       "Material, Größe und Stückzahl",
       "Wiederholbare Produktlogik für spätere Abrufe",
     ],
-    primaryCta: { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
-    secondaryCta: { label: "Druckdaten ansehen", href: "/de/druckdaten" },
+    primaryCta: quoteLink,
+    secondaryCta: fileLink,
     sections: [
       {
         title: "Warum Nachbestellung so wichtig ist",
@@ -844,9 +1087,9 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
         ],
       },
       {
-        title: "Was später folgt",
+        title: "Welche Guide-Seite unterstützt das",
         body: [
-          "Login, Kundenkonto und echte Reorder-Aktionen sind bewusst in spätere Phasen verschoben.",
+          "Der Ratgeber zur Nachbestellung erklärt, welche Angaben bei wiederkehrenden Abrufen den größten Zeitgewinn bringen.",
         ],
       },
     ],
@@ -857,13 +1100,24 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
           "Nein. Diese Phase liefert nur die öffentliche Erklärung des Reorder-Prozesses. Die eigentliche Aktion kommt in späteren Account-Phasen.",
       },
     ],
+    relatedLinks: [
+      {
+        label: "Ratgeber",
+        href: "/de/ratgeber",
+        description:
+          "Hub-Seite mit den freigegebenen Vergleichs- und Druckdaten-Guides.",
+      },
+      ...guideCommercialLinks,
+    ],
   },
-  druckdaten: {
+  {
+    path: "/de/druckdaten",
     slug: "druckdaten",
     kind: "service",
     title: "Druckdaten für Etiketten vorbereiten",
     eyebrow: "Druckdaten",
-    lead: "Welche Druckdaten für PP-Rollenetiketten benötigt werden: PDF, AI, EPS, SVG, PNG, JPG oder ZIP. Mit technischer Dateiprüfung.",
+    lead:
+      "Welche Druckdaten für PP-Rollenetiketten benötigt werden: PDF, AI, EPS, SVG, PNG, JPG oder ZIP. Mit technischer Dateiprüfung.",
     heroBullets: [
       "Das Angebotsformular funktioniert zunächst ohne Upload.",
       "Trotzdem erklärt diese Seite die erwarteten Formate und den technischen Prüfkontext.",
@@ -875,8 +1129,8 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
       "Klare Spezifikation zu Material und Etikettengröße",
       "Prüfbarkeit vor Freigabe und Wiederholung",
     ],
-    primaryCta: { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
-    secondaryCta: { label: "Musterbox ansehen", href: "/de/musterbox" },
+    primaryCta: quoteLink,
+    secondaryCta: sampleLink,
     sections: [
       {
         title: "Welche Formate sinnvoll sind",
@@ -891,9 +1145,9 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
         ],
       },
       {
-        title: "Wie Sie ohne fertige Datei starten",
+        title: "Was im Guide vertieft wird",
         body: [
-          "Wenn noch keine finale Druckdatei vorliegt, können Sie trotzdem Material, Größe, Menge und Verpackung im Angebotsformular angeben.",
+          "Die Schritt-für-Schritt-Anleitung im Ratgeber erklärt Beschnitt, Export und Proof klarer als diese Übersichtsseite.",
         ],
       },
     ],
@@ -909,13 +1163,36 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
           "Die Produkt- und Prozesslogik sieht technische Prüfung und Rückfragen vor, bevor dieselbe Spezifikation wiederholt wird.",
       },
     ],
+    relatedLinks: [
+      {
+        label: "Ratgeber: Druckdaten vorbereiten",
+        href: "/de/ratgeber/druckdaten-vorbereiten",
+        description:
+          "Schritt-für-Schritt-Erklärung von Format, Beschnitt, Export und Proof.",
+      },
+      {
+        label: "Glossar: Beschnitt",
+        href: "/de/glossar/beschnitt",
+        description:
+          "Kurze Definition für den Sicherheitsrand im Druckdatenprozess.",
+      },
+      {
+        label: "Glossar: Proof",
+        href: "/de/glossar/proof",
+        description:
+          "Erklärung des Freigabeschritts vor Produktion und Nachbestellung.",
+      },
+      ...guideCommercialLinks,
+    ],
   },
-  "produktion-versand": {
+  {
+    path: "/de/produktion-versand",
     slug: "produktion-versand",
     kind: "service",
     title: "Produktion und Versand nach Deutschland",
     eyebrow: "Transparenz",
-    lead: "Labelpilot.de produziert Etiketten kosteneffizient in der Türkei und liefert an B2B-Kunden in Deutschland. Mit späterer Hub-Option.",
+    lead:
+      "Labelpilot.de produziert Etiketten kosteneffizient in der Türkei und liefert an B2B-Kunden in Deutschland. Mit späterer Hub-Option.",
     heroBullets: [
       "Die Seite erklärt die Lieferlogik offen, statt sie zu verstecken.",
       "Im MVP dient sie der Einordnung von Produktionsort, Versand und Erwartungsmanagement.",
@@ -927,8 +1204,11 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
       "Versand nach Deutschland",
       "Kommunikation für B2B-Erwartungen",
     ],
-    primaryCta: { label: "Kontakt aufnehmen", href: "/de/kontakt" },
-    secondaryCta: { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
+    primaryCta: {
+      label: "Kontakt aufnehmen",
+      href: "/de/kontakt",
+    },
+    secondaryCta: quoteLink,
     sections: [
       {
         title: "Warum diese Information öffentlich ist",
@@ -942,20 +1222,16 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
           "Konkrete rechtliche oder steuerliche Detailzusagen werden auf dieser Seite nicht erfunden. Sie bleibt bei der operativen Einordnung des MVP.",
         ],
       },
-      {
-        title: "Wann Rückfragen sinnvoll sind",
-        body: [
-          "Wenn Lieferzeit, Importablauf oder individuelle Anforderungen kritisch sind, sollte der nächste Schritt über Kontakt oder Angebot laufen.",
-        ],
-      },
     ],
   },
-  kontakt: {
+  {
+    path: "/de/kontakt",
     slug: "kontakt",
     kind: "service",
     title: "Kontakt",
     eyebrow: "Kontakt",
-    lead: "Kontaktieren Sie Labelpilot.de für Fragen zu PP-Rollenetiketten, Musterbox, Druckdaten, Angeboten oder Nachbestellungen.",
+    lead:
+      "Kontaktieren Sie Labelpilot.de für Fragen zu PP-Rollenetiketten, Musterbox, Druckdaten, Angeboten oder Nachbestellungen.",
     heroBullets: [
       "Kontakt ist der richtige Weg für Rückfragen, die noch kein vollständiges Angebotsformular brauchen.",
       "Für konkrete Mengen und Spezifikationen bleibt das Angebotsformular präziser.",
@@ -966,8 +1242,8 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
       "Klärung zu Musterbox und Prozess",
       "Allgemeine B2B-Abstimmung",
     ],
-    primaryCta: { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
-    secondaryCta: { label: "Musterbox ansehen", href: "/de/musterbox" },
+    primaryCta: quoteLink,
+    secondaryCta: sampleLink,
     sections: [
       {
         title: "Für konkrete Mengen lieber strukturiert anfragen",
@@ -979,12 +1255,6 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
         title: "Für offene Punkte zuerst orientieren",
         body: [
           "Wenn Sie noch zwischen Material, Musterbox und Standardprodukt abwägen, helfen die öffentlichen Service-Seiten beim Einordnen des nächsten Schritts.",
-        ],
-      },
-      {
-        title: "Hinweis zur ersten Version",
-        body: [
-          "Im ersten Public MVP gibt es noch kein separates Kontaktformular. Die Seite dient als klarer Routing-Punkt innerhalb der deutschen Informationsarchitektur.",
         ],
       },
     ],
@@ -999,7 +1269,328 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
       ],
     },
   },
-  impressum: {
+  {
+    path: "/de/kaffee-etiketten",
+    slug: "kaffee-etiketten",
+    kind: "industry",
+    title: "Kaffee-Etiketten drucken",
+    eyebrow: "P1 Branche",
+    lead:
+      "PP-Rollenetiketten für Kaffeebeutel und Kaffeemarken. Opake Etiketten für wiederkehrende Produktverpackungen in Deutschland.",
+    heroBullets: [
+      "Kaffeeverpackungen brauchen oft dichte Informationen auf kleinen Flächen.",
+      "Beutel, Ventilverpackungen und wiederkehrende Sorten sprechen für ein robustes PP-Setup.",
+      "Die Seite ist bewusst anders aufgebaut als Honig- oder Flaschenetiketten, weil der Use Case ein anderer ist.",
+    ],
+    sidebarTitle: "Typische Kaffee-Use-Cases",
+    sidebarBullets: [
+      "Kaffeebeutel mit wiederkehrenden Sorten",
+      "Private-Label-Linien mit identischem Format",
+      "Marken, die Lesbarkeit und Abriebfestigkeit priorisieren",
+    ],
+    primaryCta: quoteLink,
+    secondaryCta: {
+      label: "Opake PP ansehen",
+      href: "/de/opake-pp-etiketten",
+    },
+    sections: [
+      {
+        title: "Warum Kaffee-Etiketten meist nicht generisch sind",
+        body: [
+          "Kaffeemarken arbeiten oft mit mehreren Röstungen, Herkunftsangaben und Pflichtinformationen, die auf relativ begrenzten Flächen sauber lesbar bleiben müssen.",
+          "Dadurch zählt bei Kaffee weniger ein schöner Konfigurator als eine wiederholbare Spezifikation, die über mehrere Sorten hinweg konsistent bleibt.",
+        ],
+      },
+      {
+        title: "Warum opakes PP hier oft vorne liegt",
+        body: [
+          "Kaffeebeutel haben häufig matte oder kraftige Oberflächen, auf denen klare Deckkraft wichtiger ist als ein transparenter Look.",
+          "Opakes PP ist daher oft die pragmatische Wahl, wenn Sortennamen, Röstdaten oder Zubereitungshinweise zuverlässig lesbar bleiben müssen.",
+        ],
+      },
+      {
+        title: "Wo transparente Etiketten trotzdem sinnvoll sein können",
+        body: [
+          "Bei Doypacks mit Sichtfenster oder minimalistischen Premium-Linien kann transparentes PP sinnvoll werden, wenn das Produkt oder die Oberfläche bewusst sichtbar bleiben soll.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Sind Kaffee-Etiketten eher ein Beutel-Thema oder ein Material-Thema?",
+        answer:
+          "Beides. Der Beutel-Use-Case bestimmt die Anforderungen, das Material entscheidet dann über Lesbarkeit, Optik und Wiederholbarkeit.",
+      },
+      {
+        question: "Warum verweist diese Seite eher auf opakes PP als auf Flaschenetiketten?",
+        answer:
+          "Weil Kaffeeverpackungen im MVP vor allem mit Beuteln und dichten Informationsflächen verbunden sind, nicht mit transparenter Glasoptik.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Opake PP-Etiketten",
+        href: "/de/opake-pp-etiketten",
+        description:
+          "Materialseite für deckende Motive und stabile Lesbarkeit auf Beuteln.",
+      },
+      {
+        label: "PP vs. Papier",
+        href: "/de/ratgeber/pp-etiketten-vs-papieretiketten",
+        description:
+          "Vergleich der Materiallogik für Feinkost-, Kaffee- und Dosenverpackungen.",
+      },
+      {
+        label: "Druckdaten vorbereiten",
+        href: "/de/ratgeber/druckdaten-vorbereiten",
+        description:
+          "Wichtig bei Sortenwechseln, mehrsprachigen Pflichtangaben und wiederkehrenden Layouts.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/gewuerz-etiketten",
+    slug: "gewuerz-etiketten",
+    kind: "industry",
+    title: "Gewürz-Etiketten drucken",
+    eyebrow: "P1 Branche",
+    lead:
+      "PP-Rollenetiketten für Gewürzgläser, Beutel und Verpackungen. Mit gespeicherten Druckdaten für spätere Nachbestellungen.",
+    heroBullets: [
+      "Gewürz-Etiketten verbinden kleine Flächen mit hohem Informationsdruck.",
+      "Viele Marken haben mehrere Sorten bei identischer Verpackung und ähnlichen Pflichtangaben.",
+      "Der operative Fokus liegt auf Wiederholung und Lesbarkeit, nicht auf maximaler Designvielfalt.",
+    ],
+    sidebarTitle: "Typische Gewürz-Anforderungen",
+    sidebarBullets: [
+      "Kleine Gläser und Standbeutel",
+      "Viele SKUs mit ähnlicher Struktur",
+      "Regelmäßige Nachbestellung gleicher Formate",
+    ],
+    primaryCta: quoteLink,
+    secondaryCta: {
+      label: "Etiketten 100×200 mm",
+      href: "/de/etiketten-100x200",
+    },
+    sections: [
+      {
+        title: "Der Unterschied zu Kaffee oder Honig",
+        body: [
+          "Gewürzsortimente leben oft von vielen Varianten mit ähnlicher Verpackung, nicht von wenigen Hero-Produkten. Dadurch ist saubere Wiederholung besonders wichtig.",
+          "Wenn Inhaltsstoff- und Allergenhinweise auf kleinen Etiketten untergebracht werden müssen, wird die Druckdatenqualität fast genauso wichtig wie der Materialpreis.",
+        ],
+      },
+      {
+        title: "Warum Gläser und Beutel unterschiedlich ticken",
+        body: [
+          "Auf Gewürzgläsern zählt Rundung, Sichtbarkeit und Deckkraft. Bei Beuteln spielen Materialbewegung und Handling im Regal stärker hinein.",
+          "Die Seite bündelt deshalb beide Verpackungstypen, verweist aber intern auf Glas- und Beutel-nahe Themen statt eine einzige Lösung zu behaupten.",
+        ],
+      },
+      {
+        title: "Wann die Musterbox Zeit spart",
+        body: [
+          "Wenn nicht klar ist, ob opak oder transparent auf der konkreten Gewürzverpackung besser wirkt, spart ein früher Materialvergleich unnötige Korrekturen vor größeren Mengen.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Sind Gewürz-Etiketten eher ein Glas- oder ein Beutel-Thema?",
+        answer:
+          "Beides kommt vor. Deshalb kombiniert diese Seite klare Branchenbeispiele mit Verweisen auf Material- und Verpackungsratgeber.",
+      },
+      {
+        question: "Warum ist Nachbestellung bei Gewürzen so wichtig?",
+        answer:
+          "Viele Gewürzmarken haben viele wiederkehrende SKUs. Wenn Größe, Material und Druckdaten einmal sauber definiert sind, wird jede weitere Sorte einfacher.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Glossar: Rollenetiketten",
+        href: "/de/glossar/rollenetiketten",
+        description:
+          "Begriffserklärung für wiederkehrende Produktionen mit vielen ähnlichen Varianten.",
+      },
+      {
+        label: "Transparente vs. opake Etiketten",
+        href: "/de/ratgeber/transparente-vs-opake-etiketten",
+        description:
+          "Hilft bei der Entscheidung zwischen Glaswirkung und klarer Deckkraft.",
+      },
+      {
+        label: "Flaschenetiketten",
+        href: "/de/flaschenetiketten",
+        description:
+          "Sinnvoller Vergleich, wenn das Gewürzsortiment in Mühlen oder Ölflaschen verkauft wird.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/honig-marmelade-etiketten",
+    slug: "honig-marmelade-etiketten",
+    kind: "industry",
+    title: "Honig- und Marmeladenetiketten drucken",
+    eyebrow: "P1 Branche",
+    lead:
+      "Transparente und opake PP-Rollenetiketten für Honiggläser, Marmeladengläser und kleine Lebensmittelmarken.",
+    heroBullets: [
+      "Glas, Sichtbarkeit und handwerkliche Optik stehen hier stärker im Vordergrund als bei Kaffee oder Supplementen.",
+      "Kleine Marken brauchen oft eine Balance zwischen hochwertiger Anmutung und reproduzierbaren Mengen.",
+      "Gerade bei Glasoberflächen entscheidet das Material sichtbar über die Markenwirkung.",
+    ],
+    sidebarTitle: "Typische Verpackungen",
+    sidebarBullets: [
+      "Honiggläser",
+      "Marmeladengläser",
+      "Kleine Feinkost- oder Geschenkserien",
+    ],
+    primaryCta: quoteLink,
+    secondaryCta: {
+      label: "Transparente PP ansehen",
+      href: "/de/transparente-pp-etiketten",
+    },
+    sections: [
+      {
+        title: "Warum diese Seite anders sein muss",
+        body: [
+          "Honig- und Marmeladenetiketten leben stärker von Produktnähe, Glasoptik und Sichtbarkeit des Inhalts als viele andere Lebensmittel-Etiketten.",
+          "Darum betont diese Seite den Materialeffekt auf Glas viel stärker als etwa die supplement-orientierte oder kaffeelastige Branchenlogik.",
+        ],
+      },
+      {
+        title: "Wann transparentes PP überzeugt",
+        body: [
+          "Wenn Honigfarbe, Marmeladenstruktur oder Glasform Teil der Markenwirkung sind, kann transparentes PP die Verpackung leichter und hochwertiger wirken lassen.",
+        ],
+      },
+      {
+        title: "Wann opak besser passt",
+        body: [
+          "Wenn Informationsdichte, Farbkontrast oder blickdichte Gestaltung wichtiger sind als Sichtbarkeit des Inhalts, bleibt opakes PP die kontrolliertere Wahl.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Sind transparente Etiketten für Honiggläser immer besser?",
+        answer:
+          "Nein. Sie passen oft gut zu naturbelassenen Glasoptiken, aber bei viel Text oder kontrastreichen Motiven kann opakes PP praktischer sein.",
+      },
+      {
+        question: "Warum verlinkt diese Seite stark in Richtung Flaschen- und Materialratgeber?",
+        answer:
+          "Weil die eigentliche Entscheidung meist nicht nur die Branche ist, sondern die sichtbare Verpackungsoberfläche aus Glas und der gewünschte Markeneindruck.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Flaschenetiketten",
+        href: "/de/flaschenetiketten",
+        description:
+          "Vergleich für alle Verpackungen, bei denen Glas und Sichtbarkeit dominieren.",
+      },
+      {
+        label: "Transparente vs. opake Etiketten",
+        href: "/de/ratgeber/transparente-vs-opake-etiketten",
+        description:
+          "Materialvergleich speziell für Glas, Dosen und sichtbare Oberflächen.",
+      },
+      {
+        label: "Glossar: transparente Etiketten",
+        href: "/de/glossar/transparente-etiketten",
+        description:
+          "Kurze Erklärung des Begriffs im Kontext von Glasverpackungen.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/flaschenetiketten",
+    slug: "flaschenetiketten",
+    kind: "industry",
+    title: "Flaschenetiketten drucken",
+    eyebrow: "P1 Branche",
+    lead:
+      "Transparente und opake PP-Rollenetiketten für Flaschen, Getränke und Glasverpackungen in Deutschland.",
+    heroBullets: [
+      "Flaschenetiketten sind der stärkste P1-Use-Case für transparente PP-Oberflächen.",
+      "Die Seite verbindet Getränke, Glasoptik und Rundungslogik statt nur generische Branchenbegriffe zu wiederholen.",
+      "Sie ist das Bindeglied zwischen Produktseiten und materialorientierten Vergleichsratgebern.",
+    ],
+    sidebarTitle: "Typische Flaschen-Situationen",
+    sidebarBullets: [
+      "Saft, Sirup und Getränke",
+      "Öle, Essenzen und Feinkost in Glas",
+      "Produkte mit sichtbarer Füllung und Markenoptik",
+    ],
+    primaryCta: quoteLink,
+    secondaryCta: {
+      label: "Transparente PP ansehen",
+      href: "/de/transparente-pp-etiketten",
+    },
+    sections: [
+      {
+        title: "Warum Flaschenetiketten eine eigene Seite verdienen",
+        body: [
+          "Die Suchintention hinter Flaschenetiketten ist konkreter als die allgemeine Getränke-Seite. Käufer suchen hier meist nach Materialwirkung auf runden Glas- oder Kunststoffoberflächen.",
+          "Dadurch reicht es nicht, Getränkeinhalte nur umzubenennen. Die Seite muss wirklich über Sichtbarkeit, Rundung, Kontrast und Premium-Anmutung sprechen.",
+        ],
+      },
+      {
+        title: "Transparenz als echte Kaufentscheidung",
+        body: [
+          "Bei Flaschen entscheidet transparentes PP oft darüber, ob das Produkt leicht, hochwertig oder möglichst nah an der Glasoberfläche wirkt.",
+          "Opakes PP bleibt jedoch wichtig, wenn Inhaltsangaben, Barcodes oder Kontrast im Vordergrund stehen.",
+        ],
+      },
+      {
+        title: "Worauf im Druck geachtet werden sollte",
+        body: [
+          "Rundungen, Klebekante, Blickrichtung und Lesbarkeit auf gebogenen Flächen müssen im Dateiaufbau mitgedacht werden.",
+          "Genau deshalb verlinkt diese Seite konsequent auf den Guide zur Druckdatenvorbereitung und auf das Glossar zu Proof und Beschnitt.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Sind transparente Flaschenetiketten automatisch die beste Wahl?",
+        answer:
+          "Nein. Sie sind oft attraktiv, aber nicht automatisch die beste Lösung. Sobald Kontrast, Pflichtangaben oder starke Markenfarben dominieren, kann opakes PP besser passen.",
+      },
+      {
+        question: "Warum ist diese Seite enger mit dem Materialvergleich verknüpft als andere Branchen-Seiten?",
+        answer:
+          "Weil bei Flaschen die sichtbare Oberfläche das Kaufmotiv stark beeinflusst. Der Materialvergleich ist daher nicht nur Support, sondern Kern der Suchintention.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Transparente PP-Etiketten",
+        href: "/de/transparente-pp-etiketten",
+        description:
+          "Produktseite für klare Optik auf Glas- und Flaschenverpackungen.",
+      },
+      {
+        label: "Getränkeetiketten",
+        href: "/de/getraenke-etiketten",
+        description:
+          "Übergreifende Branchen-Seite für Getränke, Gläser und Flaschen.",
+      },
+      {
+        label: "Druckdaten vorbereiten",
+        href: "/de/ratgeber/druckdaten-vorbereiten",
+        description:
+          "Schrittfolge für runde Oberflächen, Beschnitt und Proof-Freigabe.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/impressum",
     slug: "impressum",
     kind: "legal",
     title: "Impressum",
@@ -1008,21 +1599,13 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
     sidebarTitle: "",
     sidebarBullets: [],
     sections: [
-      {
-        title: "Anbieterkennzeichnung",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
-      {
-        title: "Kontaktangaben",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
-      {
-        title: "Verantwortlich für den Inhalt",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
+      { title: "Anbieterkennzeichnung", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      { title: "Kontaktangaben", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      { title: "Verantwortlich für den Inhalt", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
     ],
   },
-  datenschutz: {
+  {
+    path: "/de/datenschutz",
     slug: "datenschutz",
     kind: "legal",
     title: "Datenschutzerklärung",
@@ -1031,21 +1614,13 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
     sidebarTitle: "",
     sidebarBullets: [],
     sections: [
-      {
-        title: "Verarbeitung personenbezogener Daten",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
-      {
-        title: "Zwecke der Verarbeitung",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
-      {
-        title: "Betroffenenrechte",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
+      { title: "Verarbeitung personenbezogener Daten", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      { title: "Zwecke der Verarbeitung", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      { title: "Betroffenenrechte", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
     ],
   },
-  agb: {
+  {
+    path: "/de/agb",
     slug: "agb",
     kind: "legal",
     title: "Allgemeine Geschäftsbedingungen",
@@ -1054,21 +1629,13 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
     sidebarTitle: "",
     sidebarBullets: [],
     sections: [
-      {
-        title: "Geltungsbereich",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
-      {
-        title: "Angebot, Vertrag und Freigabe",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
-      {
-        title: "Zahlung und Lieferung",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
+      { title: "Geltungsbereich", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      { title: "Angebot, Vertrag und Freigabe", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      { title: "Zahlung und Lieferung", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
     ],
   },
-  versand: {
+  {
+    path: "/de/versand",
     slug: "versand",
     kind: "legal",
     title: "Versandinformationen",
@@ -1077,21 +1644,13 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
     sidebarTitle: "",
     sidebarBullets: [],
     sections: [
-      {
-        title: "Liefergebiet und Versandmodell",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
-      {
-        title: "Produktions- und Versandablauf",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
-      {
-        title: "Hinweise zu Lieferzeiten",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
+      { title: "Liefergebiet und Versandmodell", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      { title: "Produktions- und Versandablauf", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      { title: "Hinweise zu Lieferzeiten", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
     ],
   },
-  widerruf: {
+  {
+    path: "/de/widerruf",
     slug: "widerruf",
     kind: "legal",
     title: "Widerruf und Sonderanfertigungen",
@@ -1100,23 +1659,807 @@ export const publicPagesBySlug: Record<string, PublicPageData> = {
     sidebarTitle: "",
     sidebarBullets: [],
     sections: [
-      {
-        title: "Hinweis zu Sonderanfertigungen",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
-      {
-        title: "Widerruf und Ausschlüsse",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
-      {
-        title: "Reklamationen und Nachbesserung",
-        body: ["⚠️ Rechtlich zu prüfen - Platzhalter"],
-      },
+      { title: "Hinweis zu Sonderanfertigungen", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      { title: "Widerruf und Ausschlüsse", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      { title: "Reklamationen und Nachbesserung", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
     ],
   },
+];
+
+const guidePages: PublicPageData[] = [
+  {
+    path: "/de/ratgeber/pp-etiketten-vs-papieretiketten",
+    slug: "pp-etiketten-vs-papieretiketten",
+    kind: "guide",
+    title: "PP-Etiketten vs. Papieretiketten",
+    eyebrow: "Ratgeber",
+    lead:
+      "Vergleich von PP-Etiketten und Papieretiketten für Produktverpackungen. Mit Empfehlung für Lebensmittel-, Getränke- und Supplement-Marken.",
+    heroBullets: [
+      "Dieser Guide erklärt nicht nur Materialnamen, sondern echte Einsatzgrenzen im deutschen B2B-Alltag.",
+      "PP ist nicht automatisch immer besser, aber bei Feuchtigkeit, Abrieb und Wiederholung oft klar robuster.",
+      "Die Entscheidung hängt stärker an Verpackung und Prozess als an reiner Preiswahrnehmung.",
+    ],
+    sidebarTitle: "Dieser Guide hilft bei",
+    sidebarBullets: [
+      "Materialwahl für wiederkehrende Produktetiketten",
+      "Abwägung zwischen Robustheit und klassischer Papieroptik",
+      "Früher Einordnung, wann ein B2B-Angebot sinnvoller ist als Trial-and-Error",
+    ],
+    primaryCta: quoteLink,
+    secondaryCta: sampleLink,
+    sections: [
+      {
+        title: "Wann Papier im Gespräch bleibt",
+        body: [
+          "Papieretiketten können optisch passend sein, wenn eine bewusst natürliche, matte oder handwerkliche Anmutung gesucht wird und die Verpackung wenig Feuchtigkeit oder Reibung abbekommt.",
+          "Für kleine Serien ohne hohen Belastungsgrad kann Papier daher emotional attraktiv wirken, selbst wenn es operativ nicht immer die robusteste Lösung ist.",
+        ],
+      },
+      {
+        title: "Wann PP die pragmatische Wahl ist",
+        body: [
+          "PP ist meist dann überlegen, wenn Etiketten sauber reproduzierbar bleiben müssen, regelmäßig nachbestellt werden oder mit Feuchtigkeit, Kühlung und Abrieb in Berührung kommen.",
+          "Gerade für Lebensmittel, Getränke und Supplemente ist diese operative Stabilität oft wichtiger als ein theoretisch günstigerer Ersteindruck.",
+        ],
+      },
+      {
+        title: "Der eigentliche Entscheidungshebel",
+        body: [
+          "Die sinnvollste Frage lautet meist nicht 'Was ist billiger?', sondern 'Welches Material reduziert spätere Probleme bei Sichtbarkeit, Lagerung und Nachbestellung?'.",
+          "Wer wiederkehrende Chargen plant, spart mit einem robusteren Material oft mehr Zeit als mit einem minimal niedrigeren Einstiegspreis.",
+        ],
+      },
+      {
+        title: "Praktische Empfehlung für die ersten Gespräche",
+        body: [
+          "Wenn Verpackung, Oberfläche und Einsatzumgebung noch unklar sind, ist die Musterbox der bessere Start als eine voreilige Materialentscheidung.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Sind PP-Etiketten grundsätzlich hochwertiger als Papieretiketten?",
+        answer:
+          "Nicht grundsätzlich. Sie wirken anders und sind oft robuster. Ob sie hochwertiger erscheinen, hängt stark von Verpackung, Oberfläche und Markenbild ab.",
+      },
+      {
+        question: "Wann sollte ich PP trotz höherem Einstieg bevorzugen?",
+        answer:
+          "Wenn Feuchtigkeit, Abrieb, Kühlung oder wiederkehrende Nachbestellungen eine wichtige Rolle spielen, ist PP oft die risikoärmere Wahl.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Opake PP-Etiketten",
+        href: "/de/opake-pp-etiketten",
+        description:
+          "Produktseite für den häufigsten PP-Standard mit klarer Deckkraft.",
+      },
+      {
+        label: "Lebensmitteletiketten",
+        href: "/de/lebensmittel-etiketten",
+        description:
+          "Branchenkontext, in dem Materialrobustheit häufig wichtiger als Papieroptik wird.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/ratgeber/transparente-vs-opake-etiketten",
+    slug: "transparente-vs-opake-etiketten",
+    kind: "guide",
+    title: "Transparente vs. opake Etiketten",
+    eyebrow: "Ratgeber",
+    lead:
+      "Vergleich transparenter und opaker PP-Etiketten für Flaschen, Gläser, Dosen und Produktverpackungen.",
+    heroBullets: [
+      "Der Unterschied ist nicht nur optisch, sondern strategisch: Sichtbarkeit des Produkts gegen kontrollierte Deckkraft.",
+      "Gerade bei Flaschen und Gläsern kann dieselbe Verpackung mit anderem Material völlig anders wirken.",
+      "Die beste Wahl ergibt sich aus Verpackungsoberfläche, Informationsdichte und Markenstil.",
+    ],
+    sidebarTitle: "Typische Fragen",
+    sidebarBullets: [
+      "Wann wirkt transparent hochwertiger?",
+      "Wann ist opak die sicherere Wahl?",
+      "Wie spielt Glas, Beutel oder Dose in die Materialwahl hinein?",
+    ],
+    primaryCta: quoteLink,
+    secondaryCta: {
+      label: "Flaschenetiketten ansehen",
+      href: "/de/flaschenetiketten",
+    },
+    sections: [
+      {
+        title: "Transparenz ist kein Selbstzweck",
+        body: [
+          "Transparente Etiketten wirken dann stark, wenn Verpackung, Füllung oder Oberfläche sichtbar bleiben sollen und das Produkt selbst Teil des Designs ist.",
+          "Ohne diese gestalterische Funktion kann Transparenz schnell weniger Mehrwert bieten als gedacht.",
+        ],
+      },
+      {
+        title: "Warum opak oft kontrollierbarer ist",
+        body: [
+          "Opake Etiketten geben deutlich mehr Sicherheit bei Kontrast, Typografie und Pflichtangaben. Sie sind daher oft die bessere Lösung, wenn Informationen schnell erfassbar bleiben müssen.",
+          "Besonders auf kleinen Verpackungen oder bei vielen Textbausteinen ist diese Kontrolle mehr wert als eine theoretisch elegantere Optik.",
+        ],
+      },
+      {
+        title: "Flasche, Glas, Beutel und Dose ticken unterschiedlich",
+        body: [
+          "Auf Glas und Flaschen kann transparente Optik sehr stark wirken. Auf Beuteln und matten Oberflächen ist opak oft verlässlicher, weil der Untergrund stärker mit dem Motiv arbeitet.",
+          "Dosen liegen meist zwischen beiden Welten: Premium-Marken nutzen Transparenz gezielt, informationslastige Linien bleiben oft opak.",
+        ],
+      },
+      {
+        title: "Wie man ohne Bauchgefühl entscheidet",
+        body: [
+          "Wenn der Unterschied nicht klar ist, sollte die Materialfrage nicht nur über Renderings entschieden werden. Eine Musterbox oder ein konkreter Verpackungsvergleich spart spätere Korrekturen.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Sind transparente Etiketten automatisch besser für Flaschen?",
+        answer:
+          "Nein. Sie sind oft passend, aber nicht automatisch besser. Wenn Lesbarkeit, Kontrast oder Pflichtangaben dominieren, kann opak sinnvoller sein.",
+      },
+      {
+        question: "Wann sollte ich beide Varianten nebeneinander prüfen?",
+        answer:
+          "Vor allem dann, wenn Glas, Füllfarbe oder ein Premium-Look eine große Rolle spielen und noch unklar ist, wie stark die Verpackung selbst sichtbar bleiben soll.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Transparente PP-Etiketten",
+        href: "/de/transparente-pp-etiketten",
+        description:
+          "Produktseite mit kanonischer Preisstaffel für transparente PP-Varianten.",
+      },
+      {
+        label: "Opake PP-Etiketten",
+        href: "/de/opake-pp-etiketten",
+        description:
+          "Produktseite für deckende Motive und informationsstarke Layouts.",
+      },
+      {
+        label: "Honig- und Marmeladenetiketten",
+        href: "/de/honig-marmelade-etiketten",
+        description:
+          "Branchenseite, bei der Glasoptik und Sichtbarkeit des Inhalts besonders wichtig sind.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/ratgeber/rollenetiketten-vs-bogenetiketten",
+    slug: "rollenetiketten-vs-bogenetiketten",
+    kind: "guide",
+    title: "Rollenetiketten vs. Bogenetiketten",
+    eyebrow: "Ratgeber",
+    lead:
+      "Wann Rollenetiketten für B2B-Produktmarken sinnvoller sind als Bogenetiketten – besonders bei wiederkehrenden Bestellungen.",
+    heroBullets: [
+      "Dieser Vergleich ist prozessbezogen, nicht nur materialbezogen.",
+      "Rollenetiketten spielen ihre Stärke vor allem bei Wiederholung, Handling und größerer Bestelllogik aus.",
+      "Bogenetiketten können für Sonderfälle oder kleine interne Läufe sinnvoll sein, sind aber kein gleichwertiger Ersatz für skalierbare Produktserien.",
+    ],
+    sidebarTitle: "Die Entscheidung hängt ab von",
+    sidebarBullets: [
+      "Wiederholungsrate der Bestellungen",
+      "Etikettierprozess und Handling",
+      "Skalierungsziel der Marke",
+    ],
+    primaryCta: quoteLink,
+    secondaryCta: {
+      label: "PP-Rollenetiketten ansehen",
+      href: "/de/pp-rollenetiketten",
+    },
+    sections: [
+      {
+        title: "Warum Rollenetiketten im MVP priorisiert sind",
+        body: [
+          "Die gesamte Labelpilot-Struktur ist auf wiederkehrende Produktetiketten aufgebaut, nicht auf vereinzelte Ad-hoc-Ausdrucke. Rollenetiketten passen deshalb besser zur Plattformlogik als Bogenetiketten.",
+          "Sie sind näher an wiederholbarer Produktion, klarer Nachbestellkommunikation und sauberer Materialdefinition.",
+        ],
+      },
+      {
+        title: "Wann Bogenetiketten trotzdem Sinn machen",
+        body: [
+          "Bogenetiketten können für interne Tests, sehr kleine Einzelserien oder spezifische Büroprozesse geeignet sein.",
+          "Für Marken, die regelmäßig dieselbe Verpackung fahren, lösen sie aber selten das Kernproblem der skalierbaren Wiederholung.",
+        ],
+      },
+      {
+        title: "Der operative Unterschied",
+        body: [
+          "Rollenetiketten sind nicht nur ein anderes Trägermedium, sondern ein anderes Prozessversprechen: wiederholbar, strukturierter und klarer auf Serienproduktion ausgelegt.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Sind Rollenetiketten nur für große Mengen sinnvoll?",
+        answer:
+          "Nein. Auch wiederkehrende kleinere Mengen profitieren davon, wenn dieselbe Spezifikation sauber erhalten bleibt.",
+      },
+      {
+        question: "Warum tauchen Bogenetiketten nicht als eigenes Hauptprodukt auf?",
+        answer:
+          "Weil die Plattform strategisch auf PP-Rollenetiketten und wiederkehrende B2B-Prozesse fokussiert ist.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Glossar: Rollenetiketten",
+        href: "/de/glossar/rollenetiketten",
+        description:
+          "Kurze Definition des Begriffs und warum er für Wiederholbarkeit wichtig ist.",
+      },
+      {
+        label: "Etiketten nachbestellen",
+        href: "/de/nachbestellen",
+        description:
+          "Service-Seite zur Logik hinter gespeicherten Spezifikationen und Repeat Orders.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/ratgeber/druckdaten-vorbereiten",
+    slug: "druckdaten-vorbereiten",
+    kind: "guide",
+    title: "Druckdaten für Etiketten vorbereiten",
+    eyebrow: "Ratgeber",
+    lead:
+      "So bereiten Sie Druckdaten für PP-Rollenetiketten vor. Formate, Beschnitt, Proof und technische Dateiprüfung erklärt.",
+    heroBullets: [
+      "Dies ist der einzige Guide mit echtem Schritt-für-Schritt-Charakter und sichtbaren HowTo-Schritten.",
+      "Er erklärt nicht nur Dateiformate, sondern auch warum Beschnitt und Proof für wiederholbare Nachbestellungen entscheidend sind.",
+      "Die Seite ergänzt die Übersichtsseite zu Druckdaten um konkrete Arbeitsschritte.",
+    ],
+    sidebarTitle: "Worauf sich der Guide fokussiert",
+    sidebarBullets: [
+      "Dateiformat",
+      "Etikettengröße und Beschnitt",
+      "Export, Proof und spätere Wiederverwendung",
+    ],
+    primaryCta: quoteLink,
+    secondaryCta: fileLink,
+    howToSteps: [
+      "Dateiformat wählen",
+      "Etikettengröße prüfen",
+      "Beschnitt anlegen",
+      "Datei exportieren",
+      "Proof prüfen",
+      "Druckdatei für Wiederholungen sauber speichern",
+    ],
+    sections: [
+      {
+        title: "1. Das richtige Ausgangsformat wählen",
+        body: [
+          "Vektordaten wie PDF, AI oder EPS sind für viele Produktetiketten der sauberste Start, weil Schriften, Kanten und Skalierung stabil bleiben.",
+          "Rasterformate können funktionieren, sollten aber nur genutzt werden, wenn Auflösung und Exportlogik sauber kontrolliert sind.",
+        ],
+      },
+      {
+        title: "2. Größe und Beschnitt nicht als Nebensache behandeln",
+        body: [
+          "Eine Datei ist nicht automatisch druckreif, nur weil das Motiv gut aussieht. Ohne korrekte Größe und Beschnitt entstehen schnell unsaubere Kanten, verschobene Elemente oder unnötige Rückfragen.",
+          "Beschnitt ist kein abstrakter Druckbegriff, sondern ein Sicherheitspuffer für wiederholbare Produktion.",
+        ],
+      },
+      {
+        title: "3. Proof als Freigabeschritt verstehen",
+        body: [
+          "Der Proof ist kein optionales Bürodetail, sondern der Moment, in dem Sichtbarkeit, Textlogik und Positionierung noch einmal bewusst geprüft werden.",
+          "Gerade bei wiederkehrenden Bestellungen spart ein sauberer Proof später Zeit, weil dieselbe freigegebene Basis weiterverwendet werden kann.",
+        ],
+      },
+      {
+        title: "4. Für spätere Nachbestellungen mitdenken",
+        body: [
+          "Wenn Dateinamen, Versionen und Spezifikationen schon bei der ersten Freigabe sauber organisiert sind, werden Folgeaufträge wesentlich einfacher.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Welche Datei ist für den Start am sichersten?",
+        answer:
+          "Meist ein sauber exportiertes PDF oder eine vergleichbare Vektordatei, weil Größe, Kanten und Schriften stabiler bleiben.",
+      },
+      {
+        question: "Warum wird Beschnitt so stark betont?",
+        answer:
+          "Weil viele Probleme nicht aus dem Motiv selbst entstehen, sondern aus fehlendem Sicherheitsrand im Export.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Druckdaten",
+        href: "/de/druckdaten",
+        description:
+          "Übersichtsseite mit den zulässigen Formaten und der Rolle der technischen Prüfung.",
+      },
+      {
+        label: "Glossar: Beschnitt",
+        href: "/de/glossar/beschnitt",
+        description:
+          "Kurze Definition des Begriffs im direkten Druckdatenkontext.",
+      },
+      {
+        label: "Glossar: Proof",
+        href: "/de/glossar/proof",
+        description:
+          "Erklärung, warum der Proof-Schritt vor Freigabe und Nachbestellung wichtig bleibt.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+];
+
+const glossaryHubPage: PublicPageData = {
+  path: "/de/glossar",
+  slug: "glossar",
+  kind: "hub",
+  title: "Glossar für Etikettenbegriffe",
+  eyebrow: "Glossar",
+  lead:
+    "Kurze, AI-lesbare Erklärungen zu Begriffen rund um PP-Rollenetiketten, Druckdaten, Proof und Nachbestellung.",
+  heroBullets: [
+    "Jeder Begriff ist absichtlich kurz, präzise und auf reale Kauf- und Produktionsentscheidungen bezogen.",
+    "Das Glossar ist kein SEO-Füllmaterial, sondern eine Support-Struktur für Suchende, interne Links und KI-Antwortsysteme.",
+    "Jede Glossarseite verweist zurück auf passende kommerzielle Seiten, damit keine Support-Sackgassen entstehen.",
+  ],
+  sidebarTitle: "Das Glossar hilft bei",
+  sidebarBullets: [
+    "schneller Einordnung von Fachbegriffen",
+    "AI- und GEO-lesbaren Definitionen",
+    "klaren Verbindungen zu Produkt-, Guide- und Angebotsseiten",
+  ],
+  primaryCta: {
+    label: "Ratgeber öffnen",
+    href: "/de/ratgeber",
+  },
+  secondaryCta: quoteLink,
+  sections: [
+    {
+      title: "Warum ein Glossar im B2B-Etikettenkontext sinnvoll ist",
+      body: [
+        "Viele Rückfragen drehen sich nicht um Preise, sondern um Begriffe wie Proof, Beschnitt, Rollenetiketten oder Druckdaten. Ein gutes Glossar verkürzt diesen Weg.",
+        "Gerade in AI-Suchen und Support-Kontexten funktionieren klare Definitionen besser als vage Marketingtexte.",
+      ],
+    },
+    {
+      title: "Wie das Glossar genutzt werden sollte",
+      body: [
+        "Die Begriffe sind bewusst knapp gehalten und verlinken immer zurück in kommerzielle oder erklärende Seiten. Sie sollen Orientierung liefern, nicht den Kaufprozess ersetzen.",
+      ],
+    },
+  ],
+  hubLinks: [],
+  faqs: [
+    {
+      question: "Warum ist das Glossar so knapp formuliert?",
+      answer:
+        "Weil es schnelle Begriffsorientierung liefern soll. Vertiefende Einordnung findet auf Produkt-, Branchen- und Guide-Seiten statt.",
+    },
+    {
+      question: "Sind alle Druckbegriffe bereits enthalten?",
+      answer:
+        "Nein. Veröffentlicht wurden nur Begriffe, die bereits klar in die öffentliche Produkt- und Guide-Struktur eingebunden sind.",
+    },
+  ],
+  relatedLinks: guideCommercialLinks,
 };
 
-export const publicPageSlugs = Object.keys(publicPagesBySlug);
+const glossaryPages: PublicPageData[] = [
+  {
+    path: "/de/glossar/pp-etiketten",
+    slug: "pp-etiketten",
+    kind: "glossary",
+    title: "Was sind PP-Etiketten?",
+    eyebrow: "Glossar",
+    lead:
+      "PP-Etiketten kurz erklärt: Material, Einsatzbereiche und Relevanz für Produktverpackungen und Rollenetiketten.",
+    sidebarTitle: "Kurz gesagt",
+    sidebarBullets: [
+      "PP = Polypropylen",
+      "robust gegen Feuchtigkeit und Abrieb",
+      "typisch für wiederkehrende Produktetiketten",
+    ],
+    glossaryData: {
+      term: "PP-Etiketten",
+      definition:
+        "PP-Etiketten sind Etiketten aus Polypropylen, die häufig für Produktverpackungen und Rollenetiketten verwendet werden.",
+      whenItMatters:
+        "Wenn Etiketten Feuchtigkeit, Reibung oder wiederkehrende Produktion besser aushalten sollen als einfache Papierlösungen.",
+      exampleUse:
+        "Lebensmittel-, Getränke- und Supplement-Marken nutzen PP oft für wiederkehrende Produktserien.",
+      relatedProduct: "Opake oder transparente PP-Rollenetiketten 100×200 mm",
+    },
+    sections: [
+      {
+        title: "Was PP im Etikettenalltag bedeutet",
+        body: [
+          "PP steht im Etikettenkontext für Polypropylen. Gemeint ist damit ein Material, das im Vergleich zu einfachen Papierlösungen häufig robuster und prozesssicherer ist.",
+        ],
+      },
+      {
+        title: "Wann der Begriff praktisch relevant wird",
+        body: [
+          "Sobald Etiketten auf Flaschen, Gläsern, Dosen oder wiederkehrenden Produktlinien eingesetzt werden, taucht die Materialfrage fast automatisch auf.",
+        ],
+      },
+    ],
+    relatedLinks: guideCommercialLinks,
+  },
+  {
+    path: "/de/glossar/rollenetiketten",
+    slug: "rollenetiketten",
+    kind: "glossary",
+    title: "Was sind Rollenetiketten?",
+    eyebrow: "Glossar",
+    lead:
+      "Rollenetiketten kurz erklärt: warum sie für wiederkehrende Produktetiketten, B2B-Prozesse und Nachbestellungen relevant sind.",
+    sidebarTitle: "Kurz gesagt",
+    sidebarBullets: [
+      "Etiketten auf Rolle statt auf Bogen",
+      "stärker auf Wiederholung ausgelegt",
+      "wichtig für strukturierte Nachbestellungen",
+    ],
+    glossaryData: {
+      term: "Rollenetiketten",
+      definition:
+        "Rollenetiketten sind Etiketten, die auf einer Rolle statt auf einzelnen Bögen geliefert und verarbeitet werden.",
+      whenItMatters:
+        "Wenn wiederkehrende Bestellungen, saubere Etikettierung und skalierbare Produktprozesse wichtiger werden.",
+      exampleUse:
+        "Produktetiketten für Lebensmittel, Getränke und Supplemente in wiederkehrenden Chargen.",
+      relatedProduct: "PP-Rollenetiketten für deutsche B2B-Marken",
+    },
+    sections: [
+      {
+        title: "Warum Rollenetiketten mehr als ein Format sind",
+        body: [
+          "Der Begriff beschreibt nicht nur die Form der Lieferung, sondern einen ganzen Prozessansatz: wiederholbar, strukturierter und näher an Serienproduktion.",
+        ],
+      },
+      {
+        title: "Wann der Unterschied zu Bogenetiketten zählt",
+        body: [
+          "Sobald Marken dieselbe Spezifikation regelmäßig wiederholen oder eine sauberere Nachbestelllogik brauchen, werden Rollenetiketten relevanter als Bogenetiketten.",
+        ],
+      },
+    ],
+    relatedLinks: guideCommercialLinks,
+  },
+  {
+    path: "/de/glossar/transparente-etiketten",
+    slug: "transparente-etiketten",
+    kind: "glossary",
+    title: "Was sind transparente Etiketten?",
+    eyebrow: "Glossar",
+    lead:
+      "Transparente Etiketten kurz erklärt: Materialwirkung, Sichtbarkeit und Einsatz bei Flaschen, Gläsern und Premium-Verpackungen.",
+    sidebarTitle: "Kurz gesagt",
+    sidebarBullets: [
+      "sichtbare Oberfläche bleibt erhalten",
+      "oft für Glas und Flaschen relevant",
+      "nicht automatisch immer die bessere Wahl",
+    ],
+    glossaryData: {
+      term: "Transparente Etiketten",
+      definition:
+        "Transparente Etiketten lassen Teile der Verpackung oder des Inhalts sichtbar und wirken dadurch oft reduzierter oder hochwertiger.",
+      whenItMatters:
+        "Vor allem bei Glas, Flaschen und sichtbarer Produktoptik, wenn die Verpackung selbst Teil des Designs sein soll.",
+      exampleUse:
+        "Getränkeflaschen, Honiggläser oder Premium-Dosen mit bewusst sichtbarer Oberfläche.",
+      relatedProduct: "Transparente PP-Rollenetiketten 100×200 mm",
+    },
+    sections: [
+      {
+        title: "Was der Begriff in der Praxis meint",
+        body: [
+          "Transparent bedeutet nicht einfach nur durchsichtig. Entscheidend ist, dass die Verpackungsoberfläche sichtbar bleibt und Teil der visuellen Wirkung wird.",
+        ],
+      },
+      {
+        title: "Wann Transparenz an Grenzen stößt",
+        body: [
+          "Wenn viele Pflichtangaben, Barcodes oder starker Kontrast nötig sind, kann ein opakes Material kontrollierbarer und lesbarer bleiben.",
+        ],
+      },
+    ],
+    relatedLinks: guideCommercialLinks,
+  },
+  {
+    path: "/de/glossar/thermoetiketten",
+    slug: "thermoetiketten",
+    kind: "glossary",
+    title: "Was sind Thermoetiketten?",
+    eyebrow: "Glossar",
+    lead:
+      "Thermoetiketten kurz erklärt: Einsatz in Versand, Lager und Fulfillment – und warum sie im MVP nur als Cross-Sell auftreten.",
+    sidebarTitle: "Kurz gesagt",
+    sidebarBullets: [
+      "für Versand und Logistik",
+      "nicht das Hauptprodukt im MVP",
+      "andere Rolle als PP-Rollenetiketten",
+    ],
+    glossaryData: {
+      term: "Thermoetiketten",
+      definition:
+        "Thermoetiketten sind Etiketten für Versand-, Lager- oder Logistikprozesse und haben eine andere Rolle als klassische Produktetiketten.",
+      whenItMatters:
+        "Wenn Versand, Lagerung oder Fulfillment gemeinsam mit Produktetiketten betrachtet werden.",
+      exampleUse:
+        "Versandetiketten 100×150 mm für Paket- und Lagerprozesse.",
+      relatedProduct: "Thermo-Versandetiketten als ergänzendes Cross-Sell",
+    },
+    sections: [
+      {
+        title: "Warum Thermo ein anderer Produkttyp ist",
+        body: [
+          "Thermoetiketten erfüllen meist operative Logistikzwecke. Sie stehen nicht im Zentrum der Markenwirkung wie PP-Produktetiketten.",
+        ],
+      },
+      {
+        title: "Warum sie trotzdem in den Content gehören",
+        body: [
+          "Viele B2B-Kunden denken Versand und Produktetiketten gemeinsam. Deshalb ist der Begriff im Glossar sinnvoll, auch wenn das Produkt im MVP bewusst nachrangig bleibt.",
+        ],
+      },
+    ],
+    relatedLinks: guideCommercialLinks,
+  },
+  {
+    path: "/de/glossar/proof",
+    slug: "proof",
+    kind: "glossary",
+    title: "Was ist ein Proof?",
+    eyebrow: "Glossar",
+    lead:
+      "Proof kurz erklärt: Warum die Freigabe vor Produktion wichtig ist und wie sie spätere Nachbestellungen absichert.",
+    sidebarTitle: "Kurz gesagt",
+    sidebarBullets: [
+      "Freigabeschritt vor Produktion",
+      "sichert Position, Lesbarkeit und letzte Version",
+      "wichtig für spätere Wiederholungen",
+    ],
+    glossaryData: {
+      term: "Proof",
+      definition:
+        "Ein Proof ist die Freigabe- oder Prüfstufe vor der Produktion, in der Position, Lesbarkeit und finale Datei kontrolliert werden.",
+      whenItMatters:
+        "Wenn eine Druckdatei nicht nur produziert, sondern später exakt wiederverwendet werden soll.",
+      exampleUse:
+        "Kontrolle der finalen Etikettenversion vor einer 5.000er-Produktion.",
+      relatedProduct: "Druckdatenprüfung für PP-Rollenetiketten",
+    },
+    sections: [
+      {
+        title: "Warum der Proof kein Formalismus ist",
+        body: [
+          "Der Proof trennt eine schöne Datei von einer wirklich freigegebenen Produktionsbasis. Ohne diesen Schritt entstehen bei Wiederholungen schnell Versionsprobleme.",
+        ],
+      },
+      {
+        title: "Warum der Begriff in AI-Suchen auftaucht",
+        body: [
+          "Viele Käufer kennen die Bedeutung nur grob. Eine klare Definition hilft deshalb sowohl im Support als auch in Suchsystemen, die kurze, belastbare Antworten bevorzugen.",
+        ],
+      },
+    ],
+    relatedLinks: guideCommercialLinks,
+  },
+  {
+    path: "/de/glossar/beschnitt",
+    slug: "beschnitt",
+    kind: "glossary",
+    title: "Was ist Beschnitt?",
+    eyebrow: "Glossar",
+    lead:
+      "Beschnitt kurz erklärt: warum ein Sicherheitsrand in Druckdaten wichtig ist und wie er unsaubere Kanten verhindert.",
+    sidebarTitle: "Kurz gesagt",
+    sidebarBullets: [
+      "Sicherheitsrand in Druckdaten",
+      "wichtig für saubere Kanten",
+      "relevant bei Export und Dateiprüfung",
+    ],
+    glossaryData: {
+      term: "Beschnitt",
+      definition:
+        "Beschnitt ist ein zusätzlicher Rand in der Druckdatei, der verhindert, dass beim Zuschnitt weiße Kanten oder Versätze sichtbar werden.",
+      whenItMatters:
+        "Sobald Etiketten professionell produziert und später reproduzierbar nachbestellt werden sollen.",
+      exampleUse:
+        "Anlage des Sicherheitsrands bei einer PDF-Druckdatei für PP-Rollenetiketten.",
+      relatedProduct: "Druckdatenvorbereitung für Produktetiketten",
+    },
+    sections: [
+      {
+        title: "Warum Beschnitt oft unterschätzt wird",
+        body: [
+          "Viele Layouts sehen auf dem Bildschirm korrekt aus, scheitern aber in der Produktion an fehlendem Sicherheitsrand. Beschnitt ist deshalb kein Detail, sondern Teil der Druckreife.",
+        ],
+      },
+      {
+        title: "Wann der Begriff besonders relevant wird",
+        body: [
+          "Spätestens beim Export und bei der technischen Prüfung muss klar sein, ob die Datei den notwendigen Rand mitführt.",
+        ],
+      },
+    ],
+    relatedLinks: guideCommercialLinks,
+  },
+  {
+    path: "/de/glossar/druckdaten",
+    slug: "druckdaten",
+    kind: "glossary",
+    title: "Was sind Druckdaten?",
+    eyebrow: "Glossar",
+    lead:
+      "Druckdaten kurz erklärt: welche Dateien für Etiketten gemeint sind und warum sie für Proof, Freigabe und Nachbestellung wichtig bleiben.",
+    sidebarTitle: "Kurz gesagt",
+    sidebarBullets: [
+      "digitale Produktionsvorlage",
+      "Grundlage für Prüfung und Freigabe",
+      "entscheidend für Wiederholung",
+    ],
+    glossaryData: {
+      term: "Druckdaten",
+      definition:
+        "Druckdaten sind die Dateien, aus denen ein Etikett technisch geprüft, freigegeben und produziert wird.",
+      whenItMatters:
+        "Immer dann, wenn Etiketten nicht nur einmalig, sondern sauber wiederholbar gefertigt werden sollen.",
+      exampleUse:
+        "PDF- oder AI-Datei mit klarer Größe, Beschnitt und final freigegebener Version.",
+      relatedProduct: "Druckdatenprüfung für PP-Rollenetiketten",
+    },
+    sections: [
+      {
+        title: "Mehr als nur eine Datei",
+        body: [
+          "Druckdaten sind nicht bloß ein Dateianhang. Sie bilden die technische Basis für Freigabe, Produktion und spätere Wiederholung derselben Spezifikation.",
+        ],
+      },
+      {
+        title: "Warum der Begriff für Nachbestellungen wichtig ist",
+        body: [
+          "Wenn Druckdaten sauber organisiert sind, lässt sich dieselbe Etikettenversion später schneller erneut anfragen oder prüfen.",
+        ],
+      },
+    ],
+    relatedLinks: guideCommercialLinks,
+  },
+  {
+    path: "/de/glossar/nachbestellung",
+    slug: "nachbestellung",
+    kind: "glossary",
+    title: "Was bedeutet Nachbestellung bei Etiketten?",
+    eyebrow: "Glossar",
+    lead:
+      "Nachbestellung kurz erklärt: warum gespeicherte Druckdaten, Material und Größe spätere Abrufe beschleunigen.",
+    sidebarTitle: "Kurz gesagt",
+    sidebarBullets: [
+      "gleiche Spezifikation erneut nutzen",
+      "nicht jede Bestellung startet bei null",
+      "wichtig für wiederkehrende B2B-Marken",
+    ],
+    glossaryData: {
+      term: "Nachbestellung",
+      definition:
+        "Nachbestellung bedeutet, dass eine bereits definierte und freigegebene Etikettenspezifikation erneut abgerufen wird.",
+      whenItMatters:
+        "Wenn dieselbe Verpackung in weiteren Chargen produziert wird und Zeit durch gespeicherte Daten gespart werden soll.",
+      exampleUse:
+        "Erneuter Abruf einer freigegebenen 5.000er-Etikettenversion mit angepasster Menge.",
+      relatedProduct: "Reorder-Logik für PP-Rollenetiketten",
+    },
+    sections: [
+      {
+        title: "Warum Nachbestellung mehr ist als Wiederkauf",
+        body: [
+          "Im Etikettenkontext bedeutet Nachbestellung nicht nur, noch einmal zu bestellen, sondern mit vorhandenen Daten, Materialangaben und Freigaben schneller weiterzuarbeiten.",
+        ],
+      },
+      {
+        title: "Was dafür sauber dokumentiert sein muss",
+        body: [
+          "Material, Größe, letzte freigegebene Datei und klare Mengeninformation sind die Kernpunkte einer belastbaren Nachbestelllogik.",
+        ],
+      },
+    ],
+    relatedLinks: guideCommercialLinks,
+  },
+];
+
+const ratgeberHubPage: PublicPageData = {
+  path: "/de/ratgeber",
+  slug: "ratgeber",
+  kind: "hub",
+  title: "Ratgeber für Etiketten, Materialien und Druckdaten",
+  eyebrow: "Ratgeber",
+  lead:
+    "Vergleiche, Schritt-für-Schritt-Erklärungen und Kaufhilfen zu PP-Rollenetiketten, Materialwahl, Mengen und Druckdaten.",
+  heroBullets: [
+    "Die Guides sind auf echte B2B-Fragen ausgerichtet: Material, Menge, Rollenlogik und druckfähige Dateien.",
+    "Jeder Guide verlinkt zurück auf relevante Produkt- und Branchen-Seiten, damit kein isolierter Content-Cluster entsteht.",
+    "Veröffentlicht wurde nur ein kleiner, qualitätsgeprüfter Satz an Content-Seiten statt eines massenhaft generierten Sets.",
+  ],
+  sidebarTitle: "Die Guides helfen bei",
+  sidebarBullets: [
+    "Materialwahl zwischen PP, Papier, opak und transparent",
+    "Mengenentscheidungen vor der ersten Bestellung",
+    "Vorbereitung von Druckdaten und späterer Nachbestellung",
+  ],
+  primaryCta: quoteLink,
+  secondaryCta: {
+    label: "Glossar öffnen",
+    href: "/de/glossar",
+  },
+  sections: [
+    {
+      title: "Warum der Ratgeber klein beginnt",
+      body: [
+        "Phase 2 folgt bewusst dem Qualitätsprinzip der Dokumentation: lieber wenige starke Guides als ein dünner Cluster mit austauschbaren Texten.",
+      ],
+    },
+    {
+      title: "Wie die Guides eingebunden sind",
+      body: [
+        "Jede Seite beantwortet eine klar umrissene Suchintention und verweist auf passende Produkt-, Branchen- und Service-Seiten. So entsteht ein echtes Hub-and-Spoke-System statt isolierter Blogposts.",
+      ],
+    },
+  ],
+  hubLinks: [],
+  faqs: [
+    {
+      question: "Warum gibt es nicht sofort dutzende Ratgeberseiten?",
+      answer:
+        "Weil die SEO-Dokumentation klar gegen dünnen Serien-Content argumentiert. Zuerst wurden nur die wichtigsten kommerziell-informativen Themen veröffentlicht.",
+    },
+  ],
+  relatedLinks: guideCommercialLinks,
+};
+
+ratgeberHubPage.hubLinks = guidePages.map((page) => ({
+  label: page.title,
+  href: page.path,
+  description: page.lead,
+}));
+
+glossaryHubPage.hubLinks = glossaryPages.map((page) => ({
+  label: page.glossaryData?.term ?? page.title,
+  href: page.path,
+  description: page.lead,
+}));
+
+export const publicPagesBySlug: Record<string, PublicPageData> = Object.fromEntries(
+  topLevelPages.map((page) => [page.slug, page]),
+);
+
+export const publicPageSlugs = topLevelPages.map((page) => page.slug);
+
+export const guidePagesBySlug: Record<string, PublicPageData> = Object.fromEntries(
+  guidePages.map((page) => [page.slug, page]),
+);
+
+export const guidePageSlugs = guidePages.map((page) => page.slug);
+
+export const glossaryPagesBySlug: Record<string, PublicPageData> =
+  Object.fromEntries(glossaryPages.map((page) => [page.slug, page]));
+
+export const glossaryPageSlugs = glossaryPages.map((page) => page.slug);
+
+export const hubPagesBySlug: Record<string, PublicPageData> = {
+  ratgeber: ratgeberHubPage,
+  glossar: glossaryHubPage,
+};
 
 export const sitemapEntries: SitemapEntry[] = [
   { path: "/de", priority: 1, changeFrequency: "weekly" },
@@ -1134,9 +2477,35 @@ export const sitemapEntries: SitemapEntry[] = [
   { path: "/de/druckdaten", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/produktion-versand", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/kontakt", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/de/kaffee-etiketten", priority: 0.7, changeFrequency: "weekly" },
+  { path: "/de/gewuerz-etiketten", priority: 0.7, changeFrequency: "weekly" },
+  { path: "/de/honig-marmelade-etiketten", priority: 0.7, changeFrequency: "weekly" },
+  { path: "/de/flaschenetiketten", priority: 0.7, changeFrequency: "weekly" },
+  { path: "/de/ratgeber", priority: 0.7, changeFrequency: "monthly" },
+  ...guidePages.map((page) => ({
+    path: page.path,
+    priority: 0.7,
+    changeFrequency: "monthly" as const,
+  })),
+  { path: "/de/glossar", priority: 0.6, changeFrequency: "monthly" },
+  ...glossaryPages.map((page) => ({
+    path: page.path,
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+  })),
   { path: "/de/impressum", priority: 0.3, changeFrequency: "monthly" },
   { path: "/de/datenschutz", priority: 0.3, changeFrequency: "monthly" },
   { path: "/de/agb", priority: 0.3, changeFrequency: "monthly" },
   { path: "/de/versand", priority: 0.3, changeFrequency: "monthly" },
   { path: "/de/widerruf", priority: 0.3, changeFrequency: "monthly" },
+];
+
+export const deferredPhase2Routes = [
+  "/de/glasetiketten",
+  "/de/beuteletiketten",
+  "/de/thermoetiketten-100x100",
+  "/de/ratgeber/etiketten-1000-vs-5000-stueck",
+  "/de/ratgeber/etiketten-nachbestellen",
+  "/de/supplement-etiketten/transparente-pp-etiketten",
+  "/de/kaffee-etiketten/opake-pp-etiketten",
 ];
