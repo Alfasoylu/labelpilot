@@ -230,9 +230,9 @@ export const thermalPackageNotes: PackageTier[] = [
 
 export const homePageData: HomePageData = {
   eyebrow: "Deutscher Public MVP",
-  title: "PP-Rollenetiketten für Marken in Deutschland",
+  title: "PP-Rollenetiketten, die Ihre Marke später schneller nachbestellen kann.",
   lead:
-    "Individuell bedruckte PP-Rollenetiketten für Lebensmittel-, Getränke- und Supplement-Marken. Mit technischer Druckdatenprüfung, Musterbox und klarer Nachbestelllogik.",
+    "Labelpilot.de speichert freigegebene Druckdaten, Material, Maß und Versionen, damit Lebensmittel-, Getränke- und Supplement-Marken Etiketten einfacher nachbestellen können.",
   highlights: [
     "Opake und transparente PP-Etiketten als Kernprodukt im Format 100×200 mm.",
     "Thermo-Versandetiketten nur als ergänzendes B2B-Cross-Sell, nicht als Hauptangebot.",

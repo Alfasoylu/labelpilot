@@ -1,5 +1,25 @@
 import Link from "next/link";
 
+import { ProductCard } from "@/components/cards/ProductCard";
+import { PricingCard } from "@/components/cards/PricingCard";
+import { SampleBoxCard } from "@/components/cards/SampleBoxCard";
+import { FaqAccordion } from "@/components/faq/FaqAccordion";
+import { Section } from "@/components/layout/Section";
+import { LegalNoticeBox } from "@/components/legal/LegalNoticeBox";
+import { ContentCta } from "@/components/sections/ContentCta";
+import { FeatureGrid } from "@/components/sections/FeatureGrid";
+import { HeroSection } from "@/components/sections/HeroSection";
+import {
+  ProcessSteps,
+} from "@/components/sections/ProcessSteps";
+import {
+  ReorderWorkflowBlock,
+  StoredDesignVisualCard,
+} from "@/components/sections/ReorderWorkflowBlock";
+import { TrustBar } from "@/components/sections/TrustBar";
+import { VariableDataBlock } from "@/components/sections/VariableDataBlock";
+import { ComparisonTable } from "@/components/tables/ComparisonTable";
+import { SpecTable } from "@/components/tables/SpecTable";
 import { QuoteRequestForm } from "@/components/quote-request-form";
 import type {
   HomePageData,
@@ -18,103 +38,152 @@ type DynamicPageProps = {
   canonicalPath: string;
 };
 
+const trustItems = [
+  {
+    title: "Freigegebene Versionen",
+    body: "Nicht nur ein Druckauftrag, sondern eine saubere Version, die später wieder nutzbar bleibt.",
+  },
+  {
+    title: "Klare Materiallogik",
+    body: "Opak, transparent oder Thermo werden als echte Entscheidungsdimensionen kommuniziert.",
+  },
+  {
+    title: "Deutsche B2B-Führung",
+    body: "Produkt, Ratgeber und Glossar sprechen dieselbe Sprache wie ein deutscher Einkäufer.",
+  },
+  {
+    title: "Angebot statt Ratespiel",
+    body: "Sonderfälle und große Mengen laufen kontrolliert über das Angebotsmodell.",
+  },
+];
+
 export function HomePage({ page, navigation }: HomePageProps) {
   return (
     <div className="container section-stack">
-      <section className="hero-grid">
-        <div className="hero-panel">
-          <span className="eyebrow">{page.eyebrow}</span>
-          <h1>{page.title}</h1>
-          <p className="lead">{page.lead}</p>
-          <ul className="hero-list">
-            {page.highlights.map((highlight) => (
-              <li key={highlight}>{highlight}</li>
-            ))}
-          </ul>
-          <div className="hero-actions">
-            <Link href="/de/angebot-anfordern" className="cta-link">
-              Angebot anfordern
-            </Link>
-            <Link href="/de/ratgeber" className="secondary-link">
-              Ratgeber ansehen
-            </Link>
+      <HeroSection
+        eyebrow={page.eyebrow}
+        title={page.title}
+        lead={page.lead}
+        bullets={page.highlights}
+        primaryCta={
+          <Link href="/de/angebot-anfordern" className="cta-link">
+            Angebot anfordern
+          </Link>
+        }
+        secondaryCta={
+          <Link href="/de/musterbox" className="secondary-link">
+            Musterbox anfordern
+          </Link>
+        }
+        visual={<StoredDesignVisualCard />}
+      />
+
+      <TrustBar items={trustItems} />
+
+      <Section
+        eyebrow="Warum Labelpilot.de"
+        title="Nicht nur Etiketten einkaufen, sondern Wiederholung systematisch vorbereiten"
+        lead="Die Oberfläche erklärt den Unterschied zwischen einem günstigen Druckshop und einer strukturierten Label-Infrastruktur."
+      >
+        <FeatureGrid
+          items={[
+            {
+              title: "Druckdaten bleiben als Version nutzbar",
+              body: "Freigegebene Motive, Material und Maß werden nicht in einzelnen E-Mails verloren, sondern als wiederholbare Grundlage verstanden.",
+            },
+            {
+              title: "Branchenlogik statt generischer Produktwand",
+              body: "Lebensmittel, Getränke und Supplemente werden als unterschiedliche Einsatzfälle erklärt, nicht als austauschbare SEO-Slots.",
+            },
+            {
+              title: "Wissen direkt am kaufrelevanten Punkt",
+              body: "Ratgeber und Glossar führen in Material, Druckdaten und Nachbestellung ein, ohne die Conversion-Route zu verlieren.",
+            },
+          ]}
+        />
+      </Section>
+
+      <Section
+        eyebrow="Kernprodukte"
+        title="Die wichtigsten öffentlichen Einstiegspunkte"
+        lead="Phase 2 hat die Produkt- und Wissensstruktur erweitert. Die UI bündelt diese jetzt als klare Kauf- und Informationswege."
+      >
+        <div className="card-grid">
+          {page.topicCards.map((card, index) => (
+            <ProductCard
+              key={card.href}
+              title={card.title}
+              body={card.body}
+              href={card.href}
+              badge={index === 0 ? "Hauptprodukt" : index === 1 ? "Premium-Material" : "Wissenshub"}
+              featured={index === 0}
+            />
+          ))}
+        </div>
+      </Section>
+
+      <ReorderWorkflowBlock />
+
+      <Section
+        eyebrow="Musterbox"
+        title="Material zuerst verstehen, dann Menge festlegen"
+        lead="Die Musterbox wird als kontrollierter B2B-Filter gezeigt, nicht als kostenlose Goodie-Seite."
+        tone="soft"
+      >
+        <div className="two-column">
+          <SampleBoxCard
+            title="Labelpilot Musterbox"
+            body="Vergleichen Sie opake und transparente PP-Materialien sowie ergänzende Thermo-Beispiele, bevor Sie größere Mengen freigeben."
+            href="/de/musterbox"
+          />
+          <div className="surface-card">
+            <h2>Besonders sinnvoll bei</h2>
+            <ul className="simple-list">
+              <li>erster Materialentscheidung für Glas, Beutel oder Dose</li>
+              <li>unklarer Wirkung zwischen opak und transparent</li>
+              <li>wiederkehrenden Produktlinien mit späterer Nachbestellung</li>
+            </ul>
           </div>
         </div>
-        <aside className="surface-card">
-          <h2>Worauf die aktuelle Version fokussiert</h2>
-          <ul className="simple-list">
-            {navigation.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href}>{item.label}</Link>
-              </li>
+      </Section>
+
+      <Section
+        eyebrow="Branchen"
+        title="Öffentliche Seiten mit unterschiedlicher Kauflogik"
+        lead="Die Branchen-Seiten bleiben im Nav und zeigen unterschiedliche Use Cases statt derselben Textschablone."
+      >
+        <div className="card-grid">
+          {navigation
+            .filter((item) =>
+              ["/de/lebensmittel-etiketten", "/de/supplement-etiketten", "/de/getraenke-etiketten"].includes(item.href),
+            )
+            .map((item) => (
+              <ProductCard
+                key={item.href}
+                title={item.label}
+                body={getIndustryTeaser(item.href)}
+                href={item.href}
+              />
             ))}
-          </ul>
-          <p>
-            Phase 2 stärkt die P0-Seiten mit gezielten Branchen-, Ratgeber- und
-            Glossar-Inhalten statt mit dünnen Massen-Templates.
-          </p>
-        </aside>
-      </section>
+        </div>
+      </Section>
 
-      <section className="section-stack">
-        <div className="section-header">
-          <span className="eyebrow">Preislogik</span>
-          <h2>Die 5.000er-Menge bleibt der wirtschaftliche Kern</h2>
-          <p>
-            Die öffentliche Informationsarchitektur erklärt Material, Menge und
-            Nachbestellung so, dass kommerzielle Seiten und Wissensseiten auf
-            dieselbe Produktlogik einzahlen.
-          </p>
-        </div>
-        <div className="pricing-grid">
-          {page.corePackages.map((tier) => (
-            <article
-              key={tier.quantity}
-              className={`pricing-card ${tier.popular ? "popular" : ""}`}
-            >
-              {tier.badge ? <span className="badge">{tier.badge}</span> : null}
-              <h3>{tier.label}</h3>
-              <div className="pricing-meta">
-                <span>{tier.quantity}</span>
-                <span>{tier.note}</span>
-              </div>
-              <p className="price">{tier.priceLabel}</p>
-              <p className="price-note">{tier.description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <Section
+        eyebrow="Prozess"
+        title="Vom ersten Bedarf bis zur belastbaren Spezifikation"
+        lead="Die Homepage endet nicht bei Features, sondern zeigt den Weg in die tatsächliche B2B-Abwicklung."
+      >
+        <ProcessSteps steps={page.steps} />
+      </Section>
 
-      <section className="card-grid">
-        {page.topicCards.map((card) => (
-          <article key={card.title} className="section-card">
-            <h3>{card.title}</h3>
-            <p>{card.body}</p>
-            <Link href={card.href} className="secondary-link">
-              Mehr erfahren
-            </Link>
-          </article>
-        ))}
-      </section>
-
-      <section className="section-stack">
-        <div className="section-header">
-          <span className="eyebrow">Ablauf</span>
-          <h2>Von der ersten Frage bis zur belastbaren Spezifikation</h2>
-          <p>
-            Produkt-, Branchen- und Wissensseiten arbeiten jetzt als
-            zusammenhängendes internes Linksystem statt als einzelne Seiten.
-          </p>
-        </div>
-        <div className="steps-grid">
-          {page.steps.map((step) => (
-            <article key={step.title} className="step-card">
-              <h3>{step.title}</h3>
-              <p>{step.body}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <ContentCta
+        title="Wenn Material, Verpackung oder Menge feststehen, ist der nächste Schritt das Angebot."
+        body="So bleibt die Seite ruhig, präzise und conversion-orientiert: Wissen zuerst, dann eine strukturierte Anfrage."
+        primaryLabel="Angebot anfordern"
+        primaryHref="/de/angebot-anfordern"
+        secondaryLabel="Ratgeber öffnen"
+        secondaryHref="/de/ratgeber"
+      />
     </div>
   );
 }
@@ -128,179 +197,525 @@ export function DynamicPage({ page, canonicalPath }: DynamicPageProps) {
     return <LegalPage page={page} canonicalPath={canonicalPath} />;
   }
 
+  if (page.kind === "hub") {
+    return <HubPage page={page} canonicalPath={canonicalPath} />;
+  }
+
+  if (page.kind === "guide") {
+    return <GuidePage page={page} canonicalPath={canonicalPath} />;
+  }
+
+  if (page.kind === "glossary") {
+    return <GlossaryPage page={page} canonicalPath={canonicalPath} />;
+  }
+
+  if (page.kind === "industry") {
+    return <IndustryPage page={page} canonicalPath={canonicalPath} />;
+  }
+
+  if (page.kind === "product" || page.kind === "collection") {
+    return <ProductLikePage page={page} canonicalPath={canonicalPath} />;
+  }
+
+  return <ServicePage page={page} canonicalPath={canonicalPath} />;
+}
+
+function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
   return (
     <div className="container section-stack">
       <Breadcrumbs currentLabel={page.title} currentPath={canonicalPath} />
-      <section className="hero-grid">
-        <div className="hero-panel">
-          <span className="eyebrow">{page.eyebrow}</span>
-          <h1>{page.title}</h1>
-          <p className="lead">{page.lead}</p>
-          {page.heroBullets?.length ? (
-            <ul className="hero-list">
-              {page.heroBullets.map((bullet) => (
-                <li key={bullet}>{bullet}</li>
-              ))}
-            </ul>
-          ) : null}
-          <div className="hero-actions">
-            {page.primaryCta ? (
-              <Link href={page.primaryCta.href} className="cta-link">
-                {page.primaryCta.label}
-              </Link>
-            ) : null}
-            {page.secondaryCta ? (
-              <Link href={page.secondaryCta.href} className="secondary-link">
-                {page.secondaryCta.label}
-              </Link>
-            ) : null}
-          </div>
+      <HeroSection
+        eyebrow={page.eyebrow}
+        title={page.title}
+        lead={page.lead}
+        bullets={page.heroBullets}
+        primaryCta={renderLink(page.primaryCta, "cta-link")}
+        secondaryCta={renderLink(page.secondaryCta, "secondary-link")}
+        aside={<QuickAnswerCard page={page} />}
+      />
+
+      <Section
+        eyebrow="Kurzantwort"
+        title="Was diese Seite in der ersten Minute klären soll"
+        lead="Produktseiten führen nicht als Textwand, sondern als strukturierte Kauf- und Vergleichsoberfläche."
+      >
+        <div className="two-column">
+          <SpecTable title="Spezifikationen auf einen Blick" rows={buildSpecRows(page)} />
+          {page.table ? (
+            <ComparisonTable
+              title={page.table.title}
+              lead={page.table.lead}
+              columns={page.table.columns}
+              rows={page.table.rows}
+            />
+          ) : (
+            <div className="surface-card">
+              <h2>Wofür die Seite gedacht ist</h2>
+              <ul className="simple-list">
+                {page.sidebarBullets.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
-        <aside className="surface-card">
-          <h2>{page.sidebarTitle}</h2>
-          <ul className="simple-list">
-            {page.sidebarBullets.map((bullet) => (
-              <li key={bullet}>{bullet}</li>
-            ))}
-          </ul>
-        </aside>
-      </section>
+      </Section>
 
       {page.packageTable?.length ? (
-        <section className="section-stack">
-          <div className="section-header">
-            <span className="eyebrow">Preisübersicht</span>
-            <h2>{page.packageHeading ?? "Paket- und Mengenstruktur"}</h2>
-            <p>{page.packageLead}</p>
-          </div>
+        <Section
+          eyebrow="Pakete"
+          title={page.packageHeading ?? "Paket- und Mengenstruktur"}
+          lead={page.packageLead ?? "Klarer Paketaufbau statt unruhiger Preislisten."}
+        >
           <div className="pricing-grid">
             {page.packageTable.map((tier) => (
-              <article
-                key={`${page.slug}-${tier.quantity}`}
-                className={`pricing-card ${tier.popular ? "popular" : ""}`}
-              >
-                {tier.badge ? <span className="badge">{tier.badge}</span> : null}
-                <h3>{tier.label}</h3>
-                <div className="pricing-meta">
-                  <span>{tier.quantity}</span>
-                  <span>{tier.note}</span>
-                </div>
-                <p className="price">{tier.priceLabel}</p>
-                <p className="price-note">{tier.description}</p>
-              </article>
+              <PricingCard key={`${page.slug}-${tier.quantity}`} tier={tier} />
             ))}
           </div>
-        </section>
+        </Section>
       ) : null}
 
-      {page.glossaryData ? <GlossaryDefinition page={page} /> : null}
+      <Section
+        eyebrow="Material und Nutzen"
+        title="Warum diese Produktseite mehr als eine Preiswand ist"
+        lead="Spezifikation, Materialwirkung und Reorder-Nutzen werden getrennt sichtbar, damit die Seite wie eine seriöse B2B-Produktoberfläche wirkt."
+      >
+        <FeatureGrid items={buildFeatureItemsFromSections(page)} />
+      </Section>
 
-      {page.howToSteps?.length ? (
-        <section className="surface-card">
-          <h2>Schritt für Schritt</h2>
-          <ol className="status-list">
-            {page.howToSteps.map((step) => (
-              <li key={step}>{step}</li>
-            ))}
-          </ol>
-        </section>
-      ) : null}
+      <ReorderWorkflowBlock
+        title="Warum gespeicherte Spezifikationen für Produktseiten der eigentliche Moat sind"
+        lead="Die Oberfläche zeigt, dass nach der ersten Freigabe nicht alles neu erklärt werden muss."
+      />
 
-      {page.sections.length ? (
-        <section className="card-grid">
-          {page.sections.map((section) => (
-            <article key={section.title} className="section-card">
-              <h3>{section.title}</h3>
-              {section.body.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-              {section.bullets?.length ? (
-                <ul className="section-list">
-                  {section.bullets.map((bullet) => (
-                    <li key={bullet}>{bullet}</li>
-                  ))}
-                </ul>
-              ) : null}
-            </article>
-          ))}
-        </section>
-      ) : null}
-
-      {page.table ? (
-        <section className="table-card">
-          <h2>{page.table.title}</h2>
-          <p>{page.table.lead}</p>
-          <div className="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  {page.table.columns.map((column) => (
-                    <th key={column}>{column}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {page.table.rows.map((row) => (
-                  <tr key={row.join("-")}>
-                    {row.map((cell) => (
-                      <td key={cell}>{cell}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      ) : null}
-
-      {page.hubLinks?.length ? (
-        <section className="section-stack">
-          <div className="section-header">
-            <span className="eyebrow">Übersicht</span>
-            <h2>Wichtige Unterseiten</h2>
-            <p>
-              Diese Hub-Seite verknüpft alle indexierbaren Unterseiten, damit
-              keine isolierten Wissensseiten entstehen.
-            </p>
-          </div>
-          <RelatedLinks links={page.hubLinks} />
-        </section>
+      {page.faqs?.length ? (
+        <Section
+          eyebrow="FAQ"
+          title="Häufige Fragen zur Produktauswahl"
+          lead="Die sichtbaren Antworten bleiben erhalten und werden jetzt in einer ruhigeren, besser scanbaren Form dargestellt."
+        >
+          <FaqAccordion faqs={page.faqs} />
+        </Section>
       ) : null}
 
       {page.relatedLinks?.length ? (
-        <section className="section-stack">
-          <div className="section-header">
-            <span className="eyebrow">Weiterführend</span>
-            <h2>Passende Seiten im Themencluster</h2>
-            <p>
-              Diese Verlinkungen folgen dem Hub-and-Spoke-Prinzip aus den
-              SEO-Dokumenten und verbinden kommerzielle, erklärende und
-              unterstützende Seiten.
-            </p>
-          </div>
+        <Section
+          eyebrow="Weiterführend"
+          title="Relevante nächste Seiten"
+          lead="Produktseiten verweisen weiterhin auf Branchen-, Ratgeber- und Service-Seiten und verlieren keine SEO-Inhalte."
+        >
           <RelatedLinks links={page.relatedLinks} />
-        </section>
+        </Section>
+      ) : null}
+
+      <ContentCta
+        title="Wenn die Standardspezifikation nicht reicht, sollte die Anfrage strukturiert laufen."
+        body="Für Sondergrößen, mehrere Varianten oder größere Abrufe bleibt das Angebotsformular der richtige Abschluss dieser Seite."
+        primaryLabel="Angebot anfordern"
+        primaryHref="/de/angebot-anfordern"
+        secondaryLabel="Musterbox anfordern"
+        secondaryHref="/de/musterbox"
+      />
+    </div>
+  );
+}
+
+function IndustryPage({ page, canonicalPath }: DynamicPageProps) {
+  return (
+    <div className="container section-stack">
+      <Breadcrumbs currentLabel={page.title} currentPath={canonicalPath} />
+      <HeroSection
+        eyebrow={page.eyebrow}
+        title={page.title}
+        lead={page.lead}
+        bullets={page.heroBullets}
+        primaryCta={renderLink(page.primaryCta, "cta-link")}
+        secondaryCta={renderLink(page.secondaryCta, "secondary-link")}
+        aside={<QuickAnswerCard page={page} />}
+      />
+
+      <Section
+        eyebrow="Empfohlene Materialien"
+        title="Welche Materiallogik in dieser Branche typischerweise sinnvoll ist"
+        lead="Industrieseiten werden jetzt als Beratungseinstieg inszeniert, nicht als bloße SEO-Umschreibung."
+      >
+        <ComparisonTable
+          title="Orientierung für diese Verpackungswelt"
+          lead="Die Tabelle ist absichtlich einfach: sie zeigt Materialempfehlung, Nutzen und späteren Reorder-Bezug."
+          columns={["Variante", "Wofür sie passt", "Warum sie wiederholbar bleibt"]}
+          rows={buildIndustryComparisonRows(page)}
+        />
+      </Section>
+
+      <Section
+        eyebrow="Einsatzfälle"
+        title="Typische Anforderungen und Use Cases"
+        lead="Die Seitenstruktur macht sichtbar, dass Branchen unterschiedlich ticken und nicht nur den Produktnamen austauschen."
+      >
+        <FeatureGrid items={buildFeatureItemsFromSections(page)} />
+      </Section>
+
+      <ReorderWorkflowBlock
+        title="So übersetzt sich die Branchenlogik in spätere Nachbestellung"
+        lead="Material, Maß und freigegebene Daten bleiben in dieser Darstellung nicht abstrakt, sondern werden als wiederholbarer Workflow erklärt."
+      />
+
+      {page.path === "/de/supplement-etiketten" ? <VariableDataBlock /> : null}
+
+      <LegalNoticeBox
+        title="Hinweis zur öffentlichen Phase"
+        body="Diese Seite erklärt Branchenlogik, Materialempfehlung und spätere Prozessfähigkeit. Variable Daten, Upload-Workflows und Kontofunktionen werden bewusst noch nicht umgesetzt."
+      />
+
+      {page.faqs?.length ? (
+        <Section
+          eyebrow="FAQ"
+          title="Häufige Fragen aus der Branche"
+          lead="Die Antworten bleiben sichtbar und deutsch, werden aber nicht mehr als lose Absatzsammlung gezeigt."
+        >
+          <FaqAccordion faqs={page.faqs} />
+        </Section>
+      ) : null}
+
+      {page.relatedLinks?.length ? (
+        <Section
+          eyebrow="Verknüpfte Themen"
+          title="Produkte, Ratgeber und Service-Seiten"
+          lead="Diese Links bleiben Teil des SEO-Graphen und werden jetzt als klare B2B-Wege dargestellt."
+        >
+          <RelatedLinks links={page.relatedLinks} />
+        </Section>
+      ) : null}
+
+      <ContentCta
+        title="Wenn Verpackung und Menge schon klarer sind, sollte die Branche in eine konkrete Anfrage übergehen."
+        body="So endet die Seite mit einer B2B-Aktion statt mit einer dekorativen Schlussfloskel."
+        primaryLabel="Angebot anfordern"
+        primaryHref="/de/angebot-anfordern"
+        secondaryLabel="Musterbox anfordern"
+        secondaryHref="/de/musterbox"
+      />
+    </div>
+  );
+}
+
+function ServicePage({ page, canonicalPath }: DynamicPageProps) {
+  return (
+    <div className="container section-stack">
+      <Breadcrumbs currentLabel={page.title} currentPath={canonicalPath} />
+      <HeroSection
+        eyebrow={page.eyebrow}
+        title={page.title}
+        lead={page.lead}
+        bullets={page.heroBullets}
+        primaryCta={renderLink(page.primaryCta, "cta-link")}
+        secondaryCta={renderLink(page.secondaryCta, "secondary-link")}
+        aside={<QuickAnswerCard page={page} />}
+      />
+
+      {page.path === "/de/musterbox" ? (
+        <Section
+          eyebrow="Qualifizierung"
+          title="Die Musterbox wird als kontrollierter B2B-Funnel erklärt"
+          lead="Nicht als Give-away, sondern als Schritt vor einer belastbaren Materialentscheidung."
+        >
+          <div className="two-column">
+            <SampleBoxCard
+              title="Was die Musterbox leisten soll"
+              body="Materialmuster helfen, Haptik, Sichtbarkeit und Druckwirkung besser zu verstehen, bevor größere Mengen freigegeben werden."
+              href="/de/musterbox"
+            />
+            <FeatureGrid
+              items={[
+                {
+                  title: "Materialvergleich",
+                  body: "Opak, transparent und ergänzende Thermo-Beispiele können gegeneinander eingeordnet werden.",
+                },
+                {
+                  title: "Für ernsthafte B2B-Fälle",
+                  body: "Die Seite signalisiert klar, dass der nächste Schritt in Angebot oder Materialentscheidung führt.",
+                },
+                {
+                  title: "Keine lose Gratis-Seite",
+                  body: "Das Design bleibt ruhig und professionell statt verspielt oder giveaway-lastig.",
+                },
+              ]}
+            />
+          </div>
+        </Section>
+      ) : null}
+
+      {page.path === "/de/nachbestellen" ? (
+        <Section
+          eyebrow="Ablauf"
+          title="Gespeicherte Designs, Versionen und Erinnerungen visuell erklären"
+          lead="Die Seite kommuniziert den späteren Software-Nutzen, ohne einen noch nicht gebauten Login vorzutäuschen."
+        >
+          <ProcessSteps
+            steps={[
+              {
+                title: "Freigegebene Version erhalten",
+                body: "Die zuletzt freigegebene Gestaltung bleibt als klare Basis für die nächste Menge bestehen.",
+              },
+              {
+                title: "Material und Maß wiederverwenden",
+                body: "Opakes oder transparentes PP sowie die Größe müssen nicht bei jeder Wiederholung neu erklärt werden.",
+              },
+              {
+                title: "30-Tage-Erinnerung nutzen",
+                body: "Ein späterer Reminder-Mechanismus unterstützt wiederkehrende Abrufe und verhindert hektische Nachbestellungen.",
+              },
+              {
+                title: "Anfrage schneller starten",
+                body: "Solange das Konto noch nicht live ist, führt die Seite in Kontakt oder Angebot statt zu einem Fake-Button.",
+              },
+            ]}
+          />
+        </Section>
+      ) : null}
+
+      {page.path === "/de/druckdaten" ? (
+        <Section
+          eyebrow="Technische Übersicht"
+          title="Formate, Checkliste und häufige Fehler klar statt als Textblock"
+          lead="Die Druckdaten-Seite wird wie eine technische Betriebsseite aufgebaut, nicht wie eine lose FAQ."
+        >
+          <div className="two-column">
+            <SpecTable
+              title="Akzeptierte Formate"
+              rows={[
+                { label: "Bevorzugt", value: "PDF, AI, EPS" },
+                { label: "Weitere Formate", value: "SVG, PNG, JPG, ZIP" },
+                { label: "Prüffokus", value: "Größe, Beschnitt, Lesbarkeit, finale Version" },
+              ]}
+            />
+            <FeatureGrid
+              items={[
+                {
+                  title: "Datei-Checkliste",
+                  body: "Stimmen Maß, Beschnitt, Schriften und letzte Version mit der geplanten Verpackung überein?",
+                },
+                {
+                  title: "Proof-Prozess",
+                  body: "Die Freigabe ist Teil der Produktionssicherheit und nicht nur ein formaler Zwischenschritt.",
+                },
+                {
+                  title: "Typische Fehler",
+                  body: "Fehlender Beschnitt, falsches Format oder unklare Datei-Version erzeugen unnötige Rückfragen.",
+                },
+              ]}
+            />
+          </div>
+        </Section>
+      ) : null}
+
+      <Section
+        eyebrow="Kerninhalte"
+        title="Die wichtigsten Punkte dieser Seite"
+        lead="Der Inhalt bleibt erhalten, wird aber in ruhigere, scanbare Karten übersetzt."
+      >
+        <FeatureGrid items={buildFeatureItemsFromSections(page)} />
+      </Section>
+
+      {page.table ? (
+        <ComparisonTable
+          title={page.table.title}
+          lead={page.table.lead}
+          columns={page.table.columns}
+          rows={page.table.rows}
+        />
       ) : null}
 
       {page.faqs?.length ? (
-        <section className="section-stack">
-          <div className="section-header">
-            <span className="eyebrow">FAQ</span>
-            <h2>Häufige Fragen</h2>
-            <p>
-              Die Antworten bleiben kurz, konkret und stimmen mit dem sichtbaren
-              Seiteninhalt überein.
-            </p>
+        <Section eyebrow="FAQ" title="Häufige Fragen" lead="Die sichtbaren Antworten bleiben Teil der Seite und des SEO-Setups.">
+          <FaqAccordion faqs={page.faqs} />
+        </Section>
+      ) : null}
+
+      {page.relatedLinks?.length ? (
+        <Section eyebrow="Weiterführend" title="Passende nächste Seiten" lead="Service-Seiten verlieren keine internen Links und keine kommerzielle Orientierung.">
+          <RelatedLinks links={page.relatedLinks} />
+        </Section>
+      ) : null}
+
+      <ContentCta
+        title="Wenn die Grundlage klar ist, sollte der nächste Schritt bewusst gewählt werden."
+        body="Produkt, Musterbox oder Angebot bleiben sichtbar erreichbar, ohne neue Backend-Funktionen vorzutäuschen."
+        primaryLabel={page.path === "/de/nachbestellen" ? "Etiketten nachbestellen" : "Angebot anfordern"}
+        primaryHref={page.path === "/de/nachbestellen" ? "/de/angebot-anfordern" : "/de/angebot-anfordern"}
+        secondaryLabel="Musterbox anfordern"
+        secondaryHref="/de/musterbox"
+      />
+    </div>
+  );
+}
+
+function GuidePage({ page, canonicalPath }: DynamicPageProps) {
+  return (
+    <div className="container section-stack">
+      <Breadcrumbs currentLabel={page.title} currentPath={canonicalPath} />
+      <HeroSection
+        eyebrow={page.eyebrow}
+        title={page.title}
+        lead={page.lead}
+        bullets={page.heroBullets}
+        primaryCta={<Link href="/de/angebot-anfordern" className="cta-link">Angebot anfordern</Link>}
+        secondaryCta={<Link href="/de/musterbox" className="secondary-link">Musterbox anfordern</Link>}
+        aside={<QuickAnswerCard page={page} />}
+      />
+
+      {page.howToSteps?.length ? (
+        <Section
+          eyebrow="Schrittfolge"
+          title="Der Guide als echte Arbeitsoberfläche"
+          lead="Diese Seite wird nicht als Textwand gezeigt, sondern als konkrete Hilfestruktur für den nächsten Arbeitsschritt."
+        >
+          <ProcessSteps
+            steps={page.howToSteps.map((step, index) => ({
+              title: `Schritt ${index + 1}`,
+              body: step,
+            }))}
+          />
+        </Section>
+      ) : null}
+
+      <Section
+        eyebrow="Einordnung"
+        title="Was der Ratgeber konkret erklärt"
+        lead="Jeder Guide bleibt eigenständig und inhaltlich sichtbar, wird aber besser gegliedert und scanbar."
+      >
+        <FeatureGrid items={buildFeatureItemsFromSections(page)} />
+      </Section>
+
+      {page.faqs?.length ? (
+        <Section eyebrow="Kurzantworten" title="Häufige Rückfragen zum Thema" lead="Die Antworten bleiben sichtbar und unterstützen weiterhin FAQ-Schema und Suchintention.">
+          <FaqAccordion faqs={page.faqs} />
+        </Section>
+      ) : null}
+
+      {page.relatedLinks?.length ? (
+        <Section
+          eyebrow="Verknüpfung"
+          title="Diese Guides führen zurück in kommerzielle Seiten"
+          lead="Die internen Links bleiben erhalten und werden als echte B2B-Pfade visualisiert."
+        >
+          <RelatedLinks links={page.relatedLinks} />
+        </Section>
+      ) : null}
+
+      <ContentCta
+        title="Wenn der Guide die Entscheidung geklärt hat, sollte der nächste Schritt klar sein."
+        body="Die Seite endet bewusst in Angebot, Musterbox oder produktnahen Einstiegen statt in einem toten Wissensende."
+        primaryLabel="Angebot anfordern"
+        primaryHref="/de/angebot-anfordern"
+        secondaryLabel="Musterbox anfordern"
+        secondaryHref="/de/musterbox"
+      />
+    </div>
+  );
+}
+
+function GlossaryPage({ page, canonicalPath }: DynamicPageProps) {
+  return (
+    <div className="container section-stack">
+      <Breadcrumbs currentLabel={page.title} currentPath={canonicalPath} />
+      <HeroSection
+        eyebrow={page.eyebrow}
+        title={page.title}
+        lead={page.lead}
+        bullets={page.heroBullets}
+        primaryCta={<Link href="/de/angebot-anfordern" className="cta-link">Angebot anfordern</Link>}
+        secondaryCta={<Link href="/de/glossar" className="secondary-link">Glossar öffnen</Link>}
+        aside={<QuickAnswerCard page={page} />}
+      />
+
+      {page.glossaryData ? (
+        <Section
+          eyebrow="Definition"
+          title="Der Begriff in einer klaren, AI-lesbaren Struktur"
+          lead="Glossar-Seiten bleiben knapp, aber wirken jetzt wie bewusst gestaltete Definitionsseiten statt wie Textfragmente."
+        >
+          <div className="card-grid">
+            <article className="feature-card">
+              <h3>Definition</h3>
+              <p>{page.glossaryData.definition}</p>
+            </article>
+            <article className="feature-card">
+              <h3>Wann es wichtig wird</h3>
+              <p>{page.glossaryData.whenItMatters}</p>
+            </article>
+            <article className="feature-card">
+              <h3>Beispiel und Bezug</h3>
+              <p>{page.glossaryData.exampleUse}</p>
+              <p>{page.glossaryData.relatedProduct}</p>
+            </article>
           </div>
-          <div className="faq-grid">
-            {page.faqs.map((faq) => (
-              <article key={faq.question} className="faq-card">
-                <h3>{faq.question}</h3>
-                <p>{faq.answer}</p>
-              </article>
-            ))}
-          </div>
-        </section>
+        </Section>
+      ) : null}
+
+      <Section
+        eyebrow="Einordnung"
+        title="Sichtbare Erklärung auf der Seite"
+        lead="Die Definition bleibt auf der Seite sichtbar und stimmt mit der Structured-Data-Ebene überein."
+      >
+        <FeatureGrid items={buildFeatureItemsFromSections(page)} />
+      </Section>
+
+      {page.relatedLinks?.length ? (
+        <Section
+          eyebrow="Weiter zur passenden Produkt- oder Guide-Seite"
+          title="Glossar endet nicht im Leerlauf"
+          lead="Auch kurze Definitionsseiten führen in die relevanten kommerziellen und erklärenden Inhalte zurück."
+        >
+          <RelatedLinks links={page.relatedLinks} />
+        </Section>
+      ) : null}
+    </div>
+  );
+}
+
+function HubPage({ page, canonicalPath }: DynamicPageProps) {
+  return (
+    <div className="container section-stack">
+      <Breadcrumbs currentLabel={page.title} currentPath={canonicalPath} />
+      <HeroSection
+        eyebrow={page.eyebrow}
+        title={page.title}
+        lead={page.lead}
+        bullets={page.heroBullets}
+        primaryCta={renderLink(page.primaryCta, "cta-link")}
+        secondaryCta={renderLink(page.secondaryCta, "secondary-link")}
+        aside={<QuickAnswerCard page={page} />}
+      />
+
+      {page.hubLinks?.length ? (
+        <Section
+          eyebrow="Hub"
+          title="Alle relevanten Unterseiten auf einen Blick"
+          lead="Die Hub-Seiten werden als klare Wissensnavigation gestaltet und bleiben Teil von Nav, Sitemap und internem Linkgraph."
+        >
+          <RelatedLinks links={page.hubLinks} />
+        </Section>
+      ) : null}
+
+      <Section
+        eyebrow="Orientierung"
+        title="Warum diese Hub-Seite existiert"
+        lead="Ratgeber und Glossar werden nicht versteckt, sondern als bewusst gestaltete Einstiegspunkte gezeigt."
+      >
+        <FeatureGrid items={buildFeatureItemsFromSections(page)} />
+      </Section>
+
+      {page.faqs?.length ? (
+        <Section eyebrow="FAQ" title="Häufige Fragen zum Hub" lead="Die sichtbaren Kurzantworten bleiben erhalten.">
+          <FaqAccordion faqs={page.faqs} />
+        </Section>
+      ) : null}
+
+      {page.relatedLinks?.length ? (
+        <Section eyebrow="Weiterführend" title="Verknüpfte kommerzielle Seiten" lead="Die Hubs bleiben mit Produkt- und Service-Seiten verbunden und verlieren keine SEO-Funktion.">
+          <RelatedLinks links={page.relatedLinks} />
+        </Section>
       ) : null}
     </div>
   );
@@ -310,52 +725,94 @@ function QuotePage({ page, canonicalPath }: DynamicPageProps) {
   return (
     <div className="container section-stack">
       <Breadcrumbs currentLabel={page.title} currentPath={canonicalPath} />
-      <section className="hero-grid">
-        <div className="hero-panel">
-          <span className="eyebrow">{page.eyebrow}</span>
-          <h1>{page.title}</h1>
-          <p className="lead">{page.lead}</p>
-          <ul className="hero-list">
-            {page.heroBullets?.map((bullet) => (
-              <li key={bullet}>{bullet}</li>
-            ))}
-          </ul>
-          <div className="hero-actions">
-            <Link href="/de/musterbox" className="secondary-link">
-              Musterbox anfordern
-            </Link>
+      <HeroSection
+        eyebrow={page.eyebrow}
+        title={page.title}
+        lead={page.lead}
+        bullets={page.heroBullets}
+        secondaryCta={<Link href="/de/musterbox" className="secondary-link">Musterbox anfordern</Link>}
+        aside={
+          <div className="surface-card">
+            <h2>Was als Nächstes passiert</h2>
+            <ul className="simple-list">
+              <li>Anfrage wird strukturiert geprüft</li>
+              <li>Material, Größe und Menge werden eingeordnet</li>
+              <li>Rückfrage oder nächster Angebots-Schritt folgt</li>
+            </ul>
+            <p>
+              Für Materialunsicherheit ist die Musterbox der bessere Zwischenschritt
+              als ein vorschnelles Mengenbriefing.
+            </p>
+          </div>
+        }
+      />
+
+      <Section
+        eyebrow="Anfrageformular"
+        title="Seriöse B2B-Anfrage statt loses Kontaktformular"
+        lead="Die Formularoberfläche bleibt deutsch, zweispaltig und klar gegliedert in Unternehmen, Etikettenbedarf, Druckdaten und Nachricht."
+      >
+        <div className="two-column">
+          <QuoteRequestForm />
+          <div className="surface-card">
+            <h2>Warum diese Struktur</h2>
+            <div className="card-grid">
+              <article className="feature-card">
+                <h3>Unternehmen</h3>
+                <p>Kontakt und Branche werden sauber von der Produktanfrage getrennt.</p>
+              </article>
+              <article className="feature-card">
+                <h3>Etikettenbedarf</h3>
+                <p>Material, Maß und Menge stehen im Zentrum, nicht eine generische Freitextbox.</p>
+              </article>
+              <article className="feature-card">
+                <h3>Druckdaten und Nachricht</h3>
+                <p>Dateistatus und Zusatzinfos bleiben sichtbar, ohne einen Backend-Upload vorzutäuschen.</p>
+              </article>
+            </div>
           </div>
         </div>
-        <QuoteRequestForm />
-      </section>
+      </Section>
 
-      <section className="card-grid">
-        {page.sections.map((section) => (
-          <article key={section.title} className="section-card">
-            <h3>{section.title}</h3>
-            {section.body.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-            {section.bullets?.length ? (
-              <ul className="section-list">
-                {section.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
-            ) : null}
-          </article>
-        ))}
-      </section>
+      <Section
+        eyebrow="Ablauf"
+        title="Was nach dem Absenden zählt"
+        lead="Die Seite endet nicht im Unklaren, sondern erklärt den nächsten Schritt als B2B-Prozess."
+      >
+        <ProcessSteps
+          steps={[
+            {
+              title: "Anfrage prüfen",
+              body: "Material, Verpackung und Mengenlogik werden anhand Ihrer Angaben eingeordnet.",
+            },
+            {
+              title: "Rückfragen klären",
+              body: "Wenn Maß, Material oder Druckdaten noch offen sind, folgt zuerst eine technische oder inhaltliche Präzisierung.",
+            },
+            {
+              title: "Angebot vorbereiten",
+              body: "Erst danach wird der nächste Angebots- oder Spezifikationsschritt vorbereitet.",
+            },
+          ]}
+        />
+      </Section>
+
+      <Section
+        eyebrow="Alternative"
+        title="Noch nicht bereit für eine volle Anfrage?"
+        lead="Dann bleibt die Musterbox der kontrollierte B2B-Zwischenschritt."
+      >
+        <SampleBoxCard
+          title="Musterbox statt vorschneller Materialentscheidung"
+          body="Wenn opak, transparent oder Haptik noch unklar sind, spart ein früher Vergleich meist mehr Zeit als eine unscharfe Angebotsanfrage."
+          href="/de/musterbox"
+        />
+      </Section>
 
       {page.faqs?.length ? (
-        <section className="faq-grid">
-          {page.faqs.map((faq) => (
-            <article key={faq.question} className="faq-card">
-              <h3>{faq.question}</h3>
-              <p>{faq.answer}</p>
-            </article>
-          ))}
-        </section>
+        <Section eyebrow="FAQ" title="Häufige Fragen zum Angebotsprozess" lead="Die sichtbaren Antworten bleiben erhalten und deutsch.">
+          <FaqAccordion faqs={page.faqs} />
+        </Section>
       ) : null}
     </div>
   );
@@ -369,14 +826,10 @@ function LegalPage({ page, canonicalPath }: DynamicPageProps) {
         <span className="eyebrow">{page.eyebrow}</span>
         <h1>{page.title}</h1>
         <p>{page.lead}</p>
-        <div className="notice-card warning">
-          <h2>⚠️ Rechtlich zu prüfen - Platzhalter</h2>
-          <p>
-            Diese Seite enthält bewusst nur die Grundstruktur. Vor dem
-            produktiven Einsatz müssen Inhalte rechtlich geprüft und final
-            freigegeben werden.
-          </p>
-        </div>
+        <LegalNoticeBox
+          title="⚠️ Rechtlich zu prüfen - Platzhalter"
+          body="Diese Seite enthält bewusst nur die Grundstruktur. Vor dem produktiven Einsatz müssen Inhalte rechtlich geprüft und final freigegeben werden."
+        />
         <div className="card-grid">
           {page.sections.map((section) => (
             <section key={section.title} className="section-card">
@@ -392,27 +845,17 @@ function LegalPage({ page, canonicalPath }: DynamicPageProps) {
   );
 }
 
-function GlossaryDefinition({ page }: { page: PublicPageData }) {
-  if (!page.glossaryData) {
-    return null;
-  }
-
+function QuickAnswerCard({ page }: { page: PublicPageData }) {
   return (
-    <section className="card-grid">
-      <article className="section-card">
-        <h3>Definition</h3>
-        <p>{page.glossaryData.definition}</p>
-      </article>
-      <article className="section-card">
-        <h3>Wann es wichtig wird</h3>
-        <p>{page.glossaryData.whenItMatters}</p>
-      </article>
-      <article className="section-card">
-        <h3>Beispiel und Bezug</h3>
-        <p>{page.glossaryData.exampleUse}</p>
-        <p>{page.glossaryData.relatedProduct}</p>
-      </article>
-    </section>
+    <div className="surface-card">
+      <h2>Kurzantwort</h2>
+      <p>{page.lead}</p>
+      <ul className="simple-list">
+        {page.sidebarBullets.map((bullet) => (
+          <li key={bullet}>{bullet}</li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
@@ -429,6 +872,86 @@ function RelatedLinks({ links }: { links: RelatedLink[] }) {
         </article>
       ))}
     </div>
+  );
+}
+
+function buildFeatureItemsFromSections(page: PublicPageData) {
+  return page.sections.map((section) => ({
+    title: section.title,
+    body: [section.body[0], section.bullets?.[0]].filter(Boolean).join(" "),
+  }));
+}
+
+function buildSpecRows(page: PublicPageData) {
+  const rows = [
+    { label: "Seitentyp", value: page.kind },
+    { label: "Pfad", value: page.path },
+  ];
+
+  if (page.packageTable?.length) {
+    rows.push({
+      label: "Paketlogik",
+      value: page.packageTable.map((tier) => tier.quantity).join(" / "),
+    });
+  }
+
+  if (page.sidebarBullets[0]) {
+    rows.push({ label: "Fokus", value: page.sidebarBullets[0] });
+  }
+
+  if (page.sidebarBullets[1]) {
+    rows.push({ label: "Einsatz", value: page.sidebarBullets[1] });
+  }
+
+  return rows;
+}
+
+function buildIndustryComparisonRows(page: PublicPageData) {
+  if (page.path === "/de/flaschenetiketten" || page.path === "/de/getraenke-etiketten") {
+    return [
+      ["Transparentes PP", "sichtbare Flaschen- oder Glasoptik", "starke Wiedererkennung bei stabiler Oberfläche"],
+      ["Opakes PP", "klare Pflichtangaben und Kontrast", "kontrollierbare Lesbarkeit bei wiederkehrenden Chargen"],
+      ["Musterbox", "wenn Materialwirkung noch unklar ist", "früher Vergleich spart spätere Korrekturen"],
+    ];
+  }
+
+  if (page.path === "/de/supplement-etiketten") {
+    return [
+      ["Opakes PP", "Dosen, informationsreiche Layouts", "robuste Wiederholung vieler SKUs"],
+      ["Transparentes PP", "Premium-Dosen oder Flaschen", "sichtbar anderes Regalbild ohne neue Produktlogik"],
+      ["Variable Daten später", "Lotnummer, SKT, Chargenlogik", "UI signalisiert den späteren strukturierten Workflow"],
+    ];
+  }
+
+  return [
+    ["Opakes PP", "klare Lesbarkeit und dichte Informationen", "stabile Basis für spätere Nachbestellung"],
+    ["Transparentes PP", "sichtbare Verpackung oder Glaswirkung", "passend, wenn Materialoptik Teil des Designs ist"],
+    ["Musterbox", "wenn die Materialfrage noch offen ist", "hilft vor der ersten größeren Menge"],
+  ];
+}
+
+function getIndustryTeaser(href: string) {
+  switch (href) {
+    case "/de/lebensmittel-etiketten":
+      return "Für Gläser, Beutel und wiederkehrende Chargen mit Fokus auf Lesbarkeit und saubere Wiederholung.";
+    case "/de/supplement-etiketten":
+      return "Für Dosen, Beutel und variable Produktlinien mit späterer Chargen- und Dateilogik.";
+    case "/de/getraenke-etiketten":
+      return "Für Flaschen, Glas und Verpackungen, bei denen Materialoptik sichtbar in die Kaufentscheidung eingreift.";
+    default:
+      return "Branchenseite mit klarer Material- und Reorder-Logik.";
+  }
+}
+
+function renderLink(link: PublicPageData["primaryCta"], className: string) {
+  if (!link) {
+    return null;
+  }
+
+  return (
+    <Link href={link.href} className={className}>
+      {link.label}
+    </Link>
   );
 }
 

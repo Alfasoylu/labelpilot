@@ -40,13 +40,18 @@ export function QuoteRequestForm() {
 
   return (
     <form action={formAction} className="quote-form">
-      <h2>B2B-Angebot anfordern</h2>
-      <p className="field-hint">
-        Je genauer Ihre Angaben zu Material, Größe, Menge und Verpackung sind,
-        desto schneller kann der nächste Schritt vorbereitet werden.
-      </p>
+      <div>
+        <h2>B2B-Angebot anfordern</h2>
+        <p className="field-hint">
+          Je genauer Ihre Angaben zu Material, Größe, Menge und Verpackung
+          sind, desto schneller kann der nächste Schritt vorbereitet werden.
+        </p>
+      </div>
 
       <div className="form-grid">
+        <div className="form-group">
+          <span className="form-group-title">Unternehmen</span>
+        </div>
         <div className="field">
           <label htmlFor="companyName">Firmenname</label>
           <input id="companyName" name="companyName" required />
@@ -83,9 +88,17 @@ export function QuoteRequestForm() {
             ))}
           </select>
         </div>
+
+        <div className="form-group">
+          <span className="form-group-title">Etikettenbedarf</span>
+        </div>
         <div className="field">
           <label htmlFor="productType">Produkttyp</label>
-          <select id="productType" name="productType" defaultValue="PP-Rollenetiketten">
+          <select
+            id="productType"
+            name="productType"
+            defaultValue="PP-Rollenetiketten"
+          >
             {productTypes.map((productType) => (
               <option key={productType} value={productType}>
                 {productType}
@@ -125,13 +138,25 @@ export function QuoteRequestForm() {
         </div>
         <div className="field">
           <label htmlFor="recurringNeed">Wiederkehrender Bedarf</label>
-          <select id="recurringNeed" name="recurringNeed" defaultValue="Ja, regelmäßig">
+          <select
+            id="recurringNeed"
+            name="recurringNeed"
+            defaultValue="Ja, regelmäßig"
+          >
             <option value="Ja, regelmäßig">Ja, regelmäßig</option>
             <option value="Gelegentlich">Gelegentlich</option>
             <option value="Noch offen">Noch offen</option>
           </select>
         </div>
         <div className="field">
+          <label htmlFor="targetDeliveryDate">Ziel-Liefertermin</label>
+          <input id="targetDeliveryDate" name="targetDeliveryDate" type="date" />
+        </div>
+
+        <div className="form-group">
+          <span className="form-group-title">Druckdaten</span>
+        </div>
+        <div className="field-full">
           <label htmlFor="hasArtwork">Druckdatei vorhanden?</label>
           <select id="hasArtwork" name="hasArtwork" defaultValue="ja">
             <option value="ja">Ja</option>
@@ -139,9 +164,9 @@ export function QuoteRequestForm() {
             <option value="teilweise">Teilweise</option>
           </select>
         </div>
-        <div className="field-full">
-          <label htmlFor="targetDeliveryDate">Ziel-Liefertermin</label>
-          <input id="targetDeliveryDate" name="targetDeliveryDate" type="date" />
+
+        <div className="form-group">
+          <span className="form-group-title">Nachricht</span>
         </div>
         <div className="field-full">
           <label htmlFor="notes">Notizen</label>

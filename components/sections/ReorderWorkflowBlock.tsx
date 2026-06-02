@@ -28,42 +28,48 @@ export function ReorderWorkflowBlock({
           ))}
         </ol>
       </div>
-      <div className="hero-visual-card">
-        <div className="visual-head">
-          <div>
-            <span className="visual-kicker">Gespeichertes Design</span>
-            <h3 className="visual-title">Sommerlinie 2026</h3>
-          </div>
-          <span className="visual-status">v3 freigegeben</span>
-        </div>
-        <div className="visual-grid">
-          <div className="visual-row">
-            <span className="muted-label">Material</span>
-            <strong>Transparentes PP</strong>
-          </div>
-          <div className="visual-row">
-            <span className="muted-label">Maß</span>
-            <strong>100×200 mm</strong>
-          </div>
-          <div className="visual-row">
-            <span className="muted-label">Nächste Erinnerung</span>
-            <strong>25 Tage</strong>
-          </div>
-        </div>
-        <div className="hero-kpi-grid">
-          <div className="hero-kpi">
-            <span>Letzte Menge</span>
-            <strong>5.000 Stück</strong>
-          </div>
-          <div className="hero-kpi">
-            <span>Status</span>
-            <strong>bereit für Nachbestellung</strong>
-          </div>
-        </div>
-        <button type="button" className="cta-button">
-          Nachbestellen
-        </button>
-      </div>
+      <StoredDesignVisualCard />
     </section>
+  );
+}
+
+export function StoredDesignVisualCard() {
+  return (
+    <div className="hero-visual-card">
+      <div className="visual-head">
+        <div>
+          <span className="visual-kicker">Gespeichertes Design</span>
+          <h3 className="visual-title">Sommerlinie 2026</h3>
+        </div>
+        <span className="visual-status">v3 freigegeben</span>
+      </div>
+      <div className="visual-grid">
+        <div className="visual-row">
+          <span className="muted-label">Material</span>
+          <strong>Transparentes PP</strong>
+        </div>
+        <div className="visual-row">
+          <span className="muted-label">Maß</span>
+          <strong>100×200 mm</strong>
+        </div>
+        <div className="visual-row">
+          <span className="muted-label">Nächste Erinnerung</span>
+          <strong>25 Tage</strong>
+        </div>
+      </div>
+      <div className="hero-kpi-grid">
+        <div className="hero-kpi">
+          <span>Letzte Menge</span>
+          <strong>5.000 Stück</strong>
+        </div>
+        <div className="hero-kpi">
+          <span>Status</span>
+          <strong>bereit für Nachbestellung</strong>
+        </div>
+      </div>
+      <button type="button" className="cta-button">
+        Nachbestellen
+      </button>
+    </div>
   );
 }
