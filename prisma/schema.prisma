@@ -92,6 +92,15 @@ enum ArtworkStatus {
   ARTWORK_APPROVED
 }
 
+enum ProofFileStatus {
+  NOT_REQUIRED
+  PENDING_ADMIN_UPLOAD
+  WAITING_CUSTOMER_APPROVAL
+  APPROVED
+  CHANGES_REQUESTED
+  SUPERSEDED
+}
+
 model QuoteRequest {
   id                 String      @id @default(cuid())
   status             QuoteStatus @default(NEW)
@@ -185,6 +194,7 @@ model Order {
   createdAt               DateTime           @default(now())
   updatedAt               DateTime           @updatedAt
   artworkFiles            ArtworkFile[]
+  proofFiles              ProofFile[]
   payments                Payment[]
   statusEvents            OrderStatusEvent[]
 
@@ -242,7 +252,7 @@ model OrderStatusEvent {
 
 model ArtworkFile {
   id          String            @id @default(cuid())
-  orderId      String
+  orderId     String
   storagePath String
   fileName    String
   mimeType    String
@@ -250,6 +260,26 @@ model ArtworkFile {
   status      ArtworkFileStatus @default(UPLOADED)
   createdAt   DateTime          @default(now())
   order       Order             @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model ProofFile {
+  id                        String          @id @default(cuid())
+  orderId                   String
+  storagePath               String
+  fileName                  String
+  mimeType                  String
+  sizeBytes                 Int
+  status                    ProofFileStatus @default(PENDING_ADMIN_UPLOAD)
+  customerApprovedAt        DateTime?
+  customerApprovalIp        String?
+  customerChangeRequestNote String?
+  createdAt                 DateTime        @default(now())
+  updatedAt                 DateTime        @updatedAt
+  order                     Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@index([orderId])
   @@index([status])

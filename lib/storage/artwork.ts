@@ -48,6 +48,24 @@ export async function uploadArtwork(orderId: string, file: File, sanitizedFileNa
   return storagePath;
 }
 
+export async function uploadProofFile(orderId: string, file: File, sanitizedFileName: string) {
+  const client = getStorageClient();
+  const bucket = getArtworkBucketName();
+  const storagePath = `orders/${orderId}/proofs/${randomUUID()}-${sanitizedFileName}`;
+  const buffer = Buffer.from(await file.arrayBuffer());
+
+  const { error } = await client.storage.from(bucket).upload(storagePath, buffer, {
+    contentType: file.type || "application/octet-stream",
+    upsert: false,
+  });
+
+  if (error) {
+    throw new Error("Proof-Upload fehlgeschlagen.");
+  }
+
+  return storagePath;
+}
+
 export async function getSignedUrl(storagePath: string, expiresInSeconds = 60) {
   const client = getStorageClient();
   const bucket = getArtworkBucketName();

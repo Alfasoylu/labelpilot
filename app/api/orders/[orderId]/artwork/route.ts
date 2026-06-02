@@ -74,7 +74,30 @@ export async function POST(
 
   try {
     const storagePath = await uploadArtwork(order.id, file, validation.sanitizedFileName);
+    const nextOrderStatus =
+      order.status === "PENDING_PAYMENT" ||
+      order.status === "PAYMENT_FAILED" ||
+      order.status === "CANCELLED"
+        ? order.status
+        : "FILE_REVIEW";
     const createdFile = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+      await tx.proofFile.updateMany({
+        where: {
+          orderId: order.id,
+          status: {
+            in: [
+              "PENDING_ADMIN_UPLOAD",
+              "WAITING_CUSTOMER_APPROVAL",
+              "APPROVED",
+              "CHANGES_REQUESTED",
+            ],
+          },
+        },
+        data: {
+          status: "SUPERSEDED",
+        },
+      });
+
       const artworkFile = await tx.artworkFile.create({
         data: {
           orderId: order.id,
@@ -90,20 +113,14 @@ export async function POST(
         where: { id: order.id },
         data: {
           artworkStatus: "ARTWORK_UPLOADED",
-          status:
-            order.status === "PAID" || order.status === "CORRECTION_REQUIRED"
-              ? "FILE_REVIEW"
-              : order.status,
+          status: nextOrderStatus,
         },
       });
 
       await tx.orderStatusEvent.create({
         data: {
           orderId: order.id,
-          status:
-            order.status === "PAID" || order.status === "CORRECTION_REQUIRED"
-              ? "FILE_REVIEW"
-              : order.status,
+          status: nextOrderStatus,
           note: "Druckdaten hochgeladen.",
         },
       });

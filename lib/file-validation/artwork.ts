@@ -47,6 +47,25 @@ const artworkRules = {
   },
 } as const;
 
+const proofRules = {
+  pdf: {
+    maxBytes: 25 * 1024 * 1024,
+    mimeTypes: ["application/pdf"],
+  },
+  png: {
+    maxBytes: 25 * 1024 * 1024,
+    mimeTypes: ["image/png"],
+  },
+  jpg: {
+    maxBytes: 25 * 1024 * 1024,
+    mimeTypes: ["image/jpeg"],
+  },
+  jpeg: {
+    maxBytes: 25 * 1024 * 1024,
+    mimeTypes: ["image/jpeg"],
+  },
+} as const;
+
 function getExtension(fileName: string) {
   const normalized = fileName.trim().toLowerCase();
   const dotIndex = normalized.lastIndexOf(".");
@@ -72,6 +91,10 @@ export function getArtworkFileRequirementsText() {
   return "Bevorzugte Formate: PDF, AI oder EPS. Weitere akzeptierte Formate: SVG, PNG, JPG oder ZIP.";
 }
 
+export function getProofFileRequirementsText() {
+  return "Proof-Dateien: PDF, PNG oder JPG bis 25 MB.";
+}
+
 export function validateArtworkFile(file: File) {
   const extension = getExtension(file.name);
 
@@ -83,6 +106,41 @@ export function validateArtworkFile(file: File) {
   }
 
   const rule = artworkRules[extension as keyof typeof artworkRules];
+  const mimeTypes = [...rule.mimeTypes] as string[];
+
+  if (file.size > rule.maxBytes) {
+    return {
+      ok: false as const,
+      message:
+        "Die Datei ist zu gross. Bitte laden Sie eine kleinere Datei hoch oder kontaktieren Sie uns.",
+    };
+  }
+
+  if (file.type && !mimeTypes.includes(file.type)) {
+    return {
+      ok: false as const,
+      message: "Dieses Dateiformat wird nicht unterstuetzt.",
+    };
+  }
+
+  return {
+    ok: true as const,
+    extension,
+    sanitizedFileName: sanitizeFileName(file.name),
+  };
+}
+
+export function validateProofFile(file: File) {
+  const extension = getExtension(file.name);
+
+  if (!(extension in proofRules)) {
+    return {
+      ok: false as const,
+      message: "Dieses Dateiformat wird nicht unterstuetzt.",
+    };
+  }
+
+  const rule = proofRules[extension as keyof typeof proofRules];
   const mimeTypes = [...rule.mimeTypes] as string[];
 
   if (file.size > rule.maxBytes) {

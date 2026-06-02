@@ -9,6 +9,14 @@ type ArtworkStatusValue =
   | "ARTWORK_UPLOADED"
   | "ARTWORK_APPROVED";
 
+type ProofFileStatusValue =
+  | "NOT_REQUIRED"
+  | "PENDING_ADMIN_UPLOAD"
+  | "WAITING_CUSTOMER_APPROVAL"
+  | "APPROVED"
+  | "CHANGES_REQUESTED"
+  | "SUPERSEDED";
+
 export function getArtworkFileStatusLabel(status: ArtworkFileStatusValue) {
   switch (status) {
     case "UPLOADED":
@@ -36,6 +44,25 @@ export function getArtworkStatusLabel(status: ArtworkStatusValue | null) {
   }
 }
 
+export function getProofFileStatusLabel(status: ProofFileStatusValue) {
+  switch (status) {
+    case "NOT_REQUIRED":
+      return "Kein Proof erforderlich";
+    case "PENDING_ADMIN_UPLOAD":
+      return "Proof wird vorbereitet";
+    case "WAITING_CUSTOMER_APPROVAL":
+      return "Proof wartet auf Freigabe";
+    case "APPROVED":
+      return "Proof freigegeben";
+    case "CHANGES_REQUESTED":
+      return "Aenderungswunsch gesendet";
+    case "SUPERSEDED":
+      return "Durch neueren Proof ersetzt";
+    default:
+      return status;
+  }
+}
+
 export function getMaterialLabel(material: string) {
   return material === "TRANSPARENT" ? "Transparentes PP" : "Opakes PP";
 }
@@ -54,6 +81,10 @@ export function getOrderStatusLabel(status: string) {
       return "Wartet auf Rueckmeldung";
     case "APPROVED_FOR_PRODUCTION":
       return "Fuer Produktion freigegeben";
+    case "PROOF_REQUIRED":
+      return "Proof wird vorbereitet";
+    case "WAITING_CUSTOMER_APPROVAL":
+      return "Proof wartet auf Freigabe";
     default:
       return status;
   }

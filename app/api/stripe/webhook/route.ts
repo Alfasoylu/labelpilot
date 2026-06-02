@@ -61,6 +61,7 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
       where: { id: order.id },
       data: {
         status: "PAID",
+        artworkStatus: "AWAITING_ARTWORK",
         stripeCheckoutSessionId: session.id,
         stripePaymentIntentId: paymentIntentId,
         customerEmail: session.customer_details?.email ?? order.customerEmail,
