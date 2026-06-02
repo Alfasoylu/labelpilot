@@ -287,45 +287,45 @@ export const thermalPackageNotes: PackageTier[] = [
 ];
 
 export const homePageData: HomePageData = {
-  eyebrow: "Deutscher Public MVP",
-  title: "PP-Rollenetiketten, die Ihre Marke später schneller nachbestellen kann.",
+  eyebrow: "",
+  title: "Etiketten, die Ihre Marke tragen.",
   lead:
-    "Labelpilot.de speichert freigegebene Druckdaten, Material, Maß und Versionen, damit Lebensmittel-, Getränke- und Supplement-Marken Etiketten einfacher nachbestellen können.",
+    "Opake & transparente PP-Rollenetiketten — einmal freigegeben, jederzeit nachbestellbar.",
   highlights: [
-    "Opake und transparente PP-Etiketten als Kernprodukt im Format 100×200 mm.",
-    "Thermo-Versandetiketten nur als ergänzendes B2B-Cross-Sell, nicht als Hauptangebot.",
-    "Guide- und Glossar-Seiten erklären Material, Druckdaten und Nachbestelllogik ohne generischen Print-Shop-Lärm.",
+    "Opak, transparent, sauber verarbeitet.",
+    "Für Food, Beverage, Supplement und Private Label.",
+    "Angebot für Standards und Sonderfälle.",
   ],
   corePackages: opaquePackages,
   topicCards: [
     {
       title: "Opake PP-Etiketten",
-      body: "Die robuste Standardlösung für Lebensmittel, Supplemente und klassische Produktverpackungen.",
+      body: "Die klare Standardlösung für wiederkehrende Produktlinien.",
       href: "/de/opake-pp-etiketten",
     },
     {
       title: "Transparente PP-Etiketten",
-      body: "Für Flaschen, Gläser und Premium-Verpackungen mit klarer Optik und wiederholbaren Spezifikationen.",
+      body: "Für sichtbare Verpackungsoptik auf Glas, Flasche und Dose.",
       href: "/de/transparente-pp-etiketten",
     },
     {
-      title: "Ratgeber und Glossar",
-      body: "Vergleiche, Fachbegriffe und Druckdaten-Erklärungen für deutsche B2B-Käufer mit echtem Informationsgewinn.",
+      title: "Etiketten-Ratgeber / Materialberatung",
+      body: "Materialfragen, Druckdaten und Unterschiede kurz erklärt.",
       href: "/de/ratgeber",
     },
   ],
   steps: [
     {
-      title: "1. Bedarf eingrenzen",
-      body: "Produktseiten und Branchen-Seiten zeigen, welches Material und welche Mengenstaffel für die Verpackung realistisch sind.",
+      title: "Material wählen",
+      body: "Material und Einsatz sauber festlegen.",
     },
     {
-      title: "2. Material sicher entscheiden",
-      body: "Ratgeber- und Glossar-Seiten klären Unterschiede zwischen opak, transparent, Rollenetiketten und Druckdatenanforderungen.",
+      title: "Druck freigeben",
+      body: "Freigegebene Daten bleiben als Version nutzbar.",
     },
     {
-      title: "3. Anfrage strukturiert senden",
-      body: "Wenn Menge, Größe oder Verpackung feststehen, führt der Weg in das Angebotsformular statt in einen unklaren Massen-Checkout.",
+      title: "Nachbestellen",
+      body: "Wiederkehrende Bestellungen starten schneller.",
     },
   ],
 };

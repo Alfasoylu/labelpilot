@@ -196,6 +196,109 @@ textarea {
   padding: 28px 0 84px;
 }
 
+.brand-hero {
+  position: relative;
+  width: 100vw;
+  min-height: 90vh;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  overflow: hidden;
+  background: #0b1220;
+}
+
+.brand-hero__image,
+.brand-hero__overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.brand-hero__media {
+  object-fit: cover;
+}
+
+.brand-hero__overlay {
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(11, 18, 32, 0.86), rgba(11, 18, 32, 0.52), rgba(11, 18, 32, 0.08));
+}
+
+.brand-hero__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  min-height: 90vh;
+  padding: clamp(5rem, 10vh, 8rem) clamp(1.5rem, 6vw, 6rem);
+}
+
+.brand-hero__content {
+  width: min(100%, 680px);
+}
+
+.brand-hero__title {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.brand-hero__lead {
+  margin: 18px 0 0;
+  max-width: 40rem;
+  color: rgba(248, 250, 252, 0.84);
+  font-size: clamp(1rem, 1.7vw, 1.18rem);
+  line-height: 1.6;
+}
+
+.brand-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.brand-hero__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease,
+    transform 0.16s ease;
+}
+
+.brand-hero__cta:hover {
+  transform: translateY(-1px);
+}
+
+.brand-hero__cta--primary {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #f8fafc;
+}
+
+.brand-hero__cta--primary:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.brand-hero__cta--secondary {
+  background: transparent;
+  border-color: rgba(248, 250, 252, 0.5);
+  color: #f8fafc;
+}
+
+.brand-hero__cta--secondary:hover {
+  background: rgba(248, 250, 252, 0.08);
+  border-color: rgba(248, 250, 252, 0.74);
+}
+
 .section-stack {
   display: grid;
   gap: 24px;
@@ -904,6 +1007,24 @@ th {
 @media (max-width: 640px) {
   .container {
     width: min(calc(100% - 22px), var(--container));
+  }
+
+  .brand-hero {
+    min-height: 80vh;
+  }
+
+  .brand-hero__overlay {
+    background: linear-gradient(90deg, rgba(11, 18, 32, 0.92), rgba(11, 18, 32, 0.65), rgba(11, 18, 32, 0.2));
+  }
+
+  .brand-hero__inner {
+    min-height: 80vh;
+    padding-top: 5.5rem;
+    padding-bottom: 4rem;
+  }
+
+  .brand-hero__lead {
+    font-size: 1rem;
   }
 
   .hero-panel,

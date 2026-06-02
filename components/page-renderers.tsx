@@ -7,6 +7,7 @@ import { SampleBoxCard } from "@/components/cards/SampleBoxCard";
 import { FaqAccordion } from "@/components/faq/FaqAccordion";
 import { Section } from "@/components/layout/Section";
 import { LegalNoticeBox } from "@/components/legal/LegalNoticeBox";
+import { BrandHero } from "@/components/sections/BrandHero";
 import { ContentCta } from "@/components/sections/ContentCta";
 import { FeatureGrid } from "@/components/sections/FeatureGrid";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -107,57 +108,37 @@ const productImageAssets = {
 } as const;
 
 export function HomePage({ page, navigation }: HomePageProps) {
+  const homepageTrustItems = [
+    {
+      title: "Für wiederkehrende Bestellungen gebaut",
+      body: "Freigegebene Daten bleiben nutzbar.",
+    },
+    {
+      title: "Opak, transparent, sauber verarbeitet",
+      body: "Materialwahl ohne Umwege erklärt.",
+    },
+    {
+      title: "Für deutsche Einkaufsprozesse gedacht",
+      body: "Klare Pakete statt Konfigurator-Lärm.",
+    },
+    {
+      title: "Sonderfälle laufen über Angebot",
+      body: "Standards klar, Abweichungen strukturiert.",
+    },
+  ];
+
   return (
-    <div className="container section-stack">
-      <HeroSection
-        eyebrow={page.eyebrow}
-        title={page.title}
-        lead={page.lead}
-        bullets={page.highlights}
-        primaryCta={
-          <Link href="/de/angebot-anfordern" className="cta-link">
-            Angebot anfordern
-          </Link>
-        }
-        secondaryCta={
-          <Link href="/de/musterbox" className="secondary-link">
-            Musterbox anfordern
-          </Link>
-        }
-        visual={<StoredDesignVisualCard />}
-      />
+    <>
+      <BrandHero title={page.title} lead={page.lead} />
 
-      <TrustBar items={trustItems} />
+      <div className="container section-stack">
+        <TrustBar items={homepageTrustItems} />
 
-      <Section
-        eyebrow="Warum Labelpilot.de"
-        title="Nicht nur Etiketten einkaufen, sondern Wiederholung systematisch vorbereiten"
-        lead="Die Oberfläche erklärt den Unterschied zwischen einem günstigen Druckshop und einer strukturierten Label-Infrastruktur."
-      >
-        <FeatureGrid
-          items={[
-            {
-              title: "Druckdaten bleiben als Version nutzbar",
-              body: "Freigegebene Motive, Material und Maß werden nicht in einzelnen E-Mails verloren, sondern als wiederholbare Grundlage verstanden.",
-            },
-            {
-              title: "Branchenlogik statt generischer Produktwand",
-              body: "Lebensmittel, Getränke und Supplemente werden als unterschiedliche Einsatzfälle erklärt, nicht als austauschbare SEO-Slots.",
-            },
-            {
-              title: "Wissen direkt am kaufrelevanten Punkt",
-              body: "Ratgeber und Glossar führen in Material, Druckdaten und Nachbestellung ein, ohne die Conversion-Route zu verlieren.",
-            },
-          ]}
-        />
-      </Section>
-
-      <Section
-        eyebrow="Kernprodukte"
-        title="Die wichtigsten öffentlichen Einstiegspunkte"
-        lead="Phase 2 hat die Produkt- und Wissensstruktur erweitert. Die UI bündelt diese jetzt als klare Kauf- und Informationswege."
-      >
-        <div className="two-column image-supported-grid">
+        <Section
+          eyebrow="Kernprodukte"
+          title="Opak, transparent oder zuerst sauber vergleichen."
+          lead={page.highlights[0]}
+        >
           <div className="card-grid">
             {page.topicCards.map((card, index) => (
               <ProductCard
@@ -165,50 +146,24 @@ export function HomePage({ page, navigation }: HomePageProps) {
                 title={card.title}
                 body={card.body}
                 href={card.href}
-                badge={index === 0 ? "Hauptprodukt" : index === 1 ? "Premium-Material" : "Wissenshub"}
+                badge={index === 0 ? "Kernprodukt" : index === 1 ? "Materialwahl" : "Orientierung"}
                 featured={index === 0}
               />
             ))}
           </div>
-          <EditorialImage
-            {...productImageAssets.productLine}
-            caption="PP-Rollenetiketten auf mehreren Verpackungstypen als visuelle Produktlinie."
-            sizes="(max-width: 1024px) 100vw, 520px"
-          />
-        </div>
-      </Section>
+        </Section>
 
-      <ReorderWorkflowBlock />
+        <ReorderWorkflowBlock
+          title="Material wählen. Druck freigeben. Nachbestellen."
+          lead="Wiederkehrende Bestellungen ohne neue Abstimmung."
+          steps={page.steps.map((step) => step.body)}
+        />
 
-      <Section
-        eyebrow="Musterbox"
-        title="Material zuerst verstehen, dann Menge festlegen"
-        lead="Die Musterbox wird als kontrollierter B2B-Filter gezeigt, nicht als kostenlose Goodie-Seite."
-        tone="soft"
-      >
-        <div className="two-column">
-          <SampleBoxCard
-            title="Labelpilot Musterbox"
-            body="Vergleichen Sie opake und transparente PP-Materialien sowie ergänzende Thermo-Beispiele, bevor Sie größere Mengen freigeben."
-            href="/de/musterbox"
-          />
-          <div className="surface-card">
-            <h2>Besonders sinnvoll bei</h2>
-            <ul className="simple-list">
-              <li>erster Materialentscheidung für Glas, Beutel oder Dose</li>
-              <li>unklarer Wirkung zwischen opak und transparent</li>
-              <li>wiederkehrenden Produktlinien mit späterer Nachbestellung</li>
-            </ul>
-          </div>
-        </div>
-      </Section>
-
-      <Section
-        eyebrow="Branchen"
-        title="Öffentliche Seiten mit unterschiedlicher Kauflogik"
-        lead="Die Branchen-Seiten bleiben im Nav und zeigen unterschiedliche Use Cases statt derselben Textschablone."
-      >
-        <div className="two-column image-supported-grid">
+        <Section
+          eyebrow="Branchen"
+          title="Für Food, Beverage, Supplement und Private Label."
+          lead={page.highlights[1]}
+        >
           <div className="card-grid">
             {navigation
               .filter((item) =>
@@ -223,31 +178,18 @@ export function HomePage({ page, navigation }: HomePageProps) {
                 />
               ))}
           </div>
-          <EditorialImage
-            {...productImageAssets.industries}
-            caption="Übersicht typischer Einsatzfelder von PP-Etiketten im B2B-Kontext."
-            sizes="(max-width: 1024px) 100vw, 520px"
-          />
-        </div>
-      </Section>
+        </Section>
 
-      <Section
-        eyebrow="Prozess"
-        title="Vom ersten Bedarf bis zur belastbaren Spezifikation"
-        lead="Die Homepage endet nicht bei Features, sondern zeigt den Weg in die tatsächliche B2B-Abwicklung."
-      >
-        <ProcessSteps steps={page.steps} />
-      </Section>
-
-      <ContentCta
-        title="Wenn Material, Verpackung oder Menge feststehen, ist der nächste Schritt das Angebot."
-        body="So bleibt die Seite ruhig, präzise und conversion-orientiert: Wissen zuerst, dann eine strukturierte Anfrage."
-        primaryLabel="Angebot anfordern"
-        primaryHref="/de/angebot-anfordern"
-        secondaryLabel="Ratgeber öffnen"
-        secondaryHref="/de/ratgeber"
-      />
-    </div>
+        <ContentCta
+          title="Für Marken, die Etiketten regelmäßig brauchen."
+          body={page.highlights[2]}
+          primaryLabel="Angebot anfordern"
+          primaryHref="/de/angebot-anfordern"
+          secondaryLabel="Musterbox"
+          secondaryHref="/de/musterbox"
+        />
+      </div>
+    </>
   );
 }
 
