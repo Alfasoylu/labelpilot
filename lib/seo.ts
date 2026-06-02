@@ -248,14 +248,26 @@ export function buildCanonicalMetadata(
     openGraph: {
       title: entry.openGraphTitle ?? title,
       description: entry.openGraphDescription ?? description,
+      siteName: "Labelpilot.de",
       locale: "de_DE",
       type: entry.openGraphType ?? "website",
       url: buildAbsoluteUrl(path),
+      images: [
+        {
+          url: buildAbsoluteUrl(
+            "/images/editorial/micro-brand-product-lineup.webp",
+          ),
+          alt: "Produkte kleiner Marken mit individuell bedruckten PP-Rollenetiketten von Labelpilot.de",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: entry.openGraphTitle ?? title,
       description: entry.openGraphDescription ?? description,
+      images: [
+        buildAbsoluteUrl("/images/editorial/micro-brand-product-lineup.webp"),
+      ],
     },
   };
 }
@@ -266,6 +278,7 @@ export function buildOrganizationSchema() {
     "@type": "Organization",
     name: "Labelpilot.de",
     url: buildAbsoluteUrl("/de"),
+    logo: buildAbsoluteUrl("/images/logo.png"),
     description:
       "Labelpilot.de ist eine B2B-Plattform für individuell bedruckte PP-Rollenetiketten und Thermoetiketten für Lebensmittel-, Getränke- und Supplement-Marken in Deutschland.",
     inLanguage: "de-DE",

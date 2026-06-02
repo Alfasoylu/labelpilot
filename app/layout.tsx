@@ -30,6 +30,31 @@ export const metadata: Metadata = {
   metadataBase: new URL(buildAbsoluteUrl("/")),
   title: "Labelpilot.de",
   description: "B2B-Etikettenplattform für deutsche Marken.",
+  icons: {
+    icon: "/images/favicon.png",
+    shortcut: "/images/favicon.png",
+    apple: "/images/favicon.png",
+  },
+  openGraph: {
+    siteName: "Labelpilot.de",
+    locale: "de_DE",
+    type: "website",
+    url: buildAbsoluteUrl("/de"),
+    title: "Labelpilot.de",
+    description: "B2B-Etikettenplattform für deutsche Marken.",
+    images: [
+      {
+        url: buildAbsoluteUrl("/images/editorial/micro-brand-product-lineup.webp"),
+        alt: "Labelpilot.de — PP-Rollenetiketten für Produktmarken",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [
+      buildAbsoluteUrl("/images/editorial/micro-brand-product-lineup.webp"),
+    ],
+  },
 };
 
 export default function RootLayout({
