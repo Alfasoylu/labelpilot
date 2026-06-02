@@ -581,10 +581,18 @@ Der Angebotsfluss wird genutzt bei:
 - 20.000+ Etiketten
 - Sondergrößen
 - Sondermaterialien
+- Spezialklebstoff
+- Sonderveredelungen
+- transparenten Jobs mit starkem Weißunterdruck
+- Metall-/Folieneffekten
 - mehreren SKUs
+- mehr als 50 Zeilen variabler Daten
+- Kontur- oder Sonderformen
+- Express-Anfragen
 - regelmäßiger monatlicher Produktion
 - Paletten-/Sammelversand
 - Deutschland-Hub-Lieferung
+- Net-14-Bestellungen oberhalb des Kreditlimits
 - komplexeren Druckdaten
 - B2B-Verhandlung
 
@@ -693,6 +701,25 @@ Anwendungstemperatur
 ```
 
 Diese Felder nicht im MVP hinzufügen, wenn sie operativ nicht zwingend sind.
+
+### 15.1 Verbindliche Fixed-Package-Spezifikation für PP 100×200 mm
+
+Für die festen PP-Pakete gilt verbindlich:
+
+| Feld | Wert |
+|---|---|
+| Material | Opakes PP oder transparentes PP |
+| Größe | 100×200 mm (10×20 cm) |
+| Form | Rechteck |
+| Schnitt | Standardschnitt, kein Konturschnitt |
+| Format | Auf Rolle |
+| Klebstoff | Permanent |
+| Finish | Genau ein Finish: glänzend oder matt |
+| Druck | 4/0-farbig CMYK Digitaldruck |
+| Designs pro Auftrag | 1 Design / 1 Artwork |
+| Variable Daten | Nicht im Fixpreis enthalten |
+| Quote-only Trigger | Sondergröße, Sondermaterial, Weißunterdruck auf transparent, mehrere SKUs, Express, Spezialveredelung |
+| Core Cross-Sell Future | Thermoetiketten bleiben separates Cross-Sell, kein automatischer Paketbestandteil |
 
 ---
 
@@ -809,6 +836,41 @@ Jede Produktseite muss enthalten:
 12. Verwandte Produkte
 13. Schema Markup
 14. Pflicht-Hinweis zur regulatorischen Verantwortung, wenn relevant
+
+### 18.1 Im Preis enthalten / nicht enthalten
+
+Für die festen PP-Produktseiten muss zusätzlich ein klarer Block sichtbar sein.
+
+**Im Preis enthalten**
+
+- 100×200 mm (10×20 cm) rechteckiges Rollenetikett
+- 1 Design / Artwork pro Auftrag
+- genanntes PP-Material
+- permanenter Klebstoff
+- Rollenformat
+- 4/0-farbiger CMYK-Digitaldruck
+- keine Einrichtungs- oder Klischeekosten
+- ein Finish: glänzend oder matt
+- kostenlose Standard-Datenprüfung
+- eine Proof-Runde
+- Versand nach Deutschland
+- Nachbestellung derselben gespeicherten Spezifikation zum gleichen Paketpreis
+
+**Nicht enthalten**
+
+- Weißunterdruck / Deckweiß bei transparentem Material
+- Laminierung / Lack
+- Folie / Metallic
+- variable Daten / Lot- und SKT-Nummerierung
+- Kontur- oder Sonderform
+- zusätzliche Designs / SKUs
+- Express
+
+Für diese ausgeschlossenen Punkte muss die Produktseite sichtbar auf folgenden CTA führen:
+
+```txt
+Individuelles B2B-Angebot anfordern
+```
 
 ---
 

@@ -107,7 +107,7 @@ net_revenue = gross_price / 1.19
 Example:
 
 ```txt
-€149 gross / 1.19 = €125.21 net revenue
+€213.01 brutto / 1.19 = €179.00 netto
 ```
 
 ### 5.2 B2B Orders
@@ -117,7 +117,8 @@ For B2B buyers, pricing logic may depend on the invoicing model, VAT registratio
 Until final legal/tax setup is confirmed:
 
 - Use net B2B pricing internally.
-- Keep customer-facing logic configurable.
+- Show both `net` and `gross (19% MwSt)` on customer-facing fixed-price pages.
+- Treat the approved fixed-price ladder as `all-in incl. shipping to Germany`.
 - Do not hardcode tax logic in product price.
 - Keep tax handling isolated in a tax/pricing service.
 
@@ -363,6 +364,14 @@ reorder_contribution_profit =
 
 ## 12. PP Label Economics — Direct Shipping
 
+Important:
+
+```txt
+Sections 12, 13 and 20 contain directional contribution examples built on an earlier package ladder.
+The authoritative commercial package prices are Section 14.1.
+These contribution examples must be recalculated before finance-signoff or paid acquisition launch.
+```
+
 ### 12.1 Starter Package — 1,000 PP Labels
 
 Assumptions:
@@ -577,18 +586,27 @@ This is the single canonical commercial package and price table for PP labels.
 
 Other docs may reference this table, but they should not restate competing customer-facing price tables.
 
-| Product | Package | Quantity | Customer-facing price ex VAT | Status | Best for |
-|---|---|---:|---:|---|---|
-| Opaque PP 100x200 | Starter | 1,000 | €149 | Final | Paid trial |
-| Opaque PP 100x200 | Reorder Ready | 2,000 | €229 | Final | Micro-brand repeat path |
-| Opaque PP 100x200 | Growth | 5,000 | €399 | Final | Main micro B2B |
-| Opaque PP 100x200 | Pro | 10,000 | €699 | Final | Growing brand |
-| Opaque PP 100x200 | Business | 20,000+ | Quote | Final | Repeat account |
-| Transparent PP 100x200 | Starter | 1,000 | €169 | Final | Premium paid trial |
-| Transparent PP 100x200 | Reorder Ready | 2,000 | €254 | Final | Premium micro-brand repeat path |
-| Transparent PP 100x200 | Growth | 5,000 | €429 | Final | Premium main micro B2B |
-| Transparent PP 100x200 | Pro | 10,000 | €749 | Final | Premium growing brand |
-| Transparent PP 100x200 | Business | 20,000+ | Quote | Final | Premium repeat account |
+| Product | Package | Quantity | Netto | Brutto (19% MwSt) | Status | Best for |
+|---|---|---:|---:|---:|---|---|
+| Opaque PP 100x200 | Starter | 1,000 | €179.00 | €213.01 | Final | Paid trial |
+| Opaque PP 100x200 | Reorder Ready | 2,000 | €279.00 | €332.01 | Final | Micro-brand repeat path |
+| Opaque PP 100x200 | Growth | 5,000 | €479.00 | €570.01 | Final | Main micro B2B |
+| Opaque PP 100x200 | Pro | 10,000 | €799.00 | €950.81 | Final | Growing brand |
+| Opaque PP 100x200 | Business | 20,000+ | Quote | Quote | Final | Repeat account |
+| Transparent PP 100x200 | Starter | 1,000 | €199.00 | €236.81 | Final | Premium paid trial |
+| Transparent PP 100x200 | Reorder Ready | 2,000 | €309.00 | €367.71 | Final | Premium micro-brand repeat path |
+| Transparent PP 100x200 | Growth | 5,000 | €519.00 | €617.61 | Final | Premium main micro B2B |
+| Transparent PP 100x200 | Pro | 10,000 | €849.00 | €1,010.31 | Final | Premium growing brand |
+| Transparent PP 100x200 | Business | 20,000+ | Quote | Quote | Final | Premium repeat account |
+
+Old-to-new approved ladder change:
+
+| Product | Old net ladder | New net ladder |
+|---|---|---|
+| Opaque PP 100x200 | €149 / €229 / €399 / €699 | €179 / €279 / €479 / €799 |
+| Transparent PP 100x200 | €169 / €254 / €429 / €749 | €199 / €309 / €519 / €849 |
+
+All fixed prices above are all-in and include shipping to Germany.
 
 ### 14.2 Price Psychology
 
@@ -596,14 +614,106 @@ The Growth package must look like the obvious best value.
 
 Example display:
 
-| Package | Price | Unit price |
-|---|---:|---:|
-| 1,000 | €149 | €0.1490 / label |
-| 2,000 | €229 | €0.1145 / label |
-| 5,000 | €399 | €0.0798 / label |
-| 10,000 | €699 | €0.0699 / label |
+| Package | Opaque net | Opaque unit price | Transparent net | Transparent unit price |
+|---|---:|---:|---:|---:|
+| 1,000 | €179 | €0.1790 / label | €199 | €0.1990 / label |
+| 2,000 | €279 | €0.1395 / label | €309 | €0.1545 / label |
+| 5,000 | €479 | €0.0958 / label | €519 | €0.1038 / label |
+| 10,000 | €799 | €0.0799 / label | €849 | €0.0849 / label |
 
 This pushes customers away from 1,000 and toward 2,000+ and 5,000+.
+
+The pricing must not look overpriced on a naive one-off comparison, but it must still reflect the true value and area of a large `100×200 mm` custom PP label. Tiny-label headline prices from broad print shops are not comparable to this size/material package and must never be used as a like-for-like benchmark.
+
+### 14.3 What Each Fixed Package Includes
+
+Every fixed PP package is defined as:
+
+- `100×200 mm (10×20 cm)` rectangular roll label
+- `1 design / artwork per order`
+- named PP material (`opaque` or `transparent`)
+- permanent adhesive
+- on roll
+- full-colour `CMYK` digital print
+- no setup / plate fee
+- one finish: `gloss` or `matte`
+- free standard data check
+- one proof round
+- shipping to Germany included
+- reorder of the exact saved spec at the same package price
+
+German value-bundle line:
+
+```txt
+Alle Pakete enthalten technische Druckdatenprüfung, Versand nach Deutschland und die Speicherung freigegebener Druckdaten für die 30-Sekunden-Nachbestellung.
+```
+
+### 14.4 What Is Not Included In Fixed Packages
+
+The following must route to:
+
+```txt
+Individuelles B2B-Angebot anfordern
+```
+
+Excluded from the fixed price:
+
+- transparent white underprint / opaque white ink on transparent material
+- lamination / varnish
+- foil / metallic effects
+- variable data / Lot- and SKT-numbering
+- contour / special-shape cut
+- additional designs / SKUs
+- express production or express shipping
+
+Transparent white underprint is explicitly a paid add-on / quote item and is not included in the transparent base ladder.
+
+### 14.5 Price-Factor Matrix
+
+The final price level must always be interpreted through this factor matrix:
+
+| Factor | Standard fixed-package assumption | Effect if changed |
+|---|---|---|
+| Quantity | 1,000 / 2,000 / 5,000 / 10,000 | higher or custom quantities change economics |
+| Size | 100×200 mm rectangular | custom sizes move to quote |
+| Material | opaque PP / transparent PP | transparent premium; specialty materials quote |
+| Shape | rectangle | special shapes quote |
+| Cut type | standard rectangular | contour / special cut quote |
+| Roll format | on roll | special winding/core requests can quote |
+| Core | standard | custom core can quote |
+| Winding | standard | non-standard winding can quote |
+| Adhesive | permanent | special adhesive quote |
+| Indoor/outdoor use | standard product-label use | tougher use cases may require upgrades |
+| Water/oil resistance | standard PP suitability | heavier resistance requirements may affect material choice |
+| Finish | one finish included: gloss or matte | extra finishing quote |
+| Lamination | not included | quote |
+| White ink | not included on transparent | paid add-on / quote |
+| Foil / metallic | not included | quote |
+| Color count | full-colour CMYK | specialty print effects quote |
+| Print method | digital | flexo-style or other process changes quote |
+| Variable data | not included | quote |
+| Number of designs / SKUs | one design per order | extra SKUs quote |
+| Artwork quality | standard-ready files | heavy correction can trigger quote |
+| Proof / revisions | one proof round included | extra rounds can quote later |
+| Delivery speed | standard lead time | express quote |
+| Shipping method | shipping to Germany included | pallet / consolidated special cases quote |
+| VAT / shipping inclusion | net + gross shown, Germany shipping included | must stay explicit in UI |
+| File-check level | standard data check included | upgraded checks can quote later |
+| Legal responsibility | customer responsible | no legal-compliance service included |
+
+### 14.6 Competitive Positioning Rule
+
+Labelpilot.de is not the cheapest option and must never claim to be.
+
+The approved price raise to `€479 / €799` for opaque and `€519 / €849` for transparent places the core packages in a defendable middle band for a large `100×200 mm` custom PP label.
+
+Positioning rules:
+
+- defend price with size, clarity of scope, shipping-included logic, and reorder value
+- do not benchmark our `100×200 mm` package against tiny-label `ab 0,01–0,02 €` headlines
+- only compare like-for-like: same size, same material, same orientation, same inclusion scope
+- if the comparison is not like-for-like, mark it non-comparable
+- do not start a price war with broad online printers
 
 ---
 
@@ -661,13 +771,21 @@ Sample box fee can be credited against first Growth or Pro order.
 Quote flow must be used for:
 
 1. 20,000+ labels
-2. Multi-SKU orders
-3. Multiple artwork versions
-4. Special material requests
-5. Special delivery requests
-6. Repeat production agreements
-7. Monthly supply planning
-8. Germany hub / pallet delivery customers
+2. custom size
+3. custom material
+4. special adhesive
+5. special finishing
+6. white-ink-heavy transparent jobs
+7. metallic / foil effects
+8. multi-SKU orders or multiple artwork versions
+9. variable data above 50 rows
+10. express requests
+11. pallet / consolidated delivery requests
+12. Net-14 customers above credit limit
+13. unclear artwork or heavy correction
+14. repeat production agreements
+15. monthly supply planning
+16. Germany hub / pallet delivery customers
 
 Quote request must collect:
 
@@ -796,7 +914,7 @@ Target:
 
 | Metric | Target |
 |---|---:|
-| AOV | €399+ |
+| AOV | €479+ |
 | Monthly revenue | €10,000–€30,000 |
 | Net profit | -€2,000 to +€5,000 |
 | Repeat signal | Early |

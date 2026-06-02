@@ -912,6 +912,40 @@ Every page must pass:
 
 ## 28. Final Verdict
 
+## 28. Design Benchmark Addendum
+
+Study these product-page patterns:
+
+- Labelprint24 for B2B trust and structured label detail pages
+- Flyeralarm for dense but scannable procurement-style product organization
+- Onlineprinters for live-price feel and serious B2B table structure
+- Sticker Mule / StickerApp / Vistaprint for CTA clarity and streamlined configurator flow
+- Avery / Vistaprint for format and template education
+
+Do not copy:
+
+- broad generic catalog sprawl
+- playful sticker-shop tone
+- Turkish-exporter / generic matbaa visual language
+
+Our visual rule remains:
+
+```txt
+German B2B SaaS
+navy/slate
+Trust Blue CTA
+white/grey surfaces
+calculator cards
+saved-design / reorder moat
+```
+
+Strategic design line:
+
+```txt
+Competitors hide exact prices behind configurators.
+Labelpilot.de should show transparent indicative tiers and exact package inclusions directly on the page.
+```
+
 The design must communicate:
 
 ```txt

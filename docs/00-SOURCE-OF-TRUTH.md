@@ -118,8 +118,8 @@ The owner has explicitly locked the following decisions. These are no longer ope
 
 1. Canonical phase order is the timeline in `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md`.
 2. Canonical package ladder is `1,000 / 2,000 / 5,000 / 10,000`, with `20,000+` handled as quote-only.
-3. Opaque PP pricing is fixed at `€149 / €229 / €399 / €699` for `1,000 / 2,000 / 5,000 / 10,000`.
-4. Transparent PP pricing is fixed at `€169 / €254 / €429 / €749` for `1,000 / 2,000 / 5,000 / 10,000`.
+3. Opaque PP pricing is fixed at `€179 / €279 / €479 / €799` for `1,000 / 2,000 / 5,000 / 10,000`. This supersedes the earlier locked ladder `€149 / €229 / €399 / €699`.
+4. Transparent PP pricing is fixed at `€199 / €309 / €519 / €849` for `1,000 / 2,000 / 5,000 / 10,000`. This supersedes the earlier locked ladder `€169 / €254 / €429 / €749`.
 5. `€100k` is framed as a three-rung ladder: (a) **long-term north-star = €100,000+/month NET profit (~Year 8–10)**; (b) the `04 §20.2` €100k figure is a **contribution milestone** (mid-term), explicitly NOT net profit; (c) interim **net-profit** targets are the Year 2–3 ranges (~€8k–35k/month). Keep the `04 §20.2` scenario labeled "contribution"; do NOT relabel the long-term net-profit north-star to contribution.
 6. MVP auth and storage are locked to Supabase Auth + Supabase Storage. Clerk and UploadThing are alternatives considered, not active implementation paths.
 7. Canonical public app URL env var is `NEXT_PUBLIC_APP_URL`. `EMAIL_FROM` and `EMAIL_REPLY_TO` are active email env vars.
@@ -130,6 +130,7 @@ The owner has explicitly locked the following decisions. These are no longer ope
 12. `63-PHASE-2-SEO-FOUNDATION.md` now exists and is the canonical Phase 2 phase doc.
 13. GTM docs `53/54/55/56/57` are future docs, not yet written, and must not block current implementation planning.
 14. UI design direction is LOCKED to `76-UI-DESIGN-SYSTEM-GERMAN-B2B.md`: modern German B2B SaaS look — navy/slate text (`#0B1220`/`#111827`), Trust Blue primary CTA (`#2563EB`), white/soft-grey backgrounds (`#F8FAFC`/`#FFFFFF`), subtle borders. This SUPERSEDES the earlier warm terracotta/cream palette. The redesign (`77-CODEX-UI-REDESIGN-PROMPT.md`) is UI-only (no backend/Stripe/new pages), must preserve all routes/SEO, and must keep the Phase-2 `Ratgeber` + `Glossar` hubs in the nav. Hero uses a CSS "stored-design / reorder" moat card, not stock photos.
+15. Fixed-price PP packages are now defined as an explicit commercial spec: `100×200 mm (10×20 cm)` rectangular roll labels, `1 design per order`, named PP material, permanent adhesive, full-colour CMYK digital print, no setup/plate fee, one finish (`gloss` or `matte`), free standard data check plus one proof round, shipping to Germany included, and reorder of the exact saved spec at the same package price. Transparent white underprint is a paid add-on / quote item, not included in the transparent base price. Customer-facing price display must show both net and gross (`19% MwSt`).
 
 ---
 

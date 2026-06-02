@@ -1014,6 +1014,105 @@ The only high-upside path is software-backed repeat label infrastructure.
 
 ## 17. Source Notes
 
+## 17. Pricing Positioning Update
+
+Labelpilot.de must not claim to be the cheapest option.
+
+Approved positioning:
+
+- premium German B2B label infrastructure
+- transparent indicative tiers instead of hidden configurator-only pricing
+- defend price with large `100×200 mm` size, explicit inclusion scope, shipping to Germany, saved designs, and reorder value
+- do not benchmark our package against tiny-label headline prices
+
+Required comparison rule:
+
+- compare only like-for-like: same size, same material, same scope
+- if a competitor headline is based on much smaller labels, mark it non-comparable
+
+Below-band watch list:
+
+- Labelprint24
+- Flyeralarm
+- Onlineprinters
+- WIRmachenDRUCK
+- local printers with commodity roll-label offers
+
+Above-justified list:
+
+- Sticker Mule
+- StickerApp
+- Avery
+- Vistaprint
+- cheap marketplaces that still cost more once real workflow value is considered
+
+Avoid price-war list:
+
+- WIRmachenDRUCK
+- Flyeralarm
+- Onlineprinters
+- Vistaprint
+- cheap sticker marketplaces
+
+## 18. Design / UX Benchmark Update
+
+Study for trust and product structure:
+
+- Labelprint24
+- Flyeralarm
+- Onlineprinters
+
+Study for simple configurator UX and CTA clarity:
+
+- Sticker Mule
+- StickerApp
+- Vistaprint
+
+Study for template / format education:
+
+- Avery
+- Vistaprint
+
+Do not copy:
+
+- broad generic print-shop catalog sprawl
+- playful sticker-store tone
+- Turkish-exporter / generic matbaa look
+
+Our design direction remains:
+
+```txt
+German B2B SaaS
+navy / slate typography
+Trust Blue CTA
+white / soft-grey surfaces
+calculator-like price cards
+stored-design / reorder moat
+```
+
+## 19. Competitor Ranking Update
+
+### 19.1 Highest direct price threat
+
+1. Labelprint24
+2. Flyeralarm
+3. Onlineprinters
+4. WIRmachenDRUCK
+
+### 19.2 Strongest design inspiration
+
+1. Sticker Mule for CTA clarity
+2. Labelprint24 for B2B trust structure
+3. Vistaprint for format education
+4. Onlineprinters for structured product-page scanning
+
+### 19.3 Strategic line to preserve
+
+```txt
+Every major competitor hides the real price behind a configurator.
+Labelpilot.de wins by showing transparent indicative tiers and the exact inclusion scope up front.
+```
+
 Research used public pages and search results available at the time of creation.
 
 Key observed source facts included:

@@ -333,7 +333,7 @@ Free sample box attracts low-quality leads.
 
 ```txt
 paid or qualified-lead gated
-credit back on first order above €399
+credit back on first order above €479
 ```
 
 ### Competitor comparison
@@ -489,7 +489,7 @@ Avoid underpricing. Transparent is visual/premium.
 
 Final commercial pricing for this package is owned by `/docs/04-PRICING-AND-MARGIN-MODEL.md`.
 
-The previous `€449` candidate is superseded by the canonical `€429` decision recorded there.
+The previous lower transparent Growth candidates are superseded by the canonical `€519` decision recorded there.
 
 Use sample box to reduce uncertainty.
 
@@ -785,6 +785,111 @@ sample box = lead qualifier
 ---
 
 ## 21. Final Verdict
+
+## 21. Price Positioning Refresh
+
+Labelpilot.de must not undercut the market blindly.
+
+Approved rule:
+
+- do not look overpriced on a naive one-off comparison
+- do not pretend a large `100×200 mm` custom PP label should be benchmarked against tiny-label headline prices
+- only compare like-for-like or mark the comparison non-comparable
+
+Old-to-new approved commercial level change:
+
+| Product | Old net ladder | New net ladder |
+|---|---|---|
+| Opaque PP 100×200 | €149 / €229 / €399 / €699 | €179 / €279 / €479 / €799 |
+| Transparent PP 100×200 | €169 / €254 / €429 / €749 | €199 / €309 / €519 / €849 |
+
+The approved raise puts the `€479 / €799` opaque ladder and `€519 / €849` transparent ladder into a defendable middle band for a large-format B2B label, not an undercutting band.
+
+## 22. Competitor Price Reference Snapshot Rules
+
+Do not invent live prices beyond the documented hard data below.
+
+| Competitor | Data quality | Size comparability | Price note | Confidence |
+|---|---|---|---|---|
+| Sticker Mule | hard public data | not comparable: about 50 cm² and smaller than our 100×200 mm | 1k=`€125`, 5k=`€337`, 10k=`€547`; 1 design per roll; free shipping + unlimited proof; no 100×200 mm | Medium |
+| Labelprint24 | configurator-only | comparable in principle | 100×200 mm PP configurable; free EU shipping; free standard data check; Plus check `+€25`; white ink / laminate extra | High |
+| Flyeralarm | configurator-only | comparable in principle | 100×200 mm PP foil offered; transparent white ink as separate paid variant; paid pro check / proof; net display | High |
+| Onlineprinters | configurator-only | comparable in principle | contour cut `€24.90`, special format `€10.90`, data check `€6.90`, express `€10–25` net | High |
+| WIRmachenDRUCK | configurator-only | often not comparable | `ab 0,01–0,02 €` headline is tiny `2–10 cm` labels only; paper `40×70 mm` `5k≈€160` gross is not like-for-like | Medium |
+| Avery | configurator-only | partially comparable | transparent film includes white underprint free; incl. MwSt | Medium |
+| Vistaprint | configurator-only | partially comparable | 100×200 mm achievable; estimate only; premium positioning | Low |
+| StickerApp | configurator-only | not comparable in current public refs | small-label USD references only; large/high-volume goes manual quote | Low |
+
+Exact prices must be captured via calculator screenshots before Google Ads launch.
+
+## 23. Required Audit Columns
+
+The audit template must include:
+
+| Field | Required |
+|---|---|
+| Competitor | Yes |
+| URL | Yes |
+| Screenshot date | Yes |
+| Label size | Yes |
+| Label area | Yes |
+| Material | Yes |
+| White ink included? | Yes |
+| Adhesive | Yes |
+| Quantity | Yes |
+| VAT included / excluded | Yes |
+| Shipping included / excluded | Yes |
+| File check / proof included | Yes |
+| Delivery time | Yes |
+| Final price | Yes |
+| Confidence | Yes |
+| Like-for-like? | Yes |
+
+## 24. Price-Factor Matrix Cross-Reference
+
+Use `/docs/04-PRICING-AND-MARGIN-MODEL.md` as the canonical factor matrix.
+
+This research document must specifically check:
+
+- quantity
+- size / area
+- material
+- shape / cut type
+- adhesive
+- finish / lamination
+- white ink
+- foil / metallic
+- variable data
+- number of SKUs / designs
+- proof / data-check level
+- delivery speed
+- shipping inclusion
+- VAT presentation
+
+## 25. Quote-Only Trigger List
+
+The following must not be benchmarked as standard fixed-tier jobs:
+
+- `20,000+`
+- custom size
+- custom material
+- special adhesive
+- special finishing
+- white-ink-heavy transparent jobs
+- metallic / foil
+- multiple SKUs / designs
+- variable data above `50` rows
+- express
+- pallet / consolidated delivery
+- Net-14 above credit limit
+- unclear artwork / heavy correction
+
+## 26. Strategic Reminder
+
+```txt
+Every major competitor hides the real price behind a configurator.
+Labelpilot.de wins by showing transparent indicative tiers and the exact inclusion scope up front.
+```
 
 The Top 10 product list should not be built around “what can we print?”
 

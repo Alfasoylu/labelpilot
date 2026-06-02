@@ -242,9 +242,9 @@ Initial working prices:
 
 | Package | Quantity | Product | Target price |
 |---|---:|---|---:|
-| Starter | 1,000 | 100×200 mm PP labels | €149 |
-| Growth | 5,000 | 100×200 mm PP labels | €399 |
-| Pro | 10,000 | 100×200 mm PP labels | €699 |
+| Starter | 1,000 | 100×200 mm PP labels | See `/docs/04-PRICING-AND-MARGIN-MODEL.md` |
+| Growth | 5,000 | 100×200 mm PP labels | See `/docs/04-PRICING-AND-MARGIN-MODEL.md` |
+| Pro | 10,000 | 100×200 mm PP labels | See `/docs/04-PRICING-AND-MARGIN-MODEL.md` |
 | Business | 20,000+ | 100×200 mm PP labels | Quote request |
 
 Rules:
@@ -678,7 +678,7 @@ Initial target metrics:
 
 | Metric | Target |
 |---|---:|
-| Main AOV | €399+ |
+| Main AOV | €479+ |
 | Primary package | 5,000 labels |
 | B2B CAC / sales cost | Under €60 |
 | Repeat rate after 12 months | 30%+ |
