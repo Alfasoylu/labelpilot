@@ -381,7 +381,7 @@ export function HomePage({ page }: HomePageProps) {
         <Section
           eyebrow="Branchen"
           title="Für Food, Beverage, Supplement und Private Label."
-          lead={page.highlights[1]}
+          lead="Etiketten für Produkte, die regelmäßig produziert, geprüft und nachbestellt werden."
         >
           <div className="two-column image-supported-grid">
             <div className="card-grid">
