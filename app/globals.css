@@ -20,6 +20,7 @@
   --danger-soft: #fef2f2;
   --shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.06);
   --shadow-md: 0 24px 64px rgba(15, 23, 42, 0.08);
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 32px rgba(15, 23, 42, 0.06);
   --radius-xl: 32px;
   --radius-lg: 24px;
   --radius-md: 18px;
@@ -193,6 +194,36 @@ textarea {
   border: 1px solid var(--line);
 }
 
+.card-actions {
+  margin-top: 18px;
+}
+
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--brand);
+  font-weight: 600;
+  font-size: 0.96rem;
+  text-decoration: none;
+  transition:
+    color 0.16s ease,
+    gap 0.16s ease;
+}
+
+.card-link::after {
+  content: "→";
+  transition: transform 0.16s ease;
+}
+
+.card-link:hover {
+  color: var(--brand-hover);
+}
+
+.card-link:hover::after {
+  transform: translateX(3px);
+}
+
 .page-main {
   padding: 28px 0 84px;
 }
@@ -302,8 +333,8 @@ textarea {
 
 .section-stack {
   display: grid;
-  gap: 24px;
-  margin-top: 34px;
+  gap: 48px;
+  margin-top: 40px;
 }
 
 .hero-grid,
@@ -343,10 +374,8 @@ textarea {
 .quote-form,
 .notice-card,
 .table-card,
-.section-shell,
 .hero-visual-card,
-.cta-shell,
-.trust-shell {
+.cta-shell {
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.92);
   border-radius: var(--radius-xl);
@@ -358,9 +387,7 @@ textarea {
 .quote-form,
 .notice-card,
 .table-card,
-.section-shell,
-.cta-shell,
-.trust-shell {
+.cta-shell {
   padding: 30px;
 }
 
@@ -476,7 +503,7 @@ textarea {
 }
 
 .section-shell.section-soft {
-  background: rgba(239, 246, 255, 0.72);
+  background: transparent;
 }
 
 .section-card,
@@ -489,10 +516,10 @@ textarea {
 .sample-card,
 .trust-item,
 .feature-card {
-  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.96);
+  background: #ffffff;
   padding: 24px;
+  box-shadow: var(--shadow-card);
 }
 
 .section-card h3,
@@ -516,10 +543,11 @@ textarea {
 .pricing-card.popular,
 .product-card.featured,
 .sample-card.featured {
-  border-color: rgba(37, 99, 235, 0.26);
   background:
     linear-gradient(180deg, rgba(239, 246, 255, 0.72), rgba(255, 255, 255, 0.98));
-  box-shadow: var(--shadow-sm);
+  box-shadow:
+    0 0 0 1px rgba(37, 99, 235, 0.22),
+    0 14px 36px rgba(37, 99, 235, 0.1);
 }
 
 .pricing-meta {
@@ -543,6 +571,54 @@ textarea {
   color: var(--text-soft);
   font-size: 0.96rem;
   line-height: 1.55;
+}
+
+.pricing-card__actions {
+  margin-top: 18px;
+}
+
+.pricing-card__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.pricing-card__action:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.pricing-card__action--primary {
+  color: #fff;
+  background: linear-gradient(135deg, var(--brand), var(--brand-hover));
+}
+
+.pricing-card__action--primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, var(--brand-hover), var(--brand-hover));
+}
+
+.pricing-card__action--secondary {
+  color: var(--text-strong);
+  background: rgba(255, 255, 255, 0.9);
+  border-color: var(--line);
+}
+
+.pricing-card__action--secondary:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.98);
 }
 
 .price-note,
@@ -785,7 +861,7 @@ textarea {
 }
 
 .trust-shell {
-  background: rgba(255, 255, 255, 0.94);
+  background: transparent;
 }
 
 .trust-item {
@@ -1033,10 +1109,8 @@ th {
   .quote-form,
   .notice-card,
   .table-card,
-  .section-shell,
   .hero-visual-card,
   .cta-shell,
-  .trust-shell,
   .legal-card {
     padding: 22px;
   }

@@ -296,7 +296,15 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
         >
           <div className="pricing-grid">
             {page.packageTable.map((tier) => (
-              <PricingCard key={`${page.slug}-${tier.quantity}`} tier={tier} />
+              <PricingCard
+                key={`${page.slug}-${tier.quantity}`}
+                tier={tier}
+                checkoutPackage={
+                  tier.priceLabel === "Angebot"
+                    ? undefined
+                    : getCheckoutPackageForTier(page.slug, tier.quantity)
+                }
+              />
             ))}
           </div>
           <p className="price-note">{pricingValueBundleLine}</p>
@@ -1137,6 +1145,34 @@ function getIndustryTeaser(href: string) {
     default:
       return "Branchenseite mit klarer Material- und Reorder-Logik.";
   }
+}
+
+function getCheckoutPackageForTier(slug: string, quantityLabel: string) {
+  const normalizedQuantity = Number.parseInt(quantityLabel.replace(/\D/g, ""), 10);
+
+  if (!Number.isFinite(normalizedQuantity)) {
+    return undefined;
+  }
+
+  if (slug === "opake-pp-etiketten") {
+    return {
+      packageId: `opaque-pp-100x200-${normalizedQuantity}`,
+      productSlug: "opake-pp-etiketten" as const,
+      material: "OPAQUE" as const,
+      quantity: normalizedQuantity,
+    };
+  }
+
+  if (slug === "transparente-pp-etiketten") {
+    return {
+      packageId: `transparent-pp-100x200-${normalizedQuantity}`,
+      productSlug: "transparente-pp-etiketten" as const,
+      material: "TRANSPARENT" as const,
+      quantity: normalizedQuantity,
+    };
+  }
+
+  return undefined;
 }
 
 function getProductPageImage(path: string) {
