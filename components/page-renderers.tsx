@@ -393,14 +393,31 @@ export function HomePage({ page }: HomePageProps) {
           <div className="two-column image-supported-grid">
             <div className="card-grid">
               {[
-                { label: "Lebensmittel-Etiketten", href: "/de/lebensmittel-etiketten" },
-                { label: "Getränke-Etiketten", href: "/de/getraenke-etiketten" },
-                { label: "Supplement-Etiketten", href: "/de/supplement-etiketten" },
+                {
+                  label: "Honig & Feinkost",
+                  href: "/de/lebensmittel-etiketten",
+                  body: "Honig, Aufstriche und Feinkost im Glas: Etiketten, die Feuchtigkeit vertragen und mit sauberen Kanten am Rundglas sitzen.",
+                },
+                {
+                  label: "Getränke",
+                  href: "/de/getraenke-etiketten",
+                  body: "Getränkeflaschen leben von transparenter Optik – das Etikett muss auch bei Kondenswasser sauber halten und lesbar bleiben.",
+                },
+                {
+                  label: "Supplement",
+                  href: "/de/supplement-etiketten",
+                  body: "Dosen, Flaschen und Beutel in mehreren Varianten – jede Serie mit derselben gespeicherten Spezifikation.",
+                },
+                {
+                  label: "Kaffee & Tee",
+                  href: "/de/kaffee-etiketten",
+                  body: "Kaffee- und Teebeutel wirken mit mattem PP hochwertig und laufen sauber über die gesamte Rolle.",
+                },
               ].map((item) => (
                 <ProductCard
                   key={item.href}
                   title={item.label}
-                  body={getIndustryTeaser(item.href)}
+                  body={item.body}
                   href={item.href}
                 />
               ))}
@@ -1381,19 +1398,6 @@ function buildIndustryComparisonRows(page: PublicPageData) {
     ["Transparentes PP", "sichtbare Verpackung oder Glaswirkung", "passend, wenn Materialoptik Teil des Designs ist"],
     ["Musterbox", "wenn die Materialfrage noch offen ist", "hilft vor der ersten größeren Menge"],
   ];
-}
-
-function getIndustryTeaser(href: string) {
-  switch (href) {
-    case "/de/lebensmittel-etiketten":
-      return "Für Gläser, Beutel und wiederkehrende Chargen mit Fokus auf Lesbarkeit und saubere Wiederholung.";
-    case "/de/supplement-etiketten":
-      return "Für Dosen, Beutel und variable Produktlinien mit späterer Chargen- und Dateilogik.";
-    case "/de/getraenke-etiketten":
-      return "Für Flaschen, Glas und Verpackungen, bei denen Materialoptik sichtbar in die Kaufentscheidung eingreift.";
-    default:
-      return "Branchenseite mit klarer Material- und Reorder-Logik.";
-  }
 }
 
 function getCheckoutPackageForTier(slug: string, quantityLabel: string) {
