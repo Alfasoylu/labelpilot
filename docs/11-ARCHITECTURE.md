@@ -427,9 +427,10 @@ MVP may use fixed package prices first:
 
 | Package | Quantity | Product | Target price |
 |---|---:|---|---:|
-| Starter | 1,000 | 100×200 PP | €149 |
-| Growth | 5,000 | 100×200 PP | €399 |
-| Pro | 10,000 | 100×200 PP | €699 |
+| Starter | 1,000 | 100×200 PP | €179 |
+| Reorder Ready | 2,000 | 100×200 PP | €279 |
+| Growth | 5,000 | 100×200 PP | €479 |
+| Pro | 10,000 | 100×200 PP | €799 |
 | Business | 20,000+ | 100×200 PP | Quote |
 
 Large or complex orders should trigger quote request instead of direct checkout.

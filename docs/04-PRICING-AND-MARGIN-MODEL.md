@@ -364,12 +364,33 @@ reorder_contribution_profit =
 
 ## 12. PP Label Economics — Direct Shipping
 
-Important:
+These examples are recalculated on the canonical net package ladder from Section 14.1.
+
+Formula basis used consistently in Sections 12, 13, 19 and 20:
 
 ```txt
-Sections 12, 13 and 20 contain directional contribution examples built on an earlier package ladder.
-The authoritative commercial package prices are Section 14.1.
-These contribution examples must be recalculated before finance-signoff or paid acquisition launch.
+listed_net_price = canonical package price
+gross_reference_price = listed_net_price * 1.19
+production_cost = quantity * €0.020
+weight_kg = quantity * 3 g / 1000
+payment_cost = gross_reference_price * 0.04
+reprint_fire_buffer = gross_reference_price * 0.02
+first_order_contribution =
+  listed_net_price
+  - production_cost
+  - shipping_cost
+  - payment_cost
+  - handling_cost
+  - reprint_fire_buffer
+  - acquisition_cost
+reorder_contribution =
+  listed_net_price
+  - production_cost
+  - shipping_cost
+  - payment_cost
+  - handling_cost
+  - reprint_fire_buffer
+  - reorder_crm_cost
 ```
 
 ### 12.1 Starter Package — 1,000 PP Labels
@@ -385,25 +406,25 @@ Assumptions:
 | Total weight | 3 kg |
 | Direct shipping | €10/kg |
 | Shipping cost | €30 |
-| Gross B2C price | €149 |
-| Net revenue after 19% VAT | €125.21 |
-| Payment estimate | €6 |
+| Listed net price | €179 |
+| Gross reference price (for payment fee estimate) | €213.01 |
+| Payment estimate (4% of gross) | €8.52 |
 | Handling | €3 |
-| Fire/reprint buffer | €3 |
+| Fire/reprint buffer (2% of gross) | €4.26 |
 | CAC | €30 |
 
 Result:
 
 | Metric | Value |
 |---|---:|
-| First-order contribution | €33.21 |
-| Reorder contribution with €5 CRM cost | €58.21 |
+| First-order contribution | €83.22 |
+| Reorder contribution with €5 CRM cost | €108.22 |
 | Business role | Entry product / paid trial |
 
 Decision:
 
 ```txt
-Allowed, but not the main profit engine.
+Allowed, but not the main profit engine. The higher price improves viability, but direct shipping still constrains margin.
 ```
 
 ---
@@ -418,24 +439,25 @@ Direct shipping assumptions:
 | Production cost | €100 |
 | Weight | 15 kg |
 | Direct shipping cost | €150 |
-| B2B price | €399 |
-| Payment estimate | €16 |
+| Listed net price | €479 |
+| Gross reference price (for payment fee estimate) | €570.01 |
+| Payment estimate (4% of gross) | €22.80 |
 | Handling | €8 |
-| Fire/reprint buffer | €8 |
+| Fire/reprint buffer (2% of gross) | €11.40 |
 | Acquisition cost | €45 |
 
 Result:
 
 | Metric | Value |
 |---|---:|
-| First-order contribution | €72 |
-| Reorder contribution with €5 CRM cost | €112 |
+| First-order contribution | €141.80 |
+| Reorder contribution with €5 CRM cost | €181.80 |
 | Business role | Acceptable but not ideal with direct shipping |
 
 Decision:
 
 ```txt
-Good only if shipping is not too slow and CAC stays controlled.
+Now economically viable, but still materially weaker than consolidated shipping.
 Better with consolidated logistics.
 ```
 
@@ -451,24 +473,25 @@ Direct shipping assumptions:
 | Production cost | €200 |
 | Weight | 30 kg |
 | Direct shipping cost | €300 |
-| B2B price | €699 |
-| Payment estimate | €28 |
+| Listed net price | €799 |
+| Gross reference price (for payment fee estimate) | €950.81 |
+| Payment estimate (4% of gross) | €38.03 |
 | Handling | €12 |
-| Fire/reprint buffer | €14 |
+| Fire/reprint buffer (2% of gross) | €19.02 |
 | Acquisition cost | €60 |
 
 Result:
 
 | Metric | Value |
 |---|---:|
-| First-order contribution | €85 |
-| Reorder contribution with €5 CRM cost | €140 |
+| First-order contribution | €169.95 |
+| Reorder contribution with €5 CRM cost | €224.95 |
 | Business role | Weak if direct parcel shipping is used |
 
 Decision:
 
 ```txt
-Do not scale 10,000+ direct-shipped orders unless customer pays shipping or price increases.
+The raise improves direct-shipping economics, but consolidated logistics remain strategically better for scale.
 Use consolidated logistics.
 ```
 
@@ -488,18 +511,19 @@ Consolidated shipping assumptions:
 | Pallet effective shipping | €2/kg |
 | Shipping cost | €30 |
 | Germany handling / distribution buffer | €25 |
-| Price | €399 |
-| Payment estimate | €16 |
+| Listed net price | €479 |
+| Gross reference price (for payment fee estimate) | €570.01 |
+| Payment estimate (4% of gross) | €22.80 |
 | Handling | €8 |
-| Fire/reprint buffer | €8 |
+| Fire/reprint buffer (2% of gross) | €11.40 |
 | Acquisition cost | €45 |
 
 Result:
 
 | Metric | Value |
 |---|---:|
-| First-order contribution | €167 |
-| Reorder contribution with €5 CRM cost | €207 |
+| First-order contribution | €236.80 |
+| Reorder contribution with €5 CRM cost | €276.80 |
 | Business role | Main product |
 
 Decision:
@@ -522,24 +546,25 @@ Consolidated shipping assumptions:
 | Pallet effective shipping | €2/kg |
 | Shipping cost | €60 |
 | Germany handling / distribution buffer | €35 |
-| Price | €699 |
-| Payment estimate | €28 |
+| Listed net price | €799 |
+| Gross reference price (for payment fee estimate) | €950.81 |
+| Payment estimate (4% of gross) | €38.03 |
 | Handling | €12 |
-| Fire/reprint buffer | €14 |
+| Fire/reprint buffer (2% of gross) | €19.02 |
 | Acquisition cost | €60 |
 
 Result:
 
 | Metric | Value |
 |---|---:|
-| First-order contribution | €290 |
-| Reorder contribution with €5 CRM cost | €345 |
+| First-order contribution | €374.95 |
+| Reorder contribution with €5 CRM cost | €429.95 |
 | Business role | Scale product |
 
 Decision:
 
 ```txt
-This is the best scalable package.
+This is the best scalable fixed package.
 ```
 
 ---
@@ -556,24 +581,37 @@ Consolidated shipping assumptions:
 | Pallet effective shipping | €2/kg |
 | Shipping cost | €120 |
 | Germany handling / distribution buffer | €50 |
-| Target price | €1,199 |
-| Payment estimate | €48 |
+| Target price | OPEN QUESTION |
+| Payment estimate | OPEN QUESTION |
 | Handling | €20 |
-| Fire/reprint buffer | €24 |
+| Fire/reprint buffer | OPEN QUESTION |
 | Acquisition cost | €80 |
 
 Result:
 
 | Metric | Value |
 |---|---:|
-| First-order contribution | €457 |
-| Reorder contribution with €5 CRM cost | €532 |
+| First-order contribution | OPEN QUESTION |
+| Reorder contribution with €5 CRM cost | OPEN QUESTION |
 | Business role | High-value B2B order |
 
 Decision:
 
 ```txt
-Offer as quote or business package after operational confidence.
+20,000+ is now quote-only in the canonical commercial model.
+Without an approved fixed net package price, contribution cannot be derived mechanically here.
+```
+
+---
+
+### 13.4 Reorder Ready Package — 2,000 PP Labels
+
+Commercial pricing for the `2,000` package is locked in Section 14.1.
+
+```txt
+OPEN QUESTION:
+No standalone handling-cost and acquisition-cost assumption is documented for the 2,000-unit package in the current contribution model.
+Do not invent a contribution example until finance locks the cost profile for this tier.
 ```
 
 ---
@@ -834,19 +872,19 @@ Reorder is the core profit engine.
 
 Example:
 
-| Package | First-order profit | Reorder profit |
+| Package | First-order contribution | Reorder contribution |
 |---|---:|---:|
-| 1,000 Starter | €33 | €58 |
-| 5,000 Growth consolidated | €167 | €207 |
-| 10,000 Pro consolidated | €290 | €345 |
-| 20,000 Business consolidated | €457 | €532 |
+| 1,000 Starter direct | €83.22 | €108.22 |
+| 5,000 Growth consolidated | €236.80 | €276.80 |
+| 10,000 Pro consolidated | €374.95 | €429.95 |
+| 20,000 Business consolidated | OPEN QUESTION | OPEN QUESTION |
 
 A customer who orders 5,000 labels three times per year:
 
 ```txt
-First order profit = €167
-Two reorder profit = 2 × €207 = €414
-12-month contribution = €581
+First order contribution = €236.80
+Two reorder contributions = 2 × €276.80 = €553.60
+12-month contribution = €790.40
 ```
 
 This is why the customer file, artwork, specifications and reorder flow are strategic assets.
@@ -857,13 +895,13 @@ This is why the customer file, artwork, specifications and reorder flow are stra
 
 ### 20.1 €10,000 Monthly Contribution Scenario
 
-| Package | Orders/month | Profit/order | Monthly contribution |
+| Package | Orders/month | Contribution/order | Monthly contribution |
 |---|---:|---:|---:|
-| Starter | 40 | €33 | €1,320 |
-| Growth | 35 | €167 | €5,845 |
-| Pro | 10 | €290 | €2,900 |
-| Reorders | 10 | €207 | €2,070 |
-| Total contribution |  |  | €12,135 |
+| Starter | 40 | €83.22 | €3,328.80 |
+| Growth | 35 | €236.80 | €8,288.00 |
+| Pro | 10 | €374.95 | €3,749.50 |
+| Reorders | 10 | €276.80 | €2,768.00 |
+| Total contribution |  |  | €18,134.30 |
 
 After fixed overhead, this can support early profitability.
 
@@ -871,18 +909,20 @@ After fixed overhead, this can support early profitability.
 
 ### 20.2 €100k Monthly Contribution Scenario
 
-Target order composition:
+Target order composition using only canonical fixed-price tiers:
 
-| Package | Orders/month | Profit/order | Monthly contribution |
+| Package | Orders/month | Contribution/order | Monthly contribution |
 |---|---:|---:|---:|
-| Starter | 300 | €33 | €9,900 |
-| Growth | 250 | €167 | €41,750 |
-| Pro | 120 | €290 | €34,800 |
-| Business | 25 | €457 | €11,425 |
-| Reorder uplift | 150 | €207 average | €31,050 |
-| Gross contribution |  |  | €128,925 |
+| Starter | 300 | €83.22 | €24,966.00 |
+| Growth | 250 | €236.80 | €59,200.00 |
+| Pro | 120 | €374.95 | €44,994.00 |
+| Business 20,000+ | 25 | OPEN QUESTION | OPEN QUESTION |
+| Reorder uplift | 150 | €276.80 average | €41,520.00 |
+| Subtotal from fixed-price tiers only |  |  | €170,680.00 |
 
 This is a contribution scenario, not a guaranteed net-profit scenario.
+
+The subtotal already clears the `€100k/month contribution` milestone before any quote-only `20,000+` business orders are added.
 
 Indicative operating implication:
 

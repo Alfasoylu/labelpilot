@@ -166,9 +166,10 @@ Initial PP label packages:
 
 | Package | Quantity | Product | Price |
 |---|---:|---|---:|
-| Starter | 1,000 | 100×200 PP labels | €149 |
-| Growth | 5,000 | 100×200 PP labels | €399 |
-| Pro | 10,000 | 100×200 PP labels | €699 |
+| Starter | 1,000 | 100×200 PP labels | €179 |
+| Reorder Ready | 2,000 | 100×200 PP labels | €279 |
+| Growth | 5,000 | 100×200 PP labels | €479 |
+| Pro | 10,000 | 100×200 PP labels | €799 |
 | Business | 20,000+ | Quote only |
 
 Rules:

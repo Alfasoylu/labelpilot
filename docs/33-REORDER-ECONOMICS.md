@@ -131,26 +131,26 @@ Working production cost:
 Target selling price from pricing model:
 
 ```txt
-€399
+€479
 ```
 
 Simple gross profit before logistics/support/payment:
 
 ```txt
-€399 - €100 = €299
+€479 - €100 = €379
 ```
 
 Gross margin before logistics/support/payment:
 
 ```txt
-€299 / €399 = 74.9%
+€379 / €479 = 79.1%
 ```
 
 This is attractive only if support and shipping are controlled.
 
 ### 6.2 Reorder Impact
 
-If reorder reduces support/proof time by 50–70%, the same €399 order becomes more profitable operationally.
+If reorder reduces support/proof time by 50–70%, the same €479 order becomes more profitable operationally.
 
 That is the business.
 

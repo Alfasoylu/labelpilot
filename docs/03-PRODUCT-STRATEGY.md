@@ -945,7 +945,7 @@ Product strategy success must be measured by:
 | Metric | Target |
 |---|---:|
 | Share of orders from 5,000+ packages | Increasing over time |
-| Average order value | €399+ target |
+| Average order value | €479+ target |
 | Repeat order rate | 30%+ within 12 months |
 | Thermal label attachment rate | 15%+ target later |
 | Quote request conversion | Track from day one |
