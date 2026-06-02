@@ -382,9 +382,9 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
       />
 
       <Section
-        eyebrow="Kurzantwort"
-        title="Was diese Seite in der ersten Minute klären soll"
-        lead="Produktseiten führen nicht als Textwand, sondern als strukturierte Kauf- und Vergleichsoberfläche."
+        eyebrow="Spezifikation"
+        title="Material, Maß und Format auf einen Blick"
+        lead="Die wichtigsten Eckdaten kompakt."
       >
         <div className="two-column">
           <SpecTable title="Spezifikationen auf einen Blick" rows={buildSpecRows(page)} />
@@ -397,7 +397,7 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
             />
           ) : (
             <div className="surface-card">
-              <h2>Wofür die Seite gedacht ist</h2>
+              <h2>Wofür dieses Material passt</h2>
               <ul className="simple-list">
                 {page.sidebarBullets.map((item) => (
                   <li key={item}>{item}</li>
@@ -411,8 +411,8 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
       {getProductPageImage(page.path) ? (
         <Section
           eyebrow="Produktansicht"
-          title={getProductPageImage(page.path)?.title ?? "Passende Produktansicht"}
-          lead={getProductPageImage(page.path)?.lead ?? "Visuelle Einordnung des Materials ohne die Hero-Logik zu ersetzen."}
+          title={getProductPageImage(page.path)?.title ?? "So wirkt das Material auf der Verpackung"}
+          lead={getProductPageImage(page.path)?.lead ?? "Etiketten im realen Produktkontext."}
         >
           <EditorialImage
             src={getProductPageImage(page.path)!.src}
@@ -425,9 +425,9 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
 
       {page.packageTable?.length ? (
         <Section
-          eyebrow="Pakete"
-          title={page.packageHeading ?? "Paket- und Mengenstruktur"}
-          lead={page.packageLead ?? "Klarer Paketaufbau statt unruhiger Preislisten."}
+          eyebrow="Pakete & Preise"
+          title={page.packageHeading ?? "Mengenpakete und Preise"}
+          lead={page.packageLead ?? "Feste Preise inkl. Versand. 5.000 Stück ist das empfohlene Paket."}
         >
           <div className="pricing-grid">
             {page.packageTable.map((tier) => (
@@ -450,7 +450,7 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
         <Section
           eyebrow="Leistungsumfang"
           title="Im Preis enthalten und nicht enthalten"
-          lead="Die festen Pakete zeigen bewusst offen, was im Standardpreis enthalten ist und wann der Weg in ein individuelles B2B-Angebot führt."
+          lead="Klar, was im Festpreis steckt – und wann ein Angebot sinnvoll ist."
         >
           <div className="two-column">
             <SpecTable title="Im Preis enthalten" rows={fixedPriceIncludedRows} />
@@ -469,23 +469,23 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
       ) : null}
 
       <Section
-        eyebrow="Material und Nutzen"
-        title="Warum diese Produktseite mehr als eine Preiswand ist"
-        lead="Spezifikation, Materialwirkung und Reorder-Nutzen werden getrennt sichtbar, damit die Seite wie eine seriöse B2B-Produktoberfläche wirkt."
+        eyebrow="Material & Einsatz"
+        title="Materialwirkung und typische Einsätze"
+        lead="Wofür sich dieses Material eignet."
       >
         <FeatureGrid items={buildFeatureItemsFromSections(page)} />
       </Section>
 
       <ReorderWorkflowBlock
-        title="Warum gespeicherte Spezifikationen für Produktseiten der eigentliche Moat sind"
-        lead="Die Oberfläche zeigt, dass nach der ersten Freigabe nicht alles neu erklärt werden muss."
+        title="Einmal freigeben. Später schneller nachbestellen."
+        lead="Freigegebene Druckdaten, Material und Maß bleiben gespeichert – die Nachbestellung startet schneller."
       />
 
       {page.path === "/de/ratgeber/transparente-vs-opake-etiketten" ? (
         <Section
           eyebrow="Materialvergleich"
           title="Transparent und opak im direkten Bildvergleich"
-          lead="Die Vergleichsseite erhält eine ruhige Bildfläche, die die sichtbaren Unterschiede unterstützt statt sie zu ersetzen."
+          lead="Transparent und opak im direkten Vergleich."
         >
           <EditorialImage
             {...productImageAssets.compare}
@@ -499,7 +499,7 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
         <Section
           eyebrow="Materialansicht"
           title="Rollenqualität und Stanzung auf einen Blick"
-          lead="Die Rollenansicht unterstützt die Material- und Qualitätsbeschreibung der Seite, ohne die Textstruktur zu verdrängen."
+          lead="Gestanzte PP-Etiketten auf Rolle."
         >
           <EditorialImage
             {...productImageAssets.roll}
@@ -513,7 +513,6 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
         <Section
           eyebrow="FAQ"
           title="Häufige Fragen zur Produktauswahl"
-          lead="Die sichtbaren Antworten bleiben erhalten und werden jetzt in einer ruhigeren, besser scanbaren Form dargestellt."
         >
           <FaqAccordion faqs={page.faqs} />
         </Section>
@@ -522,16 +521,15 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
       {page.relatedLinks?.length ? (
         <Section
           eyebrow="Weiterführend"
-          title="Relevante nächste Seiten"
-          lead="Produktseiten verweisen weiterhin auf Branchen-, Ratgeber- und Service-Seiten und verlieren keine SEO-Inhalte."
+          title="Passende nächste Schritte"
         >
           <RelatedLinks links={page.relatedLinks} />
         </Section>
       ) : null}
 
       <ContentCta
-        title="Wenn die Standardspezifikation nicht reicht, sollte die Anfrage strukturiert laufen."
-        body="Für Sondergrößen, mehrere Varianten oder größere Abrufe bleibt das Angebotsformular der richtige Abschluss dieser Seite."
+        title="Sondergröße, mehrere Varianten oder Großmenge?"
+        body="Für Sonderfälle und größere Abrufe erstellen wir ein klares B2B-Angebot."
         primaryLabel="Angebot anfordern"
         primaryHref="/de/angebot-anfordern"
         secondaryLabel="Musterbox anfordern"
@@ -839,7 +837,7 @@ function GuidePage({ page, canonicalPath }: DynamicPageProps) {
         <Section
           eyebrow="Materialvergleich"
           title="Transparent und opak im direkten Bildvergleich"
-          lead="Die Vergleichsseite erhält eine ruhige Bildfläche, die die sichtbaren Unterschiede unterstützt statt sie zu ersetzen."
+          lead="Transparent und opak im direkten Vergleich."
         >
           <EditorialImage
             {...productImageAssets.compare}
