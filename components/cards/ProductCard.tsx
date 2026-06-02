@@ -24,8 +24,8 @@ export function ProductCard({
         </div>
       </div>
       <p>{body}</p>
-      <div className="hero-actions">
-        <Link href={href} className="secondary-link">
+      <div className="card-actions">
+        <Link href={href} className="card-link">
           Mehr erfahren
         </Link>
       </div>
