@@ -1654,3 +1654,132 @@ th {
     transform: none;
   }
 }
+
+/* ============================================================
+   Homepage conversion blocks — use cases, comparison, price specs
+   ============================================================ */
+.use-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.use-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 22px;
+}
+
+.use-card h3 {
+  margin: 0 0 6px;
+  font-size: 1.08rem;
+  color: var(--text-strong);
+}
+
+.use-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 1024px) {
+  .use-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .use-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Comparison: classic printer vs Labelpilot */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.compare-card {
+  border-radius: var(--radius-lg);
+  padding: 28px 30px;
+}
+
+.compare-card h3 {
+  margin: 0 0 16px;
+  font-size: 1.2rem;
+  color: var(--text-strong);
+}
+
+.compare-card--classic {
+  background: var(--surface-strong);
+  color: var(--muted);
+}
+
+.compare-card--labelpilot {
+  background: var(--surface);
+  box-shadow:
+    0 0 0 1px rgba(176, 138, 69, 0.38),
+    var(--shadow-float);
+}
+
+.compare-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 11px;
+}
+
+.compare-list li {
+  position: relative;
+  padding-left: 26px;
+  line-height: 1.5;
+}
+
+.compare-card--classic .compare-list li::before {
+  content: "–";
+  position: absolute;
+  left: 4px;
+  top: -0.05em;
+  color: var(--muted);
+}
+
+.compare-card--labelpilot .compare-list li {
+  color: var(--text);
+}
+
+.compare-card--labelpilot .compare-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 2px;
+  top: 0;
+  font-family: var(--font-mono-stack);
+  color: var(--success);
+}
+
+@media (max-width: 1024px) {
+  .compare-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Pricing card spec list */
+.pricing-card__specs {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 7px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.pricing-card__specs li {
+  line-height: 1.4;
+}

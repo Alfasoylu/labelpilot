@@ -14,11 +14,11 @@ export function BrandHero({ title, lead }: BrandHeroProps) {
         <h1 className="hero-split__title">{title}</h1>
         <p className="hero-split__lead">{lead}</p>
         <div className="hero-split__actions">
-          <Link href="/de/opake-pp-etiketten" className="cta-link">
-            Jetzt konfigurieren
-          </Link>
-          <Link href="/de/musterbox" className="secondary-link">
+          <Link href="/de/musterbox" className="cta-link">
             Musterbox anfordern
+          </Link>
+          <Link href="#pakete" className="secondary-link">
+            Preise ansehen
           </Link>
         </div>
         <ul className="hero-split__trust">

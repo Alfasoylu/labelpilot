@@ -3,7 +3,11 @@ export type PackageTier = {
   quantity: string;
   priceLabel: string;
   grossLabel?: string;
+  perPieceLabel?: string;
   shippingLabel?: string;
+  format?: string;
+  material?: string;
+  inclusions?: string[];
   note: string;
   description: string;
   badge?: string;
@@ -134,12 +138,21 @@ function buildFixedTier(input: {
   badge?: string;
   popular?: boolean;
 }) {
+  const perPiece = new Intl.NumberFormat("de-DE", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 4,
+  }).format(input.net / input.quantity);
+
   return {
     label: input.label,
     quantity: `${input.quantity.toLocaleString("de-DE")} Stück`,
     priceLabel: `${formatEuro(input.net)} netto`,
     grossLabel: `${formatEuro(input.net * 1.19)} brutto`,
+    perPieceLabel: `${perPiece} €/Stück netto`,
     shippingLabel: "inkl. Versand nach Deutschland",
+    format: "100 × 200 mm",
+    material: "PP opak oder transparent",
+    inclusions: ["Proof inklusive"],
     note: input.note,
     description: input.description,
     badge: input.badge,
@@ -190,7 +203,7 @@ export const opaquePackages: PackageTier[] = [
     label: "Starter",
     quantity: 1000,
     net: 179,
-    note: "Einstieg",
+    note: "Ersttest",
     description: "Großes 100×200-mm-Format als bezahlter Ersttest mit klarer Spezifikation.",
   }),
   buildFixedTier({
@@ -205,7 +218,7 @@ export const opaquePackages: PackageTier[] = [
     label: "Growth",
     quantity: 5000,
     net: 479,
-    note: "Hauptpaket",
+    note: "Wiederbestellung",
     description:
       "Der Kernpreis für wiederkehrende B2B-Bestellungen im großen 100×200-mm-Format.",
     badge: "Empfohlen für Wiederbestellungen",
@@ -215,7 +228,7 @@ export const opaquePackages: PackageTier[] = [
     label: "Pro",
     quantity: 10000,
     net: 799,
-    note: "Skalierung",
+    note: "Serienproduktion",
     description:
       "Für Marken, die dieselbe freigegebene Spezifikation in höheren Mengen wiederholen.",
   }),
@@ -224,6 +237,8 @@ export const opaquePackages: PackageTier[] = [
     quantity: "20.000+ Stück",
     priceLabel: "Angebot",
     shippingLabel: "Individuelles B2B-Angebot anfordern",
+    format: "100 × 200 mm",
+    material: "PP opak oder transparent",
     note: "Großmenge",
     description: "Für Sondergrößen, große Abrufe, mehrere SKUs oder Spezialanforderungen.",
   },
@@ -250,7 +265,7 @@ export const transparentPackages: PackageTier[] = [
     label: "Growth",
     quantity: 5000,
     net: 519,
-    note: "Hauptpaket",
+    note: "Wiederbestellung",
     description:
       "Die bevorzugte Menge für transparente Premium-Verpackungen mit sichtbarer Materialwirkung.",
     badge: "Empfohlen für Wiederbestellungen",
@@ -260,7 +275,7 @@ export const transparentPackages: PackageTier[] = [
     label: "Pro",
     quantity: 10000,
     net: 849,
-    note: "Skalierung",
+    note: "Serienproduktion",
     description: "Für höhere Auflagen mit stabiler Flaschen-, Glas- oder Dosenoptik.",
   }),
   {
@@ -268,6 +283,8 @@ export const transparentPackages: PackageTier[] = [
     quantity: "20.000+ Stück",
     priceLabel: "Angebot",
     shippingLabel: "Individuelles B2B-Angebot anfordern",
+    format: "100 × 200 mm",
+    material: "PP opak oder transparent",
     note: "Großmenge",
     description:
       "Für größere Abrufe, Weißunterdruck, Spezialveredelung oder komplexere transparente Jobs.",
@@ -290,7 +307,7 @@ export const homePageData: HomePageData = {
   eyebrow: "",
   title: "PP-Rollenetiketten für Produktmarken, die regelmäßig nachbestellen.",
   lead:
-    "Opake und transparente PP-Etiketten auf Rolle. Druckdaten hochladen, technisch prüfen lassen und später schneller mit gespeicherten Designs nachbestellen.",
+    "PP-Rollenetiketten für Food-, Beverage- und Supplement-Marken. Druckdaten werden geprüft, freigegeben und gespeichert – damit Nachbestellungen ohne neue Abstimmung in 30 Sekunden möglich sind.",
   highlights: [
     "Opak, transparent, sauber verarbeitet.",
     "Für Food, Beverage, Supplement und Private Label.",

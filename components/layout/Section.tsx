@@ -1,4 +1,5 @@
 type SectionProps = {
+  id?: string;
   eyebrow?: string;
   title?: string;
   lead?: string;
@@ -7,6 +8,7 @@ type SectionProps = {
 };
 
 export function Section({
+  id,
   eyebrow,
   title,
   lead,
@@ -17,7 +19,7 @@ export function Section({
     tone === "soft" ? "section-shell section-soft" : "section-shell";
 
   return (
-    <section className={className}>
+    <section id={id} className={className}>
       {eyebrow || title || lead ? (
         <div className="section-header">
           {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}

@@ -185,6 +185,52 @@ const homepageFaqs: FAQ[] = [
     question: "Wann sollte ich ein Angebot anfordern?",
     answer: "Ab 20.000 Stück, bei mehreren Designs, Sonderformen oder Veredelung.",
   },
+  {
+    question: "Wie schnell wird produziert?",
+    answer:
+      "Die Produktion startet nach Ihrer Proof-Freigabe. Den konkreten Liefertermin bestätigen wir mit dem Auftrag bzw. Angebot.",
+  },
+  {
+    question: "Welche Rollengrößen sind möglich?",
+    answer:
+      "Standard ist das Format 100 × 200 mm auf Rolle. Andere Maße und Rollenkerne laufen über das Angebot.",
+  },
+  {
+    question: "Kann ich mehrere Sorten kombinieren?",
+    answer:
+      "Ja. Mehrere Sorten oder Designs in einem Projekt bündeln wir über ein gemeinsames B2B-Angebot.",
+  },
+  {
+    question: "Sind Sonderformate möglich?",
+    answer:
+      "Ja. Sonderformate, Konturschnitte und Veredelungen sind möglich und werden als Angebot kalkuliert.",
+  },
+  {
+    question: "Werden meine Druckdaten gespeichert?",
+    answer:
+      "Ja. Freigegebene Druckdaten, Material und Maß bleiben gespeichert, damit die nächste Bestellung ohne neue Abstimmung startet.",
+  },
+];
+
+const homepageUseCards = [
+  { title: "Für Gläser", body: "Honig, Aufstriche, Feinkost." },
+  { title: "Für Dosen", body: "Supplemente, Kaffee, Trockenwaren." },
+  { title: "Für Beutel", body: "Kaffee, Tee, Standbeutel." },
+  { title: "Für Flaschen", body: "Getränke, Sirup, Öle." },
+];
+
+const differentiationClassic = [
+  "Jede Bestellung neu hochladen",
+  "Wenig Wiederbestelllogik",
+  "Unpraktisch bei vielen Sorten",
+  "Nicht auf Produktmarken fokussiert",
+];
+
+const differentiationLabelpilot = [
+  "Freigegebene Druckdaten gespeichert",
+  "Nachbestellung in 30 Sekunden",
+  "Klare Mengenpakete",
+  "Optimiert für Food, Beverage, Supplement und Private Label",
 ];
 
 export function HomePage({ page }: HomePageProps) {
@@ -203,6 +249,45 @@ export function HomePage({ page }: HomePageProps) {
         <TrustBar items={homepageTrustItems} />
 
         <Section
+          eyebrow="Verpackungen"
+          title="PP-Rollenetiketten für Ihre Verpackung."
+        >
+          <div className="use-grid">
+            {homepageUseCards.map((useCard) => (
+              <article key={useCard.title} className="use-card">
+                <h3>{useCard.title}</h3>
+                <p>{useCard.body}</p>
+              </article>
+            ))}
+          </div>
+        </Section>
+
+        <Section
+          eyebrow="Vergleich"
+          title="Warum Labelpilot statt klassischer Online-Druckerei?"
+        >
+          <div className="compare-grid">
+            <article className="compare-card compare-card--classic">
+              <h3>Klassische Online-Druckerei</h3>
+              <ul className="compare-list">
+                {differentiationClassic.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </article>
+            <article className="compare-card compare-card--labelpilot">
+              <h3>Labelpilot</h3>
+              <ul className="compare-list">
+                {differentiationLabelpilot.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </article>
+          </div>
+        </Section>
+
+        <Section
+          id="pakete"
           eyebrow="Pakete & Preise"
           title="Klare Mengenpakete für Produktetiketten."
           lead="5.000 Stück ist das empfohlene Standardpaket für wiederkehrende Bestellungen."
@@ -212,11 +297,23 @@ export function HomePage({ page }: HomePageProps) {
               <PricingCard
                 key={item.tier.label}
                 tier={item.tier}
-                checkoutPackage={item.checkout}
+                ctaLink={
+                  item.checkout
+                    ? { label: "Paket wählen", href: "/de/opake-pp-etiketten" }
+                    : undefined
+                }
               />
             ))}
           </div>
           <p className="package-note">{pricingValueBundleLine}</p>
+          <p className="package-note">
+            Produktion nach Proof-Freigabe. Versand nach Deutschland inklusive.
+          </p>
+          <div className="hero-actions">
+            <Link href="/de/druckdaten" className="cta-link">
+              Druckdaten prüfen lassen
+            </Link>
+          </div>
         </Section>
 
         <section className="material-split">
@@ -281,6 +378,11 @@ export function HomePage({ page }: HomePageProps) {
           lead="Ein klarer Weg ohne Rückfragen-Schleifen."
         >
           <ProcessSteps steps={homepageOrderingSteps} />
+          <div className="hero-actions">
+            <Link href="/de/opake-pp-etiketten" className="cta-link">
+              Jetzt konfigurieren
+            </Link>
+          </div>
         </Section>
 
         <Section
@@ -348,11 +450,11 @@ export function HomePage({ page }: HomePageProps) {
 
         <ContentCta
           title="Bereit für professionelle Rollenetiketten?"
-          body="PP-Etiketten konfigurieren oder ein B2B-Angebot anfordern."
-          primaryLabel="PP-Etiketten konfigurieren"
-          primaryHref="/de/opake-pp-etiketten"
-          secondaryLabel="Angebot anfordern"
-          secondaryHref="/de/angebot-anfordern"
+          body="Fordern Sie eine Musterbox an oder stellen Sie eine Etikettenanfrage."
+          primaryLabel="PP-Etiketten anfragen"
+          primaryHref="/de/angebot-anfordern"
+          secondaryLabel="Musterbox anfordern"
+          secondaryHref="/de/musterbox"
         />
       </div>
     </>
