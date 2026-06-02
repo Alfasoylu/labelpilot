@@ -79,6 +79,19 @@ enum StripeEventStatus {
   ERROR
 }
 
+enum ArtworkFileStatus {
+  UPLOADED
+  UNDER_REVIEW
+  APPROVED
+  CORRECTION_REQUIRED
+}
+
+enum ArtworkStatus {
+  AWAITING_ARTWORK
+  ARTWORK_UPLOADED
+  ARTWORK_APPROVED
+}
+
 model QuoteRequest {
   id                 String      @id @default(cuid())
   status             QuoteStatus @default(NEW)
@@ -154,6 +167,7 @@ model Order {
   id                      String             @id @default(cuid())
   orderNumber             String             @unique
   status                  OrderStatus        @default(PENDING_PAYMENT)
+  artworkStatus           ArtworkStatus      @default(AWAITING_ARTWORK)
   productSlug             String
   material                String
   quantity                Int
@@ -167,8 +181,10 @@ model Order {
   stripeCheckoutSessionId String?            @unique
   stripePaymentIntentId   String?
   customerId              String?
+  uploadToken             String             @unique @default(uuid())
   createdAt               DateTime           @default(now())
   updatedAt               DateTime           @updatedAt
+  artworkFiles            ArtworkFile[]
   payments                Payment[]
   statusEvents            OrderStatusEvent[]
 
@@ -218,6 +234,22 @@ model OrderStatusEvent {
   note      String?
   createdAt DateTime    @default(now())
   order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model ArtworkFile {
+  id          String            @id @default(cuid())
+  orderId      String
+  storagePath String
+  fileName    String
+  mimeType    String
+  sizeBytes   Int
+  status      ArtworkFileStatus @default(UPLOADED)
+  createdAt   DateTime          @default(now())
+  order       Order             @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@index([orderId])
   @@index([status])

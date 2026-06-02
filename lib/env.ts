@@ -10,6 +10,7 @@ type ServerEnv = {
   DIRECT_URL?: string;
   SUPABASE_SERVICE_ROLE_KEY?: string;
   SUPABASE_STORAGE_BUCKET?: string;
+  SUPABASE_ARTWORK_BUCKET?: string;
   RESEND_API_KEY?: string;
   EMAIL_FROM?: string;
   EMAIL_REPLY_TO?: string;
@@ -41,6 +42,7 @@ export function getServerEnv(): ServerEnv {
     DIRECT_URL: normalize(process.env.DIRECT_URL),
     SUPABASE_SERVICE_ROLE_KEY: normalize(process.env.SUPABASE_SERVICE_ROLE_KEY),
     SUPABASE_STORAGE_BUCKET: normalize(process.env.SUPABASE_STORAGE_BUCKET),
+    SUPABASE_ARTWORK_BUCKET: normalize(process.env.SUPABASE_ARTWORK_BUCKET),
     RESEND_API_KEY: normalize(process.env.RESEND_API_KEY),
     EMAIL_FROM: normalize(process.env.EMAIL_FROM),
     EMAIL_REPLY_TO: normalize(process.env.EMAIL_REPLY_TO),
