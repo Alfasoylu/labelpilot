@@ -1296,3 +1296,60 @@ Read against the website data above:
 2. **TRUE like-for-like now confirmed (captured 2026-06-03) — we are at parity-to-cheaper:** Labelprint24 **white PP gloss, exactly 100×200 mm, 1.000 = €175,05 net label-only**, or **€190,05 net** including their **€15 paid** artwork check. Our **opaque PP** (= white PP) 100×200 mm @1.000 = **€179 net, with Druckdatenprüfung ALREADY included.** So: on bare label we are ~€4 (≈2%) above; on the real like-for-like that includes the data check (which we bundle and they charge €15 for), **we are ~€11 (≈6%) cheaper.** Labelpilot is **not overpriced** at the exact like-for-like point. **And this is vs their CHEAPEST PP finish (gloss):** their matt / removable / silver white PP at 100×200 mm / 1.000 run **€289–€388 net (≈1.6–2.2× our €179)** — so against anything but their budget gloss option we are dramatically cheaper. *(Secondary corroboration: their transparent PP 100×148 mm @1.000 = €290,18 net vs our transparent 100×200 mm @1.000 = €199 net — cheaper for more area.)*
 3. **At 5.000 the picture is unconfirmed.** The WMD area-normalized estimate (§27.5.1) puts opaque 5k ≈ €291 net / transparent 5k ≈ €376 net at 100×200 mm; our €479 / €519 net sit above that rough small-format-derived figure. This is **not** a confirmed like-for-like price (it is a 71×96 mm format scaled by area and excludes our included data check, proof, storage and reorder system), so it must not be used to conclude we are overpriced — capture the real 100×200 mm / 5.000 screenshots first (§27.7).
 4. **Net:** keep prices as-is. Where confirmed data exists we look competitive-to-cheap; where it is missing, do not act on "ab"/starting/blank numbers. No price change is made from this report (reaffirms §21 and point 6 of the 2026-06-03 correction).
+
+---
+
+## 28. Product-depth & pricing-dimension gap analysis + same-page UX + roadmap (2026-06-03, website data)
+
+Browsed in detail (browser + fetch): Labelprint24 roll-labels calculator; WIRmachenDRUCK 71×96 fixed + opaque free-size; **etiketten-drucken.de personalisierte-etiketten + roll configurator**. Goal: map every pricing-influencing variable competitors expose, find our gaps, and add depth **without forcing long navigation** (single-page selection), to lift margin and differentiate.
+
+**Real add-on prices captured (competitor sites):** Designservice/Gestaltung **€45,83**; Qualitätskontrolle/Probedruck **€14,00**; machine setup **€14,90**; priority/express **€6,50**; Rechnung per Post €1,55; **variable-data personalization FREE/included**; **Datencheck FREE**. Labelprint24: artwork check €15, printed proof free, barcode verification €25, per-artwork-version charge.
+
+### 28.1 Full pricing-dimension map (what competitors let buyers choose)
+
+| Dimension | Competitor depth (real) | Labelpilot today | Gap? |
+|---|---|---|---|
+| Material | paper / PP white / PP transparent / PP silver / PE / PVC / thermal / sustainable (18+ at etiketten-drucken) | opaque PP, transparent PP only | narrow on purpose — OK |
+| **Finish (gloss/matt)** | selectable; **matt = +65% over gloss** (LP24) | "one finish" fixed, not stated to buyer | **GAP — buyer can't tell which; matt unpriced** |
+| **Adhesive** | permanent / removable / freezer-safe / wash-off | permanent implied, not stated | **GAP** |
+| Protective coating | none / gloss varnish / matt laminate / gloss laminate / Soft-Touch / TT-film | none | quote — OK |
+| **White underprint (transparent)** | selectable (partial/full) | "not included / quote" | partial GAP (make explicit on transparent) |
+| Size | custom W×H (to 900×300 / 280×500) | fixed 100×200 | narrow on purpose — OK |
+| Shape / cut | rect / round / oval / freeform / contour + die-cut tool | rect only | quote — OK |
+| Corner radius | 0–10 mm selectable | fixed (not stated) | minor GAP (state it) |
+| Quantity | degressive, 1–300,000 | fixed tiers 1k/2k/5k/10k + quote | OK |
+| **Designs/versions per roll (1–50)** | per-version / per-subdivision priced | 1 design | **GAP (extra designs unpriced)** |
+| **Variable data (numbering/barcode/QR/Excel)** | **FREE/included** (etiketten-drucken) | "quote" (premium wedge) | tension — see §28.3 |
+| **Roll config: winding (8) / core (40·76 mm) / hand vs machine / labels-per-roll** | fully selectable | not exposed | **GAP — loses machine/dispenser B2B buyers** |
+| Print colours | 4c / 4c+white / spot | implied 4c | minor |
+| Hot-foil / metallic | gold/silver/copper/bronze + tool | none | quote — OK |
+| **Proof** | digital + **physical (€14)**; some free | one free proof | refine (free digital + paid physical) |
+| **Data check** | FREE (norm) | FREE | OK — keep + advertise |
+| **Design service (Gestaltung)** | **€45,83** | none | **GAP — margin left on table** |
+| **Express / priority** | **€6,50 / 48h** | "quote" | **GAP — self-serve express** |
+| Setup | machine setup €14,90 | €0 (no setup) | keep €0 setup as a differentiator |
+| Delivery country / currency / VAT | selectable | DE only, net+gross | OK for now |
+
+### 28.2 Core problem — the "which product?" confusion
+A knowledgeable buyer on our 2 fixed products cannot answer: gloss or matt? permanent or removable? what core/winding for my applicator? white underprint on transparent? how many designs? — so they hesitate or leave for a competitor's configurator. We are "too general." The fix is **NOT a full configurator** (violates docs 62/72 MVP scope) — it is a **light same-page Spezifikation panel with smart defaults.**
+
+### 28.3 Recommendation — depth WITHOUT long navigation (single page)
+On each product page, add a compact **"Spezifikation"** block (no extra steps/pages):
+1. **Always show the fixed spec** (reassures the simple buyer): Material · Finish (Glanz, Standard) · Klebstoff (permanent) · Format 100×200 mm · Kern 76 mm · Wickelrichtung Standard · **Datencheck inklusive** · **1 digitaler Proof inklusive** · **Versand inklusive**.
+2. **A few inline options, defaults pre-selected** (simple buyer ignores; pro buyer adjusts): Menge (tier) · "Für Spender/Maschine (76-mm-Kern, Wickelrichtung wählen)" · Designservice (Ja/Nein) · physischer Andruck (Ja/Nein) · Express (Ja/Nein) · zusätzliche Designs.
+3. **Live cost summary** (net → MwSt → inkl. → "Versand inklusive") — the Labelprint24 pattern; our biggest trust + transparency win.
+4. Anything beyond the supported set → one click to **"Individuelles Angebot."**
+Variable data: include **basic** numbering/barcode/QR (match market = free); sell the **workflow automation** (Excel validation + Lot/SKT + batch review) as the premium supplement wedge.
+
+### 28.4 Pricing to separate/deepen → `04-PRICING-AND-MARGIN-MODEL.md` §28 (PROPOSAL)
+Concrete add-on prices (Designservice **€40** / free ≥ €2.000 / free own-data; **physischer Andruck €10** with free digital proof; **Express +€9,90**; **+€19 per extra design**; matt-finish surcharge) are proposed in doc 04 §28 — **needs founder approval; would update SoT #15 + doc 30.**
+
+### 28.5 Roadmap
+- **Phase A (now, no engine):** product pages show the explicit fixed Spezifikation + live net/MwSt/inkl. summary; Designservice / physical-proof / express shown as add-ons (quote-triggered until doc 04 §28 is approved, then priced). Kills the "which product?" doubt. → approve doc 04 §28; update doc 30.
+- **Phase B:** inline selectors (finish gloss/matt, adhesive, "für Spender" core/winding, extra designs) mapped to a small set of fixed surcharges; self-serve physical proof + express checkout add-ons.
+- **Phase C:** variable-data workflow product (premium); explicit **€0-reorder-re-setup** pricing; only then revisit a *guided* (not free-form) configurator if demand data supports it.
+
+### 28.6 Margin / differentiation summary
+- New self-serve add-ons (design, physical proof, express, extra versions, matt) = margin we currently leave unpriced.
+- Moat = free data check + free digital proof + **€0 reorder re-setup/re-design** (competitors re-charge setup + design every order) + saved artwork.
+- Ease = same-page defaults + live price beats competitors' long multi-section configurators.

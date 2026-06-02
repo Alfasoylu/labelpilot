@@ -1223,3 +1223,34 @@ The commercial priority is clear:
 Sell 5,000 and 10,000 unit PP label packages to German food, beverage and supplement brands.
 Then convert them into repeat customers.
 ```
+
+---
+
+## 28. PROPOSAL — Option / Add-on Pricing Depth (2026-06-03) — NEEDS FOUNDER APPROVAL
+
+> **Status: PROPOSAL, not locked.** Extends §14 (which today routes most depth to "quote"). Goal: convert a small set of high-margin depth items from "quote" into **self-serve, on-page priced add-ons**, so a knowledgeable buyer can specify without a sales loop while the core stays one simple package. **Approving this updates §14, SoT decision #15, and doc 30.** No live price changes until approved.
+> **Market evidence (captured from competitor sites — see `59` §27/§28):** Gestaltungsservice **€45,83**; Qualitätskontrolle / Probedruck **€14,00**; machine setup **€14,90**; priority/express **€6,50**; **personalization (variable data) FREE**; **data check FREE** (WMD / etiketten-drucken). Labelprint24: professional artwork check **€15**, printed proof **free**, barcode verification **€25**, charges **per artwork version**.
+
+### 28.1 Recommended self-serve add-ons (priced, on-page)
+
+| Add-on | Proposed Labelpilot price (net) | Market ref | Rationale |
+|---|---|---|---|
+| **Designservice (Gestaltung)** | **€40 flat · €0 for orders ≥ €2.000 net · €0 if customer uploads print-ready data** | €45,83 | margin + removes friction on big orders + upsell nudge to €2.000; sits below market |
+| **Physischer Andruck (printed proof)** | **€10** — *one digital proof stays FREE* | €14,00 (WMD) / free (LP24) | keep free digital proof as differentiator; charge only for a physical printed proof |
+| **Express / Priorität** | **+€9,90** (quote at high volume) | €6,50 (WMD) / 48h (LP24) | margin; standard lead time stays free |
+| **Zusätzliche Designs/Versionen pro Rolle** | **+€19 per extra design** (1 included) | LP24 per artwork version | covers extra setup; multi-SKU upsell |
+| **Matt-Finish (statt Standard-Glanz)** | **start as quote → then per-tier surcharge ≈ +15–20%** | LP24 matt = +65% over gloss on the raw label | matt genuinely costs more; never give away |
+| **Datencheck (Standard)** | **€0 (included)** | FREE norm | keep as our promise |
+| **Eine digitale Proof-Runde** | **€0 (included)** | — | differentiator vs paid-proof competitors |
+| **Nachbestellung — Neueinrichtung** | **€0 (no re-setup / no re-design fee on reorder)** | competitors re-charge setup+design each time | the reorder moat, made explicit and priced at zero |
+
+### 28.2 Keep QUOTE-only (do not self-serve yet)
+white-ink-heavy transparent, lamination / soft-touch, foil / metallic, removable / freezer-safe / special adhesives, custom size, contour/freeform die-cut with new tool, variable-data **workflow** (Excel validation + Lot/SKT automation + batch review), multi-SKU sets, 20.000+, pallet / express-heavy. (Per §14 + doc 30.)
+
+### 28.3 Margin + differentiation logic
+- Design / physical-proof / express / extra-version are currently **unpriced** in our model → pure margin upside; the market proves buyers pay for them.
+- Differentiator = **free standard data check + one free digital proof + €0 reorder re-setup** (competitors charge setup + design on every order) → our reorder is structurally cheaper for the customer.
+- Variable-data **print** is free at competitors → do NOT charge for basic numbering/barcode/QR; charge for the **workflow/automation** (supplement wedge, docs 03/72).
+
+### 28.4 Founder decision
+Approve the §28.1 numbers (esp. Designservice €40 / free ≥ €2.000 / free own-data, and physical proof €10) → then update §14 included-scope table, SoT #15, and doc 30. Full dimension gap-analysis + same-page UX + roadmap live in `59` §28.
