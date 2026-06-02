@@ -923,3 +923,89 @@ The losing products are:
 ```txt
 cheap generic stickers
 ```
+
+---
+
+## 27. Competitor Variant & Pricing Field Report — 2026-06-03 (website-only data)
+
+> **Source rule honoured:** every figure in this section was read directly from the competitor's own website on **2026-06-03** via automated fetch. Where a site gates pricing behind a JS configurator, it is marked **"configurator-only — no public price"** and **no number was invented, estimated, or recalled from memory.** Source URLs are listed in §27.6.
+
+### 27.1 Headline finding
+
+**No German competitor publishes a price for a 100×200 mm PP roll label.** Every major player (Labelprint24, WIRmachenDRUCK, Flyeralarm, Onlineprinters/diedruckerei, Avery WePrint, print24) hides per-spec roll-label pricing behind a live configurator. The only hard public prices found anywhere were for labels far smaller than ours. This directly validates §26: Labelpilot wins by showing transparent indicative tiers + inclusion scope up front.
+
+### 27.2 Variant matrix — what the market actually sells (website-verified)
+
+| Competitor | Key materials (literal) | Size range / format | Shapes | White ink (Weißdruck) | Qty range | Reaches 100×200 mm? | Price visibility |
+|---|---|---|---|---|---|---|---|
+| Labelprint24 | Paper + **PP / PE / PVC** film; deep-freeze adhesive | Standard + Wunschformat (no min/max shown); cores 26/40/50/76 mm | round, oval, rect, square, star | **Yes** | not shown | Yes (custom) | configurator-only (1 illustrative sample) |
+| WIRmachenDRUCK | white & transparent **PP 50–100 µ**, PO, PVC, paper, sustainable | Wunschformat + round 2–10 cm | rect, round, oval, square, star, freeform | transparent "No-Label-Look" (Weißdruck not confirmed) | **1–300,000** | Yes (custom) | configurator-only (round teasers public) |
+| Flyeralarm | Haftfolie / Haftpapier / Strukturpapier (PP not enumerated) | Wunschformat **16×16–296×296 mm** | round, oval, rect, square, contour | **Yes (dedicated SKU)** | ab 1 Stück | Yes (within range) | configurator-only |
+| Onlineprinters / diedruckerei | mostly **paper** (90/80/70 g) + 45 g transparent ("PP, wasserresistent") | freie Formateingabe; Bahnteilung 1/2/3 rolls | eckig, rund, Formschnitt | Yes (transparent in Weiß) | not shown | Yes (paper-led; no prominent white-opaque-PP roll SKU) | configurator-only |
+| Avery WePrint | transparent film + paper | **20×20–300×300 mm** (no 100×200 listed) | configurator | not stated | small qty ok | partial (≤300×300, square-oriented) | configurator-only |
+| print24 | white **PP Haftfolie** + papers | **20×20–280×500 mm**, 28 formats | square, rect, round, oval | **Yes ("CMYK plus Weiß")** | ≤ 50,000/order | **Yes (best fit)** | configurator-only |
+| StickerApp | white / transparent / silver / kraft | ≤ ~254×254 mm (square, sticker-first) | round, oval, square, contour | not mentioned | min 139 | **No** | USD table public (.com); .de configurator-only |
+| Saxoprint | (no roll product; PP only as outdoor stickers / sheets) | — | — | — | — | **No roll-label product** | n/a |
+| etiketten-drucken.de *(independent benchmark, NOT a target competitor)* | PP white / transparent / silver, paper, recycled | **10×10–900×300 mm**; cores 40/76 mm; 8 winding dirs | rect, round, oval, freeform | **Yes (Weißdruck)** | 1–100,000; ≤50 designs | Yes | **public price table (40×70 mm)** |
+
+Common market variants we deliberately do NOT expose (all routed to quote per §25): multiple materials beyond opaque/transparent PP, custom sizes, silver/metallic, sustainable papers, removable/deep-freeze adhesives, lamination/soft-touch/hot-foil, multi-design per roll, winding-direction choice, roll splitting.
+
+### 27.3 The ONLY publicly published prices (verbatim) — none is like-for-like with our 100×200 mm
+
+| Source | Spec (size) | Published price | VAT basis | Note |
+|---|---|---|---|---|
+| WIRmachenDRUCK | round labels **2–7 cm** | **ab 0,01 €/Stück** | brutto, inkl. DE-Versand | per-unit teaser at max volume |
+| WIRmachenDRUCK | round labels **8–10 cm** | **ab 0,02 €/Stück** | brutto, inkl. DE-Versand | per-unit teaser |
+| Labelprint24 | **unspecified** spec | **34,24 €** | netto, inkl. Versand | single illustrative calculator sample, no stated size/qty |
+| etiketten-drucken.de | **PP-Folie weiß, 40×70 mm** | 1.000 = **85,97 €** · 2.500 = **113,99 €** · 5.000 = **160,56 €** | brutto inkl. MwSt | full table |
+| etiketten-drucken.de | **PP-Folie transparent, 40×70 mm** | 1.000 = **110,80 €** · 2.500 = **147,81 €** · 5.000 = **209,33 €** | brutto inkl. MwSt | transparent ≈ **+29–30%** vs white at every tier |
+| StickerApp (.com) | size unspecified | 139 = **$56** … 2.000 = **$156** | not stated (USD) | sticker-first, no 100×200 product |
+
+**Like-for-like caveat:** our product is a **200 cm² (100×200 mm)** label. The only public prices above are for **28 cm² (40×70 mm)** and **round 2–10 cm** labels. They are **not comparable** to our €179–€849 ladder and must not be used to call us "expensive" (reaffirms §21).
+
+### 27.4 Inclusion / service benchmark — German market table-stakes (website-verified)
+
+| Competitor | Free DE shipping | Free data check (Datencheck) | VAT shown as | Delivery (where stated) |
+|---|---|---|---|---|
+| Labelprint24 | **Yes** (Versandkostenfrei) | not disclosed | netto (on the one sample) | ab 2 Tagen / 48h Express |
+| WIRmachenDRUCK | **Yes** | **Yes (free)** + Tiefpreis-Garantie | brutto (teasers) | "Same Day" referenced |
+| Flyeralarm | not exposed | not exposed | not exposed | not exposed |
+| Onlineprinters | **Yes** (kostenloser Standardversand) | **Yes** (kostenloser Datencheck) + Bestpreis-Garantie | not exposed | not exposed |
+| Avery WePrint | only **≥ €59** | **€10 inkl. MwSt (paid)** | inkl. MwSt | 5–7 Werktage after approval |
+| print24 | not exposed | not exposed | not exposed | not exposed |
+| etiketten-drucken.de | **Yes** | **Yes** (+ free Laserschnitt, Probedruck) | brutto inkl. MwSt | 24h/48h Express + 5–7 Tage |
+
+Take-away: **free DE shipping and free data check are the norm**, not a premium favour. Avery is the outlier (paid €10 data check, shipping only ≥ €59).
+
+### 27.5 What Labelpilot should do (grounded only in the data above)
+
+1. **Price-transparency is the real wedge.** No competitor shows a 100×200 mm price; every one forces a configurator. Keep showing indicative net+gross tiers + exact inclusion scope on the product/pricing pages — this is a genuine, defensible difference, not a slogan.
+2. **Transparent should carry a bigger premium over opaque.** The only public material-pair data (etiketten-drucken.de) prices **transparent PP ≈ +30%** over white PP at every tier. Our current ladder is only **+11%** (€199 vs €179 @1k). Consider widening the transparent premium toward **+20–30%**. *(Commercial pricing is owned by `04-PRICING-AND-MARGIN-MODEL.md`; this is a market-evidence observation, not a price change.)*
+3. **Present free shipping + free data check as standard, not as a favour.** They are table-stakes in this market (WMD, Onlineprinters, Labelprint24, etiketten-drucken all free). Our "Versand nach Deutschland inklusive" + "Druckdatenprüfung inklusive" simply matches the norm — do not frame them as premium giveaways.
+4. **Address white underprint (Weißdruck) on the transparent product page.** Every capable competitor offers it (Flyeralarm dedicated SKU, print24 "CMYK plus Weiß", Labelprint24, etiketten-drucken). Keep white-ink-heavy transparent jobs as a **quote trigger** (§25 / doc 30), but state explicitly that white underprint is supported via quote, so we do not look less capable than the configurators.
+5. **Deliberate narrowness is fine — keep it, and route the rest to quote.** Competitors win on breadth (materials, sizes to 280–900 mm, winding, multi-design, cores, metallic, sustainable). We intentionally fix 100×200 mm / opaque-or-transparent / 1 design for MVP speed. Hold the line; send all other variants to "Individuelles B2B-Angebot" (§25).
+6. **Do NOT price-war on per-unit headlines.** The only public per-unit number ("ab 0,01 €/Stück", WMD) is a 2 cm round label at up to 300,000 pcs — economically irrelevant to a 200 cm² label. Reaffirm §21 / §26.
+7. **Next quarterly action — capture the three real like-for-like benchmarks.** Only **Labelprint24, Flyeralarm, and print24** genuinely reach 100×200 mm with PP film. Capture configurator screenshots at **100×200 mm white PP, 1.000 / 5.000** (net + gross, shipping + data-check state) for these three — that is the only valid head-to-head and is still missing because all three are configurator-gated.
+
+### 27.6 Source URLs (fetched 2026-06-03)
+
+```txt
+Labelprint24:        labelprint24.com/de/products/roll-labels-1
+                     labelprint24.com/de/products/pp-labels-615
+                     labelprint24.com/de/category/printed-labels-17
+WIRmachenDRUCK:      wir-machen-druck.de/etiketten-auf-rolle-...,category,17017.html
+                     wir-machen-druck.de/standardetiketten-auf-rolle-...,category,20649.html
+                     wir-machen-druck.de/runde-formate-guenstig-drucken,category,29558.html
+                     wir-machen-druck.de/...-folienkaschierung-...,category,28127.html
+Flyeralarm:          flyeralarm.com/de/p/etiketten-auf-rolle-4333297.html
+                     flyeralarm.com/de/shop/customformat/selectformat/id/6843/...
+                     flyeralarm.com/de/p/etiketten-auf-rolle-mit-zusatzfarbe-weis-4213298.html
+Onlineprinters:      onlineprinters.de/k/etiketten-auf-rolle-4 (diedruckerei.de 301→ onlineprinters.de)
+Avery WePrint:       avery-zweckform.com/druckservice/rollenetiketten-drucken-lassen (domain 403s automated fetch; facts from own-site snippets)
+print24:             print24.com/de/druckprodukte/aufkleber-etiketten/rollenetiketten
+StickerApp:          stickerapp.com/labels/labels-on-roll · stickerapp.de/etiketten/etiketten-auf-rolle
+Saxoprint:           saxoprint.de/werbebedarf/etiketten (no roll-label product)
+etiketten-drucken.de (independent benchmark): etiketten-drucken.de/etiketten-auf-rolle
+```
+
+> Confidence: variant data **high** (read from live pages); published-price data **limited but exact** — only the figures above are public, everything else is configurator-only and was deliberately left blank rather than guessed.
