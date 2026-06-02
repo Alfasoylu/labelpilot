@@ -946,7 +946,7 @@ cheap generic stickers
 | print24 | white **PP Haftfolie** + papers | **20×20–280×500 mm**, 28 formats | square, rect, round, oval | **Yes ("CMYK plus Weiß")** | ≤ 50,000/order | **Yes (best fit)** | configurator-only |
 | StickerApp | white / transparent / silver / kraft | ≤ ~254×254 mm (square, sticker-first) | round, oval, square, contour | not mentioned | min 139 | **No** | USD table public (.com); .de configurator-only |
 | Saxoprint | (no roll product; PP only as outdoor stickers / sheets) | — | — | — | — | **No roll-label product** | n/a |
-| etiketten-drucken.de *(independent benchmark, NOT a target competitor)* | PP white / transparent / silver, paper, recycled | **10×10–900×300 mm**; cores 40/76 mm; 8 winding dirs | rect, round, oval, freeform | **Yes (Weißdruck)** | 1–100,000; ≤50 designs | Yes | **public price table (40×70 mm)** |
+| etiketten-drucken.de *(independent benchmark, NOT a target competitor)* | PP white / transparent / silver, paper, recycled | **10×10–900×300 mm**; cores 40/76 mm; 8 winding dirs | rect, round, oval, freeform | **Yes (Weißdruck)** | 1–100,000; ≤50 designs | Yes | price table at 40×70 mm exists **but is "ab"/starting & material-UNCONFIRMED** — see §27.3 downgrade |
 
 Common market variants we deliberately do NOT expose (all routed to quote per §25): multiple materials beyond opaque/transparent PP, custom sizes, silver/metallic, sustainable papers, removable/deep-freeze adhesives, lamination/soft-touch/hot-foil, multi-design per roll, winding-direction choice, roll splitting.
 
@@ -957,11 +957,13 @@ Common market variants we deliberately do NOT expose (all routed to quote per §
 | WIRmachenDRUCK | round labels **2–7 cm** | **ab 0,01 €/Stück** | brutto, inkl. DE-Versand | per-unit teaser at max volume |
 | WIRmachenDRUCK | round labels **8–10 cm** | **ab 0,02 €/Stück** | brutto, inkl. DE-Versand | per-unit teaser |
 | Labelprint24 | `1.000`, `PP film, transparent, gloss, permanent adhesive, 0.05 mm`, `100 × 148 mm rectangular`, `1 artwork version` | **£260.05 net / £312.06 gross** *(UK screenshot)* and **€290.18 net / €345.31 gross** *(DE screenshot)* | country-dependent VAT/currency | live calculator capture from the same product URL; not like-for-like with our `100×200 mm` |
-| etiketten-drucken.de | **PP-Folie weiß, 40×70 mm** | 1.000 = **85,97 €** · 2.500 = **113,99 €** · 5.000 = **160,56 €** | brutto inkl. MwSt | full table |
-| etiketten-drucken.de | **PP-Folie transparent, 40×70 mm** | 1.000 = **110,80 €** · 2.500 = **147,81 €** · 5.000 = **209,33 €** | brutto inkl. MwSt | transparent ≈ **+29–30%** vs white at every tier |
+| etiketten-drucken.de | 40×70 mm, listed as "PP-Folie weiß" | 1.000 = 85,97 € · 2.500 = 113,99 € · 5.000 = 160,56 € | brutto inkl. MwSt | **"ab"/starting price; UNCONFIRMED as PP printed-film.** Re-audit 2026-06-03: these figures are **identical to the "Papier weiß" column**, which contradicts the site's own note that films cost more — i.e. this is a generic base/starting table, not a material-recalculated PP-printed price. A separate `/blankoetiketten` (blank/unbedruckt) product also exists. Do NOT treat as confirmed PP pricing without a calculator screenshot. |
+| etiketten-drucken.de | 40×70 mm, listed as "PP-Folie transparent" | 1.000 = 110,80 € · 2.500 = 147,81 € · 5.000 = 209,33 € | brutto inkl. MwSt | same "ab"/starting + UNCONFIRMED caveat; the "+30% vs white" delta is unreliable because the white-PP baseline equals paper. |
 | StickerApp (.com) | size unspecified | 139 = **$56** … 2.000 = **$156** | not stated (USD) | sticker-first, no 100×200 product |
 
 **Like-for-like caveat:** our product is a **200 cm² (100×200 mm)** label. The only public prices above are for **28 cm² (40×70 mm)** and **round 2–10 cm** labels. They are **not comparable** to our €179–€849 ladder and must not be used to call us "expensive" (reaffirms §21).
+
+**Material / confidence downgrade (etiketten-drucken.de):** material confidence requires a calculator screenshot / source verification. The public page text also references **paper-label examples around 160 € at 5.000 units with the SAME figures as "PP-Folie weiß"; do not treat this as confirmed PP-film pricing without a screenshot.** More broadly, several public competitor numbers in this section are **"ab"/starting** and/or possibly **blank-label (unbedruckt)** prices — these make competitors look cheaper than a real printed 100×200 mm PP job and must NOT be read as like-for-like. **This 40×70 mm benchmark must NOT be used to judge Labelpilot's 100×200 mm PP pricing.** No Labelpilot prices are changed on the basis of this benchmark.
 
 ### 27.4 Inclusion / service benchmark — German market table-stakes (website-verified)
 
@@ -980,7 +982,7 @@ Take-away: **free DE shipping and free data check are the norm**, not a premium 
 ### 27.5 What Labelpilot should do (grounded only in the data above)
 
 1. **Price-transparency is the real wedge.** No competitor shows a 100×200 mm price; every one forces a configurator. Keep showing indicative net+gross tiers + exact inclusion scope on the product/pricing pages — this is a genuine, defensible difference, not a slogan.
-2. **Transparent should carry a bigger premium over opaque.** The only public material-pair data (etiketten-drucken.de) prices **transparent PP ≈ +30%** over white PP at every tier. Our current ladder is only **+11%** (€199 vs €179 @1k). Consider widening the transparent premium toward **+20–30%**. *(Commercial pricing is owned by `04-PRICING-AND-MARGIN-MODEL.md`; this is a market-evidence observation, not a price change.)*
+2. **Transparent likely warrants a bigger premium over opaque — but anchor it only on confirmed data.** The etiketten-drucken.de "+30%" figure is **UNCONFIRMED** (see §27.3 downgrade: its white-PP baseline equals paper) and must NOT drive pricing. The cleaner signal is the WIRmachenDRUCK **calculator capture** in §27.5.1 (same-material PP, area-normalized to 100×200 mm): opaque PP 5.000 ≈ €290,93 net vs transparent PP 5.000 ≈ €375,53 net ≈ **+29%**. Our current ladder is **+11%** (€199 vs €179 @1k), which looks conservative — but **do not change prices from this report**; confirm with a like-for-like 100×200 mm screenshot first. *(Commercial pricing is owned by `04-PRICING-AND-MARGIN-MODEL.md`.)*
 3. **Present free shipping + free data check as standard, not as a favour.** They are table-stakes in this market (WMD, Onlineprinters, Labelprint24, etiketten-drucken all free). Our "Versand nach Deutschland inklusive" + "Druckdatenprüfung inklusive" simply matches the norm — do not frame them as premium giveaways.
 4. **Address white underprint (Weißdruck) on the transparent product page.** Every capable competitor offers it (Flyeralarm dedicated SKU, print24 "CMYK plus Weiß", Labelprint24, etiketten-drucken). Keep white-ink-heavy transparent jobs as a **quote trigger** (§25 / doc 30), but state explicitly that white underprint is supported via quote, so we do not look less capable than the configurators.
 5. **Deliberate narrowness is fine — keep it, and route the rest to quote.** Competitors win on breadth (materials, sizes to 280–900 mm, winding, multi-design, cores, metallic, sustainable). We intentionally fix 100×200 mm / opaque-or-transparent / 1 design for MVP speed. Hold the line; send all other variants to "Individuelles B2B-Angebot" (§25).
@@ -1201,3 +1203,32 @@ etiketten-drucken.de (independent benchmark): etiketten-drucken.de/etiketten-auf
 ```
 
 > Confidence: variant data **high** (read from live pages); published-price data **limited but exact** — only the figures above are public, everything else is configurator-only and was deliberately left blank rather than guessed.
+
+### 27.7 Audit capture requirement (per competitor price snapshot)
+
+Any competitor price recorded or relied on in this section MUST be backed by a saved calculator screenshot with ALL of these fields filled (no field may be blank or assumed). Until a screenshot exists, a figure stays "configurator-only" or "UNCONFIRMED" and must not be used as a like-for-like anchor or to judge Labelpilot pricing.
+
+| Field | Required |
+|---|---|
+| Screenshot filename | Yes |
+| Capture date | Yes |
+| Material (incl. printed/bedruckt vs blanko, e.g. "PP-Folie weiß bedruckt") | Yes |
+| Size | Yes |
+| Quantity | Yes |
+| VAT basis (netto / brutto) | Yes |
+| Shipping included? | Yes |
+| Data check included? | Yes |
+| Final price | Yes |
+
+**Still-required real benchmark (unchanged conclusion):** valid head-to-head pricing requires configurator screenshots for **Labelprint24, Flyeralarm and print24 at 100×200 mm white PP, 1.000 and 5.000 units** (net + gross, shipping + data-check state). This is the only like-for-like comparison and is still missing for the 5.000 tier.
+
+### 27.8 Comparison with our own live site (observational only — no price change)
+
+Linked canonical files: `04-PRICING-AND-MARGIN-MODEL.md` (prices), `30-PRODUCT-CATALOG.md` (scope). Our live ladder (shown on the site): opaque PP 100×200 mm = **€179 / €279 / €479 / €799 net** (1k/2k/5k/10k); transparent = **€199 / €309 / €519 / €849 net**. Packages: Pilotauflage / Standard (5.000, recommended) / Serie / B2B Abruf.
+
+Read against the website data above:
+
+1. **We are NOT demonstrably overpriced — the cheap-looking competitor headlines are not like-for-like.** They are tiny (40×70 mm, round 2–10 cm), "ab"/starting, and/or possibly blank-label. A real printed 100×200 mm PP job in any of their configurators would be far above those headlines.
+2. **Closest CONFIRMED capture says we are cheaper:** Labelprint24's own calculator (§27.3 / §27.5.2) shows **transparent PP, 100×148 mm, 1.000 units = €290,18 net (DE)**. Our transparent PP at the **larger** 100×200 mm, 1.000 units = **€199 net** — i.e. ~€91 cheaper for ~35% more label area. At the one fully-verified competitor data point, Labelpilot is **below** Labelprint24. *(Size not identical — 148 vs 200 cm² — but this is the closest confirmed real capture and it favours us.)*
+3. **At 5.000 the picture is unconfirmed.** The WMD area-normalized estimate (§27.5.1) puts opaque 5k ≈ €291 net / transparent 5k ≈ €376 net at 100×200 mm; our €479 / €519 net sit above that rough small-format-derived figure. This is **not** a confirmed like-for-like price (it is a 71×96 mm format scaled by area and excludes our included data check, proof, storage and reorder system), so it must not be used to conclude we are overpriced — capture the real 100×200 mm / 5.000 screenshots first (§27.7).
+4. **Net:** keep prices as-is. Where confirmed data exists we look competitive-to-cheap; where it is missing, do not act on "ab"/starting/blank numbers. No price change is made from this report (reaffirms §21 and point 6 of the 2026-06-03 correction).
