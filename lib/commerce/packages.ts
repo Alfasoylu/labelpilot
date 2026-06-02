@@ -16,7 +16,7 @@ export const PACKAGES: CommercePackage[] = [
     productSlug: "opake-pp-etiketten",
     material: "OPAQUE",
     quantity: 1000,
-    label: "Starter",
+    label: "Pilotauflage",
     grossAmountCents: 21301,
   },
   {
@@ -24,7 +24,7 @@ export const PACKAGES: CommercePackage[] = [
     productSlug: "opake-pp-etiketten",
     material: "OPAQUE",
     quantity: 2000,
-    label: "Reorder Ready",
+    label: "Folgeauflage",
     grossAmountCents: 33201,
   },
   {
@@ -32,7 +32,7 @@ export const PACKAGES: CommercePackage[] = [
     productSlug: "opake-pp-etiketten",
     material: "OPAQUE",
     quantity: 5000,
-    label: "Growth",
+    label: "Standard",
     grossAmountCents: 57001,
   },
   {
@@ -40,7 +40,7 @@ export const PACKAGES: CommercePackage[] = [
     productSlug: "opake-pp-etiketten",
     material: "OPAQUE",
     quantity: 10000,
-    label: "Pro",
+    label: "Serie",
     grossAmountCents: 95081,
   },
   {
@@ -48,7 +48,7 @@ export const PACKAGES: CommercePackage[] = [
     productSlug: "transparente-pp-etiketten",
     material: "TRANSPARENT",
     quantity: 1000,
-    label: "Starter",
+    label: "Pilotauflage",
     grossAmountCents: 23681,
   },
   {
@@ -56,7 +56,7 @@ export const PACKAGES: CommercePackage[] = [
     productSlug: "transparente-pp-etiketten",
     material: "TRANSPARENT",
     quantity: 2000,
-    label: "Reorder Ready",
+    label: "Folgeauflage",
     grossAmountCents: 36771,
   },
   {
@@ -64,7 +64,7 @@ export const PACKAGES: CommercePackage[] = [
     productSlug: "transparente-pp-etiketten",
     material: "TRANSPARENT",
     quantity: 5000,
-    label: "Growth",
+    label: "Standard",
     grossAmountCents: 61761,
   },
   {
@@ -72,7 +72,7 @@ export const PACKAGES: CommercePackage[] = [
     productSlug: "transparente-pp-etiketten",
     material: "TRANSPARENT",
     quantity: 10000,
-    label: "Pro",
+    label: "Serie",
     grossAmountCents: 101031,
   },
 ];

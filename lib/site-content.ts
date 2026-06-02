@@ -200,14 +200,14 @@ const fileLink: CtaLink = {
 
 export const opaquePackages: PackageTier[] = [
   buildFixedTier({
-    label: "Starter",
+    label: "Pilotauflage",
     quantity: 1000,
     net: 179,
     note: "Ersttest",
     description: "Großes 100×200-mm-Format als bezahlter Ersttest mit klarer Spezifikation.",
   }),
   buildFixedTier({
-    label: "Reorder Ready",
+    label: "Folgeauflage",
     quantity: 2000,
     net: 279,
     note: "Nachbestellfreundlich",
@@ -215,7 +215,7 @@ export const opaquePackages: PackageTier[] = [
     badge: "Beliebt für Wiederholungen",
   }),
   buildFixedTier({
-    label: "Growth",
+    label: "Standard",
     quantity: 5000,
     net: 479,
     note: "Wiederbestellung",
@@ -225,7 +225,7 @@ export const opaquePackages: PackageTier[] = [
     popular: true,
   }),
   buildFixedTier({
-    label: "Pro",
+    label: "Serie",
     quantity: 10000,
     net: 799,
     note: "Serienproduktion",
@@ -233,7 +233,7 @@ export const opaquePackages: PackageTier[] = [
       "Für Marken, die dieselbe freigegebene Spezifikation in höheren Mengen wiederholen.",
   }),
   {
-    label: "Business",
+    label: "B2B Abruf",
     quantity: "20.000+ Stück",
     priceLabel: "Angebot",
     shippingLabel: "Individuelles B2B-Angebot anfordern",
@@ -246,14 +246,14 @@ export const opaquePackages: PackageTier[] = [
 
 export const transparentPackages: PackageTier[] = [
   buildFixedTier({
-    label: "Starter",
+    label: "Pilotauflage",
     quantity: 1000,
     net: 199,
     note: "Premium-Einstieg",
     description: "Für erste Tests mit transparenter Optik im großen 100×200-mm-Format.",
   }),
   buildFixedTier({
-    label: "Reorder Ready",
+    label: "Folgeauflage",
     quantity: 2000,
     net: 309,
     note: "Premium-Nachbestellung",
@@ -262,7 +262,7 @@ export const transparentPackages: PackageTier[] = [
     badge: "Reorder-Ready",
   }),
   buildFixedTier({
-    label: "Growth",
+    label: "Standard",
     quantity: 5000,
     net: 519,
     note: "Wiederbestellung",
@@ -272,14 +272,14 @@ export const transparentPackages: PackageTier[] = [
     popular: true,
   }),
   buildFixedTier({
-    label: "Pro",
+    label: "Serie",
     quantity: 10000,
     net: 849,
     note: "Serienproduktion",
     description: "Für höhere Auflagen mit stabiler Flaschen-, Glas- oder Dosenoptik.",
   }),
   {
-    label: "Business",
+    label: "B2B Abruf",
     quantity: "20.000+ Stück",
     priceLabel: "Angebot",
     shippingLabel: "Individuelles B2B-Angebot anfordern",
