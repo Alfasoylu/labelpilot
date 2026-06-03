@@ -6,6 +6,14 @@ export const ADMIN_REVIEWABLE_STATUSES = [
   "APPROVED_FOR_PRODUCTION",
 ] as const;
 
+export const ADMIN_ORDER_ADDONS_OR = [
+  { designServiceCents: { not: null } },
+  { physicalProofCents: { not: null } },
+  { expressCents: { not: null } },
+  { extraDesignCount: { gt: 0 } },
+  { addonsTotalCents: { not: null } },
+] as const;
+
 export function buildAdminOrdersWhere(input: {
   status?: string;
   artworkStatus?: string;
@@ -36,6 +44,55 @@ export function buildAdminOrdersWhere(input: {
   }
 
   return where;
+}
+
+export function buildAdminOrdersListWhere(input: {
+  status?: string;
+  artworkStatus?: string;
+  q?: string;
+  addons?: string;
+}) {
+  const where = buildAdminOrdersWhere(input) as Record<string, unknown>;
+  const andClauses: Array<Record<string, unknown>> = [];
+  const query = input.q?.trim() ?? "";
+
+  if (query) {
+    andClauses.push({
+      OR: [
+        { orderNumber: { contains: query, mode: "insensitive" } },
+        { customerEmail: { contains: query, mode: "insensitive" } },
+        { companyName: { contains: query, mode: "insensitive" } },
+      ],
+    });
+  }
+
+  if (input.addons === "with") {
+    andClauses.push({
+      OR: [...ADMIN_ORDER_ADDONS_OR],
+    });
+  }
+
+  if (andClauses.length > 0) {
+    where.AND = andClauses;
+  }
+
+  return where;
+}
+
+export function hasOrderAddons(order: {
+  designServiceCents: number | null;
+  physicalProofCents: number | null;
+  expressCents: number | null;
+  extraDesignCount: number;
+  addonsTotalCents: number | null;
+}) {
+  return (
+    order.designServiceCents != null ||
+    order.physicalProofCents != null ||
+    order.expressCents != null ||
+    order.extraDesignCount > 0 ||
+    order.addonsTotalCents != null
+  );
 }
 
 export function formatAdminDate(value: Date) {

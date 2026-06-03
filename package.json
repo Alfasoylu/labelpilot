@@ -11,6 +11,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "test:admin-orders": "node --experimental-strip-types scripts/test-admin-orders-where.ts",
     "test:pricing-engine": "node --experimental-strip-types scripts/test-custom-size-pricing.ts",
     "test:addons": "node --experimental-strip-types scripts/test-checkout-addons.ts",
     "test:custom-size-public": "node --experimental-strip-types scripts/test-custom-size-public.ts",

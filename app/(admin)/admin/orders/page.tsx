@@ -1,6 +1,10 @@
 import Link from "next/link";
 
-import { buildAdminOrdersWhere, formatAdminDate } from "@/lib/admin/orders";
+import {
+  buildAdminOrdersListWhere,
+  formatAdminDate,
+  hasOrderAddons,
+} from "@/lib/admin/orders";
 import { getPrismaClient } from "@/lib/db/prisma";
 import {
   getArtworkStatusLabel,
@@ -14,6 +18,7 @@ type OrdersPageProps = {
   searchParams: Promise<{
     status?: string;
     artworkStatus?: string;
+    addons?: string;
     q?: string;
   }>;
 };
@@ -23,6 +28,7 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
   const filters = await searchParams;
   const statusFilter = filters.status ?? "review-needed";
   const artworkStatusFilter = filters.artworkStatus ?? "all";
+  const addonsFilter = filters.addons === "with" ? "with" : "all";
   const query = filters.q?.trim() ?? "";
 
   if (!prisma) {
@@ -35,21 +41,12 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
   }
 
   const orders = await prisma.order.findMany({
-    where: {
-      ...buildAdminOrdersWhere({
+    where: buildAdminOrdersListWhere({
       status: statusFilter,
       artworkStatus: artworkStatusFilter,
-      }),
-      ...(query
-        ? {
-            OR: [
-              { orderNumber: { contains: query, mode: "insensitive" } },
-              { customerEmail: { contains: query, mode: "insensitive" } },
-              { companyName: { contains: query, mode: "insensitive" } },
-            ],
-          }
-        : {}),
-    },
+      addons: addonsFilter,
+      q: query,
+    }),
     include: {
       payments: true,
     },
@@ -89,6 +86,13 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
               <option value="AWAITING_ARTWORK">Druckdaten fehlen</option>
               <option value="ARTWORK_UPLOADED">Druckdaten erhalten</option>
               <option value="ARTWORK_APPROVED">Druckdaten freigegeben</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="addons">Zusatzleistungen</label>
+            <select id="addons" name="addons" defaultValue={addonsFilter}>
+              <option value="all">Alle</option>
+              <option value="with">Nur mit Zusatzleistungen</option>
             </select>
           </div>
           <div className="inline-actions">
@@ -139,23 +143,5 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
         )}
       </article>
     </section>
-  );
-}
-
-function hasOrderAddons(
-  order: {
-    designServiceCents: number | null;
-    physicalProofCents: number | null;
-    expressCents: number | null;
-    extraDesignCount: number;
-    addonsTotalCents: number | null;
-  },
-) {
-  return (
-    order.designServiceCents != null ||
-    order.physicalProofCents != null ||
-    order.expressCents != null ||
-    order.extraDesignCount > 0 ||
-    order.addonsTotalCents != null
   );
 }
