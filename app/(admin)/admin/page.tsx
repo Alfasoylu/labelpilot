@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { ADMIN_ORDER_ADDONS_OR } from "@/lib/admin/orders";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { QUOTE_SOURCE_WUNSCHFORMAT } from "@/lib/quotes/source";
 
@@ -21,6 +22,7 @@ export default async function AdminDashboardPage() {
     reviewCount,
     proofCount,
     productionReadyCount,
+    addonsOrderCount,
     totalQuoteCount,
     wunschformatQuoteCount,
   ] = await Promise.all([
@@ -37,6 +39,11 @@ export default async function AdminDashboardPage() {
     prisma.order.count({
       where: {
         status: "APPROVED_FOR_PRODUCTION",
+      },
+    }),
+    prisma.order.count({
+      where: {
+        OR: [...ADMIN_ORDER_ADDONS_OR],
       },
     }),
     prisma.quoteRequest.count(),
@@ -77,6 +84,13 @@ export default async function AdminDashboardPage() {
               className="secondary-link"
             >
               Freigaben ansehen
+            </Link>
+          </div>
+          <div className="section-card">
+            <h3>Bestellungen mit Zusatzleistungen</h3>
+            <p className="price-note">{addonsOrderCount} Bestellungen</p>
+            <Link href="/admin/orders?addons=with" className="secondary-link">
+              Mit Zusatzleistungen ansehen
             </Link>
           </div>
           <div className="section-card">
