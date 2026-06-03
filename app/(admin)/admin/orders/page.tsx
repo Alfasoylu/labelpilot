@@ -109,7 +109,10 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
               <div key={order.id} className="section-card">
                 <div className="two-column">
                   <div>
-                    <h3>{order.orderNumber}</h3>
+                    <div className="admin-order-heading">
+                      <h3>{order.orderNumber}</h3>
+                      {hasOrderAddons(order) ? <span className="badge">Zusatzleistungen</span> : null}
+                    </div>
                     <p className="price-note">
                       {getOrderStatusLabel(order.status)} · {getArtworkStatusLabel(order.artworkStatus)}
                     </p>
@@ -136,5 +139,23 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
         )}
       </article>
     </section>
+  );
+}
+
+function hasOrderAddons(
+  order: {
+    designServiceCents: number | null;
+    physicalProofCents: number | null;
+    expressCents: number | null;
+    extraDesignCount: number;
+    addonsTotalCents: number | null;
+  },
+) {
+  return (
+    order.designServiceCents != null ||
+    order.physicalProofCents != null ||
+    order.expressCents != null ||
+    order.extraDesignCount > 0 ||
+    order.addonsTotalCents != null
   );
 }
