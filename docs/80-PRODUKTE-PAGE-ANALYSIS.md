@@ -82,6 +82,8 @@ Proposed section order for the two **product** pages:
 
 The **collection hub** (`/de/pp-rollenetiketten`) should stay a routing/overview page but: own its keyword cluster more strongly, expand FAQ beyond 1, and clearly funnel to the two material pages + Musterbox + quote.
 
+> **Not sufficient on its own:** §1–§5 cover spec / price / SEO confidence, but a buyer still needs **trust, delivery time, payment, exact-quantity and contact** clarity — these are missing and are added in **§6**.
+
 ---
 
 ## 5. Prioritized recommendations
@@ -107,7 +109,32 @@ The **collection hub** (`/de/pp-rollenetiketten`) should stay a routing/overview
 
 ---
 
-## 6. Guardrails / DON'Ts (binding)
+## 6. Customer-perspective completeness check — would §1–§5 be enough? (added gaps G1–G8)
+
+**Verdict: No.** §1–§5 make the page *spec-, price- and SEO-correct*, but a German B2B buyer landing cold still cannot confidently complete the purchase decision. The page must also answer trust / delivery / payment / quantity / file / contact questions. These were under-covered and are added here.
+
+| # | Customer question (DE) | Severity | Recommendation / status |
+|---|---|---|---|
+| **G1** | "Wann bekomme ich sie?" — **Lieferzeit** (Produktion + Versand) | **High** | The #1 question after price. **Founder-decision-gated** (final delivery promise / SLA is *not* locked — RECONCILIATION / "Do Not Autonomously Decide"). Show an **honest, implementation-neutral range** ("Produktion ca. X Werktage nach Ihrer Freigabe, danach Versand nach Deutschland"), never a hard SLA, until locked. |
+| **G2** | "Kann ich diesem neuen Anbieter vertrauen?" — weak trust; **no reviews** (and we never fake them) | **High** | Build trust from **transparency, not reviews**: visible Impressum / Firmensitz, the **Proof-vor-Produktion** process, **kostenloser Datencheck**, Musterbox, sichere Zahlung (Stripe) + DSGVO, honest production-origin line. Make this an explicit **"Warum Labelpilot / Sicherheit"** block. |
+| **G3** | "Wie bezahle ich? Geht **Kauf auf Rechnung**?" — payment methods + B2B invoice not shown | **Medium-High** | Show accepted methods; B2B expects Rechnung. **Net-14 / invoice eligibility is founder-undecided** → implementation-neutral wording ("Rechnungskauf für Geschäftskunden auf Anfrage") until locked; do not promise terms. |
+| **G4** | "Ich brauche genau **3.000 / 7.500** (oder < 1.000)" — fixed tiers leave gaps | **Medium** | Acknowledge explicitly: between-tier / sub-1.000 quantities have no self-serve path → make the **"Andere Menge? Angebot anfordern"** route obvious so it doesn't read as "not possible". |
+| **G5** | "Funktioniert / **sieht meine Datei richtig aus**?" — print-data + color confidence | **Medium** | Inline mini-spec (Beschnitt / Auflösung / CMYK / Vektor) + "**kostenloser Datencheck fängt Fehler vor dem Druck**" + honest color note (digitaler Proof zur Freigabe; farbverbindlich nur via **physischem Andruck**). Link Druckdaten-Anforderungen. |
+| **G6** | "An wen wende ich mich bei Fragen?" — no obvious human/contact path | **Medium** | Visible **Kontakt/Support** path (E-Mail/Formular) near the decision area + "**Angebot per E-Mail senden**" for hesitant buyers. |
+| **G7** | "Ist das **nachhaltig / recyclebar**?" — no material-honesty/sustainability statement | **Low-Medium** | German B2B increasingly asks. State PP honestly; recyclable / nachhaltige Varianten → Angebot/roadmap. **No greenwashing / no overclaim.** |
+| **G8** | "Bekomme ich eine **Auftragsbestätigung / Rechnung**, kann ich verwalten/nachbestellen?" | **Low** | Order-confirmation email + saved designs already exist — **surface** that the buyer receives an Auftragsbestätigung and can reorder in 30 s. |
+
+**Add to the §4 target anatomy:** a dedicated **"Trust & Lieferung"** block (covers G1/G2/G3/G6) placed near the price decision, and the **print-data + exact-quantity reassurances** (G4/G5) inside/under Pakete & Preise.
+
+**Roadmap placement:**
+- **P0 (no founder decision):** G2 trust block, G5 print-data reassurance, G6 contact path, G4 "andere Menge → Angebot", G8 confirmation/reorder surfacing.
+- **Founder-decision-gated (implementation-neutral wording until locked):** G1 Lieferzeit, G3 Rechnungskauf/Net-14, G7 sustainability claims.
+
+**Bottom line:** build §4 **plus** the Trust & Lieferung block and the G4/G5 reassurances, and the page becomes sufficient from the buyer's view. G1/G3/G7 stay non-committal until the founder locks the delivery / invoice / sustainability policy.
+
+---
+
+## 7. Guardrails / DON'Ts (binding)
 
 - German-only "Sie"; no English copy/CTAs; no Turkish chars (umlauts ok). German labels per `78 §8` / `30 §19`.
 - No generic print categories/products; no "cheapest"; no "Made in Germany"; **no legal-compliance promise** (Pflichtangaben = customer's responsibility).
@@ -117,7 +144,7 @@ The **collection hub** (`/de/pp-rollenetiketten`) should stay a routing/overview
 
 ---
 
-## 7. Open questions for the founder
+## 8. Open questions for the founder
 
 1. Surface order: should the inline add-on/Spezifikation panel sit **inside** Pakete & Preise or as its own section below it?
 2. Expose **adhesive/finish** as *informational* (stated) only, or as *selectable* (matte surcharge per `04 §28`) in MVP?
@@ -126,5 +153,6 @@ The **collection hub** (`/de/pp-rollenetiketten`) should stay a routing/overview
 
 ---
 
-## 8. Changelog
+## 9. Changelog
 - v1 (2026-06-04): initial analysis — current state, doc requirements, competitor gaps, target anatomy, prioritized roadmap. Sources: 30/04/23/24/26/27/28/78/rakip/58/59 + current `lib/site-content.ts` + `components/page-renderers.tsx`.
+- v2 (2026-06-04): added §6 customer-perspective completeness check (gaps G1–G8: Lieferzeit, trust/no-reviews, payment/Rechnung, exact quantity, print-data/color, contact, sustainability, confirmation/reorder); flagged G1/G3/G7 as founder-decision-gated; updated §4 to require a Trust & Lieferung block. Verdict: §1–§5 alone are necessary but **not sufficient** from the buyer's view.
