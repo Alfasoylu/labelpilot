@@ -124,7 +124,7 @@ P0 · `30 §13` — Add the mandatory reorder / accepted-print-files / legal-res
 P0 — Add an explicit "… € netto · … € inkl. 19% MwSt · Versand inklusive" line to the package ladder (net+gross already shown). No price change.
 
 ### Task 0.4
-P0 — State Finish (Glanz/Standard) and Klebstoff (permanent) explicitly in the Spezifikation table; keep the Weißdruck note explicit on the transparent page.
+P0 — State Klebstoff (permanent; removable → Angebot) and the current Finish explicitly in the Spezifikation table; keep the Weißdruck note explicit on the transparent page. (The Glanz/matt *selector + surcharge* is the separate build Task 0.11b.)
 
 ### Task 0.5
 P0 · `27 §11` — Audit/ensure each product page links to quote, musterbox, nachbestellen, druckdaten, the sibling material page, `etiketten-100x200`, and relevant Branchen pages, with descriptive German anchors (no "hier klicken").
@@ -150,8 +150,17 @@ P2 · BLOCKED — When `NEXT_PUBLIC_FEATURE_ADDONS` is enabled, surface the buil
 ### Task 0.12
 P2 · BLOCKED — When `NEXT_PUBLIC_FEATURE_CUSTOM_SIZE` is enabled, link/embed the Wunschformat calculator on the product page. **BLOCKED until the operator enters real costs and enables the flag.**
 
-### Task 0.13
-Founder-gated · BLOCKED — Gaps G1 (Lieferzeit), G3 (Rechnungskauf / Net-14), G7 (Nachhaltigkeit). **BLOCKED — needs founder decision** (delivery SLA, invoice terms, sustainability policy are not locked). Use implementation-neutral wording only; do NOT build a binding promise autonomously.
+### Task 0.11b
+P2 · BLOCKED — Add a **Finish selector (Glanz / matt)** on the product page; **matt = fixed +15% net surcharge** (SoT #18d), server-priced exactly like the §16 add-ons (gross = net × 1.19, no client price trust, Order column + Stripe line item). Klebstoff stays permanent; removable → Angebot. **BLOCKED until the Stripe TEST round-trip + add-ons flag are live** (same gate as 0.11); needs the matt-surcharge wired into the checkout add-on engine.
+
+### Task 0.13a
+P1 · gap G1 — **Lieferzeit (founder-decided, SoT #18a):** state the honest range **"ca. 10–14 Werktage nach Ihrer Freigabe"** (Produktion + Versand nach Deutschland) on the product pages. A stated range, **not** a binding SLA — no "garantiert"/"in X Tagen geliefert".
+
+### Task 0.13b
+P1 · gap G3 — **Rechnungskauf (founder-decided, SoT #18b):** on the quote / B2B-Abruf / contact path show **"Rechnungskauf für geprüfte Geschäftskunden auf Anfrage."** Net-14 is **manual-approval only — do NOT add it to the self-serve checkout** and do NOT promise terms on the public page. (Eligibility/credit/Zahlungsbedingungen + AGB are operator/ops, out of scope here.)
+
+### Task 0.13c
+P1 · gap G7 — **Nachhaltigkeit (founder-decided, SoT #18c):** add an honest PP-material statement, **no eco/recyclable claims, no greenwashing**; recyclable/sustainable variants → Angebot/roadmap.
 
 ## Phase A - Functional Stability
 

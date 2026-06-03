@@ -1246,7 +1246,7 @@ Then convert them into repeat customers.
 | **Physischer Andruck (printed proof)** | **€10** — *one digital proof stays FREE* | €14,00 (WMD) / free (LP24) | keep free digital proof as differentiator; charge only for a physical printed proof |
 | **Express / Priorität** | **+€9,90** (quote at high volume) | €6,50 (WMD) / 48h (LP24) | margin; standard lead time stays free |
 | **Zusätzliche Designs/Versionen pro Rolle** | **+€19 per extra design** (1 included) | LP24 per artwork version | covers extra setup; multi-SKU upsell |
-| **Matt-Finish (statt Standard-Glanz)** | **start as quote → then per-tier surcharge ≈ +15–20%** | LP24 matt = +65% over gloss on the raw label | matt genuinely costs more; never give away |
+| **Matt-Finish (statt Standard-Glanz)** | **FOUNDER-LOCKED 2026-06-04 (SoT #18d): fixed +15% net surcharge, self-serve selectable** (server-priced like §16 add-ons; gross = net×1.19; behind add-ons flag + Stripe-TEST-gated) | LP24 matt = +65% over gloss on the raw label | matt genuinely costs more; never give away |
 | **Datencheck (Standard)** | **€0 (included)** | FREE norm | keep as our promise |
 | **Eine digitale Proof-Runde** | **€0 (included)** | — | differentiator vs paid-proof competitors |
 | **Nachbestellung — Neueinrichtung** | **€0 (no re-setup / no re-design fee on reorder)** | competitors re-charge setup+design each time | the reorder moat, made explicit and priced at zero |

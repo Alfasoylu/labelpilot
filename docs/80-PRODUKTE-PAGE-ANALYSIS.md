@@ -130,7 +130,9 @@ The **collection hub** (`/de/pp-rollenetiketten`) should stay a routing/overview
 - **P0 (no founder decision):** G2 trust block, G5 print-data reassurance, G6 contact path, G4 "andere Menge → Angebot", G8 confirmation/reorder surfacing.
 - **Founder-decision-gated (implementation-neutral wording until locked):** G1 Lieferzeit, G3 Rechnungskauf/Net-14, G7 sustainability claims.
 
-**Bottom line:** build §4 **plus** the Trust & Lieferung block and the G4/G5 reassurances, and the page becomes sufficient from the buyer's view. G1/G3/G7 stay non-committal until the founder locks the delivery / invoice / sustainability policy.
+**Bottom line:** build §4 **plus** the Trust & Lieferung block and the G4/G5 reassurances, and the page becomes sufficient from the buyer's view.
+
+**Resolved 2026-06-04 (SoT #18):** G1 Lieferzeit → state **"ca. 10–14 Werktage nach Ihrer Freigabe"** (range, not SLA); G3 → **Net-14 only on manual approval** (public copy: "Rechnungskauf für geprüfte Geschäftskunden auf Anfrage", not in self-serve checkout); G7 → **honest PP statement, no eco-claims**. Plus: **Finish Glanz/matt selectable, matt = +15% net** (flag-/Stripe-gated, like §16 add-ons). See `81` Tasks 0.13a–c + 0.11b.
 
 ---
 
@@ -150,6 +152,8 @@ The **collection hub** (`/de/pp-rollenetiketten`) should stay a routing/overview
 2. Expose **adhesive/finish** as *informational* (stated) only, or as *selectable* (matte surcharge per `04 §28`) in MVP?
 3. Add a **"Für Spender/Maschine"** quote path now, or keep all roll-config to the generic quote?
 4. Is the collection hub (`/de/pp-rollenetiketten`) worth keeping distinct from the two product pages, or fold into a stronger opaque-led page? (SEO: it owns the `pp-rollenetiketten` cluster, so likely keep.)
+
+**Resolved 2026-06-04 (SoT #18):** Q2 → **Finish is selectable** (Glanz/matt, matt +15% net, flag-/Stripe-gated). Q1 Lieferzeit, payment (Net-14 manual-only) and sustainability also locked — see §6 "Resolved" note. Q1 (panel placement), Q3 (Spender/Maschine quote path) and Q4 (keep hub) remain open implementation choices.
 
 ---
 
