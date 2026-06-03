@@ -237,3 +237,18 @@ Current state after this reconciliation pass:
 - Owner-locked decisions for pricing, routes, env naming, status naming, and Ads landing-page governance are now recorded here.
 - Missing referenced docs are registered here instead of being guessed into existence.
 - Legacy docs remain preserved for history until intentionally retired.
+
+---
+
+## 10. Implementation Snapshot (2026-06-04)
+
+Implementation-aligned notes appended without changing precedence:
+
+1. Technical SEO safety gates are now enforced in code and tests for `robots`, `sitemap`, canonical ownership, German-only public copy, and `/lp/*` + `/teklif/*` exclusion behavior.
+2. Phase 3 lead operations are live in code: quote/sample persistence, source capture, lead scoring, analytics hooks, and admin lead management.
+3. Quote operations are live in code: admin list/detail, status pipeline, internal notes, and transactional quote emails.
+4. Admin operations are materially advanced in code: route protection, shipment fields, admin order notes, and pricing-settings hardening.
+5. Artwork memory foundation is now implemented in code with `StoredDesign`, `ArtworkVersion`, private downloads, customer saved-design routes, and admin design search.
+6. Reorder v2 foundation is now implemented in code: saved-design reorder creation, `20.000+` quote fallback, same-artwork vs minor-change branching, reorder analytics hooks, and payment/webhook handling for same-artwork fast path.
+7. Phase 8 prep is now partially implemented in code behind disabled behavior only: `RefillPrediction`, `ReorderReminder`, and reminder calculation helper exist, but no live reminder sending is enabled.
+8. Phase 9 prep is now partially implemented in code behind internal-only scaffolding: `DesignVariable`, `VariableDataBatch`, `VariableDataRow`, `GeneratedPrintFile`, and CSV/XLSX parser + placeholder generation exist, but no customer-facing UI is enabled.

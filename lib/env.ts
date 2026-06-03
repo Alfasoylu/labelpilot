@@ -18,6 +18,7 @@ type ServerEnv = {
   EMAIL_FROM?: string;
   EMAIL_REPLY_TO?: string;
   ADMIN_NOTIFY_EMAIL?: string;
+  ENABLE_REORDER_REMINDERS?: string;
 };
 
 function normalize(value?: string) {
@@ -54,6 +55,7 @@ export function getServerEnv(): ServerEnv {
     EMAIL_FROM: normalize(process.env.EMAIL_FROM),
     EMAIL_REPLY_TO: normalize(process.env.EMAIL_REPLY_TO),
     ADMIN_NOTIFY_EMAIL: normalize(process.env.ADMIN_NOTIFY_EMAIL),
+    ENABLE_REORDER_REMINDERS: normalize(process.env.ENABLE_REORDER_REMINDERS),
   };
 }
 
@@ -79,4 +81,8 @@ export function hasSupabaseServerEnv() {
 export function hasResendEnv() {
   const env = getServerEnv();
   return Boolean(env.RESEND_API_KEY && env.EMAIL_FROM && env.EMAIL_REPLY_TO);
+}
+
+export function isReorderReminderEnabled() {
+  return getServerEnv().ENABLE_REORDER_REMINDERS === "true";
 }

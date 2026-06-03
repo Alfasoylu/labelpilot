@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { getPublicEnv } from "@/lib/env";
+import { buildAbsoluteUrlFromBase } from "@/lib/seo/governance";
 import type { FAQ, PublicPageData } from "@/lib/site-content";
 
 type MetadataEntry = {
@@ -221,11 +222,7 @@ export function buildAbsoluteUrl(path: string) {
     getPublicEnv().NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ||
     "https://labelpilot.de";
 
-  if (!path || path === "/") {
-    return baseUrl;
-  }
-
-  return `${baseUrl}${path.startsWith("/") ? path : `/${path}`}`;
+  return buildAbsoluteUrlFromBase(baseUrl, path);
 }
 
 export function buildCanonicalMetadata(

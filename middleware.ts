@@ -1,51 +1,31 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+
+const ADMIN_PATH_PREFIXES = ["/admin", "/api/admin"] as const;
+
+function isAdminPath(pathname: string) {
+  return ADMIN_PATH_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+}
 
 function unauthorizedResponse() {
-  // Build a fresh response per request: a single shared NextResponse body
-  // (ReadableStream) cannot be re-sent on subsequent requests.
-  return new NextResponse("Sie haben keinen Zugriff auf diesen Bereich.", {
+  return new NextResponse("Authentication required.", {
     status: 401,
     headers: {
       "WWW-Authenticate": 'Basic realm="Labelpilot Admin"',
-      "X-Robots-Tag": "noindex, nofollow",
     },
   });
 }
 
-function constantTimeEqual(left: string, right: string) {
-  const encoder = new TextEncoder();
-  const leftBytes = encoder.encode(left);
-  const rightBytes = encoder.encode(right);
-  const maxLength = Math.max(leftBytes.length, rightBytes.length);
-  let diff = leftBytes.length ^ rightBytes.length;
-
-  for (let index = 0; index < maxLength; index += 1) {
-    diff |= (leftBytes[index] ?? 0) ^ (rightBytes[index] ?? 0);
-  }
-
-  return diff === 0;
-}
-
-function getAdminCredentials() {
-  const user = process.env.ADMIN_BASIC_USER?.trim();
-  const password = process.env.ADMIN_BASIC_PASSWORD?.trim();
-
-  if (!user || !password) {
-    return null;
-  }
-
-  return { user, password };
-}
-
-function parseBasicAuthHeader(headerValue: string | null) {
+function parseBasicAuth(headerValue: string | null) {
   if (!headerValue?.startsWith("Basic ")) {
     return null;
   }
 
   try {
     const encoded = headerValue.slice("Basic ".length).trim();
-    const decoded = atob(encoded);
+    const decoded = Buffer.from(encoded, "base64").toString("utf8");
     const separatorIndex = decoded.indexOf(":");
 
     if (separatorIndex === -1) {
@@ -62,26 +42,28 @@ function parseBasicAuthHeader(headerValue: string | null) {
 }
 
 export function middleware(request: NextRequest) {
-  // Stopgap MVP gate. Replace with Supabase Auth server-side role checks later.
-  const credentials = getAdminCredentials();
+  if (!isAdminPath(request.nextUrl.pathname)) {
+    return NextResponse.next();
+  }
 
-  if (!credentials) {
+  const expectedUser = process.env.ADMIN_BASIC_USER?.trim();
+  const expectedPassword = process.env.ADMIN_BASIC_PASSWORD?.trim();
+
+  if (!expectedUser || !expectedPassword) {
     return unauthorizedResponse();
   }
 
-  const provided = parseBasicAuthHeader(request.headers.get("authorization"));
+  const provided = parseBasicAuth(request.headers.get("authorization"));
 
   if (
     !provided ||
-    !constantTimeEqual(provided.user, credentials.user) ||
-    !constantTimeEqual(provided.password, credentials.password)
+    provided.user !== expectedUser ||
+    provided.password !== expectedPassword
   ) {
     return unauthorizedResponse();
   }
 
-  const response = NextResponse.next();
-  response.headers.set("X-Robots-Tag", "noindex, nofollow");
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {

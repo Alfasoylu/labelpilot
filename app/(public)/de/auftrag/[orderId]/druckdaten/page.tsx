@@ -128,10 +128,10 @@ export default async function OrderArtworkPage({
           </ul>
         </article>
 
-        <article className="surface-card">
-          <h2>Wichtiger Hinweis</h2>
-          <p>
-            Rechtliche Pflichtangaben, Zutaten und Naehrwerte bleiben in Ihrer
+      <article className="surface-card">
+        <h2>Wichtiger Hinweis</h2>
+        <p>
+          Rechtliche Pflichtangaben, Zutaten und Naehrwerte bleiben in Ihrer
             Verantwortung.
           </p>
           <p className="price-note">
@@ -141,6 +141,12 @@ export default async function OrderArtworkPage({
           <div className="cta-row">
             <Link href="/de/druckdaten" className="secondary-link">
               Druckdaten-Hinweise
+            </Link>
+            <Link
+              href={`/de/gespeicherte-druckdaten?order=${encodeURIComponent(order.id)}&token=${encodeURIComponent(token)}`}
+              className="secondary-link"
+            >
+              Gespeicherte Designs
             </Link>
             <Link href="/de/kontakt" className="secondary-link">
               Kontakt

@@ -4,6 +4,8 @@ import type { Prisma } from "@prisma/client";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { sendEmail } from "@/lib/email/send";
 import { correctionRequested } from "@/lib/email/templates/lifecycle";
+import { syncStoredDesignFromApprovedOrder } from "@/lib/artwork/stored-designs";
+import { canReviewArtworkOrderStatus } from "@/lib/orders/status";
 
 export const runtime = "nodejs";
 
@@ -75,9 +77,7 @@ export async function POST(
   }
 
   const artworkFile = order.artworkFiles[0];
-  const allowedStatuses = new Set(["FILE_REVIEW", "CORRECTION_REQUIRED", "PAID", "PROOF_REQUIRED"]);
-
-  if (!allowedStatuses.has(order.status)) {
+  if (!canReviewArtworkOrderStatus(order.status)) {
     return redirectWithMessage(request, redirectTo, {
       error: "Dieser Statuswechsel ist nicht erlaubt.",
     });
@@ -133,6 +133,14 @@ export async function POST(
           status: "APPROVED_FOR_PRODUCTION",
           note: note || "Datei fuer Produktion freigegeben.",
         },
+      });
+
+      await syncStoredDesignFromApprovedOrder({
+        tx,
+        order,
+        sourceType: "CUSTOMER_UPLOAD",
+        originalArtworkFileId: artworkFile.id,
+        changeSummary: note || "Datei fuer Produktion freigegeben.",
       });
 
       return;

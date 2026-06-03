@@ -101,6 +101,31 @@ enum ProofFileStatus {
   SUPERSEDED
 }
 
+enum StoredDesignStatus {
+  ACTIVE
+  ARCHIVED
+  NEEDS_REVIEW
+  LOCKED
+}
+
+enum ArtworkVersionSourceType {
+  CUSTOMER_UPLOAD
+  ADMIN_UPLOAD
+  TEMPLATE_GENERATED
+  VARIABLE_DATA_GENERATED
+  REORDER_MINOR_CHANGE
+}
+
+enum ArtworkVersionStatus {
+  DRAFT
+  UPLOADED
+  UNDER_REVIEW
+  APPROVED
+  REPLACED
+  ARCHIVED
+  REJECTED
+}
+
 model QuoteRequest {
   id                 String      @id @default(cuid())
   status             QuoteStatus @default(NEW)
@@ -119,6 +144,7 @@ model QuoteRequest {
   targetDeliveryDate DateTime?
   hasArtwork         Boolean?
   notes              String?
+  adminNote          String?
   sourcePage         String?
   convertedOrderId   String?
   createdAt          DateTime    @default(now())
@@ -190,6 +216,20 @@ model Order {
   stripeCheckoutSessionId String?            @unique
   stripePaymentIntentId   String?
   customerId              String?
+  reorderSourceDesignId   String?
+  reorderSourceArtworkVersionId String?
+  reorderMode             String?
+  reorderStockDuration    String?
+  shippingMode            String?
+  shippingCarrier         String?
+  trackingNumber          String?
+  trackingUrl             String?
+  packageCount            Int?
+  shipmentWeightKg        Float?
+  shippedAt               DateTime?
+  estimatedDeliveryAt     DateTime?
+  deliveredAt             DateTime?
+  shipmentNote            String?
   uploadToken             String             @unique @default(uuid())
   confirmationEmailSentAt DateTime?
   createdAt               DateTime           @default(now())
@@ -198,12 +238,205 @@ model Order {
   proofFiles              ProofFile[]
   payments                Payment[]
   statusEvents            OrderStatusEvent[]
+  adminNotes              OrderAdminNote[]
+  refillPredictions       RefillPrediction[]
+  reorderReminders        ReorderReminder[]
+  variableDataBatches     VariableDataBatch[]
+  storedDesigns           StoredDesign[]    @relation("StoredDesignLastOrder")
 
   @@index([status])
   @@index([customerEmail])
   @@index([createdAt])
   @@index([productSlug, material, quantity])
   @@index([packageId])
+  @@index([reorderSourceDesignId])
+  @@index([reorderSourceArtworkVersionId])
+}
+
+model RefillPrediction {
+  id                  String   @id @default(cuid())
+  orderId             String
+  sourceDesignId      String?
+  reorderStockDuration String
+  predictedDepletionAt DateTime
+  reminderEligibleAt   DateTime?
+  reminderWindowDays   Int      @default(30)
+  algorithmVersion     String   @default("v1")
+  isEnabled            Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  order                Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([sourceDesignId])
+  @@index([predictedDepletionAt])
+}
+
+model ReorderReminder {
+  id                 String   @id @default(cuid())
+  orderId            String
+  refillPredictionId String?
+  channel            String   @default("EMAIL")
+  status             String   @default("DRAFT")
+  scheduledFor       DateTime
+  sentAt             DateTime?
+  clickedAt          DateTime?
+  clickToken         String?  @unique
+  isEnabled          Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  order              Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  refillPrediction   RefillPrediction? @relation(fields: [refillPredictionId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+  @@index([refillPredictionId])
+  @@index([scheduledFor])
+}
+
+model StoredDesign {
+  id                      String             @id @default(cuid())
+  customerId              String?
+  name                    String
+  productSlug             String
+  labelSize               String?
+  material                String?
+  finishing               String?
+  defaultQuantity         Int?
+  status                  StoredDesignStatus @default(ACTIVE)
+  currentArtworkVersionId String?
+  currentProofFileId      String?
+  lastOrderedAt           DateTime?
+  lastOrderId             String?
+  totalOrders             Int                @default(0)
+  customerNotes           String?
+  adminProductionNotes    String?
+  createdAt               DateTime           @default(now())
+  updatedAt               DateTime           @updatedAt
+  archivedAt              DateTime?
+  artworkVersions         ArtworkVersion[]
+  currentArtworkVersion   ArtworkVersion?    @relation("StoredDesignCurrentVersion", fields: [currentArtworkVersionId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  currentProofFile        ProofFile?         @relation(fields: [currentProofFileId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  lastOrder               Order?             @relation("StoredDesignLastOrder", fields: [lastOrderId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  designVariables         DesignVariable[]
+  variableDataBatches     VariableDataBatch[]
+
+  @@index([customerId])
+  @@index([productSlug])
+  @@index([status])
+  @@index([lastOrderedAt])
+}
+
+model DesignVariable {
+  id            String   @id @default(cuid())
+  storedDesignId String
+  key           String
+  label         String
+  variableType  String
+  isRequired    Boolean  @default(true)
+  sortOrder     Int      @default(0)
+  placeholder   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  storedDesign  StoredDesign @relation(fields: [storedDesignId], references: [id], onDelete: Cascade)
+
+  @@unique([storedDesignId, key])
+  @@index([storedDesignId])
+}
+
+model VariableDataBatch {
+  id             String   @id @default(cuid())
+  storedDesignId String?
+  orderId        String?
+  fileName       String
+  fileType       String
+  status         String   @default("DRAFT")
+  totalRows      Int      @default(0)
+  validRows      Int      @default(0)
+  invalidRows    Int      @default(0)
+  uploadedAt     DateTime @default(now())
+  reviewedAt     DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  storedDesign   StoredDesign? @relation(fields: [storedDesignId], references: [id], onDelete: SetNull)
+  order          Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  generatedPrintFile GeneratedPrintFile?
+  rows           VariableDataRow[]
+
+  @@index([storedDesignId])
+  @@index([orderId])
+  @@index([status])
+}
+
+model VariableDataRow {
+  id               String   @id @default(cuid())
+  batchId          String
+  rowIndex         Int
+  payload          Json
+  validationErrors Json?
+  isValid          Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  batch            VariableDataBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  @@unique([batchId, rowIndex])
+  @@index([batchId])
+  @@index([isValid])
+}
+
+model GeneratedPrintFile {
+  id         String   @id @default(cuid())
+  batchId    String   @unique
+  status     String   @default("PLACEHOLDER_READY")
+  fileName   String
+  mimeType   String   @default("text/csv")
+  rowCount   Int
+  checksum   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  batch      VariableDataBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+}
+
+model ArtworkVersion {
+  id                    String                   @id @default(cuid())
+  storedDesignId        String
+  versionNumber         Int
+  versionLabel          String
+  sourceType            ArtworkVersionSourceType
+  originalArtworkFileId String?
+  generatedPrintFileId  String?
+  proofFileId           String?
+  status                ArtworkVersionStatus     @default(UPLOADED)
+  changeSummary         String?
+  uploadedByUserId      String?
+  approvedByAdminId     String?
+  approvedAt            DateTime?
+  createdAt             DateTime                 @default(now())
+  updatedAt             DateTime                 @updatedAt
+  storedDesign          StoredDesign             @relation(fields: [storedDesignId], references: [id], onDelete: Cascade)
+  currentForDesign      StoredDesign[]           @relation("StoredDesignCurrentVersion")
+  proofFile             ProofFile?               @relation(fields: [proofFileId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  originalArtworkFile   ArtworkFile?             @relation(fields: [originalArtworkFileId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+
+  @@unique([storedDesignId, versionNumber])
+  @@index([storedDesignId])
+  @@index([status])
+  @@index([approvedAt])
+}
+
+model OrderAdminNote {
+  id                String   @id @default(cuid())
+  orderId           String
+  noteType          String   @default("INTERNAL")
+  isCustomerVisible Boolean  @default(false)
+  actor             String?
+  body              String
+  createdAt         DateTime @default(now())
+  order             Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([createdAt])
 }
 
 model Payment {
@@ -261,6 +494,7 @@ model ArtworkFile {
   status      ArtworkFileStatus @default(UPLOADED)
   createdAt   DateTime          @default(now())
   order       Order             @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  artworkVersions ArtworkVersion[]
 
   @@index([orderId])
   @@index([status])
@@ -282,8 +516,59 @@ model ProofFile {
   createdAt                 DateTime        @default(now())
   updatedAt                 DateTime        @updatedAt
   order                     Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  storedDesigns             StoredDesign[]
+  artworkVersions           ArtworkVersion[]
 
   @@index([orderId])
   @@index([status])
   @@index([createdAt])
+}
+
+model PricingMaterialCost {
+  id                    String   @id @default(cuid())
+  materialKey           String   @unique
+  materialCostPerM2     Decimal  @db.Decimal(10, 4)
+  digitalPrintCostPerM2 Decimal  @db.Decimal(10, 4)
+  flexoPrintCostPerM2   Decimal  @db.Decimal(10, 4)
+  flexoPlateCost        Decimal  @db.Decimal(10, 2)
+  wasteFactorPct        Decimal  @db.Decimal(5, 2)
+  targetMarginPct       Decimal  @db.Decimal(5, 2)
+  minOrderValueNet      Decimal  @db.Decimal(10, 2)
+  setupFeeNet           Decimal? @db.Decimal(10, 2)
+  updatedAt             DateTime @updatedAt
+  updatedBy             String?
+
+  @@index([updatedAt])
+}
+
+model PricingSettings {
+  id                         String   @id @default("default")
+  vatPct                     Decimal  @default(19) @db.Decimal(5, 2)
+  roundingStepNet            Decimal  @default(1) @db.Decimal(10, 2)
+  customMaxWidthMm           Int
+  customMaxHeightMm          Int
+  customMaxQuantity          Int
+  designServiceNet           Decimal  @default(40) @db.Decimal(10, 2)
+  designServiceFreeThresholdNet Decimal @default(2000) @db.Decimal(10, 2)
+  physicalProofNet           Decimal  @default(10) @db.Decimal(10, 2)
+  expressNet                 Decimal  @default(9.9) @db.Decimal(10, 2)
+  extraDesignNet             Decimal  @default(19) @db.Decimal(10, 2)
+  updatedAt                  DateTime @updatedAt
+  updatedBy                  String?
+
+  @@index([updatedAt])
+}
+
+model PricingAudit {
+  id        String   @id @default(cuid())
+  actor     String
+  changedAt DateTime @default(now())
+  tableName String   @map("table")
+  fieldName String   @map("field")
+  oldValue  String?
+  newValue  String?
+
+  @@index([changedAt])
+  @@index([tableName])
+  @@index([fieldName])
 }

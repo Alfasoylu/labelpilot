@@ -1761,3 +1761,18 @@ Key source takeaways:
 2. Crawl budget is influenced by quality, uniqueness, popularity, relevance and serving capacity.
 3. AI Search features use existing SEO fundamentals; no special AI schema or AI file is required.
 4. Content should be created primarily to help users, not only to attract search traffic.
+
+---
+
+## 33. Implementation Progress Snapshot (2026-06-04)
+
+Progress note appended to keep backlog sequencing aligned with code reality:
+
+- Phases 1-3 are materially represented in code: public MVP, SEO safety rules, lead capture, analytics hooks, and admin lead handling.
+- Phase 4 money path is live in code for fixed packages: server-side order creation, Stripe Checkout, webhook verification, and upload/proof entry.
+- Phase 5 artwork-memory foundation is now live in code: approved artwork becomes `StoredDesign` + `ArtworkVersion`, customer saved-design routes exist, and private download flow is enforced.
+- Phase 6 admin operations are materially live in code: protected admin routes, order/lead/quote operations, shipment tracking, and admin notes.
+- Phase 7 reorder foundation is now live in code: reorder from `StoredDesign`, quantity gate with `20.000+` quote fallback, same-artwork vs minor-change fork, and checkout/webhook handling for reorder source context.
+- Phase 8 is still intentionally disabled in production behavior, but schema and calculation helpers now exist for refill reminders.
+- Phase 9 is still intentionally internal-only, but schema scaffolding, CSV/XLSX parsing, validation harness, and generated-print placeholder logic now exist.
+- Remaining canonical next work should stay in-sequence: variable-data review surfaces, generated artifact handling, reminder email activation safeguards, then B2B account layer.

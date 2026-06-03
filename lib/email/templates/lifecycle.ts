@@ -164,6 +164,45 @@ export function proofApproved(input: {
   };
 }
 
+export function shippedOrderCustomer(input: {
+  orderId: string;
+  orderNumber: string;
+  uploadToken: string;
+  shippingCarrier?: string | null;
+  trackingNumber?: string | null;
+  trackingUrl?: string | null;
+}): TemplateResult {
+  const orderLink = getOrderLink(input.orderId, input.uploadToken);
+  const subject = `Ihre Bestellung ${input.orderNumber} wurde versendet`;
+  const text = [
+    `Ihre Bestellung ${input.orderNumber} wurde versendet.`,
+    "",
+    input.shippingCarrier ? `Versanddienstleister: ${input.shippingCarrier}` : "",
+    input.trackingNumber ? `Trackingnummer: ${input.trackingNumber}` : "",
+    input.trackingUrl ? `Tracking-Link: ${input.trackingUrl}` : "",
+    "",
+    `Bestellstatus: ${orderLink}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return {
+    subject,
+    text,
+    html: renderShell({
+      heading: "Ihre Bestellung wurde versendet.",
+      intro: `Die Bestellung ${input.orderNumber} ist auf dem Weg.`,
+      actionLabel: input.trackingUrl ? "Sendung verfolgen" : "Bestellstatus ansehen",
+      actionHref: input.trackingUrl || orderLink,
+      bodyHtml: `
+        <p style="margin:0 0 8px 0;"><strong>Versanddienstleister:</strong> ${escapeHtml(input.shippingCarrier || "Wird separat bestaetigt")}</p>
+        <p style="margin:0 0 8px 0;"><strong>Trackingnummer:</strong> ${escapeHtml(input.trackingNumber || "Noch nicht verfuegbar")}</p>
+        <p style="margin:0;">Den aktuellen Status Ihrer Bestellung finden Sie auch ueber Ihren Bestelllink.</p>
+      `,
+    }),
+  };
+}
+
 export function artworkUploadedOpsNotification(input: {
   orderNumber: string;
   customerEmail: string;
@@ -190,6 +229,131 @@ export function artworkUploadedOpsNotification(input: {
       bodyHtml: `
         <p style="margin:0;">Kunden-E-Mail: ${escapeHtml(input.customerEmail)}</p>
       `,
+    }),
+  };
+}
+
+export function quoteRequestReceivedCustomer(input: {
+  companyName: string;
+  productType?: string | null;
+  quantity?: string | null;
+}): TemplateResult {
+  const subject = "Ihre Anfrage ist eingegangen – Labelpilot.de";
+  const text = [
+    "Vielen Dank fuer Ihre Anfrage.",
+    "",
+    "Wir pruefen Ihre Angaben zu Material, Groesse, Menge und Verpackung und melden uns mit dem naechsten Schritt fuer Ihr Etikettenangebot.",
+    "",
+    `Firma: ${input.companyName}`,
+    `Produkttyp: ${input.productType || "Nicht angegeben"}`,
+    `Menge: ${input.quantity || "Nicht angegeben"}`,
+  ].join("\n");
+
+  return {
+    subject,
+    text,
+    html: renderShell({
+      heading: "Ihre Anfrage ist eingegangen.",
+      intro:
+        "Wir pruefen Ihre Angaben zu Material, Groesse, Menge und Verpackung und melden uns mit dem naechsten Schritt.",
+      bodyHtml: `
+        <p style="margin:0 0 16px 0;"><strong>Firma:</strong> ${escapeHtml(input.companyName)}</p>
+        <p style="margin:0 0 8px 0;"><strong>Produkttyp:</strong> ${escapeHtml(input.productType || "Nicht angegeben")}</p>
+        <p style="margin:0;"><strong>Menge:</strong> ${escapeHtml(input.quantity || "Nicht angegeben")}</p>
+      `,
+    }),
+  };
+}
+
+export function quoteRequestOpsNotification(input: {
+  companyName: string;
+  email: string;
+  industry?: string | null;
+  productType?: string | null;
+  quantity?: string | null;
+  recurringNeed?: string | null;
+  sourcePage?: string | null;
+}): TemplateResult {
+  const subject = "Neue B2B-Angebotsanfrage – Labelpilot.de";
+  const text = [
+    `Firma: ${input.companyName}`,
+    `E-Mail: ${input.email}`,
+    `Branche: ${input.industry || "Nicht angegeben"}`,
+    `Produkttyp: ${input.productType || "Nicht angegeben"}`,
+    `Menge: ${input.quantity || "Nicht angegeben"}`,
+    `Wiederkehrender Bedarf: ${input.recurringNeed || "Nicht angegeben"}`,
+    `Quelle: ${input.sourcePage || "Nicht angegeben"}`,
+  ].join("\n");
+
+  return {
+    subject,
+    text,
+    html: renderShell({
+      heading: "Neue B2B-Angebotsanfrage.",
+      intro: "Eine neue Angebotsanfrage wurde gespeichert.",
+      bodyHtml: `
+        <p style="margin:0 0 8px 0;"><strong>Firma:</strong> ${escapeHtml(input.companyName)}</p>
+        <p style="margin:0 0 8px 0;"><strong>E-Mail:</strong> ${escapeHtml(input.email)}</p>
+        <p style="margin:0 0 8px 0;"><strong>Branche:</strong> ${escapeHtml(input.industry || "Nicht angegeben")}</p>
+        <p style="margin:0 0 8px 0;"><strong>Produkttyp:</strong> ${escapeHtml(input.productType || "Nicht angegeben")}</p>
+        <p style="margin:0 0 8px 0;"><strong>Menge:</strong> ${escapeHtml(input.quantity || "Nicht angegeben")}</p>
+        <p style="margin:0 0 8px 0;"><strong>Wiederkehrender Bedarf:</strong> ${escapeHtml(input.recurringNeed || "Nicht angegeben")}</p>
+        <p style="margin:0;"><strong>Quelle:</strong> ${escapeHtml(input.sourcePage || "Nicht angegeben")}</p>
+      `,
+    }),
+  };
+}
+
+export function quoteNeedsMoreInfoCustomer(input: {
+  companyName: string;
+  adminNote?: string | null;
+}): TemplateResult {
+  const subject = "Weitere Informationen benoetigt – Labelpilot.de";
+  const text = [
+    `Vielen Dank, ${input.companyName}.`,
+    "",
+    "Fuer die Bearbeitung Ihrer Anfrage benoetigen wir noch weitere Informationen.",
+    input.adminNote ? `Hinweis: ${input.adminNote}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return {
+    subject,
+    text,
+    html: renderShell({
+      heading: "Wir brauchen noch eine kurze Rueckmeldung.",
+      intro: "Fuer die Bearbeitung Ihrer Anfrage benoetigen wir noch weitere Informationen.",
+      bodyHtml: input.adminNote
+        ? `<p style="margin:0;"><strong>Hinweis:</strong> ${escapeHtml(input.adminNote)}</p>`
+        : `<p style="margin:0;">Bitte antworten Sie direkt auf diese E-Mail mit den fehlenden Angaben.</p>`,
+    }),
+  };
+}
+
+export function quoteSentCustomer(input: {
+  companyName: string;
+  adminNote?: string | null;
+}): TemplateResult {
+  const subject = "Ihr Angebot ist vorbereitet – Labelpilot.de";
+  const text = [
+    `Vielen Dank, ${input.companyName}.`,
+    "",
+    "Ihr Angebot wurde vorbereitet.",
+    input.adminNote ? `Hinweis: ${input.adminNote}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return {
+    subject,
+    text,
+    html: renderShell({
+      heading: "Ihr Angebot ist vorbereitet.",
+      intro: "Wir haben Ihre Anfrage geprueft und das Angebot vorbereitet.",
+      bodyHtml: input.adminNote
+        ? `<p style="margin:0;"><strong>Hinweis:</strong> ${escapeHtml(input.adminNote)}</p>`
+        : `<p style="margin:0;">Bitte antworten Sie direkt auf diese E-Mail, falls Rueckfragen offen sind.</p>`,
     }),
   };
 }

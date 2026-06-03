@@ -29,6 +29,21 @@ export default function AdminLayout({
           <Link href="/admin/orders" className="secondary-link">
             Bestellungen
           </Link>
+          <Link href="/admin/designs" className="secondary-link">
+            Designs
+          </Link>
+          <Link href="/admin/leads" className="secondary-link">
+            Leads
+          </Link>
+          <Link href="/admin/quotes" className="secondary-link">
+            Quotes
+          </Link>
+          <Link href="/admin/variable-data" className="secondary-link">
+            Variable Data
+          </Link>
+          <Link href="/admin/settings/pricing" className="secondary-link">
+            Preisparameter
+          </Link>
         </nav>
       </header>
       {children}

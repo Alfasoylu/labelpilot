@@ -4,6 +4,7 @@ import type { Prisma } from "@prisma/client";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { sendEmail } from "@/lib/email/send";
 import { proofReady } from "@/lib/email/templates/lifecycle";
+import { canUploadProofForOrderStatus } from "@/lib/orders/status";
 import { validateProofFile } from "@/lib/file-validation/artwork";
 import { uploadProofFile } from "@/lib/storage/artwork";
 
@@ -65,7 +66,7 @@ export async function POST(
     });
   }
 
-  if (!["FILE_REVIEW", "PROOF_REQUIRED", "CORRECTION_REQUIRED"].includes(order.status)) {
+  if (!canUploadProofForOrderStatus(order.status)) {
     return redirectWithMessage(request, redirectTo, {
       error: "Dieser Statuswechsel ist nicht erlaubt.",
     });

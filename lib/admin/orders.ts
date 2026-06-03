@@ -51,3 +51,16 @@ export function formatCurrencyFromCents(amountCents: number, currency = "EUR") {
     currency,
   }).format(amountCents / 100);
 }
+
+export function getShippingModeLabel(value: string | null | undefined) {
+  switch (value) {
+    case "DIRECT_TR":
+      return "Direktversand Türkei → Deutschland";
+    case "CONSOLIDATED":
+      return "Sammelversand / Teilladung";
+    case "DE_HUB":
+      return "Versand über Deutschland-Hub";
+    default:
+      return value ?? "Nicht angegeben";
+  }
+}

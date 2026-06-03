@@ -23,6 +23,7 @@ import { VariableDataBlock } from "@/components/sections/VariableDataBlock";
 import { ComparisonTable } from "@/components/tables/ComparisonTable";
 import { SpecTable } from "@/components/tables/SpecTable";
 import { QuoteRequestForm } from "@/components/quote-request-form";
+import { SampleBoxRequestForm } from "@/components/sample-box-request-form";
 import type {
   FAQ,
   HomePageData,
@@ -831,6 +832,35 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
                 },
               ]}
             />
+          </div>
+        </Section>
+      ) : null}
+
+      {page.path === "/de/musterbox" ? (
+        <Section
+          eyebrow="Anfrageformular"
+          title="Musterbox nur fuer ernsthafte B2B-Anfragen"
+          lead="Die Anfrage sammelt Materialinteresse, Mengenrahmen und Lieferkontext, damit die Musterbox nicht zur Streuaktion wird."
+        >
+          <div className="two-column">
+            <SampleBoxRequestForm />
+            <div className="surface-card">
+              <h2>Warum diese Abfrage</h2>
+              <div className="card-grid">
+                <article className="feature-card">
+                  <h3>Materialvergleich</h3>
+                  <p>Opak, transparent und Thermo werden vor dem Versand gegen den Einsatzfall eingeordnet.</p>
+                </article>
+                <article className="feature-card">
+                  <h3>Mengenfit</h3>
+                  <p>Die Musterbox soll B2B-Bedarf vorbereiten, nicht lose Einmalanfragen bedienen.</p>
+                </article>
+                <article className="feature-card">
+                  <h3>Naechster Schritt</h3>
+                  <p>Die Anfrage fuehrt in Qualifizierung, Angebot oder Materialklaerung statt in einen Blindversand.</p>
+                </article>
+              </div>
+            </div>
           </div>
         </Section>
       ) : null}

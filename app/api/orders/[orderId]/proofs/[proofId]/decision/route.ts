@@ -3,19 +3,18 @@ import type { Prisma } from "@prisma/client";
 
 import { getPrismaClient } from "@/lib/db/prisma";
 import { sendEmail } from "@/lib/email/send";
+import { syncStoredDesignFromApprovedOrder } from "@/lib/artwork/stored-designs";
 import { proofApproved } from "@/lib/email/templates/lifecycle";
+import {
+  type ProofDecisionPayload,
+  validateProofDecisionRequest,
+} from "@/lib/orders/proof-decision";
 import {
   getOrderStatusLabel,
   getProofFileStatusLabel,
 } from "@/lib/orders/artwork";
 
 export const runtime = "nodejs";
-
-type ProofDecisionPayload = {
-  token?: string;
-  decision?: "approve" | "request_changes";
-  note?: string;
-};
 
 function getApprovalIp(request: Request) {
   const forwarded = request.headers.get("x-forwarded-for");
@@ -43,27 +42,23 @@ export async function POST(
   const payload = (await request.json()) as ProofDecisionPayload;
   const { orderId, proofId } = await context.params;
 
-  if (!payload.token) {
+  const payloadValidation = validateProofDecisionRequest(payload);
+  if (!payloadValidation.ok) {
     return NextResponse.json(
-      { error: "Sie haben keinen Zugriff auf diese Bestellung." },
-      { status: 403 },
-    );
-  }
-
-  if (payload.decision !== "approve" && payload.decision !== "request_changes") {
-    return NextResponse.json({ error: "Ungueltige Rueckmeldung." }, { status: 400 });
-  }
-
-  if (payload.decision === "request_changes" && !payload.note?.trim()) {
-    return NextResponse.json(
-      { error: "Bitte beschreiben Sie den Aenderungswunsch." },
-      { status: 400 },
+      { error: payloadValidation.error },
+      { status: payloadValidation.status },
     );
   }
 
   const order = await prisma.order.findUnique({
     where: { id: orderId },
     include: {
+      artworkFiles: {
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 1,
+      },
       proofFiles: {
         where: { id: proofId },
         take: 1,
@@ -71,19 +66,19 @@ export async function POST(
     },
   });
 
-  if (!order || order.uploadToken !== payload.token || order.proofFiles.length === 0) {
-    return NextResponse.json(
-      { error: "Sie haben keinen Zugriff auf diese Bestellung." },
-      { status: 403 },
-    );
-  }
+  const proofFile = order?.proofFiles[0];
+  const snapshotValidation = validateProofDecisionRequest(payload, {
+    orderExists: Boolean(order),
+    uploadToken: order?.uploadToken ?? null,
+    proofMatchesOrder: Boolean(proofFile),
+    proofStatus: proofFile?.status ?? null,
+    orderStatus: order?.status ?? "QUOTE_REQUESTED",
+  });
 
-  const proofFile = order.proofFiles[0];
-
-  if (proofFile.status !== "WAITING_CUSTOMER_APPROVAL") {
+  if (!snapshotValidation.ok) {
     return NextResponse.json(
-      { error: "Fuer diesen Proof ist derzeit keine Rueckmeldung moeglich." },
-      { status: 409 },
+      { error: snapshotValidation.error },
+      { status: snapshotValidation.status },
     );
   }
 
@@ -115,6 +110,15 @@ export async function POST(
           status: "APPROVED_FOR_PRODUCTION",
           note: "Proof durch Kunden freigegeben.",
         },
+      });
+
+      await syncStoredDesignFromApprovedOrder({
+        tx,
+        order,
+        sourceType: "CUSTOMER_UPLOAD",
+        originalArtworkFileId: order.artworkFiles[0]?.id ?? null,
+        proofFileId: updatedProof.id,
+        changeSummary: "Proof durch Kunden freigegeben.",
       });
 
       return {

@@ -1,0 +1,265 @@
+import type { Prisma } from "@prisma/client";
+import { NextResponse } from "next/server";
+import { z } from "zod";
+
+import {
+  buildPricingAudits,
+  PRICING_MATERIAL_KEYS,
+} from "@/lib/admin/pricing";
+import { getPrismaClient } from "@/lib/db/prisma";
+import { getAdminActorFromRequest } from "@/lib/security/admin-basic-auth";
+
+const materialSchema = z.object({
+  materialKey: z.enum(["OPAQUE_PP", "TRANSPARENT_PP"]),
+  materialCostPerM2: z.coerce.number().positive(),
+  digitalPrintCostPerM2: z.coerce.number().positive(),
+  flexoPrintCostPerM2: z.coerce.number().positive(),
+  flexoPlateCost: z.coerce.number().positive(),
+  wasteFactorPct: z.coerce.number().min(0).max(95),
+  targetMarginPct: z.coerce.number().gt(0).lt(95),
+  minOrderValueNet: z.coerce.number().positive(),
+  setupFeeNet: z
+    .union([z.literal(""), z.coerce.number().nonnegative()])
+    .transform((value) => (value === "" ? null : value)),
+});
+
+const settingsSchema = z.object({
+  vatPct: z.coerce.number().min(0).max(100),
+  roundingStepNet: z.coerce.number().positive(),
+  customMaxWidthMm: z.coerce.number().int().positive(),
+  customMaxHeightMm: z.coerce.number().int().positive(),
+  customMaxQuantity: z.coerce.number().int().positive(),
+  designServiceNet: z.coerce.number().positive(),
+  designServiceFreeThresholdNet: z.coerce.number().positive(),
+  physicalProofNet: z.coerce.number().positive(),
+  expressNet: z.coerce.number().positive(),
+  extraDesignNet: z.coerce.number().positive(),
+});
+
+function buildRedirectUrl(request: Request, search: Record<string, string>) {
+  const url = new URL("/admin/settings/pricing", request.url);
+  for (const [key, value] of Object.entries(search)) {
+    url.searchParams.set(key, value);
+  }
+  return url;
+}
+
+function getMaterialPayload(formData: FormData, materialKey: "OPAQUE_PP" | "TRANSPARENT_PP") {
+  return {
+    materialKey,
+    materialCostPerM2: formData.get(`${materialKey}.materialCostPerM2`),
+    digitalPrintCostPerM2: formData.get(`${materialKey}.digitalPrintCostPerM2`),
+    flexoPrintCostPerM2: formData.get(`${materialKey}.flexoPrintCostPerM2`),
+    flexoPlateCost: formData.get(`${materialKey}.flexoPlateCost`),
+    wasteFactorPct: formData.get(`${materialKey}.wasteFactorPct`),
+    targetMarginPct: formData.get(`${materialKey}.targetMarginPct`),
+    minOrderValueNet: formData.get(`${materialKey}.minOrderValueNet`),
+    setupFeeNet: formData.get(`${materialKey}.setupFeeNet`),
+  };
+}
+
+export async function POST(request: Request) {
+  const prisma = getPrismaClient();
+
+  if (!prisma) {
+    return NextResponse.redirect(
+      buildRedirectUrl(request, {
+        error: "Datenbankverbindung fehlt.",
+      }),
+      { status: 303 },
+    );
+  }
+
+  const actor = getAdminActorFromRequest(request);
+  const formData = await request.formData();
+
+  const settingsResult = settingsSchema.safeParse({
+    vatPct: formData.get("settings.vatPct"),
+    roundingStepNet: formData.get("settings.roundingStepNet"),
+    customMaxWidthMm: formData.get("settings.customMaxWidthMm"),
+    customMaxHeightMm: formData.get("settings.customMaxHeightMm"),
+    customMaxQuantity: formData.get("settings.customMaxQuantity"),
+    designServiceNet: formData.get("settings.designServiceNet"),
+    designServiceFreeThresholdNet: formData.get(
+      "settings.designServiceFreeThresholdNet",
+    ),
+    physicalProofNet: formData.get("settings.physicalProofNet"),
+    expressNet: formData.get("settings.expressNet"),
+    extraDesignNet: formData.get("settings.extraDesignNet"),
+  });
+
+  const materialResults = PRICING_MATERIAL_KEYS.map((materialKey) =>
+    materialSchema.safeParse(getMaterialPayload(formData, materialKey)),
+  );
+
+  if (!settingsResult.success || materialResults.some((result) => !result.success)) {
+    const firstIssue =
+      settingsResult.success
+        ? materialResults.find((result) => !result.success)?.error.issues[0]?.message
+        : settingsResult.error.issues[0]?.message;
+
+    return NextResponse.redirect(
+      buildRedirectUrl(request, {
+        error: firstIssue ?? "Bitte alle Preisparameter gueltig ausfuellen.",
+      }),
+      { status: 303 },
+    );
+  }
+
+  const settingsData = settingsResult.data;
+  const materialData = materialResults.map((result) => {
+    if (!result.success) {
+      throw new Error("Validated material payload expected.");
+    }
+
+    return result.data;
+  });
+
+  const [previousSettings, previousMaterials] = (await Promise.all([
+    prisma.pricingSettings.findUnique({
+      where: { id: "default" },
+    }),
+    prisma.pricingMaterialCost.findMany({
+      where: {
+        materialKey: {
+          in: [...PRICING_MATERIAL_KEYS],
+        },
+      },
+    }),
+  ])) as [
+    {
+      vatPct?: { toString(): string } | null;
+      roundingStepNet?: { toString(): string } | null;
+      customMaxWidthMm?: number | null;
+      customMaxHeightMm?: number | null;
+      customMaxQuantity?: number | null;
+      designServiceNet?: { toString(): string } | null;
+      designServiceFreeThresholdNet?: { toString(): string } | null;
+      physicalProofNet?: { toString(): string } | null;
+      expressNet?: { toString(): string } | null;
+      extraDesignNet?: { toString(): string } | null;
+      updatedBy?: string | null;
+    } | null,
+    Array<{
+      materialKey: string;
+      materialCostPerM2?: { toString(): string } | null;
+      digitalPrintCostPerM2?: { toString(): string } | null;
+      flexoPrintCostPerM2?: { toString(): string } | null;
+      flexoPlateCost?: { toString(): string } | null;
+      wasteFactorPct?: { toString(): string } | null;
+      targetMarginPct?: { toString(): string } | null;
+      minOrderValueNet?: { toString(): string } | null;
+      setupFeeNet?: { toString(): string } | null;
+      updatedBy?: string | null;
+    }>,
+  ];
+
+  const settingAuditEntries = buildPricingAudits({
+    actor,
+    tableName: "PricingSettings",
+    previous: {
+      vatPct: previousSettings?.vatPct?.toString() ?? null,
+      roundingStepNet: previousSettings?.roundingStepNet?.toString() ?? null,
+      customMaxWidthMm: previousSettings?.customMaxWidthMm?.toString() ?? null,
+      customMaxHeightMm: previousSettings?.customMaxHeightMm?.toString() ?? null,
+      customMaxQuantity: previousSettings?.customMaxQuantity?.toString() ?? null,
+      designServiceNet: previousSettings?.designServiceNet?.toString() ?? null,
+      designServiceFreeThresholdNet:
+        previousSettings?.designServiceFreeThresholdNet?.toString() ?? null,
+      physicalProofNet: previousSettings?.physicalProofNet?.toString() ?? null,
+      expressNet: previousSettings?.expressNet?.toString() ?? null,
+      extraDesignNet: previousSettings?.extraDesignNet?.toString() ?? null,
+      updatedBy: previousSettings?.updatedBy ?? null,
+    },
+    next: {
+      vatPct: settingsData.vatPct.toString(),
+      roundingStepNet: settingsData.roundingStepNet.toString(),
+      customMaxWidthMm: settingsData.customMaxWidthMm.toString(),
+      customMaxHeightMm: settingsData.customMaxHeightMm.toString(),
+      customMaxQuantity: settingsData.customMaxQuantity.toString(),
+      designServiceNet: settingsData.designServiceNet.toString(),
+      designServiceFreeThresholdNet:
+        settingsData.designServiceFreeThresholdNet.toString(),
+      physicalProofNet: settingsData.physicalProofNet.toString(),
+      expressNet: settingsData.expressNet.toString(),
+      extraDesignNet: settingsData.extraDesignNet.toString(),
+      updatedBy: actor,
+    },
+  });
+
+  const materialAuditEntries = materialData.flatMap((row) => {
+    const previous = previousMaterials.find(
+      (item) => item.materialKey === row.materialKey,
+    );
+
+    return buildPricingAudits({
+      actor,
+      tableName: `PricingMaterialCost:${row.materialKey}`,
+      previous: {
+        materialCostPerM2: previous?.materialCostPerM2?.toString() ?? null,
+        digitalPrintCostPerM2: previous?.digitalPrintCostPerM2?.toString() ?? null,
+        flexoPrintCostPerM2: previous?.flexoPrintCostPerM2?.toString() ?? null,
+        flexoPlateCost: previous?.flexoPlateCost?.toString() ?? null,
+        wasteFactorPct: previous?.wasteFactorPct?.toString() ?? null,
+        targetMarginPct: previous?.targetMarginPct?.toString() ?? null,
+        minOrderValueNet: previous?.minOrderValueNet?.toString() ?? null,
+        setupFeeNet: previous?.setupFeeNet?.toString() ?? null,
+        updatedBy: previous?.updatedBy ?? null,
+      },
+      next: {
+        materialCostPerM2: row.materialCostPerM2.toString(),
+        digitalPrintCostPerM2: row.digitalPrintCostPerM2.toString(),
+        flexoPrintCostPerM2: row.flexoPrintCostPerM2.toString(),
+        flexoPlateCost: row.flexoPlateCost.toString(),
+        wasteFactorPct: row.wasteFactorPct.toString(),
+        targetMarginPct: row.targetMarginPct.toString(),
+        minOrderValueNet: row.minOrderValueNet.toString(),
+        setupFeeNet: row.setupFeeNet?.toString() ?? null,
+        updatedBy: actor,
+      },
+    });
+  });
+
+  await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+    await tx.pricingSettings.upsert({
+      where: { id: "default" },
+      update: {
+        ...settingsData,
+        updatedBy: actor,
+      },
+      create: {
+        id: "default",
+        ...settingsData,
+        updatedBy: actor,
+      },
+    });
+
+    for (const row of materialData) {
+      await tx.pricingMaterialCost.upsert({
+        where: { materialKey: row.materialKey },
+        update: {
+          ...row,
+          updatedBy: actor,
+        },
+        create: {
+          ...row,
+          updatedBy: actor,
+        },
+      });
+    }
+
+    const audits = [...settingAuditEntries, ...materialAuditEntries];
+    if (audits.length > 0) {
+      await tx.pricingAudit.createMany({
+        data: audits,
+      });
+    }
+  });
+
+  return NextResponse.redirect(
+    buildRedirectUrl(request, {
+      message: "Preisparameter gespeichert.",
+    }),
+    { status: 303 },
+  );
+}

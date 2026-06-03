@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   formatAdminDate,
   formatCurrencyFromCents,
+  getShippingModeLabel,
 } from "@/lib/admin/orders";
 import { getPackageById } from "@/lib/commerce/packages";
 import { getPrismaClient } from "@/lib/db/prisma";
@@ -61,7 +62,13 @@ export default async function AdminOrderDetailPage({
         orderBy: {
           createdAt: "desc",
         },
-        take: 20,
+        take: 50,
+      },
+      adminNotes: {
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 50,
       },
     },
   });
@@ -131,6 +138,18 @@ export default async function AdminOrderDetailPage({
           </ul>
         </article>
       </div>
+
+      {(order.reorderSourceDesignId || order.reorderMode || order.reorderStockDuration) ? (
+        <article className="surface-card">
+          <h2>Nachbestellkontext</h2>
+          <ul className="simple-list">
+            <li>Source Design: {order.reorderSourceDesignId ?? "Nicht gesetzt"}</li>
+            <li>Artwork-Version: {order.reorderSourceArtworkVersionId ?? "Nicht gesetzt"}</li>
+            <li>Branch: {formatReorderMode(order.reorderMode)}</li>
+            <li>Bestandsdauer: {formatReorderStockDuration(order.reorderStockDuration)}</li>
+          </ul>
+        </article>
+      ) : null}
 
       <article className="surface-card">
         <h2>Druckdateien</h2>
@@ -266,6 +285,73 @@ export default async function AdminOrderDetailPage({
       </article>
 
       <article className="surface-card">
+        <h2>Versand</h2>
+        <form
+          action={`/api/admin/orders/${order.id}/shipment`}
+          method="post"
+          className="quote-form"
+        >
+          <div className="form-grid">
+            <div>
+              <label htmlFor="shippingMode">Versandart</label>
+              <select id="shippingMode" name="shippingMode" defaultValue={order.shippingMode ?? ""}>
+                <option value="">Bitte waehlen</option>
+                <option value="DIRECT_TR">Direktversand Türkei → Deutschland</option>
+                <option value="CONSOLIDATED">Sammelversand / Teilladung</option>
+                <option value="DE_HUB">Versand über Deutschland-Hub</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="shippingCarrier">Versanddienstleister</label>
+              <input id="shippingCarrier" name="shippingCarrier" defaultValue={order.shippingCarrier ?? ""} />
+            </div>
+            <div>
+              <label htmlFor="trackingNumber">Trackingnummer</label>
+              <input id="trackingNumber" name="trackingNumber" defaultValue={order.trackingNumber ?? ""} />
+            </div>
+            <div>
+              <label htmlFor="trackingUrl">Tracking-URL</label>
+              <input id="trackingUrl" name="trackingUrl" type="url" defaultValue={order.trackingUrl ?? ""} />
+            </div>
+            <div>
+              <label htmlFor="packageCount">Paketanzahl</label>
+              <input id="packageCount" name="packageCount" type="number" min="1" defaultValue={order.packageCount ?? ""} />
+            </div>
+            <div>
+              <label htmlFor="shipmentWeightKg">Gewicht kg</label>
+              <input id="shipmentWeightKg" name="shipmentWeightKg" type="number" min="0.01" step="0.01" defaultValue={order.shipmentWeightKg ?? ""} />
+            </div>
+            <div>
+              <label htmlFor="shippedAt">Versanddatum</label>
+              <input id="shippedAt" name="shippedAt" type="datetime-local" defaultValue={toDateTimeLocal(order.shippedAt)} />
+            </div>
+            <div>
+              <label htmlFor="estimatedDeliveryAt">Voraussichtliche Lieferung</label>
+              <input id="estimatedDeliveryAt" name="estimatedDeliveryAt" type="datetime-local" defaultValue={toDateTimeLocal(order.estimatedDeliveryAt)} />
+            </div>
+            <div className="field-full">
+              <label htmlFor="shipmentNote">Versandnotiz</label>
+              <textarea id="shipmentNote" name="shipmentNote" rows={3} defaultValue={order.shipmentNote ?? ""} />
+            </div>
+          </div>
+          <div className="simple-list">
+            <p>Aktuelle Versandart: {getShippingModeLabel(order.shippingMode)}</p>
+            <p>Versendet: {order.shippedAt ? formatAdminDate(order.shippedAt) : "Noch nicht gesetzt"}</p>
+            <p>Zugestellt: {order.deliveredAt ? formatAdminDate(order.deliveredAt) : "Noch nicht gesetzt"}</p>
+          </div>
+          <div className="inline-actions">
+            <button type="submit" className="cta-button">Versanddaten speichern</button>
+            <button type="submit" name="markShipped" value="yes" className="secondary-link">
+              Als versendet markieren
+            </button>
+            <button type="submit" name="markDelivered" value="yes" className="secondary-link">
+              Als zugestellt markieren
+            </button>
+          </div>
+        </form>
+      </article>
+
+      <article className="surface-card">
         <h2>Statushistorie</h2>
         {order.statusEvents.length === 0 ? (
           <p className="price-note">Noch keine Statusaenderung vorhanden.</p>
@@ -281,6 +367,113 @@ export default async function AdminOrderDetailPage({
           </div>
         )}
       </article>
+
+      <article className="surface-card">
+        <h2>Admin-Notizen</h2>
+        <form
+          action={`/api/admin/orders/${order.id}/notes`}
+          method="post"
+          className="quote-form"
+        >
+          <div className="form-grid">
+            <div>
+              <label htmlFor="noteType">Notiztyp</label>
+              <select id="noteType" name="noteType" defaultValue="INTERNAL">
+                <option value="INTERNAL">Intern</option>
+                <option value="CUSTOMER_VISIBLE">Kundensichtbar</option>
+                <option value="PRODUCTION">Produktion</option>
+                <option value="SHIPPING">Versand</option>
+                <option value="PAYMENT">Zahlung</option>
+                <option value="REPRINT">Nachdruck</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="isCustomerVisible">Sichtbarkeit</label>
+              <select id="isCustomerVisible" name="isCustomerVisible" defaultValue="no">
+                <option value="no">Nur intern</option>
+                <option value="yes">Kundensichtbar</option>
+              </select>
+            </div>
+            <div className="field-full">
+              <label htmlFor="body">Notiz</label>
+              <textarea id="body" name="body" rows={4} />
+            </div>
+          </div>
+          <div className="inline-actions">
+            <button type="submit" className="cta-button">Notiz speichern</button>
+          </div>
+        </form>
+
+        {order.adminNotes.length === 0 ? (
+          <p className="price-note">Noch keine Admin-Notizen vorhanden.</p>
+        ) : (
+          <div className="section-stack">
+            {order.adminNotes.map((note: (typeof order.adminNotes)[number]) => (
+              <div key={note.id} className="section-card">
+                <h3>{formatNoteType(note.noteType)}</h3>
+                <p className="price-note">
+                  {formatAdminDate(note.createdAt)} · {note.actor ?? "admin"} · {note.isCustomerVisible ? "kundensichtbar" : "intern"}
+                </p>
+                <p className="field-hint">{note.body}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </article>
     </section>
   );
+}
+
+function toDateTimeLocal(value: Date | null) {
+  if (!value) {
+    return "";
+  }
+
+  return new Date(value.getTime() - value.getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, 16);
+}
+
+function formatNoteType(value: string) {
+  switch (value) {
+    case "CUSTOMER_VISIBLE":
+      return "Kundensichtbar";
+    case "PRODUCTION":
+      return "Produktion";
+    case "SHIPPING":
+      return "Versand";
+    case "PAYMENT":
+      return "Zahlung";
+    case "REPRINT":
+      return "Nachdruck";
+    case "INTERNAL":
+    default:
+      return "Intern";
+  }
+}
+
+function formatReorderMode(value: string | null) {
+  switch (value) {
+    case "SAME_ARTWORK":
+      return "Gleiches Artwork";
+    case "MINOR_CHANGE":
+      return "Kleine Anpassung";
+    default:
+      return "Nicht gesetzt";
+  }
+}
+
+function formatReorderStockDuration(value: string | null) {
+  switch (value) {
+    case "UNDER_4_WEEKS":
+      return "Unter 4 Wochen";
+    case "ONE_TO_THREE_MONTHS":
+      return "1 bis 3 Monate";
+    case "THREE_TO_SIX_MONTHS":
+      return "3 bis 6 Monate";
+    case "OVER_SIX_MONTHS":
+      return "Mehr als 6 Monate";
+    default:
+      return "Nicht gesetzt";
+  }
 }

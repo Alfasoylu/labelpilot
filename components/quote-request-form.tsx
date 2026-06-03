@@ -1,7 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 
+import { SourceTrackingFields } from "@/components/source-tracking-fields";
+import { trackLeadEvent } from "@/lib/analytics/browser";
 import {
   submitQuoteRequest,
   type QuoteFormState,
@@ -37,9 +39,24 @@ export function QuoteRequestForm() {
     submitQuoteRequest,
     initialState,
   );
+  const trackedRef = useRef(false);
+
+  useEffect(() => {
+    if ((state.status === "success" || state.status === "warning") && !trackedRef.current) {
+      trackLeadEvent("quote_form_submit", {
+        status: state.status,
+      });
+      trackedRef.current = true;
+    }
+
+    if (state.status === "idle" || state.status === "error") {
+      trackedRef.current = false;
+    }
+  }, [state.status]);
 
   return (
     <form action={formAction} className="quote-form">
+      <SourceTrackingFields />
       <div>
         <h2>B2B-Angebot anfordern</h2>
         <p className="field-hint">
@@ -67,6 +84,10 @@ export function QuoteRequestForm() {
         <div className="field">
           <label htmlFor="phone">Telefon</label>
           <input id="phone" name="phone" type="tel" />
+        </div>
+        <div className="field">
+          <label htmlFor="website">Website / Shop</label>
+          <input id="website" name="website" type="url" />
         </div>
         <div className="field">
           <label htmlFor="country">Land</label>

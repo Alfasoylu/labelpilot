@@ -4,6 +4,10 @@ import Stripe from "stripe";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { sendEmail } from "@/lib/email/send";
 import { orderConfirmation } from "@/lib/email/templates/lifecycle";
+import {
+  canApplyStripePaymentFailure,
+  canApplyStripePaymentSuccess,
+} from "@/lib/orders/status";
 import { getStripeServerClient, getStripeWebhookSecret } from "@/lib/stripe/server";
 
 export const runtime = "nodejs";
@@ -53,17 +57,27 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
     return;
   }
 
+  if (!canApplyStripePaymentSuccess(order.status)) {
+    throw new Error(
+      `checkout.session.completed darf Status ${order.status} nicht auf PAID setzen.`,
+    );
+  }
+
   const paymentIntentId =
     typeof session.payment_intent === "string"
       ? session.payment_intent
       : session.payment_intent?.id ?? null;
+  const isSameArtworkReorder =
+    order.reorderMode === "SAME_ARTWORK" && Boolean(order.reorderSourceArtworkVersionId);
+  const nextStatus = isSameArtworkReorder ? "APPROVED_FOR_PRODUCTION" : "PAID";
+  const nextArtworkStatus = isSameArtworkReorder ? "ARTWORK_APPROVED" : "AWAITING_ARTWORK";
 
   await prisma.$transaction([
     prisma.order.update({
       where: { id: order.id },
       data: {
-        status: "PAID",
-        artworkStatus: "AWAITING_ARTWORK",
+        status: nextStatus,
+        artworkStatus: nextArtworkStatus,
         stripeCheckoutSessionId: session.id,
         stripePaymentIntentId: paymentIntentId,
         customerEmail: session.customer_details?.email ?? order.customerEmail,
@@ -103,6 +117,17 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
         note: "Stripe Checkout bestaetigt.",
       },
     }),
+    ...(isSameArtworkReorder
+      ? [
+          prisma.orderStatusEvent.create({
+            data: {
+              orderId: order.id,
+              status: "APPROVED_FOR_PRODUCTION",
+              note: "Nachbestellung mit identischem Artwork wurde direkt fuer die Produktion vorbereitet.",
+            },
+          }),
+        ]
+      : []),
   ]);
 
   const emailReservation = await prisma.order.updateMany({
@@ -159,6 +184,10 @@ async function handlePaymentFailed(event: Stripe.Event) {
   });
 
   if (!order) {
+    return;
+  }
+
+  if (!canApplyStripePaymentFailure(order.status)) {
     return;
   }
 

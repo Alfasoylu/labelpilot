@@ -27,6 +27,7 @@ async function getSuccessPageData(sessionId?: string) {
     if (!prisma) {
       return {
         orderNumber: session.metadata?.orderNumber ?? null,
+        isSameArtworkReorder: session.metadata?.reorderMode === "SAME_ARTWORK",
         uploadHref: null,
       };
     }
@@ -36,12 +37,14 @@ async function getSuccessPageData(sessionId?: string) {
       select: {
         id: true,
         orderNumber: true,
+        reorderMode: true,
         uploadToken: true,
       },
     });
 
     return {
       orderNumber: order?.orderNumber ?? session.metadata?.orderNumber ?? null,
+      isSameArtworkReorder: order?.reorderMode === "SAME_ARTWORK",
       uploadHref:
         order?.uploadToken && order.id
           ? `/de/auftrag/${order.id}/druckdaten?token=${encodeURIComponent(order.uploadToken)}`
@@ -61,7 +64,11 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
       <article className="legal-card">
         <span className="eyebrow">Checkout</span>
         <h1>Zahlung eingegangen bzw. wird bestaetigt.</h1>
-        <p>Der naechste Schritt ist das Hochladen Ihrer Druckdaten.</p>
+        <p>
+          {successData?.isSameArtworkReorder
+            ? "Ihre Nachbestellung mit identischem Artwork wird ohne neuen Upload weiterverarbeitet."
+            : "Der naechste Schritt ist das Hochladen Ihrer Druckdaten."}
+        </p>
         {successData?.orderNumber ? (
           <p className="price-note">Bestellnummer: {successData.orderNumber}</p>
         ) : (
@@ -70,9 +77,14 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
           </p>
         )}
         <div className="cta-row">
-          {successData?.uploadHref ? (
+          {successData?.uploadHref && !successData?.isSameArtworkReorder ? (
             <Link href={successData.uploadHref} className="cta-link">
               Druckdaten hochladen
+            </Link>
+          ) : null}
+          {successData?.uploadHref && successData?.isSameArtworkReorder ? (
+            <Link href={successData.uploadHref} className="cta-link">
+              Bestellstatus ansehen
             </Link>
           ) : null}
           <Link href="/de/opake-pp-etiketten" className="secondary-link">
