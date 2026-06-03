@@ -144,6 +144,10 @@ P1 · gap G4 — Make the "Andere Menge (z. B. 3.000 / 7.500 / unter 1.000)? Ang
 ### Task 0.10
 P1 · `59 §28` — Add Anwendung / Temperaturbereich / Geeignet für / Hinweis rows for opaque vs. transparent, and a "Für Spender/Maschine" note (76-mm-Kern / Wickelrichtung) → quote if non-standard.
 
+---
+> **SUPERVISOR NOTE (2026-06-03 23:10 UTC) — BLOCKED-task skip rule:**
+> Tasks 0.11, 0.12, and 0.11b are BLOCKED. Tasks 0.13a, 0.13b, and 0.13c (P1, founder-decided, unblocked per SoT #18) appear AFTER those BLOCKED tasks in this file. When Codex reaches a BLOCKED task it must **SKIP it** (record it as skipped/blocked in the state file, do NOT execute it, do NOT enter secrets or enable flags) and **continue immediately to the next non-BLOCKED task**. The §6 "stop advancement" rule applies to the blocked task itself — it does NOT halt the entire queue. Codex must therefore execute 0.13a → 0.13b → 0.13c after finishing 0.10, simply skipping over 0.11, 0.12, and 0.11b. Never enable `NEXT_PUBLIC_FEATURE_ADDONS`, `NEXT_PUBLIC_FEATURE_CUSTOM_SIZE`, or any other feature flag; never enter Stripe keys or secrets; never execute matt-surcharge or add-on-panel wiring until the explicit gate is cleared by the operator.
+
 ### Task 0.11
 P2 · BLOCKED — When `NEXT_PUBLIC_FEATURE_ADDONS` is enabled, surface the built add-ons (Designservice / Express / physischer Andruck / Zusatzdesign) as an inline panel on the product page with a live cost summary. **BLOCKED until the Stripe TEST round-trip is done and the operator enables the flag.**
 
