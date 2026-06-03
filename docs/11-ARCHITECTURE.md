@@ -388,7 +388,7 @@ lib/
 
 ## 7. Data Model Overview
 
-The full schema will be defined in `/docs/12-DATABASE-SCHEMA.md`.
+The full schema will be defined in `/docs/12-DATABASE-SCHEMA-v2.md`.
 
 Minimum core models:
 
@@ -1030,7 +1030,7 @@ Codex must:
 
 1. Read `/docs/00-PROJECT-BRIEF.md`.
 2. Read `/docs/01-BUSINESS-MODEL.md`.
-3. Read `/docs/03-PRODUCT-STRATEGY.md`.
+3. Read `/docs/03-PRODUCT-STRATEGY-v2.md`.
 4. Read `/docs/04-PRICING-AND-MARGIN-MODEL.md`.
 5. Read `/docs/10-TECH-STACK.md`.
 6. Read this architecture file.

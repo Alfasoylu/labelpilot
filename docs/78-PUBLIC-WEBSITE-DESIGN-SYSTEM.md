@@ -1,6 +1,6 @@
 # 78 — Public Website Design System (Premium German B2B Roll-Label)
 
-Status: **ACTIVE / LOCKED.** Canonical public-website design direction. **Reconciled with `rakip_analizi_ve_stil_rehberi.md`** (the authoritative style guide) — where the earlier draft differed (blue CTA, Fraunces serif everywhere), this doc and the code now follow the style guide. **Supersedes** the navy/blue "German B2B SaaS" direction in `76-UI-DESIGN-SYSTEM-GERMAN-B2B.md`. Precedence sits under `00-SOURCE-OF-TRUTH.md` (decision #14).
+Status: **ACTIVE / LOCKED.** Canonical public-website design direction. **Reconciled with `rakip_analizi_ve_stil_rehberi.md`** (the authoritative style guide) — where the earlier draft differed (blue CTA, Fraunces serif everywhere), this doc and the code now follow the style guide. **Supersedes** the earlier navy/blue "German B2B SaaS" direction (now removed from the repo). Precedence sits under `00-SOURCE-OF-TRUTH.md` (decision #14).
 
 Scope: public marketing/SEO pages only (`/de` and children). Does not change routes, SEO metadata, Stripe, pricing engine, order/upload/quote flows, admin or account areas.
 

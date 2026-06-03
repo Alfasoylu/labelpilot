@@ -46,9 +46,9 @@ Before implementing sample box flow, Codex must read:
 
 ```txt
 /docs/01-BUSINESS-MODEL.md
-/docs/03-PRODUCT-STRATEGY.md
+/docs/03-PRODUCT-STRATEGY-v2.md
 /docs/04-PRICING-AND-MARGIN-MODEL.md
-/docs/12-DATABASE-SCHEMA.md
+/docs/12-DATABASE-SCHEMA-v2.md
 /docs/15-STRIPE-PAYMENT-FLOW.md
 /docs/30-PRODUCT-CATALOG.md
 /docs/31-QUOTE-REQUEST-FLOW.md

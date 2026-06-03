@@ -295,7 +295,7 @@ Rules:
 
 ## 12. Database Models
 
-The full schema belongs in `/docs/12-DATABASE-SCHEMA.md`.
+The full schema belongs in `/docs/12-DATABASE-SCHEMA-v2.md`.
 
 Minimum required models:
 

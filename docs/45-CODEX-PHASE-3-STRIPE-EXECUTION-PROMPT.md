@@ -31,7 +31,7 @@ Read before coding:
 
 ```txt
 /docs/04-PRICING-AND-MARGIN-MODEL.md
-/docs/12-DATABASE-SCHEMA.md
+/docs/12-DATABASE-SCHEMA-v2.md
 /docs/13-ENVIRONMENT-VARIABLES.md
 /docs/15-STRIPE-PAYMENT-FLOW.md
 /docs/16-ORDER-FLOW.md

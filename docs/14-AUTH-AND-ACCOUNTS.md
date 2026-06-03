@@ -47,13 +47,13 @@ Before implementing auth/account logic, Codex must read:
 /docs/00-PROJECT-BRIEF.md
 /docs/10-TECH-STACK.md
 /docs/11-ARCHITECTURE.md
-/docs/12-DATABASE-SCHEMA.md
+/docs/12-DATABASE-SCHEMA-v2.md
 /docs/13-ENVIRONMENT-VARIABLES.md
 /docs/16-ORDER-FLOW.md
 /docs/17-FILE-UPLOAD-AND-PROOFING.md
 /docs/60-CODEX-AGENT-PROTOCOL.md
 /docs/66-PHASE-5-ADMIN-PANEL.md
-/docs/67-PHASE-6-REORDER-SYSTEM.md
+/docs/67-PHASE-6-REORDER-SYSTEM-v2.md
 /docs/14-AUTH-AND-ACCOUNTS.md
 ```
 

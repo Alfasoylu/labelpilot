@@ -1,4 +1,4 @@
-# 12-DATABASE-SCHEMA.md — v2
+# 12-DATABASE-SCHEMA-v2.md — v2
 
 # Labelpilot.de — Database Schema v2
 
@@ -789,7 +789,7 @@ storedDesignId
 artworkVersionId
 ```
 
-Canonical `OrderStatus` for v2 remains aligned with `/docs/12-DATABASE-SCHEMA.md` and includes:
+Canonical `OrderStatus` for v2 remains aligned with `/docs/12-DATABASE-SCHEMA-v2.md` and includes:
 
 ```txt
 DRAFT
@@ -870,4 +870,4 @@ Schema v2 accepted when:
 The v2 schema must make Labelpilot.de a memory system for customer labels.
 
 If the system cannot instantly find a customer’s old label and reorder it, the schema failed.
-> AUTHORITATIVE. Supersedes `12-DATABASE-SCHEMA.md`. See `/docs/00-SOURCE-OF-TRUTH.md`.
+> AUTHORITATIVE. Supersedes `12-DATABASE-SCHEMA-v2.md`. See `/docs/00-SOURCE-OF-TRUTH.md`.

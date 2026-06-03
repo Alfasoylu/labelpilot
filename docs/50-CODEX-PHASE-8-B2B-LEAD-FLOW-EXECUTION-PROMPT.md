@@ -31,7 +31,7 @@ This is not a generic contact form.
 Read before coding:
 
 ```txt
-/docs/12-DATABASE-SCHEMA.md
+/docs/12-DATABASE-SCHEMA-v2.md
 /docs/31-QUOTE-REQUEST-FLOW.md
 /docs/32-SAMPLE-BOX-FLOW.md
 /docs/35-ANALYTICS-KPI-DASHBOARD.md

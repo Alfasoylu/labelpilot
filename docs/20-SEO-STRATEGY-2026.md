@@ -992,7 +992,7 @@ If SEO brings the wrong customers, narrow the page targeting.
 Codex must:
 
 1. Read `/docs/00-PROJECT-BRIEF.md`.
-2. Read `/docs/03-PRODUCT-STRATEGY.md`.
+2. Read `/docs/03-PRODUCT-STRATEGY-v2.md`.
 3. Read `/docs/10-TECH-STACK.md`.
 4. Read `/docs/11-ARCHITECTURE.md`.
 5. Follow this SEO strategy.

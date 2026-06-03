@@ -30,14 +30,14 @@ Reorder is the profit engine. Do not treat it as a small optional feature.
 Read before coding:
 
 ```txt
-/docs/12-DATABASE-SCHEMA.md
+/docs/12-DATABASE-SCHEMA-v2.md
 /docs/14-AUTH-AND-ACCOUNTS.md
 /docs/15-STRIPE-PAYMENT-FLOW.md
 /docs/16-ORDER-FLOW.md
 /docs/17-FILE-UPLOAD-AND-PROOFING.md
-/docs/19-CUSTOMER-PORTAL.md
+/docs/19-CUSTOMER-PORTAL-v2.md
 /docs/33-REORDER-ECONOMICS.md
-/docs/67-PHASE-6-REORDER-SYSTEM.md
+/docs/67-PHASE-6-REORDER-SYSTEM-v2.md
 /docs/48-CODEX-PHASE-6-REORDER-EXECUTION-PROMPT.md
 ```
 

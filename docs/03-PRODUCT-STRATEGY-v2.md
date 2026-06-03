@@ -1,4 +1,4 @@
-# 03-PRODUCT-STRATEGY.md — v2
+# 03-PRODUCT-STRATEGY-v2.md — v2
 
 # Labelpilot.de — Product Strategy v2
 
@@ -560,4 +560,4 @@ Vistaprint-like generic competition traps you
 The opportunity cost is high.
 
 The v2 direction is the correct path if the 10-year target is €100,000/month contribution.
-> AUTHORITATIVE. Supersedes `03-PRODUCT-STRATEGY.md`. See `/docs/00-SOURCE-OF-TRUTH.md`.
+> AUTHORITATIVE. Supersedes `03-PRODUCT-STRATEGY-v2.md`. See `/docs/00-SOURCE-OF-TRUTH.md`.

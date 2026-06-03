@@ -1146,7 +1146,7 @@ Thermoetiketten bleiben nur, wenn sie B2B-Kundenbindung oder Warenkorbwert verbe
 Codex muss:
 
 1. `/docs/00-PROJECT-BRIEF.md` lesen.
-2. `/docs/03-PRODUCT-STRATEGY.md` lesen.
+2. `/docs/03-PRODUCT-STRATEGY-v2.md` lesen.
 3. `/docs/04-PRICING-AND-MARGIN-MODEL.md` lesen.
 4. `/docs/20-SEO-STRATEGY-2026.md` lesen.
 5. Diesen Produktkatalog befolgen.

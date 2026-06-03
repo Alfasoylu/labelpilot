@@ -34,7 +34,7 @@ The admin panel must be operational, not decorative.
 Read before coding:
 
 ```txt
-/docs/12-DATABASE-SCHEMA.md
+/docs/12-DATABASE-SCHEMA-v2.md
 /docs/14-AUTH-AND-ACCOUNTS.md
 /docs/16-ORDER-FLOW.md
 /docs/17-FILE-UPLOAD-AND-PROOFING.md

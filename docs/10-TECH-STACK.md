@@ -260,7 +260,7 @@ Expected core models:
 
 Detailed schema belongs in:
 
-`/docs/12-DATABASE-SCHEMA.md`
+`/docs/12-DATABASE-SCHEMA-v2.md`
 
 ---
 
@@ -689,7 +689,7 @@ Product data should include:
 
 Detailed product strategy belongs in:
 
-`/docs/03-PRODUCT-STRATEGY.md`
+`/docs/03-PRODUCT-STRATEGY-v2.md`
 
 ---
 

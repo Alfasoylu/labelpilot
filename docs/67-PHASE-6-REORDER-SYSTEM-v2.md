@@ -1,4 +1,4 @@
-# 67-PHASE-6-REORDER-SYSTEM.md — v2
+# 67-PHASE-6-REORDER-SYSTEM-v2.md — v2
 
 # Labelpilot.de — Phase 6 Reorder System v2
 
@@ -369,5 +369,5 @@ Reorder v2 accepted when:
 Reorder v2 is the economic engine.
 
 If a repeat order takes more than 1 minute for the customer, the product is not strong enough.
-> AUTHORITATIVE. Supersedes `67-PHASE-6-REORDER-SYSTEM.md`. See `/docs/00-SOURCE-OF-TRUTH.md`.
+> AUTHORITATIVE. Supersedes `67-PHASE-6-REORDER-SYSTEM-v2.md`. See `/docs/00-SOURCE-OF-TRUTH.md`.
 # Canonical phase = 7 (per doc 74).

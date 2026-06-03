@@ -46,9 +46,9 @@ Before implementing quote flow, Codex must read:
 
 ```txt
 /docs/01-BUSINESS-MODEL.md
-/docs/03-PRODUCT-STRATEGY.md
+/docs/03-PRODUCT-STRATEGY-v2.md
 /docs/04-PRICING-AND-MARGIN-MODEL.md
-/docs/12-DATABASE-SCHEMA.md
+/docs/12-DATABASE-SCHEMA-v2.md
 /docs/15-STRIPE-PAYMENT-FLOW.md
 /docs/16-ORDER-FLOW.md
 /docs/30-PRODUCT-CATALOG.md
@@ -366,7 +366,7 @@ Bitte akzeptieren Sie die Datenschutzhinweise.
 
 ## 12. Quote Request Data Model
 
-Use `QuoteRequest` model from `/docs/12-DATABASE-SCHEMA.md`.
+Use `QuoteRequest` model from `/docs/12-DATABASE-SCHEMA-v2.md`.
 
 Required conceptual fields:
 

@@ -273,7 +273,7 @@ If payment fails or customer cancels, order remains `PENDING_PAYMENT` or can lat
 
 ## 10. Payment Record Model
 
-The full schema belongs in `/docs/12-DATABASE-SCHEMA.md`.
+The full schema belongs in `/docs/12-DATABASE-SCHEMA-v2.md`.
 
 Minimum payment fields:
 

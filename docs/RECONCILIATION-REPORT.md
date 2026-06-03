@@ -20,10 +20,10 @@ Resolution rule:
 |---|---|---|---|
 | R-001 | `20-SEO-STRATEGY-2026.md`, `20-SEO-STRATEGY-2026(1).md` | Canonical filename pointed to a stub while the full strategy lived in a duplicate. | Full strategy moved into the canonical filename and the duplicate was removed. |
 | R-002 | `21-GEO-AI-SEARCH-STRATEGY.md`, `21-GEO-AI-SEARCH-STRATEGY(1).md` | Canonical filename pointed to a stub while the full strategy lived in a duplicate. | Full strategy moved into the canonical filename and the duplicate was removed. |
-| R-003 | `03-PRODUCT-STRATEGY.md`, `03-PRODUCT-STRATEGY-v2.md`, `74-...` | Version drift between v1 and v2 product strategy docs. | `03-PRODUCT-STRATEGY-v2.md` is authoritative; banners and manifest updated. |
-| R-004 | `12-DATABASE-SCHEMA.md`, `12-DATABASE-SCHEMA-v2.md`, `74-...` | Version drift between v1 and v2 schema docs. | `12-DATABASE-SCHEMA-v2.md` is authoritative; canonical status additions recorded in both schema docs. |
-| R-005 | `19-CUSTOMER-PORTAL.md`, `19-CUSTOMER-PORTAL-v2.md`, `74-...` | Version drift between v1 and v2 portal docs. | `19-CUSTOMER-PORTAL-v2.md` is authoritative; banners and manifest updated. |
-| R-006 | `67-PHASE-6-REORDER-SYSTEM.md`, `67-PHASE-6-REORDER-SYSTEM-v2.md`, `74-...` | Version drift between v1 and v2 reorder docs. | `67-PHASE-6-REORDER-SYSTEM-v2.md` is authoritative; banners and manifest updated. |
+| R-003 | `03-PRODUCT-STRATEGY-v2.md`, `03-PRODUCT-STRATEGY-v2.md`, `74-...` | Version drift between v1 and v2 product strategy docs. | `03-PRODUCT-STRATEGY-v2.md` is authoritative; banners and manifest updated. |
+| R-004 | `12-DATABASE-SCHEMA-v2.md`, `12-DATABASE-SCHEMA-v2.md`, `74-...` | Version drift between v1 and v2 schema docs. | `12-DATABASE-SCHEMA-v2.md` is authoritative; canonical status additions recorded in both schema docs. |
+| R-005 | `19-CUSTOMER-PORTAL-v2.md`, `19-CUSTOMER-PORTAL-v2.md`, `74-...` | Version drift between v1 and v2 portal docs. | `19-CUSTOMER-PORTAL-v2.md` is authoritative; banners and manifest updated. |
+| R-006 | `67-PHASE-6-REORDER-SYSTEM-v2.md`, `67-PHASE-6-REORDER-SYSTEM-v2.md`, `74-...` | Version drift between v1 and v2 reorder docs. | `67-PHASE-6-REORDER-SYSTEM-v2.md` is authoritative; banners and manifest updated. |
 | R-007 | `62..69`, `43..51`, `74-...` | Two incompatible phase-numbering schemes existed. | Canonical phase order is now the timeline in `74`; mapping table and per-file canonical phase headers were added. |
 | R-008 | `44`, `68`, `69`, `22` | `63-PHASE-2-SEO-FOUNDATION.md` was referenced but missing. | `63-PHASE-2-SEO-FOUNDATION.md` was created and the canonical phase mapping now points to it. |
 | R-009 | `74-...`, `00-SOURCE-OF-TRUTH.md` | Missing GTM docs `53/54/55/56/57` looked blocking. | They are now explicitly marked as future / not yet written and non-blocking. |

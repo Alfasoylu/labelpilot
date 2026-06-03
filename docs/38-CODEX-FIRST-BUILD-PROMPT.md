@@ -43,11 +43,11 @@ Read these files before making changes:
 ```txt
 /docs/00-PROJECT-BRIEF.md
 /docs/01-BUSINESS-MODEL.md
-/docs/03-PRODUCT-STRATEGY.md
+/docs/03-PRODUCT-STRATEGY-v2.md
 /docs/04-PRICING-AND-MARGIN-MODEL.md
 /docs/10-TECH-STACK.md
 /docs/11-ARCHITECTURE.md
-/docs/12-DATABASE-SCHEMA.md
+/docs/12-DATABASE-SCHEMA-v2.md
 /docs/13-ENVIRONMENT-VARIABLES.md
 /docs/20-SEO-STRATEGY-2026.md
 /docs/21-GEO-AI-SEARCH-STRATEGY.md

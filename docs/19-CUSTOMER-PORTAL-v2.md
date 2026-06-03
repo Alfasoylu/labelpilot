@@ -1,4 +1,4 @@
-# 19-CUSTOMER-PORTAL.md — v2
+# 19-CUSTOMER-PORTAL-v2.md — v2
 
 # Labelpilot.de — Customer Portal v2
 
@@ -503,4 +503,4 @@ The customer portal must become the customer’s label operating system.
 If the portal only shows order history, it is too weak.
 
 The portal must make repeat orders faster than manual matbaa communication.
-> AUTHORITATIVE. Supersedes `19-CUSTOMER-PORTAL.md`. See `/docs/00-SOURCE-OF-TRUTH.md`.
+> AUTHORITATIVE. Supersedes `19-CUSTOMER-PORTAL-v2.md`. See `/docs/00-SOURCE-OF-TRUTH.md`.
