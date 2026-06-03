@@ -1,4 +1,5 @@
 import { getPublicEnv } from "@/lib/env";
+import { getQuoteSourceLabel, QUOTE_SOURCE_WUNSCHFORMAT } from "@/lib/quotes/source";
 
 type TemplateResult = {
   subject: string;
@@ -272,8 +273,12 @@ export function quoteRequestOpsNotification(input: {
   productType?: string | null;
   quantity?: string | null;
   recurringNeed?: string | null;
+  source?: string | null;
   sourcePage?: string | null;
 }): TemplateResult {
+  const sourceLabel = getQuoteSourceLabel(input.source);
+  const highlightedSourceLabel =
+    input.source === QUOTE_SOURCE_WUNSCHFORMAT ? "WUNSCHFORMAT" : sourceLabel;
   const subject = "Neue B2B-Angebotsanfrage – Labelpilot.de";
   const text = [
     `Firma: ${input.companyName}`,
@@ -282,7 +287,8 @@ export function quoteRequestOpsNotification(input: {
     `Produkttyp: ${input.productType || "Nicht angegeben"}`,
     `Menge: ${input.quantity || "Nicht angegeben"}`,
     `Wiederkehrender Bedarf: ${input.recurringNeed || "Nicht angegeben"}`,
-    `Quelle: ${input.sourcePage || "Nicht angegeben"}`,
+    `Quelle: ${highlightedSourceLabel}`,
+    `Herkunftsseite: ${input.sourcePage || "Nicht angegeben"}`,
   ].join("\n");
 
   return {
@@ -298,7 +304,8 @@ export function quoteRequestOpsNotification(input: {
         <p style="margin:0 0 8px 0;"><strong>Produkttyp:</strong> ${escapeHtml(input.productType || "Nicht angegeben")}</p>
         <p style="margin:0 0 8px 0;"><strong>Menge:</strong> ${escapeHtml(input.quantity || "Nicht angegeben")}</p>
         <p style="margin:0 0 8px 0;"><strong>Wiederkehrender Bedarf:</strong> ${escapeHtml(input.recurringNeed || "Nicht angegeben")}</p>
-        <p style="margin:0;"><strong>Quelle:</strong> ${escapeHtml(input.sourcePage || "Nicht angegeben")}</p>
+        <p style="margin:0 0 8px 0;"><strong>Quelle:</strong> <strong>${escapeHtml(highlightedSourceLabel)}</strong></p>
+        <p style="margin:0;"><strong>Herkunftsseite:</strong> ${escapeHtml(input.sourcePage || "Nicht angegeben")}</p>
       `,
     }),
   };

@@ -204,6 +204,7 @@ export async function submitQuoteRequest(
     productType: values.productType,
     quantity: values.quantity,
     recurringNeed: values.recurringNeed,
+    source: normalizedSource,
     sourcePage,
   });
   const adminEmailResult = adminInbox

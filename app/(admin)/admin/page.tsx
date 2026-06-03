@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { getPrismaClient } from "@/lib/db/prisma";
+import { QUOTE_SOURCE_WUNSCHFORMAT } from "@/lib/quotes/source";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +17,13 @@ export default async function AdminDashboardPage() {
     );
   }
 
-  const [reviewCount, proofCount, productionReadyCount] = await Promise.all([
+  const [
+    reviewCount,
+    proofCount,
+    productionReadyCount,
+    totalQuoteCount,
+    wunschformatQuoteCount,
+  ] = await Promise.all([
     prisma.order.count({
       where: {
         OR: [{ status: "FILE_REVIEW" }, { status: "CORRECTION_REQUIRED" }],
@@ -30,6 +37,12 @@ export default async function AdminDashboardPage() {
     prisma.order.count({
       where: {
         status: "APPROVED_FOR_PRODUCTION",
+      },
+    }),
+    prisma.quoteRequest.count(),
+    prisma.quoteRequest.count({
+      where: {
+        source: QUOTE_SOURCE_WUNSCHFORMAT,
       },
     }),
   ]);
@@ -64,6 +77,16 @@ export default async function AdminDashboardPage() {
               className="secondary-link"
             >
               Freigaben ansehen
+            </Link>
+          </div>
+          <div className="section-card">
+            <h3>Wunschformat-Anfragen</h3>
+            <p className="price-note">{wunschformatQuoteCount} Angebotsanfragen</p>
+            <p className="field-hint">
+              {wunschformatQuoteCount} von {totalQuoteCount} Anfragen
+            </p>
+            <Link href="/admin/quotes?source=wunschformat" className="secondary-link">
+              Wunschformat ansehen
             </Link>
           </div>
         </div>
