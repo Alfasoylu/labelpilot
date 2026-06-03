@@ -390,6 +390,35 @@ export const footerLinks: FooterGroup[] = [
   },
 ];
 
+export function getSiteNavigation(customSizeEnabled: boolean) {
+  if (!customSizeEnabled) {
+    return siteNavigation;
+  }
+
+  return [
+    ...siteNavigation.slice(0, 1),
+    { label: "Wunschformat", href: "/de/wunschformat" },
+    ...siteNavigation.slice(1),
+  ];
+}
+
+export function getFooterLinks(customSizeEnabled: boolean) {
+  if (!customSizeEnabled) {
+    return footerLinks;
+  }
+
+  return footerLinks.map((group) => {
+    if (group.title !== "Produkte") {
+      return group;
+    }
+
+    return {
+      ...group,
+      links: [...group.links, { label: "Wunschformat", href: "/de/wunschformat" }],
+    };
+  });
+}
+
 const commonCommercialLinks: RelatedLink[] = [
   {
     label: "PP-Rollenetiketten",

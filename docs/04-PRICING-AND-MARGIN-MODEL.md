@@ -1297,3 +1297,8 @@ sell_gross      = sell_net * 1.19                      // DE; shipping included 
 
 ### 29.5 Founder decision
 Approve the model → (a) build admin §30A cost-input screen, (b) implement the engine in the centralized pricing module (§22), (c) gate it behind real cost params + the quote-fallback limits. The fixed 100×200 packages stay the simple default path; this engine powers the optional custom-size path.
+
+### 29.6 Build note — customer surface added 2026-06-03
+- The public route `/de/wunschformat` and the public POST endpoint `/api/custom-size/price` are now implemented as a feature-gated customer surface on top of the approved custom-size engine.
+- Default remains OFF via `NEXT_PUBLIC_FEATURE_CUSTOM_SIZE`; when OFF the page and endpoint return 404 and no public navigation link is rendered.
+- The customer response remains sanitized to `configured`, `quoteRequired`, `netPrice`, and `grossPrice`; internal cost inputs, method selection, and breakdown values stay server-only.

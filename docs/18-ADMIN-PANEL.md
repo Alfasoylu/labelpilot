@@ -49,7 +49,7 @@ Before implementing the admin panel, Codex must read:
 /docs/00-PROJECT-BRIEF.md
 /docs/10-TECH-STACK.md
 /docs/11-ARCHITECTURE.md
-/docs/12-DATABASE-SCHEMA.md
+/docs/12-DATABASE-SCHEMA-v2.md
 /docs/14-AUTH-AND-ACCOUNTS.md
 /docs/15-STRIPE-PAYMENT-FLOW.md
 /docs/16-ORDER-FLOW.md
@@ -1032,6 +1032,11 @@ Requirements:
 3. **Audit + versioning:** every change logged (who / when / old → new); previous values recoverable; a change must **never** silently re-price already-placed orders.
 4. ADMIN role only; values stored server-side; never sent to the public client except as a single computed price.
 5. No destructive reset; explicit Save with confirmation; show "last updated by / at".
+
+Build note — customer surface added 2026-06-03:
+- The operator-managed custom-size pricing inputs in §30A now power a feature-gated public customer surface at `/de/wunschformat`.
+- The public surface stays OFF until `NEXT_PUBLIC_FEATURE_CUSTOM_SIZE=true` and only produces customer-safe sell prices when the `PricingMaterialCost` row and the `PricingSettings(id="default")` row exist.
+- Admin cost parameters, print-method choice, and detailed cost breakdown remain internal-only and are not exposed in the public response.
 
 ---
 

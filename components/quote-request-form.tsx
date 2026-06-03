@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 
 import { SourceTrackingFields } from "@/components/source-tracking-fields";
 import { trackLeadEvent } from "@/lib/analytics/browser";
@@ -14,10 +14,10 @@ const initialState: QuoteFormState = {
   message: "",
 };
 
-const countries = ["Deutschland", "Österreich", "Schweiz", "Andere"];
+const countries = ["Deutschland", "Oesterreich", "Schweiz", "Andere"];
 const industries = [
   "Lebensmittel",
-  "Getränke",
+  "Getraenke",
   "Supplemente",
   "Kosmetik",
   "Private Label",
@@ -30,9 +30,21 @@ const productTypes = [
   "Thermo-Versandetiketten",
   "Noch unsicher",
 ];
-const sizes = ["100×200 mm", "100×150 mm", "100×100 mm", "Andere"];
+const sizes = ["100x200 mm", "100x150 mm", "100x100 mm", "Andere"];
 const materials = ["Opakes PP", "Transparentes PP", "Thermo", "Noch unsicher"];
 const quantities = ["1.000", "2.000", "5.000", "10.000", "20.000+"];
+
+function getDefaultOption(
+  value: string | null,
+  options: string[],
+  fallback: string,
+) {
+  if (!value) {
+    return fallback;
+  }
+
+  return options.includes(value) ? value : fallback;
+}
 
 export function QuoteRequestForm() {
   const [state, formAction, pending] = useActionState(
@@ -40,9 +52,39 @@ export function QuoteRequestForm() {
     initialState,
   );
   const trackedRef = useRef(false);
+  const [defaults, setDefaults] = useState({
+    productType: "PP-Rollenetiketten",
+    labelSize: "100x200 mm",
+    material: "Opakes PP",
+    quantity: "5.000",
+    notes: "",
+  });
 
   useEffect(() => {
-    if ((state.status === "success" || state.status === "warning") && !trackedRef.current) {
+    const params = new URLSearchParams(window.location.search);
+
+    setDefaults({
+      productType: getDefaultOption(
+        params.get("productType"),
+        productTypes,
+        "PP-Rollenetiketten",
+      ),
+      labelSize: params.get("labelSize") || "100x200 mm",
+      material: getDefaultOption(
+        params.get("material"),
+        materials,
+        "Opakes PP",
+      ),
+      quantity: getDefaultOption(params.get("quantity"), quantities, "5.000"),
+      notes: params.get("notes") || "",
+    });
+  }, []);
+
+  useEffect(() => {
+    if (
+      (state.status === "success" || state.status === "warning") &&
+      !trackedRef.current
+    ) {
       trackLeadEvent("quote_form_submit", {
         status: state.status,
       });
@@ -55,13 +97,17 @@ export function QuoteRequestForm() {
   }, [state.status]);
 
   return (
-    <form action={formAction} className="quote-form">
+    <form
+      key={`${defaults.productType}|${defaults.labelSize}|${defaults.material}|${defaults.quantity}|${defaults.notes}`}
+      action={formAction}
+      className="quote-form"
+    >
       <SourceTrackingFields />
       <div>
         <h2>B2B-Angebot anfordern</h2>
         <p className="field-hint">
-          Je genauer Ihre Angaben zu Material, Größe, Menge und Verpackung
-          sind, desto schneller kann der nächste Schritt vorbereitet werden.
+          Je genauer Ihre Angaben zu Material, Groesse, Menge und Verpackung sind,
+          desto schneller kann der naechste Schritt vorbereitet werden.
         </p>
       </div>
 
@@ -118,7 +164,7 @@ export function QuoteRequestForm() {
           <select
             id="productType"
             name="productType"
-            defaultValue="PP-Rollenetiketten"
+            defaultValue={defaults.productType}
           >
             {productTypes.map((productType) => (
               <option key={productType} value={productType}>
@@ -128,8 +174,8 @@ export function QuoteRequestForm() {
           </select>
         </div>
         <div className="field">
-          <label htmlFor="labelSize">Etikettengröße</label>
-          <select id="labelSize" name="labelSize" defaultValue="100×200 mm">
+          <label htmlFor="labelSize">Etikettengroesse</label>
+          <select id="labelSize" name="labelSize" defaultValue={defaults.labelSize}>
             {sizes.map((size) => (
               <option key={size} value={size}>
                 {size}
@@ -139,7 +185,7 @@ export function QuoteRequestForm() {
         </div>
         <div className="field">
           <label htmlFor="material">Material</label>
-          <select id="material" name="material" defaultValue="Opakes PP">
+          <select id="material" name="material" defaultValue={defaults.material}>
             {materials.map((material) => (
               <option key={material} value={material}>
                 {material}
@@ -149,7 +195,7 @@ export function QuoteRequestForm() {
         </div>
         <div className="field">
           <label htmlFor="quantity">Menge</label>
-          <select id="quantity" name="quantity" defaultValue="5.000">
+          <select id="quantity" name="quantity" defaultValue={defaults.quantity}>
             {quantities.map((quantity) => (
               <option key={quantity} value={quantity}>
                 {quantity}
@@ -162,9 +208,9 @@ export function QuoteRequestForm() {
           <select
             id="recurringNeed"
             name="recurringNeed"
-            defaultValue="Ja, regelmäßig"
+            defaultValue="Ja, regelmaessig"
           >
-            <option value="Ja, regelmäßig">Ja, regelmäßig</option>
+            <option value="Ja, regelmaessig">Ja, regelmaessig</option>
             <option value="Gelegentlich">Gelegentlich</option>
             <option value="Noch offen">Noch offen</option>
           </select>
@@ -194,14 +240,15 @@ export function QuoteRequestForm() {
           <textarea
             id="notes"
             name="notes"
-            placeholder="Verpackung, Anwendung, Rollenanzahl, gewünschte Optik oder offene Fragen."
+            defaultValue={defaults.notes}
+            placeholder="Verpackung, Anwendung, Rollenanzahl, gewuenschte Optik oder offene Fragen."
           />
         </div>
         <div className="field-full checkbox-field">
           <input id="consent" name="consent" type="checkbox" value="yes" required />
           <label htmlFor="consent">
-            Ich habe die Datenschutzerklärung gelesen und stimme zu, dass
-            meine Angaben zur Bearbeitung meiner Anfrage verwendet werden.
+            Ich habe die Datenschutzerklaerung gelesen und stimme zu, dass meine
+            Angaben zur Bearbeitung meiner Anfrage verwendet werden.
           </label>
         </div>
       </div>
@@ -217,8 +264,8 @@ export function QuoteRequestForm() {
       ) : null}
 
       <p className="field-hint">
-        Druckdateien können Sie später senden. Für ein erstes Angebot reichen
-        Angaben zu Material, Größe, Menge und Verpackung.
+        Druckdateien koennen Sie spaeter senden. Fuer ein erstes Angebot reichen
+        Angaben zu Material, Groesse, Menge und Verpackung.
       </p>
     </form>
   );

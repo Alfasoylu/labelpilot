@@ -66,6 +66,11 @@ export const metadataMap: Record<string, MetadataEntry> = {
     description:
       "Fordern Sie eine Labelpilot Musterbox an und vergleichen Sie opake PP-Etiketten, transparente PP-Etiketten und Thermoetiketten.",
   },
+  "/de/wunschformat": {
+    title: "Wunschformat fuer PP-Rollenetiketten berechnen | Labelpilot.de",
+    description:
+      "Berechnen Sie einen Richtpreis fuer PP-Rollenetiketten im Wunschformat. Groessere Formate und Mengen laufen sauber ueber das Angebotsmodell.",
+  },
   "/de/angebot-anfordern": {
     title: "B2B-Angebot für Etiketten anfordern | Labelpilot.de",
     description:
