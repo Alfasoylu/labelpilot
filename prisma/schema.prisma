@@ -145,12 +145,14 @@ model QuoteRequest {
   hasArtwork         Boolean?
   notes              String?
   adminNote          String?
+  source             String?
   sourcePage         String?
   convertedOrderId   String?
   createdAt          DateTime    @default(now())
   updatedAt          DateTime    @updatedAt
 
   @@index([status])
+  @@index([source])
   @@index([email])
   @@index([createdAt])
 }

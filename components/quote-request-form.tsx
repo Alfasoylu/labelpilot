@@ -58,6 +58,7 @@ export function QuoteRequestForm() {
     material: "Opakes PP",
     quantity: "5.000",
     notes: "",
+    source: "",
   });
 
   useEffect(() => {
@@ -77,6 +78,7 @@ export function QuoteRequestForm() {
       ),
       quantity: getDefaultOption(params.get("quantity"), quantities, "5.000"),
       notes: params.get("notes") || "",
+      source: params.get("source") || "",
     });
   }, []);
 
@@ -87,6 +89,7 @@ export function QuoteRequestForm() {
     ) {
       trackLeadEvent("quote_form_submit", {
         status: state.status,
+        source: defaults.source || undefined,
       });
       trackedRef.current = true;
     }
@@ -94,15 +97,16 @@ export function QuoteRequestForm() {
     if (state.status === "idle" || state.status === "error") {
       trackedRef.current = false;
     }
-  }, [state.status]);
+  }, [defaults.source, state.status]);
 
   return (
     <form
-      key={`${defaults.productType}|${defaults.labelSize}|${defaults.material}|${defaults.quantity}|${defaults.notes}`}
+      key={`${defaults.productType}|${defaults.labelSize}|${defaults.material}|${defaults.quantity}|${defaults.notes}|${defaults.source}`}
       action={formAction}
       className="quote-form"
     >
       <SourceTrackingFields />
+      <input type="hidden" name="source" value={defaults.source} readOnly />
       <div>
         <h2>B2B-Angebot anfordern</h2>
         <p className="field-hint">

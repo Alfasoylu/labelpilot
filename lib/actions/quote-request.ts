@@ -10,6 +10,10 @@ import {
 } from "@/lib/email/templates/lifecycle";
 import { getServerEnv } from "@/lib/env";
 import { computeLeadScore } from "@/lib/leads/scoring";
+import {
+  normalizeQuoteSource,
+  QUOTE_SOURCE_WUNSCHFORMAT,
+} from "@/lib/quotes/source";
 
 const quoteRequestSchema = z.object({
   companyName: z.string().trim().min(1, "Bitte geben Sie den Firmennamen ein."),
@@ -27,6 +31,7 @@ const quoteRequestSchema = z.object({
   hasArtwork: z.enum(["ja", "nein", "teilweise"]),
   targetDeliveryDate: z.string().trim().optional(),
   notes: z.string().trim().optional(),
+  source: z.string().trim().optional(),
   utmSource: z.string().trim().optional(),
   utmMedium: z.string().trim().optional(),
   utmCampaign: z.string().trim().optional(),
@@ -65,6 +70,7 @@ export async function submitQuoteRequest(
     hasArtwork: formData.get("hasArtwork"),
     targetDeliveryDate: formData.get("targetDeliveryDate"),
     notes: formData.get("notes"),
+    source: formData.get("source"),
     utmSource: formData.get("utmSource"),
     utmMedium: formData.get("utmMedium"),
     utmCampaign: formData.get("utmCampaign"),
@@ -86,6 +92,7 @@ export async function submitQuoteRequest(
   const values = parsed.data;
   const prisma = getPrismaClient();
   const warnings: string[] = [];
+  const normalizedSource = normalizeQuoteSource(values.source);
   const artworkValue =
     values.hasArtwork === "ja" ? true : values.hasArtwork === "nein" ? false : null;
   const targetDeliveryDate = values.targetDeliveryDate
@@ -101,6 +108,14 @@ export async function submitQuoteRequest(
     hasArtwork: artworkValue,
     notes: values.notes,
   });
+  const sourcePage =
+    normalizedSource === QUOTE_SOURCE_WUNSCHFORMAT
+      ? "/de/wunschformat"
+      : values.sourcePage || "/de/angebot-anfordern";
+  const leadSourceType =
+    normalizedSource === QUOTE_SOURCE_WUNSCHFORMAT
+      ? QUOTE_SOURCE_WUNSCHFORMAT
+      : "public_quote_form";
 
   if (prisma) {
     try {
@@ -124,8 +139,8 @@ export async function submitQuoteRequest(
           hasArtwork: artworkValue,
           targetDeliveryDate,
           notes: values.notes || null,
-          sourceType: "public_quote_form",
-          sourcePage: values.sourcePage || "/de/angebot-anfordern",
+          sourceType: leadSourceType,
+          sourcePage,
           landingPage: values.landingPage || "/de/angebot-anfordern",
           utmSource: values.utmSource || null,
           utmMedium: values.utmMedium || null,
@@ -136,25 +151,28 @@ export async function submitQuoteRequest(
         },
       });
 
+      const quoteRequestData = {
+        email: values.email,
+        companyName: values.companyName,
+        contactName: values.contactName || null,
+        phone: values.phone || null,
+        country: values.country,
+        website: values.website || null,
+        industry: values.industry || null,
+        productType: values.productType || null,
+        labelSize: values.labelSize || null,
+        material: values.material || null,
+        quantity: values.quantity,
+        recurringNeed: values.recurringNeed || null,
+        hasArtwork: artworkValue,
+        targetDeliveryDate,
+        notes: values.notes || null,
+        source: normalizedSource,
+        sourcePage,
+      };
+
       await prisma.quoteRequest.create({
-        data: {
-          email: values.email,
-          companyName: values.companyName,
-          contactName: values.contactName || null,
-          phone: values.phone || null,
-          country: values.country,
-          website: values.website || null,
-          industry: values.industry || null,
-          productType: values.productType || null,
-          labelSize: values.labelSize || null,
-          material: values.material || null,
-          quantity: values.quantity,
-          recurringNeed: values.recurringNeed || null,
-          hasArtwork: artworkValue,
-          targetDeliveryDate,
-          notes: values.notes || null,
-          sourcePage: values.sourcePage || "/de/angebot-anfordern",
-        },
+        data: quoteRequestData as never,
       });
     } catch (error) {
       console.error("[quote-request] DB write failed:", error);
@@ -186,7 +204,7 @@ export async function submitQuoteRequest(
     productType: values.productType,
     quantity: values.quantity,
     recurringNeed: values.recurringNeed,
-    sourcePage: values.sourcePage || "/de/angebot-anfordern",
+    sourcePage,
   });
   const adminEmailResult = adminInbox
     ? await sendEmail({

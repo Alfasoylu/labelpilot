@@ -1,4 +1,8 @@
-import { formatLeadDate, getLeadStatusLabel } from "@/lib/admin/leads";
+import {
+  formatLeadDate,
+  getLeadSourceTypeLabel,
+  getLeadStatusLabel,
+} from "@/lib/admin/leads";
 import { getPrismaClient } from "@/lib/db/prisma";
 
 export const dynamic = "force-dynamic";
@@ -39,8 +43,12 @@ export default async function AdminLeadDetailPage({ params }: LeadDetailPageProp
       <article className="surface-card">
         <h2>{lead.companyName || lead.contactName || lead.email}</h2>
         <p className="price-note">
-          {lead.type} · {getLeadStatusLabel(lead.status)} · Score {lead.score} ({lead.quality ?? "n/a"})
+          {lead.type} · {getLeadStatusLabel(lead.status)} · Score {lead.score} (
+          {lead.quality ?? "n/a"})
         </p>
+        {lead.sourceType === "WUNSCHFORMAT" ? (
+          <p className="form-status success">Wunschformat</p>
+        ) : null}
         <p className="field-hint">Eingang: {formatLeadDate(lead.createdAt)}</p>
       </article>
 
@@ -71,7 +79,10 @@ export default async function AdminLeadDetailPage({ params }: LeadDetailPageProp
                 type="datetime-local"
                 defaultValue={
                   lead.nextFollowUpAt
-                    ? new Date(lead.nextFollowUpAt.getTime() - lead.nextFollowUpAt.getTimezoneOffset() * 60000)
+                    ? new Date(
+                        lead.nextFollowUpAt.getTime() -
+                          lead.nextFollowUpAt.getTimezoneOffset() * 60000,
+                      )
                         .toISOString()
                         .slice(0, 16)
                     : ""
@@ -89,7 +100,9 @@ export default async function AdminLeadDetailPage({ params }: LeadDetailPageProp
             </div>
           </div>
           <div className="inline-actions">
-            <button type="submit" className="cta-button">Lead speichern</button>
+            <button type="submit" className="cta-button">
+              Lead speichern
+            </button>
           </div>
         </form>
       </article>
@@ -105,7 +118,7 @@ export default async function AdminLeadDetailPage({ params }: LeadDetailPageProp
           <li>Produkttyp: {lead.productType || "Nicht angegeben"}</li>
           <li>Menge: {lead.quantity || "Nicht angegeben"}</li>
           <li>Wiederkehrender Bedarf: {lead.recurringNeed || "Nicht angegeben"}</li>
-          <li>Quelle: {lead.sourceType || "Nicht angegeben"}</li>
+          <li>Quelle: {getLeadSourceTypeLabel(lead.sourceType)}</li>
           <li>Landing Page: {lead.landingPage || "Nicht angegeben"}</li>
           <li>Source Page: {lead.sourcePage || "Nicht angegeben"}</li>
           <li>Referrer: {lead.referrer || "Nicht angegeben"}</li>

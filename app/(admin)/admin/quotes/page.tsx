@@ -1,13 +1,20 @@
 import Link from "next/link";
 
-import { buildQuoteWhere, formatQuoteDate, getQuoteStatusLabel } from "@/lib/admin/quotes";
+import {
+  buildQuoteWhere,
+  formatQuoteDate,
+  getQuoteSourceFilterValue,
+  getQuoteStatusLabel,
+} from "@/lib/admin/quotes";
 import { getPrismaClient } from "@/lib/db/prisma";
+import { getQuoteSourceLabel } from "@/lib/quotes/source";
 
 export const dynamic = "force-dynamic";
 
 type QuoteListPageProps = {
   searchParams: Promise<{
     status?: string;
+    source?: string;
     q?: string;
   }>;
 };
@@ -21,6 +28,7 @@ type QuoteListItem = {
   productType: string | null;
   quantity: string | null;
   status: string;
+  source: string | null;
   createdAt: Date;
 };
 
@@ -41,7 +49,7 @@ export default async function AdminQuotesPage({ searchParams }: QuoteListPagePro
     where: buildQuoteWhere(filters),
     orderBy: [{ createdAt: "desc" }],
     take: 100,
-  })) as QuoteListItem[];
+  })) as unknown as QuoteListItem[];
 
   return (
     <section className="section-stack">
@@ -67,9 +75,25 @@ export default async function AdminQuotesPage({ searchParams }: QuoteListPagePro
                 <option value="CONVERTED_TO_ORDER">In Bestellung umgewandelt</option>
               </select>
             </div>
+            <div>
+              <label htmlFor="source">Quelle</label>
+              <select
+                id="source"
+                name="source"
+                defaultValue={getQuoteSourceFilterValue(filters.source)}
+              >
+                <option value="all">Alle</option>
+                <option value="wunschformat">Wunschformat</option>
+              </select>
+            </div>
           </div>
           <div className="inline-actions">
-            <button type="submit" className="cta-button">Filtern</button>
+            <button type="submit" className="cta-button">
+              Filtern
+            </button>
+            <Link href="/admin/quotes?source=wunschformat" className="secondary-link">
+              Nur Wunschformat
+            </Link>
           </div>
         </form>
       </article>
@@ -87,7 +111,7 @@ export default async function AdminQuotesPage({ searchParams }: QuoteListPagePro
                   {getQuoteStatusLabel(quote.status)} · {formatQuoteDate(quote.createdAt)}
                 </p>
                 <p className="field-hint">
-                  {quote.email}
+                  {getQuoteSourceLabel(quote.source)} · {quote.email}
                   {quote.quantity ? ` · ${quote.quantity}` : ""}
                   {quote.productType ? ` · ${quote.productType}` : ""}
                   {quote.industry ? ` · ${quote.industry}` : ""}

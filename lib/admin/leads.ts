@@ -32,9 +32,18 @@ export function getLeadStatusLabel(status: string) {
   }
 }
 
+export function getLeadSourceTypeFilterValue(input: string | null | undefined) {
+  return input === "wunschformat" ? "wunschformat" : "all";
+}
+
+export function getLeadSourceTypeLabel(input: string | null | undefined) {
+  return input === "WUNSCHFORMAT" ? "Wunschformat" : input || "Nicht angegeben";
+}
+
 export function buildLeadWhere(input: {
   status?: string;
   type?: string;
+  sourceType?: string;
   q?: string;
 }) {
   const where: Record<string, unknown> = {};
@@ -45,6 +54,10 @@ export function buildLeadWhere(input: {
 
   if (input.type && input.type !== "all") {
     where.type = input.type;
+  }
+
+  if (input.sourceType === "wunschformat") {
+    where.sourceType = "WUNSCHFORMAT";
   }
 
   if (input.q) {

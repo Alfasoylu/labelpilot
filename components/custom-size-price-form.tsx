@@ -45,6 +45,7 @@ export function CustomSizePriceForm() {
 
   const quoteHref = useMemo(() => {
     const params = new URLSearchParams({
+      source: "wunschformat",
       productType: "PP-Rollenetiketten",
       labelSize: `${widthMm || "0"} x ${heightMm || "0"} mm`,
       material: materialLabels[materialKey],

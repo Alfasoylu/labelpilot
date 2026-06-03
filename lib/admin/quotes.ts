@@ -28,14 +28,23 @@ export function getQuoteStatusLabel(status: string) {
   }
 }
 
+export function getQuoteSourceFilterValue(input: string | null | undefined) {
+  return input === "wunschformat" ? "wunschformat" : "all";
+}
+
 export function buildQuoteWhere(input: {
   status?: string;
+  source?: string;
   q?: string;
 }) {
   const where: Record<string, unknown> = {};
 
   if (input.status && input.status !== "all") {
     where.status = input.status;
+  }
+
+  if (input.source === "wunschformat") {
+    where.source = "WUNSCHFORMAT";
   }
 
   if (input.q) {

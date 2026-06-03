@@ -1,5 +1,9 @@
 import { formatQuoteDate, getQuoteStatusLabel } from "@/lib/admin/quotes";
 import { getPrismaClient } from "@/lib/db/prisma";
+import {
+  getQuoteSourceLabel,
+  QUOTE_SOURCE_WUNSCHFORMAT,
+} from "@/lib/quotes/source";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +15,31 @@ type QuoteDetailPageProps = {
     message?: string;
     error?: string;
   }>;
+};
+
+type QuoteDetail = {
+  id: string;
+  companyName: string;
+  contactName: string | null;
+  email: string;
+  phone: string | null;
+  country: string;
+  website: string | null;
+  industry: string | null;
+  productType: string | null;
+  labelSize: string | null;
+  material: string | null;
+  quantity: string | null;
+  recurringNeed: string | null;
+  targetDeliveryDate: Date | null;
+  hasArtwork: boolean | null;
+  notes: string | null;
+  adminNote: string | null;
+  source: string | null;
+  sourcePage: string | null;
+  convertedOrderId: string | null;
+  status: string;
+  createdAt: Date;
 };
 
 export default async function AdminQuoteDetailPage({
@@ -30,9 +59,9 @@ export default async function AdminQuoteDetailPage({
 
   const { quoteId } = await params;
   const feedback = await searchParams;
-  const quote = await prisma.quoteRequest.findUnique({
+  const quote = (await prisma.quoteRequest.findUnique({
     where: { id: quoteId },
-  });
+  })) as QuoteDetail | null;
 
   if (!quote) {
     return (
@@ -49,9 +78,23 @@ export default async function AdminQuoteDetailPage({
         <p className="price-note">
           {getQuoteStatusLabel(quote.status)} · {formatQuoteDate(quote.createdAt)}
         </p>
+        {quote.source === QUOTE_SOURCE_WUNSCHFORMAT ? (
+          <p className="form-status success">Wunschformat-Anfrage</p>
+        ) : null}
         {feedback.message ? <p className="form-status success">{feedback.message}</p> : null}
         {feedback.error ? <p className="form-status error">{feedback.error}</p> : null}
       </article>
+
+      {quote.source === QUOTE_SOURCE_WUNSCHFORMAT ? (
+        <article className="surface-card">
+          <h2>Wunschformat-Kontext</h2>
+          <ul className="simple-list">
+            <li>Format: {quote.labelSize || "Nicht angegeben"}</li>
+            <li>Material: {quote.material || "Nicht angegeben"}</li>
+            <li>Menge: {quote.quantity || "Nicht angegeben"}</li>
+          </ul>
+        </article>
+      ) : null}
 
       <article className="surface-card">
         <h2>Status und Bearbeitung</h2>
@@ -82,7 +125,9 @@ export default async function AdminQuoteDetailPage({
             </div>
           </div>
           <div className="inline-actions">
-            <button type="submit" className="cta-button">Anfrage speichern</button>
+            <button type="submit" className="cta-button">
+              Anfrage speichern
+            </button>
           </div>
         </form>
       </article>
@@ -102,8 +147,15 @@ export default async function AdminQuoteDetailPage({
           <li>Material: {quote.material || "Nicht angegeben"}</li>
           <li>Menge: {quote.quantity || "Nicht angegeben"}</li>
           <li>Wiederkehrender Bedarf: {quote.recurringNeed || "Nicht angegeben"}</li>
-          <li>Druckdatei vorhanden: {quote.hasArtwork == null ? "Nicht angegeben" : quote.hasArtwork ? "Ja" : "Nein"}</li>
-          <li>Ziel-Liefertermin: {quote.targetDeliveryDate ? formatQuoteDate(quote.targetDeliveryDate) : "Nicht angegeben"}</li>
+          <li>
+            Druckdatei vorhanden:{" "}
+            {quote.hasArtwork == null ? "Nicht angegeben" : quote.hasArtwork ? "Ja" : "Nein"}
+          </li>
+          <li>
+            Ziel-Liefertermin:{" "}
+            {quote.targetDeliveryDate ? formatQuoteDate(quote.targetDeliveryDate) : "Nicht angegeben"}
+          </li>
+          <li>Marker: {getQuoteSourceLabel(quote.source)}</li>
           <li>Quelle: {quote.sourcePage || "Nicht angegeben"}</li>
           <li>Umgewandelte Bestellung: {quote.convertedOrderId || "Noch keine"}</li>
         </ul>
