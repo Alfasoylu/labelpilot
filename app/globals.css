@@ -1720,20 +1720,26 @@ th {
   overflow: hidden;
 }
 
+/* Frames are scrubbed imperatively (opacity + scale set per rAF from
+   scroll position) — no CSS transition here, the scroll IS the easing. */
 .lj-frame {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   opacity: 0;
-  transform: scale(1.02);
-  transition: opacity 0.7s ease, transform 1.2s ease;
+  transform: scale(1.03);
+  will-change: opacity, transform;
 }
 
-.lj-frame.is-active {
+/* Before JS hydrates the scrubber, show the first stage (no blank flash). */
+.lj-frame:first-child {
   opacity: 1;
   transform: scale(1);
+}
+
+.lj-frame__img {
+  object-fit: contain;
 }
 
 .lj-caption {
@@ -1781,25 +1787,78 @@ th {
   }
 }
 
-.lj-rail {
+/* Scrubbed progress bar (fill width = scroll progress) */
+.lj-bar {
+  position: relative;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--line-strong);
+  margin: 18px 0 4px;
+  overflow: hidden;
+}
+
+.lj-bar__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--lj-progress, 0) * 100%);
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+/* Clickable / keyboard step ticks */
+.lj-ticks {
   list-style: none;
   display: flex;
   gap: 8px;
-  margin: 18px 0 0;
+  margin: 6px 0 0;
   padding: 0;
 }
 
-.lj-rail li {
+.lj-tick {
+  display: block;
   width: 26px;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--line-strong);
-  transition: background 0.4s ease, width 0.4s ease;
+  height: 10px;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 6px;
 }
 
-.lj-rail li.is-active {
-  width: 40px;
+.lj-tick::before {
+  content: "";
+  display: block;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--line-strong);
+  transition: background 0.35s ease, transform 0.35s ease;
+}
+
+.lj-tick:hover::before {
+  background: var(--accent-soft);
+}
+
+.lj-tick.is-active::before {
   background: var(--accent);
+  transform: scaleY(1.6);
+}
+
+.lj-tick:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Screen-reader-only narrative (interactive stage is decorative) */
+.lj-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* --- Static fallback (reduced-motion / no-JS) --- */
@@ -1889,6 +1948,31 @@ th {
   color: var(--accent);
 }
 
+/* Staggered reveal — only after JS "arms" it, so no-JS keeps tiles visible. */
+.lj-sector.is-armed {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.lj-sector.is-armed.is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.lj-sector.is-armed.is-in:nth-child(2) {
+  transition-delay: 0.08s;
+}
+.lj-sector.is-armed.is-in:nth-child(3) {
+  transition-delay: 0.16s;
+}
+.lj-sector.is-armed.is-in:nth-child(4) {
+  transition-delay: 0.24s;
+}
+.lj-sector.is-armed.is-in:nth-child(5) {
+  transition-delay: 0.32s;
+}
+
 /* --- Responsive --- */
 @media (max-width: 900px) {
   .lj-sticky {
@@ -1921,11 +2005,16 @@ th {
 
 @media (prefers-reduced-motion: reduce) {
   .lj-frame,
-  .lj-rail li {
+  .lj-tick::before,
+  .lj-sector.is-armed.is-in {
     transition: none;
   }
   .lj-caption__title,
   .lj-caption__body {
     animation: none;
+  }
+  .lj-sector.is-armed {
+    opacity: 1;
+    transform: none;
   }
 }

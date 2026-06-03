@@ -88,6 +88,7 @@ Visual-first, asymmetric, calm — not the same symmetric grid every section. 2-
 - Borders only for structure: spec/comparison tables (horizontal rules, `--line`), forms, technical specs.
 - Recommended pricing card (Growth): warm tint + **brass ring** (`0 0 0 1px rgba(176,138,69,.38)`) + `--shadow-float` + `scale(1.03)` on desktop; others calmer with secondary CTA.
 - Hover: `duration-500 ease-out`, ≤ `-translate-y-0.5`, image scale ≤1.025, minimal shadow lift. No animation library (no framer-motion); CSS only; respect `prefers-reduced-motion`. Premium underline-grow link micro-interaction allowed.
+- **Single approved exception:** exactly one scroll-driven signature section sitewide — the homepage **"Label Journey"** (SoT #17, spec `79-AWARD-WINNING-LABEL-JOURNEY-SCROLL.md`) — may exceed this ceiling, under its mandatory guardrails (CSS/native only, reduced-motion + no-JS static fallback, `transform`/`opacity` only, LCP-safe, on-brand, one section). Everywhere else this micro-interaction ceiling is binding; a second motion feature needs a new founder decision.
 
 ---
 
