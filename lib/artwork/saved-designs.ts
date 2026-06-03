@@ -40,7 +40,7 @@ function buildAccessibleStoredDesignWhere(customerEmail: string) {
         },
       },
     ],
-  } as const;
+  };
 }
 
 export async function getCustomerAccessContext(

@@ -82,6 +82,13 @@ export async function POST(
     );
   }
 
+  if (!order || !proofFile) {
+    return NextResponse.json(
+      { error: "Bestellung oder Proof wurde nicht gefunden." },
+      { status: 404 },
+    );
+  }
+
   const ipAddress = getApprovalIp(request);
 
   const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {

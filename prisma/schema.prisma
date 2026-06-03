@@ -266,6 +266,7 @@ model RefillPrediction {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
   order                Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  reminders            ReorderReminder[]
 
   @@index([orderId])
   @@index([sourceDesignId])
