@@ -210,6 +210,12 @@ model Order {
   quantity                Int
   packageId               String
   amountCents             Int
+  designServiceCents      Int?
+  physicalProofCents      Int?
+  expressCents            Int?
+  extraDesignCount        Int                @default(0)
+  extraDesignCents        Int?
+  addonsTotalCents        Int?
   currency                String             @default("EUR")
   customerEmail           String
   customerName            String?

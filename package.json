@@ -12,6 +12,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test:pricing-engine": "node --experimental-strip-types scripts/test-custom-size-pricing.ts",
+    "test:addons": "node --experimental-strip-types scripts/test-checkout-addons.ts",
     "test:custom-size-public": "node --experimental-strip-types scripts/test-custom-size-public.ts",
     "test:quote-source": "node --experimental-strip-types scripts/test-quote-source-marker.ts",
     "test:safety": "node --experimental-strip-types scripts/test-autonomous-safety.ts && node scripts/check-language.mjs",

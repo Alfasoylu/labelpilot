@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+import { getDefaultPricingSettings, mapPricingSettingsRecord } from "@/lib/admin/pricing";
 import { findPackageByConfig, type PackageMaterial, type ProductSlug } from "@/lib/commerce/packages";
 import { createOrderNumber } from "@/lib/commerce/orders";
 import { getPrismaClient } from "@/lib/db/prisma";
+import { isAddonsEnabled } from "@/lib/pricing/addons-feature";
+import { buildCheckoutAddons } from "@/lib/pricing/checkout-addons";
 import { getCheckoutBaseUrl, getStripeServerClient } from "@/lib/stripe/server";
 
 export const runtime = "nodejs";
@@ -16,6 +19,15 @@ const checkoutPayloadSchema = z.object({
   customerEmail: z.string().email().optional(),
   customerName: z.string().min(1).max(120).optional(),
   companyName: z.string().min(1).max(160).optional(),
+  addons: z
+    .object({
+      designService: z.boolean().optional(),
+      physicalProof: z.boolean().optional(),
+      express: z.boolean().optional(),
+      extraDesignCount: z.number().int().min(0).optional(),
+      customerUploadsOwnData: z.boolean().optional(),
+    })
+    .optional(),
 });
 
 function getPackageDisplayName(productSlug: ProductSlug, material: PackageMaterial) {
@@ -64,6 +76,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unbekanntes Paket." }, { status: 400 });
     }
 
+    const addonFeatureEnabled = isAddonsEnabled();
+    const pricingSettingsRow = await prisma.pricingSettings.findUnique({
+      where: { id: "default" },
+    });
+    const pricingSettings =
+      mapPricingSettingsRecord(pricingSettingsRow) ?? getDefaultPricingSettings();
+    const addonPricing = buildCheckoutAddons({
+      featureEnabled: addonFeatureEnabled,
+      addons: parsed.data.addons,
+      baseGrossAmountCents: pkg.grossAmountCents,
+      settings: pricingSettings,
+    });
+    const totalAmountCents = pkg.grossAmountCents + addonPricing.addonsTotalCents;
+
     const orderNumber = createOrderNumber();
     const customerEmail =
       parsed.data.customerEmail ?? `${orderNumber.toLowerCase()}@pending.labelpilot.invalid`;
@@ -76,7 +102,13 @@ export async function POST(request: Request) {
         material: pkg.material,
         quantity: pkg.quantity,
         packageId: pkg.id,
-        amountCents: pkg.grossAmountCents,
+        amountCents: totalAmountCents,
+        designServiceCents: addonPricing.designServiceCents,
+        physicalProofCents: addonPricing.physicalProofCents,
+        expressCents: addonPricing.expressCents,
+        extraDesignCount: addonPricing.extraDesignCount,
+        extraDesignCents: addonPricing.extraDesignCents,
+        addonsTotalCents: addonPricing.addonsTotalCents || null,
         currency: "EUR",
         customerEmail,
         customerName: parsed.data.customerName,
@@ -122,6 +154,19 @@ export async function POST(request: Request) {
             },
           },
         },
+        ...addonPricing.lineItems
+          .filter((item) => item.grossAmountCents > 0)
+          .map((item) => ({
+          quantity: 1,
+          price_data: {
+            currency: "eur",
+            unit_amount: item.grossAmountCents,
+            product_data: {
+              name: item.name,
+              description: item.description,
+            },
+          },
+        })),
       ],
     });
 
@@ -136,7 +181,7 @@ export async function POST(request: Request) {
       data: {
         orderId: order.id,
         stripeCheckoutSessionId: session.id,
-        amountCents: pkg.grossAmountCents,
+        amountCents: totalAmountCents,
         currency: "EUR",
         status: "PENDING",
         provider: "stripe",

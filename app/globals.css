@@ -642,6 +642,13 @@ textarea {
   margin-top: 18px;
 }
 
+.checkout-addons,
+.checkout-addons__panel,
+.checkout-addons__summary {
+  display: grid;
+  gap: 12px;
+}
+
 .pricing-card__action {
   display: inline-flex;
   align-items: center;

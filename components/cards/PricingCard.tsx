@@ -1,6 +1,11 @@
+import { cache } from "react";
 import Link from "next/link";
 
+import { getDefaultPricingSettings, mapPricingSettingsRecord } from "@/lib/admin/pricing";
 import { CheckoutButton } from "@/components/checkout/CheckoutButton";
+import { getPrismaClient } from "@/lib/db/prisma";
+import type { AddonSettingsInput } from "@/lib/pricing/addons";
+import { isAddonsEnabled } from "@/lib/pricing/addons-feature";
 import type { PackageTier } from "@/lib/site-content";
 
 type PricingCardProps = {
@@ -17,7 +22,26 @@ type PricingCardProps = {
   };
 };
 
-export function PricingCard({ tier, checkoutPackage, ctaLink }: PricingCardProps) {
+const getCheckoutAddonSettings = cache(async (): Promise<AddonSettingsInput> => {
+  const prisma = getPrismaClient();
+
+  if (!prisma) {
+    return getDefaultPricingSettings();
+  }
+
+  const settingsRow = await prisma.pricingSettings.findUnique({
+    where: { id: "default" },
+  });
+
+  return mapPricingSettingsRecord(settingsRow) ?? getDefaultPricingSettings();
+});
+
+export async function PricingCard({ tier, checkoutPackage, ctaLink }: PricingCardProps) {
+  const addonSettings =
+    checkoutPackage && isAddonsEnabled()
+      ? await getCheckoutAddonSettings()
+      : undefined;
+
   return (
     <article className={`pricing-card ${tier.popular ? "popular" : ""}`}>
       {tier.badge ? <span className="badge">{tier.badge}</span> : null}
@@ -54,6 +78,7 @@ export function PricingCard({ tier, checkoutPackage, ctaLink }: PricingCardProps
             productSlug={checkoutPackage.productSlug}
             material={checkoutPackage.material}
             quantity={checkoutPackage.quantity}
+            addonSettings={addonSettings}
           />
         ) : (
           <Link href="/de/angebot-anfordern" className="pricing-card__action pricing-card__action--secondary">

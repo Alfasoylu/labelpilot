@@ -63,6 +63,12 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
     );
   }
 
+  if (typeof session.amount_total === "number" && session.amount_total !== order.amountCents) {
+    throw new Error(
+      `checkout.session.completed Gesamtbetrag stimmt nicht: Stripe ${session.amount_total} vs Bestellung ${order.amountCents}.`,
+    );
+  }
+
   const paymentIntentId =
     typeof session.payment_intent === "string"
       ? session.payment_intent
