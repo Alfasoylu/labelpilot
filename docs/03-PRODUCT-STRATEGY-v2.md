@@ -560,4 +560,4 @@ Vistaprint-like generic competition traps you
 The opportunity cost is high.
 
 The v2 direction is the correct path if the 10-year target is €100,000/month contribution.
-> AUTHORITATIVE. Supersedes `03-PRODUCT-STRATEGY-v2.md`. See `/docs/00-SOURCE-OF-TRUTH.md`.
+> AUTHORITATIVE. Supersedes the original `03-PRODUCT-STRATEGY.md` (the non-v2 predecessor, removed 2026-06-03). See `/docs/00-SOURCE-OF-TRUTH.md`.

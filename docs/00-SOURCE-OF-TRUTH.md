@@ -61,6 +61,7 @@ Related single-file authoritative docs named as high-priority by `74`:
 | Template library and canvas editor | `72-TEMPLATE-LIBRARY-AND-CANVAS-EDITOR.md` | Authoritative module doc |
 | GEO / SEO implementation tips | `73-2026-EXPERT-GEO-SEO-TIPS.md` | Authoritative advisory doc |
 | Master backlog and sequencing | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | Authoritative phase and release sequencing doc |
+| Agent review governance | `61-CLAUDE-REVIEWER-PROTOCOL.md` | Authoritative protocol for how Claude reviews/verifies Codex output before release; governs review behavior only — does not override business/product/pricing/SEO/architecture docs |
 
 ---
 
@@ -196,6 +197,7 @@ Use the following winner table when two domain docs disagree.
 | Launch and QA | `37-QA-TESTING-CHECKLIST.md`, `40-VERCEL-DEPLOYMENT-CHECKLIST.md`, `42-LAUNCH-READINESS-CHECKLIST.md` | Testing, deployment, launch criteria |
 | Repo structure | `39-REPO-SETUP-AND-FOLDER-STRUCTURE.md` | Folder/layout conventions |
 | Phase sequencing | `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` | Canonical build order |
+| Agent review governance | `61-CLAUDE-REVIEWER-PROTOCOL.md` | How Claude reviews and verifies Codex output before release; does NOT override business/product/pricing/SEO/architecture docs |
 
 ### 7.1 Explicit Winner Rules
 

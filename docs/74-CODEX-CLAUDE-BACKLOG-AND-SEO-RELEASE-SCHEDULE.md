@@ -267,6 +267,8 @@ claim tests passed without running them
 
 Claude Code is the implementation reviewer and refactor agent.
 
+**Every Codex patch must be reviewed under `61-CLAUDE-REVIEWER-PROTOCOL.md` before it can be released.** Codex output is untrusted until Claude independently verifies it (diff, file contents, command output, route/security/SEO/payment/DB checks) and issues a `PASS` / `PASS WITH RISKS` / `FAIL` verdict per that protocol. A patch is not "done" because Codex says so.
+
 Claude should:
 
 ```txt
