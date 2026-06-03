@@ -8,6 +8,7 @@ import { FaqAccordion } from "@/components/faq/FaqAccordion";
 import { Section } from "@/components/layout/Section";
 import { LegalNoticeBox } from "@/components/legal/LegalNoticeBox";
 import { BrandHero } from "@/components/sections/BrandHero";
+import { LabelJourney } from "@/components/sections/LabelJourney";
 import { ContentCta } from "@/components/sections/ContentCta";
 import { FeatureGrid } from "@/components/sections/FeatureGrid";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -315,6 +316,8 @@ export function HomePage({ page }: HomePageProps) {
             </Link>
           </div>
         </Section>
+
+        <LabelJourney />
 
         <section className="material-split">
           <div className="material-split__head section-header">

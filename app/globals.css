@@ -1670,3 +1670,262 @@ th {
 .pricing-card__specs li {
   line-height: 1.4;
 }
+
+/* ============================================================
+   LabelJourney — scroll-driven "Vom Material zum Regal"
+   Native sticky + rAF scroll progress (no animation library).
+   Hard fallback to a static, fully readable grid for
+   prefers-reduced-motion / no-JS (interactive=false on SSR).
+   ============================================================ */
+.lj {
+  display: grid;
+  gap: 8px;
+}
+
+.lj-head {
+  max-width: 720px;
+}
+
+/* --- Interactive pinned stage --- */
+.lj-track {
+  position: relative;
+}
+
+.lj-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  display: grid;
+  align-content: center;
+  overflow: hidden;
+}
+
+.lj-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: center;
+  gap: clamp(24px, 5vw, 72px);
+  width: min(calc(100% - 32px), var(--container));
+}
+
+.lj-frames {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  max-height: 76vh;
+  border-radius: var(--radius-lg);
+  background: var(--surface-alt);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.lj-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 0.7s ease, transform 1.2s ease;
+}
+
+.lj-frame.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.lj-caption {
+  display: grid;
+  gap: 12px;
+  align-content: center;
+}
+
+.lj-caption__no {
+  font-family: var(--font-mono-stack);
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.lj-caption__no span {
+  color: var(--muted);
+}
+
+.lj-caption__title {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.12;
+  color: var(--text-strong);
+  margin: 0;
+  animation: lj-rise 0.55s ease both;
+}
+
+.lj-caption__body {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 46ch;
+  margin: 0;
+  animation: lj-rise 0.7s ease both;
+}
+
+@keyframes lj-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lj-rail {
+  list-style: none;
+  display: flex;
+  gap: 8px;
+  margin: 18px 0 0;
+  padding: 0;
+}
+
+.lj-rail li {
+  width: 26px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--line-strong);
+  transition: background 0.4s ease, width 0.4s ease;
+}
+
+.lj-rail li.is-active {
+  width: 40px;
+  background: var(--accent);
+}
+
+/* --- Static fallback (reduced-motion / no-JS) --- */
+.lj-static {
+  list-style: none;
+  margin: 8px auto 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px 24px;
+}
+
+.lj-static__item {
+  display: grid;
+  gap: 14px;
+}
+
+.lj-static__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-md);
+  background: var(--surface-alt);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.lj-static__img {
+  object-fit: cover;
+}
+
+.lj-static__text h3 {
+  font-size: 1.15rem;
+  margin: 6px 0 4px;
+  color: var(--text-strong);
+}
+
+.lj-static__text p {
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* --- Sector proof grid (always visible) --- */
+.lj-sectors {
+  margin-top: 16px;
+}
+
+.lj-sectors__grid {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.lj-sector {
+  display: grid;
+  gap: 8px;
+  text-align: center;
+}
+
+.lj-sector__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-md);
+  background: var(--surface-alt);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.lj-sector__img {
+  object-fit: cover;
+}
+
+.lj-sector__label {
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.lj-sector__material {
+  font-family: var(--font-mono-stack);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .lj-sticky {
+    height: 100svh;
+  }
+  .lj-stage {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .lj-frames {
+    max-height: 48vh;
+    aspect-ratio: 4 / 3;
+  }
+  .lj-caption__body {
+    font-size: 1rem;
+  }
+  .lj-static {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .lj-sectors__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .lj-static {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lj-frame,
+  .lj-rail li {
+    transition: none;
+  }
+  .lj-caption__title,
+  .lj-caption__body {
+    animation: none;
+  }
+}
