@@ -247,9 +247,11 @@ export function LabelJourney() {
                       src={step.src}
                       alt=""
                       fill
-                      priority={index < 2}
                       sizes="(max-width: 900px) 88vw, 540px"
                       className="lj-frame__img"
+                      {...(index === 0
+                        ? { priority: true }
+                        : { loading: "eager" as const })}
                     />
                   </div>
                 ))}
