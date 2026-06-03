@@ -88,6 +88,44 @@ export default async function AdminOrderDetailPage({
   const correctionNote = order.statusEvents.find(
     (event: (typeof order.statusEvents)[number]) => event.status === "CORRECTION_REQUIRED",
   )?.note;
+  const addonItems: Array<{ label: string; value: string }> = [];
+
+  if (order.designServiceCents != null) {
+    addonItems.push({
+      label: "Designservice",
+      value:
+        order.designServiceCents === 0
+          ? "kostenlos"
+          : `${formatCurrencyFromCents(order.designServiceCents, order.currency)} brutto`,
+    });
+  }
+
+  if (order.physicalProofCents != null) {
+    addonItems.push({
+      label: "Physischer Andruck",
+      value: `${formatCurrencyFromCents(order.physicalProofCents, order.currency)} brutto`,
+    });
+  }
+
+  if (order.expressCents != null) {
+    addonItems.push({
+      label: "Express",
+      value: `${formatCurrencyFromCents(order.expressCents, order.currency)} brutto`,
+    });
+  }
+
+  if (order.extraDesignCount > 0) {
+    addonItems.push({
+      label: `${order.extraDesignCount} x Zusatzdesign`,
+      value:
+        order.extraDesignCents != null
+          ? `${formatCurrencyFromCents(order.extraDesignCents, order.currency)} brutto`
+          : "Nicht gesetzt",
+    });
+  }
+
+  const hasAddons =
+    addonItems.length > 0 || order.addonsTotalCents != null;
 
   return (
     <section className="section-stack">
@@ -138,6 +176,27 @@ export default async function AdminOrderDetailPage({
           </ul>
         </article>
       </div>
+
+      <article className="surface-card">
+        <h2>Zusatzleistungen</h2>
+        {hasAddons ? (
+          <ul className="simple-list">
+            {addonItems.map((item) => (
+              <li key={item.label}>
+                {item.label}: {item.value}
+              </li>
+            ))}
+            {order.addonsTotalCents != null ? (
+              <li>
+                Zusatzleistungen gesamt:{" "}
+                {formatCurrencyFromCents(order.addonsTotalCents, order.currency)} brutto
+              </li>
+            ) : null}
+          </ul>
+        ) : (
+          <p className="price-note">Keine Zusatzleistungen.</p>
+        )}
+      </article>
 
       {(order.reorderSourceDesignId || order.reorderMode || order.reorderStockDuration) ? (
         <article className="surface-card">
