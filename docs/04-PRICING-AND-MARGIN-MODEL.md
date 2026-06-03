@@ -766,6 +766,13 @@ Excluded from the fixed price:
 
 Transparent white underprint is explicitly a paid add-on / quote item and is not included in the transparent base ladder.
 
+**Self-serve add-ons & custom size (SoT #16, see §28–§29):** some of the above now have a self-serve path **when the respective feature flag is enabled** (otherwise they stay quote-only):
+
+- **Designservice** €40 net (free for orders ≥ €2.000 net or if the customer uploads print-ready data), **physischer Andruck** €10 net, **Express** €9,90 net, **+€19 net per additional design** — selectable on the product page, **server-priced**, shown net + gross, behind `NEXT_PUBLIC_FEATURE_ADDONS` (default off).
+- **Wunschformat (custom size)** — the area-based engine (`§29`; admin cost screen `18 §30A`) behind `NEXT_PUBLIC_FEATURE_CUSTOM_SIZE` (default off), with quote fallback above limits.
+
+These attach **on top of** the fixed package and **do not change the fixed-package base spec or prices** in §14.3. White underprint, lamination, foil, variable data, contour cut and specialty materials remain quote-only.
+
 ### 14.5 Price-Factor Matrix
 
 The final price level must always be interpreted through this factor matrix:
@@ -773,7 +780,7 @@ The final price level must always be interpreted through this factor matrix:
 | Factor | Standard fixed-package assumption | Effect if changed |
 |---|---|---|
 | Quantity | 1,000 / 2,000 / 5,000 / 10,000 | higher or custom quantities change economics |
-| Size | 100×200 mm rectangular | custom sizes move to quote |
+| Size | 100×200 mm rectangular | custom sizes via Wunschformat engine (§29) when enabled, else quote |
 | Material | opaque PP / transparent PP | transparent premium; specialty materials quote |
 | Shape | rectangle | special shapes quote |
 | Cut type | standard rectangular | contour / special cut quote |
@@ -790,10 +797,10 @@ The final price level must always be interpreted through this factor matrix:
 | Color count | full-colour CMYK | specialty print effects quote |
 | Print method | digital | flexo-style or other process changes quote |
 | Variable data | not included | quote |
-| Number of designs / SKUs | one design per order | extra SKUs quote |
+| Number of designs / SKUs | one design per order | +€19 net per extra design (self-serve add-on, §28, flag-gated) or quote |
 | Artwork quality | standard-ready files | heavy correction can trigger quote |
 | Proof / revisions | one proof round included | extra rounds can quote later |
-| Delivery speed | standard lead time | express quote |
+| Delivery speed | standard lead time | Express €9,90 net (self-serve add-on, §28, flag-gated) or quote |
 | Shipping method | shipping to Germany included | pallet / consolidated special cases quote |
 | VAT / shipping inclusion | net + gross shown, Germany shipping included | must stay explicit in UI |
 | File-check level | standard data check included | upgraded checks can quote later |

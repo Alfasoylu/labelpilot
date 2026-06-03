@@ -657,6 +657,15 @@ Nachbestellung starten
 
 ## 15. Produktkonfiguration
 
+### 15.0 Self-Serve-Add-ons & Wunschformat (SoT #16, freigegeben 2026-06-03)
+
+Zusätzlich zur Basis-Konfiguration sind folgende Optionen **freigegeben** und **hinter Feature-Flags (standardmäßig aus)** umgesetzt. Es sind **Optionen auf dem bestehenden PP-Produkt — keine neuen Basisprodukte/SKUs** (Abschnitt 7 bleibt unberührt):
+
+- **Checkout-Add-ons** (`NEXT_PUBLIC_FEATURE_ADDONS`): Designservice (€40 netto · €0 ab €2.000 netto Bestellwert oder bei eigenen druckfertigen Daten), physischer Andruck (€10 netto), Express (€9,90 netto), Zusatzdesign (€19 netto je weiteres Design). Serverseitig berechnet, netto + brutto angezeigt. Preislogik: `04 §28`.
+- **Wunschformat** (`NEXT_PUBLIC_FEATURE_CUSTOM_SIZE`): flächenbasierte Preisberechnung für individuelle Größen mit Angebots-Fallback oberhalb der Grenzwerte. Logik: `04 §29`, Admin-Kostenscreen: `18 §30A`.
+
+Die festen `100×200`-Pakete bleiben der Standardweg; ihre Basis-Spezifikation und Preise (SoT #15) bleiben unverändert.
+
 Für PP-Etiketten muss die Konfiguration mindestens enthalten:
 
 ```txt
