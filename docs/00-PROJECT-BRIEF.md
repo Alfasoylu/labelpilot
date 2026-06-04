@@ -94,8 +94,8 @@ Positioning anchor: produce professional roll labels for product brands, keep or
 
 The site will allow customers to:
 
-1. Choose label type (opaque or transparent PP roll labels as the main product).
-2. Choose label size.
+1. Choose label type (opaque or transparent PP roll labels — the main category).
+2. Choose label size (Standardgröße 100×200 mm fast-checkout, or Wunschformat/Sondermaß).
 3. Choose quantity (5.000 Stück is the recommended commercial default; 20.000+ or complex orders go to the quote path).
 4. Upload artwork (Druckdaten hochladen).
 5. Request a Musterbox to evaluate materials before committing (key trust tool).
@@ -120,7 +120,9 @@ All customer-facing copy must be German in MVP. Public pages are visual-first (p
 | Website language | German |
 | Expansion market | DACH, then EU |
 | Main customer type | B2B micro and small brands |
-| Main product | Custom PP roll product labels |
+| Main category | Custom printed PP roll labels (opaque + transparent) |
+| Standard package (fast-checkout anchor) | 100×200 mm PP roll labels |
+| Additional size path | Wunschformat/Sondermaß (m² pricing or quote) |
 | Secondary product | Thermal logistics labels |
 | Production base | Turkey |
 | Year 3 logistics | Germany hub pilot |
@@ -130,7 +132,14 @@ All customer-facing copy must be German in MVP. Public pages are visual-first (p
 
 ## 6. Product Scope
 
-Main product:
+Main category:
+
+```txt
+Custom printed PP roll labels for German B2B product brands
+(Opake PP-Rollenetiketten · Transparente PP-Rollenetiketten)
+```
+
+Default fixed-price standard package (fast-checkout anchor):
 
 ```txt
 100×200 mm individually printed PP roll labels
@@ -143,6 +152,13 @@ Opake PP-Rollenetiketten 100×200 mm
 Transparente PP-Rollenetiketten 100×200 mm
 ```
 
+Size paths on the same PP products (SoT #16; `04 §29`):
+
+1. **Standardgröße 100×200 mm** — fixed-price packages (1.000 / 2.000 / 5.000 / 10.000), fastest checkout, canonical prices unchanged; 20.000+ → quote.
+2. **Wunschformat / Sondermaß** — configurable width × height priced by m² when the custom-size engine is feature-gated ON **and** admin cost params are locked; otherwise routed to *„Individuelles Angebot anfordern"*.
+
+`100×200 mm` remains the default and fastest checkout path. Wunschformat expands market fit (German competitors commonly allow custom sizes) and is protected by feature flag, admin cost parameters, margin floor and quote fallback. This is **not** a generic print shop — the catalog stays limited to PP roll labels plus the thermal cross-sell.
+
 Cross-sell products:
 
 ```txt
@@ -154,7 +170,7 @@ Thermo-Versandetiketten 100×150 mm
 
 ## 7. Non-Negotiable Strategic Rules
 
-1. Main product is PP product label.
+1. Main category is PP roll product labels; `100×200 mm` is the standard fixed-price package and fast-checkout anchor, with Wunschformat/Sondermaß as a configurable size path on the same PP products (SoT #16; `04 §29`). Do not reduce the business to a single fixed size, and do not expand it into a generic print shop.
 2. Thermal label is cross-sell.
 3. Main market is Germany.
 4. Customer-facing MVP language is German.

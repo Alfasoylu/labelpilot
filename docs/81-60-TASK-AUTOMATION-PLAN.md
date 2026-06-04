@@ -224,6 +224,20 @@ P1 · gap G3 — **Rechnungskauf (founder-decided, SoT #18b):** on the quote / B
 ### Task 0.13c
 P1 · gap G7 — **Nachhaltigkeit (founder-decided, SoT #18c):** add an honest PP-material statement, **no eco/recyclable claims, no greenwashing**; recyclable/sustainable variants → Angebot/roadmap.
 
+### Task PA-1 — Product architecture: Standardgröße + Wunschformat (Future · SoT #16 / `04 §29`)
+
+> **Sequencing:** This is a **future** product-page-architecture task. **Do NOT pull it ahead of active revenue-readiness blockers** (checkout/quote/env/legal items) unless the SoT says otherwise. It is the page-structure umbrella over the existing custom-size tasks 0.12a (cost-param validation & lock) and 0.12 (calculator embed) — it does not replace them or their gates.
+
+Implement the **„Standardgröße oder Wunschformat"** size-selection architecture on the two PP product pages (`/de/opake-pp-etiketten`, `/de/transparente-pp-etiketten`):
+
+- **Keep the `100×200 mm` fixed packages as the default path** (canonical tiers `1.000 / 2.000 / 5.000 / 10.000`, `20.000+` → quote). Default-selected, fastest checkout.
+- **Add a size-selection UI** that lets the customer switch to the **Wunschformat** path (width_mm, height_mm, quantity, material).
+- **Wunschformat UI stays behind `NEXT_PUBLIC_FEATURE_CUSTOM_SIZE`** (default OFF) **and** requires locked admin cost params (Task 0.12a / Admin `§30A`). When enabled + locked → server-calculated m² price (`04 §29`), customer sees net + gross only.
+- **Quote fallback** when the flag is off, cost params are unlocked, the request exceeds limits, or the job is commercially risky → route to *„Individuelles Angebot anfordern"* (no calculator UI shown).
+- **Do NOT change canonical `100×200` prices.** **Do NOT expose internal cost params or the digital/flexo method.** **Do NOT enable any feature flag** (operator-only). **Do NOT** add new product categories or imply white underprint / Net-14 are self-serve.
+- German-only customer copy with proper umlauts (see `62 §11.1` for the required strings).
+- **Gates:** `npm run check:lang` + `npm run check:encoding` + `npm run typecheck` + `npm run build` green. One task = one commit.
+
 ## Audit Track A - Functional Stability
 
 > **SUPERVISOR NOTE (2026-06-04 UTC) — Schema doc staleness (pre-Track-A prerequisite):**

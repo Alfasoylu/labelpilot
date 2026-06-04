@@ -1195,7 +1195,7 @@ Do not scale paid traffic if:
 
 ## 26. Non-Negotiable Pricing Rules
 
-1. PP labels are the main product.
+1. PP roll labels are the main category; `100×200 mm` is the canonical fixed-price standard package (fast-checkout anchor) and Wunschformat/custom-size is a configurable size path on the same PP products (§29; SoT #16). Canonical `100×200` package prices never change as a side effect of the custom-size path.
 2. Thermal labels are cross-sell.
 3. The Growth 5,000 package is the main commercial offer.
 4. The Pro 10,000 package is the scale offer.
@@ -1301,8 +1301,9 @@ sell_gross      = sell_net * 1.19                      // DE; shipping included 
 **Crossover is automatic:** the engine computes both digital and flexo every time and picks the lower, so the digital→flexo break-even quantity needs no hard-coded threshold — it falls out of the plate-cost amortization.
 
 ### 29.4 Guardrails
-- Real cost params must be entered by the operator before go-live (replaces the placeholder ladder in §6; ties to the open supplier-quote action).
-- Cost params are **never** exposed to the customer — only the computed net + gross sell price + lead time.
+- Real cost params must be entered, **validated and locked** by the operator before go-live (replaces the placeholder ladder in §6; ties to the open supplier-quote action). If cost params are missing/unlocked, or the request exceeds limits, the engine returns `quoteRequired` → the flow routes to *„Individuelles Angebot anfordern"*.
+- The net price is **server-calculated only** and floored: `sell_net = max(sell_net, min_order_value, margin_floor_price)` — never sell below the configured minimum order value **or** the margin-floor price, even when the area math is lower.
+- Cost params (and the chosen digital/flexo method) are **never** exposed to the customer — the customer sees **only** the computed net + gross sell price + lead time.
 - Above defined limits (size / quantity / colours / special material / finish / foil / white-ink-heavy) → fall back to **"Individuelles B2B-Angebot"** (§17 / §25).
 - Output matches standard UI: net + gross, "Versand nach Deutschland inklusive", Druckdatenprüfung + 1 digitaler Proof inklusive.
 - Engine **centralized** (§22); reorder reuses the same engine at **€0 re-setup** (no flexo plate re-charge if the same plate is stored).

@@ -65,7 +65,7 @@ Labelpilot.de darf nicht als allgemeine Online-Druckerei starten.
 
 Der richtige MVP-Katalog ist:
 
-> 100×200 mm individuell bedruckte PP-Rollenetiketten als Hauptprodukt, ergänzt durch Thermoetiketten als Cross-Sell.
+> Individuell bedruckte PP-Rollenetiketten als Hauptkategorie — `100×200 mm` als Fixpreis-Standardpaket (Schnell-Checkout-Anker) plus Wunschformat/Sondermaß als konfigurierbarer Größenpfad auf denselben PP-Produkten (SoT #16; `04 §29`) — ergänzt durch Thermoetiketten als Cross-Sell.
 
 Der falsche MVP-Katalog ist:
 
@@ -143,6 +143,17 @@ Thermoetiketten dürfen nicht die Hauptpositionierung der Website übernehmen.
 |---|---|---:|---|---|
 | `pp-opaque-100x200` | Opake PP-Rollenetiketten 100×200 mm | 100×200 mm | Opakes PP | Hauptprodukt |
 | `pp-transparent-100x200` | Transparente PP-Rollenetiketten 100×200 mm | 100×200 mm | Transparentes PP | Hauptprodukt |
+
+#### 6.1a Größenpfade pro PP-Produkt (SoT #16; `04 §29`)
+
+Jedes der beiden PP-Hauptprodukte hat **zwei Größenpfade** — Wunschformat ist **kein neues Basis-SKU**, sondern ein konfigurierbarer Größenpfad auf demselben Produkt:
+
+| Größenpfad | Verhalten | Preislogik |
+|---|---|---|
+| **Standardgröße 100×200 mm** | Standard / Schnell-Checkout-Anker | Fixpreis-Pakete `1.000 / 2.000 / 5.000 / 10.000` zu den kanonischen Netto-/Brutto-Preisen (unverändert); `20.000+` → Angebot |
+| **Wunschformat / Sondermaß** | Breite × Höhe frei eingebbar | Flächenbasierte m²-Berechnung (`04 §29`) **nur** wenn `NEXT_PUBLIC_FEATURE_CUSTOM_SIZE` aktiv **und** die Kostenparameter in Admin `§30A` validiert + gesperrt sind; sonst → *„Individuelles Angebot anfordern"* |
+
+**Angebots-Fallback (immer quote-only):** Weißunterdruck auf transparentem Material, Konturschnitt/Sonderform mit neuem Werkzeug, Sonderklebstoffe, Laminierung/Lack, Folie/Metallic, variable Daten (Lot/SKT), Mehr-SKU-Sets, extreme Größen außerhalb der Grenzwerte und `20.000+` laufen über das Angebot — nie als Self-Serve. Interne Kostenparameter und die gewählte Druckmethode werden dem Kunden **nie** angezeigt.
 
 ### 6.2 Cross-Sell-Produkte
 

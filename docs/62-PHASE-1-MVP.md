@@ -327,14 +327,15 @@ Each product page must include:
 1. H1
 2. Product description
 3. Specification table
-4. Package options
-5. Use cases
-6. File upload explanation
-7. Reorder explanation
-8. Quote CTA
-9. Sample CTA
-10. FAQ
-11. Related product links
+4. Size selection — **„Standardgröße oder Wunschformat"** (see §11.1)
+5. Package options
+6. Use cases
+7. File upload explanation
+8. Reorder explanation
+9. Quote CTA
+10. Sample CTA
+11. FAQ
+12. Related product links
 
 Example CTA set:
 
@@ -345,6 +346,30 @@ Musterbox anfordern
 ```
 
 In Phase 1, `Jetzt konfigurieren` may link to the quote page if Stripe/configurator is not implemented yet.
+
+### 11.1 Section „Standardgröße oder Wunschformat" (SoT #16; `04 §29`)
+
+Each PP product page presents two size paths on the same product (Wunschformat is not a new base SKU):
+
+**Standard path — Standardgröße 100×200 mm**
+- Fixed tiers `1.000 / 2.000 / 5.000 / 10.000` with canonical net/gross prices (unchanged).
+- `20.000+` → quote only.
+- Fastest checkout path; default selection.
+
+**Wunschformat path — fields:** `width_mm`, `height_mm`, `quantity`, `material`, area calculation.
+- Show a **calculated price only when** `NEXT_PUBLIC_FEATURE_CUSTOM_SIZE=true` **and** the operator has locked admin cost params (`04 §29`, Admin `§30A`).
+- Otherwise show a **quote CTA** instead of a calculator (no price math, no calculator UI).
+- Server-calculated only; the customer sees net + gross; internal cost params/method are never shown.
+
+**Required German customer copy (use proper umlauts):**
+
+```txt
+Standardgröße 100×200 mm
+Wunschformat berechnen
+Andere Größe? Angebot anfordern
+Sondermaße werden nach Fläche, Material und Stückzahl kalkuliert.
+Bei komplexen Anforderungen erstellen wir ein individuelles B2B-Angebot.
+```
 
 ---
 

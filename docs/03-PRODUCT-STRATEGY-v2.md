@@ -86,10 +86,12 @@ These pillars turn Labelpilot.de into software-backed label infrastructure.
 Base product remains:
 
 ```txt
-100×200 mm opaque PP labels
-100×200 mm transparent PP labels
+Opaque PP roll labels   — Standardgröße 100×200 mm + Wunschformat/Sondermaß path
+Transparent PP roll labels — Standardgröße 100×200 mm + Wunschformat/Sondermaß path
 thermal shipping labels as cross-sell
 ```
+
+PP roll labels are the **main category**. `100×200 mm` is the **default fixed-price standard package and fast-checkout anchor**; **Wunschformat/Sondermaß** (custom width × height) is a configurable **size path on the same PP products**, priced by m² when the custom-size engine is enabled and admin cost params are locked, otherwise routed to quote (SoT #16; `04 §29`). This expands market fit (German competitors commonly allow custom sizes) without turning Labelpilot.de into a generic print shop.
 
 Target segments:
 

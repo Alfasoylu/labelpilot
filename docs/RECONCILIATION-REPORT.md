@@ -39,6 +39,8 @@ Resolution rule:
 | R-018 | `12`, `15`, `16`, `17`, `18`, `19` | Status drift around `CORRECTION_REQUIRED`, `PAYMENT_FAILED`, `ON_HOLD`, `QUOTE_REQUESTED`, and payment event field naming. | Canonical `OrderStatus` and `stripeEventId` naming were aligned across the schema and workflow docs. |
 | R-019 | `20-SEO-STRATEGY-2026.md`, `26-SITEMAP-ROBOTS-CANONICAL.md` | Ads landing-page governance was undocumented in the docs set. | `/lp/[slug]` is now formalized as German-only, `noindex`, excluded from sitemap, and never a canonical winner. |
 
+| R-021 | `00-SOURCE-OF-TRUTH.md`, `00-PROJECT-BRIEF.md`, `01-BUSINESS-MODEL.md`, `03-PRODUCT-STRATEGY-v2.md`, `04-PRICING-AND-MARGIN-MODEL.md`, `30-PRODUCT-CATALOG.md`, `62-PHASE-1-MVP.md`, `83-LAUNCH-ROADMAP-MONTHS-1-2.md` | Docs implied `100×200 mm` was the entire product ("main product / Hauptprodukt = 100×200"), which understated the approved Wunschformat/custom-size path and risked a single-size reading. | Reframed (2026-06-05) to: **PP roll labels = main category**; **`100×200 mm` = canonical fixed-price standard package / fast-checkout anchor (prices unchanged)**; **Wunschformat/custom-size = configurable size path on the same PP products**, priced by m² per `04 §29` when feature-gated ON **and** admin cost params locked, else quote. Clarifies SoT #16 (no competing rule); the m² engine itself was already fully specified at `04 §29`. No price change, no new product categories. |
+
 ---
 
 ## 3. Open

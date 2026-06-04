@@ -283,6 +283,7 @@ required sections, required CTA, internal links, schema, acceptance criteria.
 
 **Required sections:**
 1. Product hero — image, name, short description, package selector (1k/2k/5k/10k), price display, CTA.
+1a. **Standardgröße oder Wunschformat** (SoT #16; 04 §29) — Standard path = Standardgröße 100×200 mm fixed tiers (canonical prices, fastest checkout, default); Wunschformat path = width_mm + height_mm + quantity + material + area calc, shown as a **calculated price only when** `NEXT_PUBLIC_FEATURE_CUSTOM_SIZE=true` **and** operator cost params are locked, **otherwise a quote CTA** (no calculator). Server-calculated; customer sees net + gross only. Required German copy: „Standardgröße 100×200 mm", „Wunschformat berechnen", „Andere Größe? Angebot anfordern", „Sondermaße werden nach Fläche, Material und Stückzahl kalkuliert.", „Bei komplexen Anforderungen erstellen wir ein individuelles B2B-Angebot."
 2. Specs table — material (PP opak), size (100x200 mm), finish (Glanz standard), Haftung, Anwendung.
 3. Pricing breakdown — net prices, VAT note, package prices (EUR 179/279/479/799 per 04 §14.1).
 4. Add-ons block — shown only if `NEXT_PUBLIC_FEATURE_ADDONS=true`; design service rule, printed proof, express.
@@ -303,6 +304,7 @@ required sections, required CTA, internal links, schema, acceptance criteria.
 - [ ] Design-service rule (EUR 40 / kostenlos conditions) visible without requiring flag.
 - [ ] Add-ons block hidden if `NEXT_PUBLIC_FEATURE_ADDONS=false`.
 - [ ] Matt-finish surcharge (+15%) NOT displayed unless `NEXT_PUBLIC_FEATURE_ADDONS=true` AND founder enables it (SoT #18d).
+- [ ] „Standardgröße oder Wunschformat" section present; Standard 100×200 is the default path; Wunschformat shows a calculator ONLY when `NEXT_PUBLIC_FEATURE_CUSTOM_SIZE=true` AND cost params locked, otherwise a quote CTA (SoT #16; 04 §29).
 - [ ] No broken internal links.
 
 ---
@@ -311,6 +313,7 @@ required sections, required CTA, internal links, schema, acceptance criteria.
 
 Same structure as 1.3.3 except:
 - Prices: EUR 199 / 309 / 519 / 849 net (04 §14.1).
+- Same „Standardgröße oder Wunschformat" section as 1.3.3 §1a (Standard 100×200 default + Wunschformat path behind flag + cost-param lock, else quote).
 - Weissunterdruckung (white-underprint): listed as "auf Anfrage" — NOT as a standard feature and NOT as a self-serve add-on (audit contradiction #1 resolution: defer to 04 §14.4 quote-only rule).
 
 **Acceptance criteria:**

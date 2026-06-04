@@ -25,7 +25,7 @@ Codex must read this file before implementing pricing, product pages, checkout, 
 
 The business is a Germany-focused B2B-first label supply platform.
 
-The platform sells custom printed PP roll product labels (opaque and transparent) as the main product, plus thermal logistics labels as a secondary cross-sell, to German food, beverage, supplement and micro-manufacturing brands.
+The platform sells custom printed PP roll product labels (opaque and transparent) as the main category, plus thermal logistics labels as a secondary cross-sell, to German food, beverage, supplement and micro-manufacturing brands. Within the PP category, `100×200 mm` is the default fixed-price standard package (fast-checkout anchor) and **Wunschformat/custom-size** (custom width × height, priced by m²) is a configurable size path on the same PP products, gated behind a feature flag + locked admin cost params with a quote fallback (SoT #16; `04 §29`).
 
 The core business is not one-time printing.
 
@@ -168,16 +168,21 @@ Avoid customers who:
 
 ## 8. Product Strategy Summary
 
-### 8.1 Main Product
+### 8.1 Main Category and Size Paths
 
-The main product is:
-
-**100×200 mm (10×20 cm) custom printed PP roll labels**
+The main category is **custom printed PP roll labels** for German B2B product brands.
 
 Material variants:
 
 1. Opaque PP
 2. Transparent PP
+
+Each PP product offers two size paths:
+
+1. **Standardgröße 100×200 mm** — the default fixed-price standard package and fastest checkout path (canonical net/gross prices below, unchanged).
+2. **Wunschformat / Sondermaß** — configurable width × height priced by m² when `NEXT_PUBLIC_FEATURE_CUSTOM_SIZE` is ON **and** admin cost params are locked (`04 §29`); otherwise it routes to *„Individuelles Angebot anfordern"*.
+
+`100×200 mm` remains the commercial anchor; Wunschformat expands market fit but stays protected by feature flag, admin cost parameters, margin floor and quote fallback.
 
 Primary package quantities (canonical ladder per `/docs/00-SOURCE-OF-TRUTH.md`):
 
