@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 13
+current_task: 14
 current_status: pending
-completed_at: 2026-06-04T22:31:00+03:00
-last_run_note: Task 12 completed. Audited the admin order detail route across app/(admin)/admin/orders/[orderId]/page.tsx and its shipment/artwork/proof/notes actions. The page already loads shipment fields, artwork files, proof files, status history, and admin notes correctly. Fixed one real false-failure path in app/api/admin/orders/[orderId]/shipment/route.ts: shipment data and status can now persist successfully even if the customer shipment email side effect fails, because the email send is logged instead of breaking the redirect. Verification passed: check:lang, typecheck, build. Next unblocked task is 13.
+completed_at: 2026-06-04T23:52:00+03:00
+last_run_note: Task 13 completed. Audited the admin leads list/detail flow across app/(admin)/admin/leads/page.tsx, app/(admin)/admin/leads/[leadId]/page.tsx, lib/admin/leads.ts, and app/api/admin/leads/[leadId]/route.ts. Filtering logic and detail routing were functionally valid, but the filtered-list context was lost when opening a lead or saving updates. Added a minimal returnTo flow so lead detail links preserve the current filter context, the detail page shows a safe back link to the filtered list, and update redirects keep that same return path. Verification passed: check:lang, typecheck, build. Next unblocked task is 14.
 ```
 
 ---

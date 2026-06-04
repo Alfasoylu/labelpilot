@@ -14,6 +14,7 @@ type LeadDetailPageProps = {
   searchParams: Promise<{
     message?: string;
     error?: string;
+    returnTo?: string;
   }>;
 };
 
@@ -34,6 +35,10 @@ export default async function AdminLeadDetailPage({
 
   const { leadId } = await params;
   const feedback = await searchParams;
+  const returnTo =
+    typeof feedback.returnTo === "string" && feedback.returnTo.startsWith("/admin/leads")
+      ? feedback.returnTo
+      : "/admin/leads";
   const lead = await prisma.lead.findUnique({
     where: { id: leadId },
   });
@@ -49,6 +54,11 @@ export default async function AdminLeadDetailPage({
   return (
     <section className="section-stack">
       <article className="surface-card">
+        <div className="cta-row">
+          <a href={returnTo} className="secondary-link">
+            Zurück zur Lead-Liste
+          </a>
+        </div>
         <h2>{lead.companyName || lead.contactName || lead.email}</h2>
         <p className="price-note">
           {lead.type} · {getLeadStatusLabel(lead.status)} · Score {lead.score} (
@@ -65,6 +75,7 @@ export default async function AdminLeadDetailPage({
       <article className="surface-card">
         <h2>Lead aktualisieren</h2>
         <form action={`/api/admin/leads/${lead.id}`} method="post" className="quote-form">
+          <input type="hidden" name="returnTo" value={returnTo} />
           <div className="form-grid">
             <div>
               <label htmlFor="status">Status</label>

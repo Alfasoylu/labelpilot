@@ -47,6 +47,11 @@ export async function POST(
   }
 
   const formData = await request.formData();
+  const returnToValue = formData.get("returnTo");
+  const returnTo =
+    typeof returnToValue === "string" && returnToValue.startsWith("/admin/leads")
+      ? returnToValue
+      : null;
   const parsed = leadUpdateSchema.safeParse({
     status: formData.get("status"),
     nextFollowUpAt: formData.get("nextFollowUpAt"),
@@ -57,6 +62,7 @@ export async function POST(
     return NextResponse.redirect(
       buildRedirectUrl(request, leadId, {
         error: "Bitte prüfen Sie die Lead-Angaben.",
+        ...(returnTo ? { returnTo } : {}),
       }),
       { status: 303 },
     );
@@ -76,6 +82,7 @@ export async function POST(
   return NextResponse.redirect(
     buildRedirectUrl(request, leadId, {
       message: "Lead gespeichert.",
+      ...(returnTo ? { returnTo } : {}),
     }),
     { status: 303 },
   );

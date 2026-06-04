@@ -47,6 +47,28 @@ export default async function AdminLeadsPage({ searchParams }: LeadListPageProps
   }
 
   const filters = await searchParams;
+  const returnTo = new URLSearchParams();
+
+  if (filters.status && filters.status !== "all") {
+    returnTo.set("status", filters.status);
+  }
+
+  if (filters.type && filters.type !== "all") {
+    returnTo.set("type", filters.type);
+  }
+
+  if (filters.sourceType && filters.sourceType !== "all") {
+    returnTo.set("sourceType", filters.sourceType);
+  }
+
+  if (filters.q?.trim()) {
+    returnTo.set("q", filters.q.trim());
+  }
+
+  const leadListReturnTo = returnTo.toString()
+    ? `/admin/leads?${returnTo.toString()}`
+    : "/admin/leads";
+
   const leads = (await prisma.lead.findMany({
     where: buildLeadWhere(filters),
     orderBy: [{ createdAt: "desc" }],
@@ -128,7 +150,10 @@ export default async function AdminLeadsPage({ searchParams }: LeadListPageProps
                   {lead.quantity ? ` · ${lead.quantity}` : ""}
                   {lead.industry ? ` · ${lead.industry}` : ""}
                 </p>
-                <Link href={`/admin/leads/${lead.id}`} className="secondary-link">
+                <Link
+                  href={`/admin/leads/${lead.id}?returnTo=${encodeURIComponent(leadListReturnTo)}`}
+                  className="secondary-link"
+                >
                   Lead ansehen
                 </Link>
               </div>
