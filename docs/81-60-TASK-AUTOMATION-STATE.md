@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 12
+current_task: 13
 current_status: pending
-completed_at: 2026-06-04T22:27:18+03:00
-last_run_note: Task 11 completed. Audited the admin quote detail route across app/(admin)/admin/quotes/[quoteId]/page.tsx, app/api/admin/quotes/[quoteId]/route.ts, and lib/admin/quotes.ts. Loading and update behavior is currently consistent: the detail page reads and renders status/feedback query params, the update route validates status/adminNote server-side, persists quote status changes, and customer email side effects are already isolated behind try/catch so they do not turn a saved update into a false failure. No code change was required. Verification passed: check:lang, typecheck, build. Next unblocked task is 12.
+completed_at: 2026-06-04T22:31:00+03:00
+last_run_note: Task 12 completed. Audited the admin order detail route across app/(admin)/admin/orders/[orderId]/page.tsx and its shipment/artwork/proof/notes actions. The page already loads shipment fields, artwork files, proof files, status history, and admin notes correctly. Fixed one real false-failure path in app/api/admin/orders/[orderId]/shipment/route.ts: shipment data and status can now persist successfully even if the customer shipment email side effect fails, because the email send is logged instead of breaking the redirect. Verification passed: check:lang, typecheck, build. Next unblocked task is 13.
 ```
 
 ---

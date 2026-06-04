@@ -154,12 +154,16 @@ export async function POST(
       trackingUrl: values.trackingUrl ?? order.trackingUrl,
     });
 
-    await sendEmail({
-      to: order.customerEmail,
-      subject: template.subject,
-      html: template.html,
-      text: template.text,
-    });
+    try {
+      await sendEmail({
+        to: order.customerEmail,
+        subject: template.subject,
+        html: template.html,
+        text: template.text,
+      });
+    } catch (error) {
+      console.error("Versandmail konnte nach erfolgreichem Speichern nicht gesendet werden:", error);
+    }
   }
 
   return NextResponse.redirect(
