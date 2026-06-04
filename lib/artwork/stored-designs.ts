@@ -7,6 +7,7 @@ type SyncStoredDesignInput = {
   order: {
     id: string;
     customerId: string | null;
+    customerEmail: string;
     companyName: string | null;
     customerName: string | null;
     productSlug: string;
@@ -46,13 +47,24 @@ export async function syncStoredDesignFromApprovedOrder(input: SyncStoredDesignI
   const labelSize = deriveLabelSizeFromPackageId(pkg?.id ?? input.order.packageId);
 
   const existing = await input.tx.storedDesign.findFirst({
-    where: {
-      customerId: input.order.customerId,
-      productSlug: input.order.productSlug,
-      material: input.order.material,
-      labelSize,
-      archivedAt: null,
-    },
+    where: input.order.customerId
+      ? {
+          customerId: input.order.customerId,
+          productSlug: input.order.productSlug,
+          material: input.order.material,
+          labelSize,
+          archivedAt: null,
+        }
+      : {
+          customerId: null,
+          productSlug: input.order.productSlug,
+          material: input.order.material,
+          labelSize,
+          archivedAt: null,
+          lastOrder: {
+            customerEmail: input.order.customerEmail,
+          },
+        },
     include: {
       artworkVersions: {
         orderBy: {

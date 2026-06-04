@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 14
+current_task: 15
 current_status: pending
-completed_at: 2026-06-04T23:52:00+03:00
-last_run_note: Task 13 completed. Audited the admin leads list/detail flow across app/(admin)/admin/leads/page.tsx, app/(admin)/admin/leads/[leadId]/page.tsx, lib/admin/leads.ts, and app/api/admin/leads/[leadId]/route.ts. Filtering logic and detail routing were functionally valid, but the filtered-list context was lost when opening a lead or saving updates. Added a minimal returnTo flow so lead detail links preserve the current filter context, the detail page shows a safe back link to the filtered list, and update redirects keep that same return path. Verification passed: check:lang, typecheck, build. Next unblocked task is 14.
+completed_at: 2026-06-05T00:02:00+03:00
+last_run_note: Task 14 completed. Verified the stored-design access routes across app/(account)/de/gespeicherte-druckdaten/page.tsx, app/(account)/de/gespeicherte-druckdaten/[designId]/page.tsx, app/api/stored-designs/[designId]/versions/[versionId]/route.ts, lib/artwork/saved-designs.ts, and lib/artwork/stored-designs.ts. The route-level token checks were already correct, but the stored-design sync logic could merge guest orders from different customers whenever customerId was null and product/material/size matched. Tightened ownership persistence in lib/artwork/stored-designs.ts so guest/null-customerId designs only reuse an existing stored design when the last order email matches the same customer email. Verification passed: check:lang, typecheck, build. Next unblocked task is 15.
 ```
 
 ---
