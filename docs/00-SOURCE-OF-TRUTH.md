@@ -161,6 +161,7 @@ This section records current production blockers without changing source-of-trut
 ### Checkout
 
 - **Status:** implemented in code, but **not live in production today**.
+- **Code scope now present:** fixed-package checkout includes a dedicated pre-Stripe intake step that captures buyer contact data, shipping address, artwork readiness, server-side price revalidation, and draft-order persistence before Stripe redirect.
 - **Observed live behavior:** `/api/checkout/create-session` returns `503` when required Stripe or database environment is missing.
 - **Operational consequence:** the site is effectively **quote-only right now** even though checkout code exists.
 - **Blocker:** production `STRIPE_*` variables and `DATABASE_URL` / runtime DB connectivity are not fully available to the live app.

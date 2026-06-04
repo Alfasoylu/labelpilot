@@ -220,7 +220,16 @@ model Order {
   customerEmail           String
   customerName            String?
   companyName             String?
+  customerPhone           String?
+  vatId                   String?
   country                 String             @default("DE")
+  streetAddress           String?
+  addressLine2            String?
+  postalCode              String?
+  city                    String?
+  customerNote            String?
+  artworkInputStatus      String?
+  selectedAddons          Json?
   stripeCheckoutSessionId String?            @unique
   stripePaymentIntentId   String?
   customerId              String?

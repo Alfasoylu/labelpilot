@@ -170,10 +170,22 @@ export default async function AdminOrderDetailPage({
             <li>E-Mail: {order.customerEmail}</li>
             <li>Firma: {order.companyName ?? "Nicht angegeben"}</li>
             <li>Name: {order.customerName ?? "Nicht angegeben"}</li>
+            <li>Telefon: {order.customerPhone ?? "Nicht angegeben"}</li>
+            <li>USt-IdNr.: {order.vatId ?? "Nicht angegeben"}</li>
             <li>Land: {order.country}</li>
+            <li>
+              Lieferadresse:{" "}
+              {order.streetAddress
+                ? [order.streetAddress, order.addressLine2, order.postalCode, order.city]
+                    .filter(Boolean)
+                    .join(", ")
+                : "Nicht angegeben"}
+            </li>
+            <li>Druckdatenwunsch: {formatArtworkInputStatus(order.artworkInputStatus)}</li>
             <li>Stripe Session: {order.stripeCheckoutSessionId ?? "Noch nicht gesetzt"}</li>
             <li>Payment Intent: {order.stripePaymentIntentId ?? "Noch nicht gesetzt"}</li>
           </ul>
+          {order.customerNote ? <p className="field-hint">Hinweis: {order.customerNote}</p> : null}
         </article>
       </div>
 
@@ -534,5 +546,18 @@ function formatReorderStockDuration(value: string | null) {
       return "Mehr als 6 Monate";
     default:
       return "Nicht gesetzt";
+  }
+}
+
+function formatArtworkInputStatus(value: string | null) {
+  switch (value) {
+    case "artwork_ready":
+      return "Druckdaten bereit";
+    case "upload_after_order":
+      return "Upload nach Bestellung";
+    case "needs_help":
+      return "Hilfe bei Datei oder Gestaltung";
+    default:
+      return "Nicht angegeben";
   }
 }

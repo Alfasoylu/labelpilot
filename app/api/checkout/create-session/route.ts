@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
 
 import { getDefaultPricingSettings, mapPricingSettingsRecord } from "@/lib/admin/pricing";
+import { checkoutIntakeSchema } from "@/lib/checkout/intake";
 import { findPackageByConfig, type PackageMaterial, type ProductSlug } from "@/lib/commerce/packages";
 import { createOrderNumber } from "@/lib/commerce/orders";
 import { getPrismaClient } from "@/lib/db/prisma";
@@ -10,25 +10,6 @@ import { buildCheckoutAddons } from "@/lib/pricing/checkout-addons";
 import { getCheckoutBaseUrl, getStripeServerClient } from "@/lib/stripe/server";
 
 export const runtime = "nodejs";
-
-const checkoutPayloadSchema = z.object({
-  packageId: z.string().min(1),
-  productSlug: z.enum(["opake-pp-etiketten", "transparente-pp-etiketten"]),
-  material: z.enum(["OPAQUE", "TRANSPARENT"]),
-  quantity: z.number().int().positive(),
-  customerEmail: z.string().email().optional(),
-  customerName: z.string().min(1).max(120).optional(),
-  companyName: z.string().min(1).max(160).optional(),
-  addons: z
-    .object({
-      designService: z.boolean().optional(),
-      physicalProof: z.boolean().optional(),
-      express: z.boolean().optional(),
-      extraDesignCount: z.number().int().min(0).optional(),
-      customerUploadsOwnData: z.boolean().optional(),
-    })
-    .optional(),
-});
 
 function getPackageDisplayName(productSlug: ProductSlug, material: PackageMaterial) {
   if (productSlug === "opake-pp-etiketten" && material === "OPAQUE") {
@@ -41,7 +22,7 @@ function getPackageDisplayName(productSlug: ProductSlug, material: PackageMateri
 export async function POST(request: Request) {
   try {
     const json = await request.json();
-    const parsed = checkoutPayloadSchema.safeParse(json);
+    const parsed = checkoutIntakeSchema.safeParse(json);
 
     if (!parsed.success) {
       return NextResponse.json({ error: "Ungueltige Checkout-Anfrage." }, { status: 400 });
@@ -91,8 +72,11 @@ export async function POST(request: Request) {
     const totalAmountCents = pkg.grossAmountCents + addonPricing.addonsTotalCents;
 
     const orderNumber = createOrderNumber();
-    const customerEmail =
-      parsed.data.customerEmail ?? `${orderNumber.toLowerCase()}@pending.labelpilot.invalid`;
+    const normalizedCountry =
+      parsed.data.country.toUpperCase() === "DE" ||
+      parsed.data.country.toLowerCase() === "deutschland"
+        ? "DE"
+        : parsed.data.country;
 
     const order = await prisma.order.create({
       data: {
@@ -110,14 +94,23 @@ export async function POST(request: Request) {
         extraDesignCents: addonPricing.extraDesignCents,
         addonsTotalCents: addonPricing.addonsTotalCents || null,
         currency: "EUR",
-        customerEmail,
-        customerName: parsed.data.customerName,
+        customerEmail: parsed.data.email,
+        customerName: parsed.data.contactName,
         companyName: parsed.data.companyName,
-        country: "DE",
+        customerPhone: parsed.data.phone,
+        vatId: parsed.data.vatId || null,
+        country: normalizedCountry,
+        streetAddress: parsed.data.streetAddress,
+        addressLine2: parsed.data.addressLine2 || null,
+        postalCode: parsed.data.postalCode,
+        city: parsed.data.city,
+        customerNote: parsed.data.notes || null,
+        artworkInputStatus: parsed.data.artworkStatus,
+        selectedAddons: parsed.data.addons,
         statusEvents: {
           create: {
             status: "PENDING_PAYMENT",
-            note: "Checkout-Session angelegt.",
+            note: `Checkout-Intake erfasst (${parsed.data.artworkStatus}).`,
           },
         },
       },
@@ -126,6 +119,8 @@ export async function POST(request: Request) {
     const metadata = {
       orderId: order.id,
       orderNumber: order.orderNumber,
+      companyName: parsed.data.companyName,
+      customerEmail: parsed.data.email,
       productSlug: pkg.productSlug,
       quantity: String(pkg.quantity),
       material: pkg.material,
@@ -137,7 +132,7 @@ export async function POST(request: Request) {
       mode: "payment",
       success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/checkout/cancel`,
-      customer_email: parsed.data.customerEmail,
+      customer_email: parsed.data.email,
       metadata,
       payment_intent_data: {
         metadata,

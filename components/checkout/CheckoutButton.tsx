@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import type { AddonSettingsInput } from "@/lib/pricing/addons";
@@ -26,6 +27,7 @@ export function CheckoutButton({
   quantity,
   addonSettings,
 }: CheckoutButtonProps) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [designService, setDesignService] = useState(false);
   const [physicalProof, setPhysicalProof] = useState(false);
@@ -148,39 +150,19 @@ export function CheckoutButton({
         className="pricing-card__action pricing-card__action--primary"
         onClick={() => {
           startTransition(async () => {
-            try {
-              const response = await fetch("/api/checkout/create-session", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  packageId,
-                  productSlug,
-                  material,
-                  quantity,
-                  ...(addonsFeatureEnabled ? { addons: addonSelection } : {}),
-                }),
-              });
+            const params = new URLSearchParams({
+              packageId,
+              productSlug,
+              material,
+              quantity: String(quantity),
+              designService: designService ? "1" : "0",
+              physicalProof: physicalProof ? "1" : "0",
+              express: express ? "1" : "0",
+              customerUploadsOwnData: customerUploadsOwnData ? "1" : "0",
+              extraDesignCount: String(extraDesignCount),
+            });
 
-              const payload = (await response.json().catch(() => null)) as
-                | { url?: string; error?: string }
-                | null;
-
-              if (!response.ok || !payload?.url) {
-                window.alert(
-                  payload?.error ??
-                    "Der Checkout ist im Moment nicht verfuegbar. Bitte nutzen Sie das Angebotsformular.",
-                );
-                return;
-              }
-
-              window.location.assign(payload.url);
-            } catch {
-              window.alert(
-                "Der Checkout ist im Moment nicht erreichbar. Bitte nutzen Sie das Angebotsformular.",
-              );
-            }
+            router.push(`/de/checkout?${params.toString()}`);
           });
         }}
         disabled={isPending}
