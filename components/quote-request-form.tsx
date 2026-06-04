@@ -251,7 +251,7 @@ export function QuoteRequestForm() {
         <div className="field-full checkbox-field">
           <input id="consent" name="consent" type="checkbox" value="yes" required />
           <label htmlFor="consent">
-            Ich habe die Datenschutzerklaerung gelesen und stimme zu, dass meine
+            Ich habe die Datenschutzerklärung gelesen und stimme zu, dass meine
             Angaben zur Bearbeitung meiner Anfrage verwendet werden.
           </label>
         </div>

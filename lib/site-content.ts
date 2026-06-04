@@ -1816,9 +1816,77 @@ const topLevelPages: PublicPageData[] = [
     sidebarTitle: "",
     sidebarBullets: [],
     sections: [
-      { title: "Verarbeitung personenbezogener Daten", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
-      { title: "Zwecke der Verarbeitung", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
-      { title: "Betroffenenrechte", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      {
+        title: "Verantwortlicher",
+        body: [
+          "Verantwortlich für die Datenverarbeitung auf dieser Website ist:",
+          "Zhenkai Global Trading Limited, Unit 2A, 17/F, Glenealy Tower, No. 1 Glenealy, Central, Hong Kong",
+          "E-Mail: kontakt@labelpilot.de · Telefon: +852 35944334",
+          "Vertreten durch: Alperen Aydin",
+        ],
+      },
+      {
+        title: "Grundsätze und Rechtsgrundlagen",
+        body: [
+          "Wir verarbeiten personenbezogene Daten nur, soweit dies zur Bereitstellung der Website und zur Abwicklung Ihrer Anfragen und Bestellungen erforderlich ist.",
+          "Rechtsgrundlagen sind insbesondere Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung), lit. c DSGVO (rechtliche Verpflichtung) und lit. f DSGVO (berechtigtes Interesse an einem sicheren, funktionsfähigen Angebot).",
+        ],
+      },
+      {
+        title: "Bestellabwicklung und Druckdaten",
+        body: [
+          "Bei einer Bestellung verarbeiten wir Ihre Bestell-, Kontakt- und Lieferdaten zur Erfüllung des Vertrags (Art. 6 Abs. 1 lit. b DSGVO).",
+          "Ihre hochgeladenen Druckdaten speichern wir zur technischen Prüfung und Produktion Ihres Auftrags.",
+        ],
+      },
+      {
+        title: "Kontakt- und Angebotsformulare",
+        body: [
+          "Wenn Sie ein Angebot oder eine Musterbox anfragen oder uns kontaktieren, verarbeiten wir die von Ihnen angegebenen Daten zur Bearbeitung Ihrer Anfrage (Art. 6 Abs. 1 lit. b und lit. f DSGVO).",
+        ],
+      },
+      {
+        title: "Zahlungsabwicklung (Stripe)",
+        body: [
+          "Zahlungen werden über den Zahlungsdienstleister Stripe abgewickelt. Ihre Zahlungsdaten werden dabei unmittelbar von Stripe verarbeitet; vollständige Kartendaten werden von uns nicht gespeichert.",
+        ],
+      },
+      {
+        title: "Hosting und IT-Dienstleister (Auftragsverarbeiter)",
+        body: [
+          "Hosting und Auslieferung der Website: Vercel Inc. (USA).",
+          "Datenbank und Datei-Speicherung (u. a. Druckdaten): Supabase (Hosting auf Amazon Web Services).",
+          "Versand von Transaktions-E-Mails: Resend (Versand über Amazon SES / Amazon Web Services).",
+          "Mit diesen Dienstleistern bestehen Verträge zur Auftragsverarbeitung gemäß Art. 28 DSGVO.",
+        ],
+      },
+      {
+        title: "Übermittlung in Drittländer",
+        body: [
+          "Eine Verarbeitung findet unter anderem in den USA (Vercel, Amazon Web Services, Stripe) sowie in Hongkong (Verantwortlicher) statt.",
+          "Soweit erforderlich, erfolgt die Übermittlung auf Grundlage geeigneter Garantien, insbesondere der Standardvertragsklauseln der EU-Kommission (Art. 46 DSGVO).",
+        ],
+      },
+      {
+        title: "Cookies",
+        body: [
+          "Diese Website verwendet ausschließlich technisch notwendige Cookies. Es findet kein Tracking statt; es werden keine Analyse- oder Marketing-Cookies eingesetzt. Eine Einwilligung ist daher nicht erforderlich.",
+        ],
+      },
+      {
+        title: "Speicherdauer",
+        body: [
+          "Wir speichern personenbezogene Daten nur so lange, wie es für die genannten Zwecke erforderlich ist oder gesetzliche Aufbewahrungsfristen (insbesondere handels- und steuerrechtliche Pflichten) dies vorsehen.",
+        ],
+      },
+      {
+        title: "Ihre Rechte",
+        body: [
+          "Sie haben das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) sowie Widerspruch (Art. 21 DSGVO).",
+          "Zudem haben Sie ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde.",
+          "Zur Ausübung Ihrer Rechte genügt eine Nachricht an kontakt@labelpilot.de.",
+        ],
+      },
     ],
   },
   {
@@ -1832,14 +1900,82 @@ const topLevelPages: PublicPageData[] = [
     sidebarBullets: [],
     sections: [
       {
-        title: "Geltungsbereich",
+        title: "Geltungsbereich und Vertragspartner",
         body: [
-          "⚠️ Rechtlich zu prüfen - Platzhalter",
-          "Vertragspartnerin für Bestellungen über Labelpilot.de ist Zhenkai Global Trading Limited gemäß den Angaben im Impressum.",
+          "Diese Allgemeinen Geschäftsbedingungen gelten für alle Bestellungen über Labelpilot.de.",
+          "Vertragspartnerin ist Zhenkai Global Trading Limited (Anschrift siehe Impressum). Produktion und Versand erfolgen über unseren Export- und Logistikpartner in der Türkei.",
+          "Das Angebot richtet sich an Verbraucher und Unternehmer.",
         ],
       },
-      { title: "Angebot, Vertrag und Freigabe", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
-      { title: "Zahlung und Lieferung", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      {
+        title: "Vertragsschluss",
+        body: [
+          "Die Darstellung der Produkte stellt kein rechtlich bindendes Angebot dar. Mit Abschluss des Bestell- und Bezahlvorgangs geben Sie ein verbindliches Angebot zum Vertragsschluss ab.",
+          "Der Vertrag kommt mit unserer Auftrags- bzw. Zahlungsbestätigung zustande.",
+        ],
+      },
+      {
+        title: "Preise und Zahlung",
+        body: [
+          "Es gelten die zum Zeitpunkt der Bestellung im Bestellprozess angegebenen Preise. Der Umsatzsteuer-Ausweis richtet sich nach den Angaben im Bestellprozess.",
+          "Die Zahlung erfolgt per Kreditkarte über den Zahlungsdienstleister Stripe als Vorkasse vor Produktionsbeginn.",
+        ],
+      },
+      {
+        title: "Druckdaten, Freigabe und Mitwirkung",
+        body: [
+          "Der Kunde ist für die Richtigkeit und Rechtmäßigkeit der übermittelten Druckdaten und Inhalte verantwortlich, insbesondere für gesetzliche Pflichtangaben (z. B. Zutaten, Nährwerte, Allergene, Health Claims).",
+          "Wir führen eine technische Dateiprüfung sowie einen digitalen Proof durch. Die Produktion beginnt erst nach Ihrer ausdrücklichen Freigabe. Eine inhaltlich-rechtliche Prüfung der Inhalte erfolgt nicht.",
+        ],
+      },
+      {
+        title: "Lieferung",
+        body: [
+          "Die Lieferung erfolgt ausschließlich innerhalb Deutschlands. Der Versand erfolgt aus der Türkei per DHL- oder UPS-Luftfracht.",
+          "Die Lieferung erfolgt DDP (Delivered Duty Paid): Einfuhrumsatzsteuer und etwaige Zollabgaben sind im Preis enthalten; bei der Zustellung entstehen keine zusätzlichen Kosten.",
+          "Die Lieferzeit beträgt in der Regel ca. 10–14 Werktage nach Ihrer Freigabe. Dies ist eine Orientierungsangabe, keine verbindliche Zustellgarantie.",
+        ],
+      },
+      {
+        title: "Eigentumsvorbehalt",
+        body: [
+          "Die gelieferte Ware bleibt bis zur vollständigen Bezahlung unser Eigentum.",
+        ],
+      },
+      {
+        title: "Gewährleistung und Reklamationen",
+        body: [
+          "Es gelten die gesetzlichen Mängelrechte. Reklamationen richten Sie bitte unter Angabe Ihrer Bestellnummer an kontakt@labelpilot.de.",
+          "Bei individuell bedruckten Produkten sind herstellungs- und materialbedingte, handelsübliche Abweichungen (z. B. geringfügige Farb- oder Schnittabweichungen) möglich und stellen keinen Mangel dar.",
+        ],
+      },
+      {
+        title: "Haftung",
+        body: [
+          "Für Vorsatz und grobe Fahrlässigkeit haften wir unbeschränkt. Bei einfacher Fahrlässigkeit haften wir nur bei Verletzung einer wesentlichen Vertragspflicht und der Höhe nach begrenzt auf den vertragstypischen, vorhersehbaren Schaden.",
+          "Die Haftung nach zwingenden gesetzlichen Vorschriften bleibt unberührt.",
+        ],
+      },
+      {
+        title: "Widerruf",
+        body: [
+          "Bei individuell nach Kundenvorgaben angefertigten Produkten besteht kein Widerrufsrecht. Für nicht individualisierte Standardprodukte gilt für Verbraucher das gesetzliche Widerrufsrecht. Einzelheiten finden Sie auf der Seite \"Widerruf und Sonderanfertigungen\".",
+        ],
+      },
+      {
+        title: "Streitbeilegung",
+        body: [
+          "Die EU-Kommission stellt eine Plattform zur Online-Streitbeilegung bereit: https://ec.europa.eu/consumers/odr/",
+          "Wir sind nicht verpflichtet und nicht bereit, an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.",
+        ],
+      },
+      {
+        title: "Schlussbestimmungen",
+        body: [
+          "Es gilt das Recht der Bundesrepublik Deutschland. Zwingende Verbraucherschutzvorschriften des Staates, in dem der Verbraucher seinen gewöhnlichen Aufenthalt hat, bleiben unberührt.",
+          "Sollte eine Bestimmung unwirksam sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.",
+        ],
+      },
     ],
   },
   {
@@ -1888,9 +2024,41 @@ const topLevelPages: PublicPageData[] = [
     sidebarTitle: "",
     sidebarBullets: [],
     sections: [
-      { title: "Hinweis zu Sonderanfertigungen", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
-      { title: "Widerruf und Ausschlüsse", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
-      { title: "Reklamationen und Nachbesserung", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      {
+        title: "Kein Widerrufsrecht bei Sonderanfertigungen",
+        body: [
+          "Unsere individuell nach Ihren Vorgaben bedruckten Etiketten sind Sonderanfertigungen. Das Widerrufsrecht ist gemäß § 312g Abs. 2 Nr. 1 BGB ausgeschlossen, da die Ware nach Kundenspezifikation angefertigt und eindeutig auf Ihre persönlichen Bedürfnisse zugeschnitten ist.",
+          "Mit Ihrer Druckfreigabe stimmen Sie dem Beginn der Produktion ausdrücklich zu.",
+        ],
+      },
+      {
+        title: "Widerrufsrecht für Standardprodukte (Verbraucher)",
+        body: [
+          "Soweit Sie Verbraucher sind und ein nicht individualisiertes Standardprodukt (z. B. eine Musterbox) bestellen, steht Ihnen ein gesetzliches Widerrufsrecht zu.",
+          "Widerrufsfrist: vierzehn Tage ab dem Tag, an dem Sie oder ein von Ihnen benannter Dritter die Ware in Besitz genommen haben.",
+          "Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Zhenkai Global Trading Limited, kontakt@labelpilot.de) mittels einer eindeutigen Erklärung über Ihren Entschluss informieren. Zur Wahrung der Frist genügt die rechtzeitige Absendung der Mitteilung.",
+          "Folgen des Widerrufs: Im Falle eines wirksamen Widerrufs erstatten wir alle erhaltenen Zahlungen unverzüglich, spätestens binnen vierzehn Tagen.",
+        ],
+      },
+      {
+        title: "Muster-Widerrufsformular",
+        body: [
+          "(Wenn Sie den Vertrag widerrufen wollen, füllen Sie bitte dieses Formular aus und senden Sie es zurück.)",
+          "An: Zhenkai Global Trading Limited, kontakt@labelpilot.de",
+          "Hiermit widerrufe(n) ich/wir den von mir/uns abgeschlossenen Vertrag über den Kauf der folgenden Waren:",
+          "Bestellt am / erhalten am: __________",
+          "Name des/der Verbraucher(s): __________",
+          "Anschrift des/der Verbraucher(s): __________",
+          "Datum und Unterschrift (nur bei Mitteilung auf Papier): __________",
+        ],
+      },
+      {
+        title: "Reklamationen und Mängel",
+        body: [
+          "Unabhängig vom Widerrufsrecht bestehen Ihre gesetzlichen Gewährleistungsrechte bei Mängeln der Ware.",
+          "Reklamationen richten Sie bitte unter Angabe Ihrer Bestellnummer an kontakt@labelpilot.de.",
+        ],
+      },
     ],
   },
 ];
