@@ -176,7 +176,7 @@ const homepageFaqs: FAQ[] = [
   },
   {
     question: "Für welche Produkte eignen sich PP-Rollenetiketten?",
-    answer: "Für Lebensmittel-, Getränke- und Supplement-Marken sowie Private Label.",
+    answer: "Für Lebensmittel-, Getränke- und Supplement-Marken sowie Handelsmarken.",
   },
   {
     question: "Gibt es einen Proof vor der Produktion?",
@@ -231,7 +231,29 @@ const differentiationLabelpilot = [
   "Freigegebene Druckdaten gespeichert",
   "Nachbestellung in 30 Sekunden",
   "Klare Mengenpakete",
-  "Optimiert für Food, Beverage, Supplement und Private Label",
+  "Optimiert für Lebensmittel, Getränke, Supplemente und Handelsmarken",
+];
+
+const regulatoryDisclaimerBody =
+  "Hinweis: Fuer rechtliche Pflichtangaben, Zutaten, Naehrwerte, Allergene, Health Claims und regulatorische Inhalte ist der Kunde verantwortlich. Labelpilot.de uebernimmt Druckproduktion, technische Dateipruefung und Layout-Unterstuetzung, jedoch keine rechtliche Pruefung.";
+
+const productTrustItems = [
+  {
+    title: "Proof vor Produktion",
+    body: "Produktion startet erst nach Ihrer Freigabe. Das schafft Klarheit vor dem eigentlichen Drucklauf.",
+  },
+  {
+    title: "Kostenloser Datencheck",
+    body: "Die Standard-Datenpruefung faengt typische Format-, Beschnitt- und Versionsfehler vor dem Druck ab.",
+  },
+  {
+    title: "Musterbox vor Mengenentscheidung",
+    body: "Wenn Materialwirkung oder Haptik noch offen sind, ist die Musterbox der kontrollierte Zwischenschritt.",
+  },
+  {
+    title: "Sichere Zahlung und sauberer Prozess",
+    body: "Checkout, Zahlungsbestaetigung und Auftragsbestaetigung laufen verifiziert. Kontakt-, Auftrags- und Freigabedaten bleiben fuer den sichtbaren B2B-Prozess sauber nachvollziehbar.",
+  },
 ];
 
 export function HomePage({ page }: HomePageProps) {
@@ -310,10 +332,44 @@ export function HomePage({ page }: HomePageProps) {
           <p className="package-note">
             Produktion nach Proof-Freigabe. Versand nach Deutschland inklusive.
           </p>
+          <p className="package-note">
+            Standardweg fuer diese Pakete: 100×200 mm, 1 Design pro Auftrag, Standard-Datenpruefung
+            und 1 Proof-Runde. Ab 20.000 Stueck oder bei Sonderumfang fuehrt der Weg ins B2B-Angebot.
+          </p>
           <div className="hero-actions">
             <Link href="/de/druckdaten" className="cta-link">
               Druckdaten prüfen lassen
             </Link>
+          </div>
+        </Section>
+
+        <Section
+          eyebrow="Einstieg"
+          title="Welcher nächste Schritt passt zu Ihrer Situation?"
+          lead="Nicht jede Anfrage gehört in denselben Funnel. Hier ist der schnellste sinnvolle Weg."
+        >
+          <div className="card-grid">
+            <article className="section-card">
+              <h3>Angebot anfordern</h3>
+              <p>Für größere Mengen, Sonderfälle, mehrere Sorten oder Projekte außerhalb des Standardpakets.</p>
+              <Link href="/de/angebot-anfordern" className="cta-link">
+                Zum B2B-Angebot
+              </Link>
+            </article>
+            <article className="section-card">
+              <h3>Musterbox anfordern</h3>
+              <p>Wenn Materialwirkung, Haptik oder opak vs. transparent noch vor der ersten Freigabe geprüft werden soll.</p>
+              <Link href="/de/musterbox" className="cta-link">
+                Zur Musterbox
+              </Link>
+            </article>
+            <article className="section-card">
+              <h3>Nachbestellen</h3>
+              <p>Wenn Datei, Material und Spezifikation schon freigegeben wurden und der nächste Abruf schneller laufen soll.</p>
+              <Link href="/de/nachbestellen" className="cta-link">
+                Zur Nachbestellung
+              </Link>
+            </article>
           </div>
         </Section>
 
@@ -367,6 +423,14 @@ export function HomePage({ page }: HomePageProps) {
             caption="Freigegebene Druckdaten und gespeicherte Spezifikation – bereit für die nächste Bestellung."
             sizes="(max-width: 1024px) 100vw, 960px"
           />
+          <div className="hero-actions">
+            <Link href="/de/nachbestellen" className="cta-link">
+              Nachbestellprozess ansehen
+            </Link>
+            <Link href="/de/pp-rollenetiketten" className="secondary-link">
+              PP-Rollenetiketten im Ueberblick
+            </Link>
+          </div>
         </Section>
 
         <Section
@@ -384,7 +448,7 @@ export function HomePage({ page }: HomePageProps) {
 
         <Section
           eyebrow="Branchen"
-          title="Für Food, Beverage, Supplement und Private Label."
+          title="Für Lebensmittel, Getränke, Supplemente und Handelsmarken."
           lead="Etiketten für Produkte, die regelmäßig produziert, geprüft und nachbestellt werden."
         >
           <div className="two-column image-supported-grid">
@@ -401,7 +465,7 @@ export function HomePage({ page }: HomePageProps) {
                   body: "Getränkeflaschen leben von transparenter Optik – das Etikett muss auch bei Kondenswasser sauber halten und lesbar bleiben.",
                 },
                 {
-                  label: "Supplement",
+                  label: "Nahrungsergänzung",
                   href: "/de/supplement-etiketten",
                   body: "Dosen, Flaschen und Beutel in mehreren Varianten – jede Serie mit derselben gespeicherten Spezifikation.",
                 },
@@ -599,6 +663,84 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
             ))}
           </div>
           <p className="price-note">{pricingValueBundleLine}</p>
+          {hasFixedPriceScope(page.path) ? (
+            <div className="surface-card">
+              <h2>Lieferzeit nach Ihrer Freigabe</h2>
+              <p>
+                Fuer diese Standardpakete planen wir in der Regel mit ca. 10-14 Werktagen
+                nach Ihrer Proof-Freigabe. Darin enthalten sind Produktion und Versand nach
+                Deutschland.
+              </p>
+              <p className="field-hint">
+                Das ist eine ehrliche Orientierung fuer die Planung, keine garantierte SLA.
+                Den konkreten Termin bestaetigen wir mit Auftrag oder Angebot.
+              </p>
+            </div>
+          ) : null}
+          {hasFixedPriceScope(page.path) ? (
+            <div className="surface-card">
+              <h2>Andere Menge als Standardpaket?</h2>
+              <p>
+                Wenn Sie genau 3.000, 7.500 oder weniger als 1.000 Etiketten benoetigen,
+                sind die sichtbaren Pakete nicht der einzige Weg. Solche Mengen laufen sauber
+                ueber das B2B-Angebot statt in einen unpassenden Standard-Checkout.
+              </p>
+              <div className="inline-actions">
+                <Link href="/de/angebot-anfordern" className="secondary-link">
+                  Andere Menge anfragen
+                </Link>
+              </div>
+            </div>
+          ) : null}
+          {hasFixedPriceScope(page.path) ? (
+            <div className="surface-card">
+              <h2>Druckdaten und Proof kurz erklaert</h2>
+              <ul className="simple-list">
+                <li>Bevorzugte Dateien: PDF, AI oder EPS. SVG ist moeglich, wenn Groesse und finale Version sauber vorbereitet sind.</li>
+                <li>Druckdaten sollten mit Beschnitt, CMYK-Farben und moeglichst vektorbasierter Anlage geliefert werden.</li>
+                <li>Der kostenlose Datencheck faengt typische Fehler bei Format, Beschnitt und Datei-Stand vor dem Druck ab.</li>
+                <li>Der digitale Proof dient der Freigabe vor der Produktion. Farbverbindlich wird es erst mit einem physischen Andruck.</li>
+              </ul>
+              <div className="inline-actions">
+                <Link href="/de/druckdaten" className="secondary-link">
+                  Druckdaten-Anforderungen ansehen
+                </Link>
+                <Link href="/de/kontakt" className="secondary-link">
+                  Frage vorab klaeren
+                </Link>
+              </div>
+              <p className="field-hint">
+                Wenn Material, Datei-Stand oder Ablauf noch nicht ganz klar sind,
+                ist der Kontaktweg vor der eigentlichen Anfrage oft der schnellere Schritt.
+              </p>
+            </div>
+          ) : null}
+        </Section>
+      ) : null}
+
+      {hasFixedPriceScope(page.path) ? (
+        <Section
+          eyebrow="Sicherheit"
+          title="Warum der Ablauf fuer B2B-Etiketten berechenbar bleibt"
+          lead="Vertrauen entsteht hier nicht ueber Bewertungen, sondern ueber einen klar sichtbaren Produktions- und Pruefprozess."
+        >
+          <TrustBar items={productTrustItems} />
+          <div className="surface-card">
+            <h2>Materialhinweis zu PP</h2>
+            <p>
+              Unsere Standardprodukte laufen auf PP-Material, weil es fuer viele
+              wiederkehrende Produktetiketten robust und prozesssicher ist.
+            </p>
+            <p className="field-hint">
+              Nach Freigabe bleiben Spezifikation und Druckdaten als klare Basis fuer
+              spaetere Auftragsbestaetigung und schnellere Nachbestellung erhalten.
+            </p>
+            <p className="field-hint">
+              Daraus leiten wir keine pauschalen Nachhaltigkeits- oder Recyclingversprechen
+              ab. Wenn Sie Varianten mit anderem Materialfokus pruefen moechten, klaeren wir
+              das sauber ueber Angebot oder Musterbox.
+            </p>
+          </div>
         </Section>
       ) : null}
 
@@ -672,6 +814,10 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
         >
           <FaqAccordion faqs={page.faqs} />
         </Section>
+      ) : null}
+
+      {shouldShowRegulatoryDisclaimer(page.path) ? (
+        <LegalNoticeBox body={regulatoryDisclaimerBody} />
       ) : null}
 
       {page.relatedLinks?.length ? (
@@ -756,6 +902,10 @@ function IndustryPage({ page, canonicalPath }: DynamicPageProps) {
         >
           <FaqAccordion faqs={page.faqs} />
         </Section>
+      ) : null}
+
+      {shouldShowRegulatoryDisclaimer(page.path) ? (
+        <LegalNoticeBox body={regulatoryDisclaimerBody} />
       ) : null}
 
       {page.relatedLinks?.length ? (
@@ -1228,6 +1378,12 @@ function QuotePage({ page, canonicalPath }: DynamicPageProps) {
                 <p>Dateistatus und Zusatzinfos bleiben sichtbar, ohne einen Backend-Upload vorzutäuschen.</p>
               </article>
             </div>
+            <h3>Rechnungskauf auf Anfrage</h3>
+            <p>
+              Rechnungskauf ist fuer gepruefte Geschaeftskunden auf Anfrage moeglich.
+              Die Freigabe erfolgt manuell im Angebotsprozess und nicht ueber den
+              Standard-Checkout.
+            </p>
           </div>
         </div>
       </Section>
@@ -1374,16 +1530,26 @@ function buildSpecRows(page: PublicPageData) {
   if (page.path === "/de/opake-pp-etiketten") {
     rows.push(
       { label: "Format", value: "100×200 mm (10×20 cm), rechteckig, auf Rolle" },
-      { label: "Material", value: "Opakes PP mit permanentem Klebstoff" },
+      { label: "Material", value: "Opakes PP" },
+      { label: "Klebstoff", value: "Permanent" },
+      { label: "Finish", value: "1 Finish enthalten, aktuell Standard-Ausfuehrung" },
+      { label: "Anwendung", value: "Dosen, Beutel, Glaeser und kontraststarke Produktverpackungen" },
+      { label: "Geeignet fuer", value: "Klare Pflichtangaben, dichte Farbflaechen und robuste Regaloptik" },
+      { label: "Hinweis", value: "Fuer Spender oder Maschine gilt standardmaessig 76-mm-Kern und Wickelrichtung Standard. Abweichungen laufen ueber Angebot." },
       { label: "Preisbild", value: "netto + brutto sichtbar, inkl. Versand nach Deutschland" },
       { label: "Standardumfang", value: "1 Design, CMYK-Digitaldruck, 1 Finish, Datenprüfung + 1 Proof" },
     );
   } else if (page.path === "/de/transparente-pp-etiketten") {
     rows.push(
       { label: "Format", value: "100×200 mm (10×20 cm), rechteckig, auf Rolle" },
-      { label: "Material", value: "Transparentes PP mit permanentem Klebstoff" },
+      { label: "Material", value: "Transparentes PP" },
+      { label: "Klebstoff", value: "Permanent" },
+      { label: "Finish", value: "1 Finish enthalten, aktuell Standard-Ausfuehrung" },
+      { label: "Anwendung", value: "Flaschen, Glaeser und Verpackungen mit sichtbarer Material- oder Fuelloptik" },
+      { label: "Geeignet fuer", value: "Premium-Optik, reduzierte Gestaltung und klare Glas- oder Flaschenwirkung" },
+      { label: "Hinweis", value: "Fuer Spender oder Maschine gilt standardmaessig 76-mm-Kern und Wickelrichtung Standard. Abweichungen laufen ueber Angebot." },
       { label: "Preisbild", value: "netto + brutto sichtbar, inkl. Versand nach Deutschland" },
-      { label: "Wichtiger Zusatz", value: "Weißunterdruck ist nicht im Fixpreis enthalten" },
+      { label: "Weissunterdruck", value: "Nicht im Fixpreis enthalten, laeuft ueber Angebot" },
     );
   } else {
     rows.push(
@@ -1416,6 +1582,16 @@ function buildSpecRows(page: PublicPageData) {
 
 function hasFixedPriceScope(path: string) {
   return path === "/de/opake-pp-etiketten" || path === "/de/transparente-pp-etiketten";
+}
+
+function shouldShowRegulatoryDisclaimer(path: string) {
+  return [
+    "/de/opake-pp-etiketten",
+    "/de/transparente-pp-etiketten",
+    "/de/lebensmittel-etiketten",
+    "/de/getraenke-etiketten",
+    "/de/supplement-etiketten",
+  ].includes(path);
 }
 
 function buildIndustryComparisonRows(page: PublicPageData) {
@@ -1580,3 +1756,7 @@ function Breadcrumbs({
     </nav>
   );
 }
+
+
+
+

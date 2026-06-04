@@ -58,6 +58,7 @@ async function getSuccessPageData(sessionId?: string) {
 export default async function CheckoutSuccessPage({ searchParams }: SuccessPageProps) {
   const params = await searchParams;
   const successData = await getSuccessPageData(params.session_id);
+  const hasResolvedCheckoutState = Boolean(successData);
 
   return (
     <div className="container section-stack">
@@ -65,7 +66,9 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
         <span className="eyebrow">Checkout</span>
         <h1>Zahlung eingegangen bzw. wird bestaetigt.</h1>
         <p>
-          {successData?.isSameArtworkReorder
+          {!hasResolvedCheckoutState
+            ? "Wir pruefen Ihre Checkout-Daten und bestaetigen den naechsten Schritt, sobald die Stripe-Sitzung sauber zugeordnet werden konnte."
+            : successData?.isSameArtworkReorder
             ? "Ihre Nachbestellung mit identischem Artwork wird ohne neuen Upload weiterverarbeitet."
             : "Der naechste Schritt ist das Hochladen Ihrer Druckdaten."}
         </p>
@@ -91,7 +94,7 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
             Zu den Produkten
           </Link>
           <Link href="/de/kontakt" className="secondary-link">
-            Kontakt
+            {hasResolvedCheckoutState ? "Kontakt" : "Checkout pruefen lassen"}
           </Link>
         </div>
       </article>

@@ -11,9 +11,16 @@ type LeadDetailPageProps = {
   params: Promise<{
     leadId: string;
   }>;
+  searchParams: Promise<{
+    message?: string;
+    error?: string;
+  }>;
 };
 
-export default async function AdminLeadDetailPage({ params }: LeadDetailPageProps) {
+export default async function AdminLeadDetailPage({
+  params,
+  searchParams,
+}: LeadDetailPageProps) {
   const prisma = getPrismaClient();
 
   if (!prisma) {
@@ -26,6 +33,7 @@ export default async function AdminLeadDetailPage({ params }: LeadDetailPageProp
   }
 
   const { leadId } = await params;
+  const feedback = await searchParams;
   const lead = await prisma.lead.findUnique({
     where: { id: leadId },
   });
@@ -49,6 +57,8 @@ export default async function AdminLeadDetailPage({ params }: LeadDetailPageProp
         {lead.sourceType === "WUNSCHFORMAT" ? (
           <p className="form-status success">Wunschformat</p>
         ) : null}
+        {feedback.message ? <p className="form-status success">{feedback.message}</p> : null}
+        {feedback.error ? <p className="form-status error">{feedback.error}</p> : null}
         <p className="field-hint">Eingang: {formatLeadDate(lead.createdAt)}</p>
       </article>
 

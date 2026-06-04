@@ -307,10 +307,10 @@ export const homePageData: HomePageData = {
   eyebrow: "",
   title: "PP-Rollenetiketten für Produktmarken, die regelmäßig nachbestellen.",
   lead:
-    "PP-Rollenetiketten für Food-, Beverage- und Supplement-Marken. Druckdaten werden geprüft, freigegeben und gespeichert – damit Nachbestellungen ohne neue Abstimmung in 30 Sekunden möglich sind.",
+    "PP-Rollenetiketten für Lebensmittel-, Getränke- und Supplement-Marken. Druckdaten werden geprüft, freigegeben und gespeichert – damit Nachbestellungen ohne neue Abstimmung in 30 Sekunden möglich sind.",
   highlights: [
     "Opak, transparent, sauber verarbeitet.",
-    "Für Food, Beverage, Supplement und Private Label.",
+    "Für Lebensmittel, Getränke, Supplemente und Handelsmarken.",
     "Angebot für Standards und Sonderfälle.",
   ],
   corePackages: opaquePackages,
@@ -457,6 +457,12 @@ const guideCommercialLinks: RelatedLink[] = [
     href: "/de/druckdaten",
     description:
       "Technische Anforderungen für PDF, AI, EPS, SVG, PNG, JPG und ZIP.",
+  },
+  {
+    label: "Nachbestellen",
+    href: "/de/nachbestellen",
+    description:
+      "Freigegebene Etiketten mit gespeicherten Druckdaten schneller erneut abrufen.",
   },
 ];
 
@@ -733,6 +739,21 @@ const topLevelPages: PublicPageData[] = [
         answer:
           "Ja. Die Preisstaffel enthält eine 2.000er-Stufe als Reorder-Ready-Paket für wiederkehrende kleine Chargen.",
       },
+      {
+        question: "Kann ich transparente PP-Etiketten später nachbestellen?",
+        answer:
+          "Ja. Freigegebene Druckdaten, Material und Spezifikation bleiben für spätere Nachbestellungen nutzbar. Bei identischem Artwork geht der Folgeauftrag deutlich schneller.",
+      },
+      {
+        question: "Welche Druckdateien werden akzeptiert?",
+        answer:
+          "Bevorzugt sind PDF, AI und EPS. Zusätzlich können auch SVG, PNG, JPG oder ZIP sinnvoll sein, solange Format, Beschnitt und finale Version sauber vorbereitet sind.",
+      },
+      {
+        question: "Wer ist für Pflichtangaben und regulatorische Inhalte verantwortlich?",
+        answer:
+          "Der Kunde bleibt für rechtliche Pflichtangaben, Zutaten, Nährwerte, Allergene, Health Claims und regulatorische Inhalte verantwortlich. Labelpilot.de übernimmt Druckproduktion, technische Dateiprüfung und Layout-Unterstützung, aber keine rechtliche Prüfung.",
+      },
     ],
     relatedLinks: [
       {
@@ -745,6 +766,21 @@ const topLevelPages: PublicPageData[] = [
         href: "/de/ratgeber/transparente-vs-opake-etiketten",
         description:
           "Guide mit direktem Vergleich der Materialwirkung auf Verpackungen.",
+      },
+      {
+        label: "Opake PP-Etiketten",
+        href: "/de/opake-pp-etiketten",
+        description: "Die passende Gegenseite, wenn statt transparenter Optik mehr Deckkraft und Kontrast gebraucht werden.",
+      },
+      {
+        label: "Etiketten 100x200 mm",
+        href: "/de/etiketten-100x200",
+        description: "Formatseite fuer das feste 100x200-mm-Standardformat mit klarer Einordnung des Einsatzfalls.",
+      },
+      {
+        label: "Etiketten nachbestellen",
+        href: "/de/nachbestellen",
+        description: "Wenn dieselbe freigegebene Spezifikation spaeter schneller erneut bestellt werden soll.",
       },
       ...guideCommercialLinks,
     ],
@@ -811,6 +847,26 @@ const topLevelPages: PublicPageData[] = [
         answer:
           "Ja, wenn Deckkraft und klare Lesbarkeit wichtiger sind als ein transparenter Look. Für sichtbare Flaschenoptik ist die transparente Variante oft passender.",
       },
+      {
+        question: "Kann ich opake PP-Etiketten später nachbestellen?",
+        answer:
+          "Ja. Genau dafür ist die gespeicherte Spezifikation gedacht: Freigegebene Druckdaten, Material und Größe bleiben nutzbar, damit Folgeaufträge ohne neuen Start von vorn vorbereitet werden können.",
+      },
+      {
+        question: "Welche Druckdateien werden akzeptiert?",
+        answer:
+          "Bevorzugt sind PDF, AI und EPS. Je nach Fall können auch SVG, PNG, JPG oder ZIP verarbeitet werden, wenn Format, Beschnitt und finale Version eindeutig vorbereitet sind.",
+      },
+      {
+        question: "Wer ist für Pflichtangaben und regulatorische Inhalte verantwortlich?",
+        answer:
+          "Der Kunde bleibt für rechtliche Pflichtangaben, Zutaten, Nährwerte, Allergene, Health Claims und regulatorische Inhalte verantwortlich. Labelpilot.de übernimmt Druckproduktion, technische Dateiprüfung und Layout-Unterstützung, aber keine rechtliche Prüfung.",
+      },
+      {
+        question: "Was passiert bei mehreren Sorten oder mehr als einem Design?",
+        answer:
+          "Der Fixpreis deckt ein Design pro Auftrag ab. Mehrere Sorten, Zusatzdesigns oder Sonderkonstellationen laufen sauber über den Angebotsprozess oder später über freigeschaltete Zusatzleistungen.",
+      },
     ],
     relatedLinks: [
       {
@@ -824,6 +880,26 @@ const topLevelPages: PublicPageData[] = [
         href: "/de/gewuerz-etiketten",
         description:
           "Branchenspezifisches Beispiel für kleine Formate mit dichten Pflichtangaben.",
+      },
+      {
+        label: "Transparente PP-Etiketten",
+        href: "/de/transparente-pp-etiketten",
+        description: "Die Gegenseite fuer Glas-, Flaschen- und Premium-Optiken mit sichtbarem Inhalt.",
+      },
+      {
+        label: "Etiketten 100x200 mm",
+        href: "/de/etiketten-100x200",
+        description: "Formatseite fuer das feste 100x200-mm-Standardformat und seine typische B2B-Verpackungslogik.",
+      },
+      {
+        label: "Etiketten nachbestellen",
+        href: "/de/nachbestellen",
+        description: "Wenn eine freigegebene Produktlinie spaeter ohne neuen Start von vorn wiederholt werden soll.",
+      },
+      {
+        label: "Supplement-Etiketten",
+        href: "/de/supplement-etiketten",
+        description: "Branchenseite fuer Dosen, Beutel und Flaschen mit wiederkehrenden Pflichtangaben und SKU-Logik.",
       },
       ...guideCommercialLinks,
     ],
@@ -903,6 +979,21 @@ const topLevelPages: PublicPageData[] = [
         question: "Warum gibt es nur wenige Kernmaterialien?",
         answer:
           "Wir konzentrieren uns bewusst auf einen schmalen, sauberen Produktkern statt auf ein zu breites Sortiment. Das hält Auswahl, Qualität und Nachbestellung übersichtlich.",
+      },
+      {
+        question: "Kann ich PP-Rollenetiketten später nachbestellen?",
+        answer:
+          "Ja. Nach der Freigabe bleiben Druckdaten, Material und Größe für spätere Nachbestellungen nutzbar. Das ist ein Kernvorteil gegenüber einem losen Einmalauftrag.",
+      },
+      {
+        question: "Welche Druckdateien werden für PP-Rollenetiketten akzeptiert?",
+        answer:
+          "Bevorzugt sind PDF, AI und EPS. Zusätzlich können SVG, PNG, JPG oder ZIP sinnvoll sein, solange Beschnitt, Endformat und finale Version sauber vorbereitet sind.",
+      },
+      {
+        question: "Wer ist für Pflichtangaben und regulatorische Inhalte verantwortlich?",
+        answer:
+          "Der Kunde bleibt für rechtliche Pflichtangaben, Zutaten, Nährwerte, Allergene, Health Claims und regulatorische Inhalte verantwortlich. Labelpilot.de übernimmt Druckproduktion, technische Dateiprüfung und Layout-Unterstützung, aber keine rechtliche Prüfung.",
       },
     ],
     relatedLinks: [
@@ -1134,6 +1225,11 @@ const topLevelPages: PublicPageData[] = [
           "Sobald Sie große Mengen, Sondergrößen oder mehrere Varianten planen, ist das Angebotsformular der richtige Startpunkt.",
       },
       {
+        question: "Ist Rechnungskauf mÃ¶glich?",
+        answer:
+          "Rechnungskauf ist fÃ¼r geprÃ¼fte GeschÃ¤ftskunden auf Anfrage mÃ¶glich. Diese Freigabe lÃ¤uft manuell im Angebotsprozess und nicht Ã¼ber den Standard-Checkout.",
+      },
+      {
         question: "Kann ich zuerst eine Musterbox anfordern?",
         answer:
           "Ja. Wenn Material und Haptik noch offen sind, ist die Musterbox vor dem Angebot oft sinnvoller als ein vorschneller Mengenentscheid.",
@@ -1243,12 +1339,12 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Muss ich sofort eine Datei hochladen?",
         answer:
-          "Nein. Die Anfrage funktioniert bewusst ohne verpflichtenden Upload.",
+          "Nein. Für den ersten Schritt reichen oft Format, Material, Menge und Einsatzfall. Wenn die Datei noch nicht final ist, kann die Anfrage trotzdem sauber starten und der Upload folgt später im passenden Prozessschritt.",
       },
       {
         question: "Was passiert, wenn meine Datei später korrigiert werden muss?",
         answer:
-          "Die Produkt- und Prozesslogik sieht technische Prüfung und Rückfragen vor, bevor dieselbe Spezifikation wiederholt wird.",
+          "Dann greifen Datencheck, Rückfrage und Proof-Freigabe, bevor produziert wird. Ziel ist nicht, eine unfertige Datei blind weiterzureichen, sondern sie erst druckreif zu machen und danach als klare Basis für spätere Wiederholungen zu sichern.",
       },
     ],
     relatedLinks: [
@@ -2597,3 +2693,4 @@ export const deferredPhase2Routes = [
   "/de/supplement-etiketten/transparente-pp-etiketten",
   "/de/kaffee-etiketten/opake-pp-etiketten",
 ];
+

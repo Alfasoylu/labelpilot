@@ -120,8 +120,8 @@ export function buildCheckoutAddons(input: {
       name: "Designservice",
       description:
         designServiceNet === 0
-          ? "Druckfertige Daten oder Netto-Bestellwert ab 2.000 EUR"
-          : "Dateiaufbereitung und Druckdatenservice",
+          ? "Kostenlos ab 2.000 EUR netto oder bei druckfertigen Daten"
+          : "Dateiaufbereitung und Druckdatenservice vor dem Proof",
       netAmount: designServiceNet,
       grossAmountCents: netEuroToGrossCents(designServiceNet),
     });
@@ -131,7 +131,7 @@ export function buildCheckoutAddons(input: {
     lineItems.push({
       key: "physicalProof",
       name: "Physischer Andruck",
-      description: "Gedruckter Andruck auf dem abgestimmten Material",
+      description: "Gedruckter Andruck auf dem abgestimmten Material; digitaler Proof bleibt inklusive",
       netAmount: physicalProofNet,
       grossAmountCents: netEuroToGrossCents(physicalProofNet),
     });
@@ -141,7 +141,7 @@ export function buildCheckoutAddons(input: {
     lineItems.push({
       key: "express",
       name: "Express",
-      description: "Priorisierte Auftragsbearbeitung nach Ihrer Freigabe",
+      description: "Priorisierte Auftragsbearbeitung nach Ihrer Freigabe, keine separate SLA",
       netAmount: expressNet,
       grossAmountCents: netEuroToGrossCents(expressNet),
     });

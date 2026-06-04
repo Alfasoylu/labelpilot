@@ -69,37 +69,44 @@ export function CustomSizePriceForm() {
 
     setState({ status: "loading" });
 
-    const response = await fetch("/api/custom-size/price", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        materialKey,
-        widthMm: Number(widthMm),
-        heightMm: Number(heightMm),
-        quantity: Number(quantity),
-      }),
-    });
+    try {
+      const response = await fetch("/api/custom-size/price", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          materialKey,
+          widthMm: Number(widthMm),
+          heightMm: Number(heightMm),
+          quantity: Number(quantity),
+        }),
+      });
 
-    if (response.status === 404) {
+      if (response.status === 404) {
+        setState({
+          status: "error",
+          message: "Der Wunschformat-Rechner ist aktuell nicht verfuegbar.",
+        });
+        return;
+      }
+
+      if (!response.ok) {
+        setState({
+          status: "error",
+          message: "Bitte pruefen Sie Material, Format und Menge.",
+        });
+        return;
+      }
+
+      const result = (await response.json()) as CalculatorResult;
+      setState({ status: "success", result });
+    } catch {
       setState({
         status: "error",
-        message: "Der Wunschformat-Rechner ist aktuell nicht verfuegbar.",
+        message: "Der Wunschformat-Rechner konnte gerade nicht antworten.",
       });
-      return;
     }
-
-    if (!response.ok) {
-      setState({
-        status: "error",
-        message: "Bitte pruefen Sie Material, Format und Menge.",
-      });
-      return;
-    }
-
-    const result = (await response.json()) as CalculatorResult;
-    setState({ status: "success", result });
   }
 
   return (
@@ -111,6 +118,11 @@ export function CustomSizePriceForm() {
           und Preisparameter aktiv gepflegt sind. Groessere Formate oder Mengen laufen
           weiterhin sauber ueber ein individuelles Angebot.
         </p>
+        <p className="field-hint">
+          Der Rechner ist eine Orientierungs- und Vorqualifizierungsstufe. Die festen
+          100x200-Pakete bleiben der Standardweg; Sonderfaelle und Grenzwerte fuehren
+          bewusst in den Angebotsprozess.
+        </p>
       </article>
 
       <section className="section-stack">
@@ -120,7 +132,7 @@ export function CustomSizePriceForm() {
               <h2>Preis fuer Ihr Wunschformat berechnen</h2>
               <p className="field-hint">
                 Geben Sie Material, Breite, Hoehe und Menge ein. Der Rechner zeigt nur
-                den Kundenpreis und keine internen Kostenpositionen.
+                einen Kundenpreis zur Orientierung und keine internen Kostenpositionen.
               </p>
             </div>
 
@@ -241,7 +253,17 @@ export function CustomSizePriceForm() {
               </p>
               <p className="field-hint">
                 Der Richtpreis basiert auf den aktuell gepflegten Parametern fuer
-                Material und Sonderformat.
+                Material und Sonderformat. Er ersetzt noch kein finales B2B-Angebot,
+                falls sich Spezifikation, Datenstand oder Zusatzwuensche aendern.
+              </p>
+              <div className="inline-actions">
+                <Link href={quoteHref} className="secondary-link">
+                  Wunschformat als Angebot anfragen
+                </Link>
+              </div>
+              <p className="field-hint">
+                Wenn Sie mehrere Varianten, Zusatzdesigns oder ein groesseres Projekt
+                planen, ist der Angebotsweg trotz Richtpreis der sauberere Einstieg.
               </p>
             </div>
           ) : null}

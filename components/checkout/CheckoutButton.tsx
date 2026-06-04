@@ -61,7 +61,8 @@ export function CheckoutButton({
       {addonsFeatureEnabled ? (
         <div className="checkout-addons__panel">
           <p className="field-hint">
-            Zubuchbare Leistungen werden im Checkout serverseitig berechnet.
+            Standard-Datenpruefung und ein digitaler Proof bleiben inklusive. Zusatzleistungen
+            werden serverseitig berechnet und im Checkout erst final bestaetigt.
           </p>
           <label className="checkbox-field">
             <input
@@ -69,8 +70,11 @@ export function CheckoutButton({
               checked={designService}
               onChange={(event) => setDesignService(event.target.checked)}
             />
-            <span>Designservice hinzufuegen</span>
+            <span>Designservice hinzufuegen (40,00 EUR netto)</span>
           </label>
+          <p className="field-hint">
+            Kostenlos ab 2.000 EUR netto oder wenn Sie druckfertige Daten selbst hochladen.
+          </p>
           <label className="checkbox-field">
             <input
               type="checkbox"
@@ -85,16 +89,20 @@ export function CheckoutButton({
               checked={physicalProof}
               onChange={(event) => setPhysicalProof(event.target.checked)}
             />
-            <span>Physischen Andruck hinzufuegen</span>
+            <span>Physischen Andruck hinzufuegen (10,00 EUR netto)</span>
           </label>
+          <p className="field-hint">Ein digitaler Proof bleibt weiterhin ohne Aufpreis enthalten.</p>
           <label className="checkbox-field">
             <input
               type="checkbox"
               checked={express}
               onChange={(event) => setExpress(event.target.checked)}
             />
-            <span>Express hinzufuegen</span>
+            <span>Express hinzufuegen (+9,90 EUR netto)</span>
           </label>
+          <p className="field-hint">
+            Express priorisiert den Auftrag nach Ihrer Freigabe, ersetzt aber keine separate SLA.
+          </p>
           <div className="field">
             <label htmlFor={`extra-designs-${packageId}`}>Zusatzdesigns</label>
             <input
@@ -108,12 +116,15 @@ export function CheckoutButton({
               }
             />
           </div>
-          <p className="field-hint">1 Design ist im Paket enthalten. Jedes weitere Design kostet 19,00 EUR netto.</p>
+          <p className="field-hint">
+            1 Design ist im Paket enthalten. Jedes weitere Design kostet 19,00 EUR netto.
+            Nachbestellungen derselben freigegebenen Spezifikation brauchen kein Re-Setup.
+          </p>
           {addonPreview ? (
             <ul className="simple-list checkout-addons__summary">
               {addonPreview.lineItems.map((item) => (
                 <li key={item.key}>
-                  {item.name}:{" "}
+                  {item.name} ({item.description}):{" "}
                   {item.netAmount === 0
                     ? "kostenlos"
                     : `${item.netAmount.toLocaleString("de-DE", {
@@ -137,33 +148,39 @@ export function CheckoutButton({
         className="pricing-card__action pricing-card__action--primary"
         onClick={() => {
           startTransition(async () => {
-            const response = await fetch("/api/checkout/create-session", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                packageId,
-                productSlug,
-                material,
-                quantity,
-                ...(addonsFeatureEnabled ? { addons: addonSelection } : {}),
-              }),
-            });
+            try {
+              const response = await fetch("/api/checkout/create-session", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  packageId,
+                  productSlug,
+                  material,
+                  quantity,
+                  ...(addonsFeatureEnabled ? { addons: addonSelection } : {}),
+                }),
+              });
 
-            const payload = (await response.json().catch(() => null)) as
-              | { url?: string; error?: string }
-              | null;
+              const payload = (await response.json().catch(() => null)) as
+                | { url?: string; error?: string }
+                | null;
 
-            if (!response.ok || !payload?.url) {
+              if (!response.ok || !payload?.url) {
+                window.alert(
+                  payload?.error ??
+                    "Der Checkout ist im Moment nicht verfuegbar. Bitte nutzen Sie das Angebotsformular.",
+                );
+                return;
+              }
+
+              window.location.assign(payload.url);
+            } catch {
               window.alert(
-                payload?.error ??
-                  "Der Checkout ist im Moment nicht verfuegbar. Bitte nutzen Sie das Angebotsformular.",
+                "Der Checkout ist im Moment nicht erreichbar. Bitte nutzen Sie das Angebotsformular.",
               );
-              return;
             }
-
-            window.location.assign(payload.url);
           });
         }}
         disabled={isPending}

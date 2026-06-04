@@ -41,6 +41,10 @@ export async function PricingCard({ tier, checkoutPackage, ctaLink }: PricingCar
     checkoutPackage && isAddonsEnabled()
       ? await getCheckoutAddonSettings()
       : undefined;
+  const packageSummaryLine =
+    tier.grossLabel && tier.shippingLabel
+      ? `${tier.priceLabel} · ${tier.grossLabel} inkl. 19% MwSt. · ${tier.shippingLabel}`
+      : null;
 
   return (
     <article className={`pricing-card ${tier.popular ? "popular" : ""}`}>
@@ -51,9 +55,14 @@ export async function PricingCard({ tier, checkoutPackage, ctaLink }: PricingCar
         <span>{tier.note}</span>
       </div>
       <p className="price">{tier.priceLabel}</p>
-      {tier.grossLabel ? <p className="price-subline">{tier.grossLabel} inkl. 19% MwSt.</p> : null}
+      {packageSummaryLine ? <p className="price-subline">{packageSummaryLine}</p> : null}
+      {!packageSummaryLine && tier.grossLabel ? (
+        <p className="price-subline">{tier.grossLabel} inkl. 19% MwSt.</p>
+      ) : null}
       {tier.perPieceLabel ? <p className="price-subline">{tier.perPieceLabel}</p> : null}
-      {tier.shippingLabel ? <p className="price-subline">{tier.shippingLabel}</p> : null}
+      {!packageSummaryLine && tier.shippingLabel ? (
+        <p className="price-subline">{tier.shippingLabel}</p>
+      ) : null}
       <p className="price-note">{tier.description}</p>
       {tier.format || tier.material || tier.inclusions?.length ? (
         <ul className="pricing-card__specs">

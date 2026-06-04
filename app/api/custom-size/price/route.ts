@@ -62,12 +62,24 @@ export async function POST(request: Request) {
       ])
     : [null, null];
 
-  const result = buildPublicCustomSizePriceResponse({
-    featureEnabled: true,
-    request: parsed.data,
-    params: mapMaterialCostRecord(materialRow),
-    settings: mapPricingSettingsRecord(settingsRow),
-  });
+  let result;
+
+  try {
+    result = buildPublicCustomSizePriceResponse({
+      featureEnabled: true,
+      request: parsed.data,
+      params: mapMaterialCostRecord(materialRow),
+      settings: mapPricingSettingsRecord(settingsRow),
+    });
+  } catch (error) {
+    console.error("[custom-size-price] pricing computation failed:", error);
+    return NextResponse.json(
+      {
+        message: "Preisberechnung aktuell nicht verfuegbar. Bitte nutzen Sie das Angebotsformular.",
+      },
+      { status: 503 },
+    );
+  }
 
   return NextResponse.json(result.body, { status: result.status });
 }
