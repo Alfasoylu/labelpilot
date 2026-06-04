@@ -115,6 +115,29 @@ The automation must always respect these rules:
 
 > Source: `80-PRODUKTE-PAGE-ANALYSIS.md` (+ `30 §13/§18/§25`, `04 §14/§28`, `27 §11`, `78`, `59 §28`). Additive product-page work; no price/scope change (SoT #15/#16); fixed-package base unchanged.
 
+---
+> **SUPERVISOR NOTE (2026-06-04 UTC) — Phase 0 catch-up reconciliation:**
+> Catch-up commits `52a7078` and `f2c2c38` (reviewed PASS WITH RISKS by the author before pushing) addressed several Phase 0 items BEFORE the queue formally started. The STATE file still shows `current_task: 0.1 / pending`. **Before executing any queued task, Codex must reconcile the STATE file and then execute ONLY the remaining incomplete tasks as separate per-task commits.**
+>
+> **Already addressed by catch-up — mark each as complete in STATE after verifying acceptance criteria:**
+> - **0.1** — `LegalNoticeBox` + `shouldShowRegulatoryDisclaimer` at `components/page-renderers.tsx:1587–1594` renders the exact `30 §25` text on `/de/opake-pp-etiketten`, `/de/transparente-pp-etiketten`, `/de/lebensmittel-etiketten`, `/de/getraenke-etiketten`, `/de/supplement-etiketten`. Text matches `30 §25` verbatim. Codex must confirm with `git show f2c2c38 -- components/page-renderers.tsx | grep -A2 regulatoryDisclaimerBody` and then mark 0.1 complete.
+> - **0.3** — `PricingCard` `packageSummaryLine` (`components/cards/PricingCard.tsx`) renders `{netLabel} · {grossLabel} inkl. 19% MwSt. · {shippingLabel}` when both labels present. Verify `tier.priceLabel` is net-labeled in `lib/site-content.ts`; mark 0.3 complete.
+> - **0.6** — `productTrustItems` + `<TrustBar>` rendered at `page-renderers.tsx:727` inside `hasFixedPriceScope` guard. Mark 0.6 complete.
+> - **0.7** — "Druckdaten und Proof kurz erklaert" block with Beschnitt/CMYK/Proof copy + link to `/de/druckdaten` inside `hasFixedPriceScope` guard. Mark 0.7 complete.
+> - **0.9** — "Andere Menge als Standardpaket?" block with quote link inside `hasFixedPriceScope` guard. Mark 0.9 complete.
+> - **0.13a** — "Lieferzeit nach Ihrer Freigabe" block: "ca. 10-14 Werktagen nach Ihrer Proof-Freigabe ... keine garantierte SLA" inside `hasFixedPriceScope` guard. Mark 0.13a complete.
+> - **0.13c** — "Materialhinweis zu PP" block: honest PP statement, recyclable/sustainable variants → Angebot, no greenwashing. Mark 0.13c complete.
+>
+> **Still incomplete — execute in order, one task = one commit:**
+> 1. **0.2** (execute first): Some reorder/files/legal FAQs added, but STILL NEEDED: (a) 3–5 buyer-objection FAQs covering Glanz vs. matt, Klebstoff, Weißdruck (transparent-specific), Lieferzeit, Spender/Maschine on BOTH `/de/opake-pp-etiketten` and `/de/transparente-pp-etiketten`; (b) ≥3 FAQs on `/de/pp-rollenetiketten` hub (currently only 1). File: `lib/site-content.ts` faq arrays for these pages. Source: `30 §13`.
+> 2. **0.4** (second): Add Klebstoff (permanent; removable → Angebot) + current Finish (Glanz) explicitly to the Spezifikation table of opaque and transparent product pages; keep Weißdruck note explicit on the transparent page. Files: `lib/site-content.ts` spec fields + `components/page-renderers.tsx` if spec rendering changes needed. Source: Plan 0.4.
+> 3. **0.5** (third): Audit and complete internal linking — verify EACH product page (`/de/opake-pp-etiketten`, `/de/transparente-pp-etiketten`, `/de/pp-rollenetiketten`) links to: quote, musterbox, nachbestellen, druckdaten, the sibling material page, `etiketten-100x200`, and relevant Branchen pages (`/de/lebensmittel-etiketten`, `/de/getraenke-etiketten`, `/de/supplement-etiketten`). Check anchors are descriptive German — no "hier klicken". File: `lib/site-content.ts` relatedLinks arrays. Source: `27 §11`.
+> 4. **0.8** (fourth): Add a visible Kontakt/Support E-Mail/Formular path NEAR the decision area (near the pricing packages, not only buried in secondary info blocks). A CTA or note such as "Fragen? Schreiben Sie uns." linking to `/de/kontakt` or the quote form, placed visibly on `ProductLikePage`. File: `components/page-renderers.tsx`. Source: `80 §G6`.
+> 5. **0.10** (fifth): Add Anwendung, Temperaturbereich, Geeignet für, Hinweis rows to the Spezifikation section for opaque vs. transparent; add a Spender/Maschine note (76-mm-Kern, Wickelrichtung → quote if non-standard). File: `lib/site-content.ts` spec data and/or `components/page-renderers.tsx`. Source: `59 §28`.
+> 6. **0.13b** (sixth): Add "Rechnungskauf für geprüfte Geschäftskunden auf Anfrage." to the quote/B2B-Abruf/contact path. Must NOT appear in or promise terms via the self-serve checkout. SoT #18b. File: `lib/site-content.ts` quote page or contact page data; optionally `components/page-renderers.tsx`.
+>
+> After all 6 remaining tasks are committed+pushed individually, proceed to Phase A (Task 1). BLOCKED tasks 0.11, 0.12, 0.11b: skip per prior note.
+
 ### Task 0.1
 P0 · `30 §25` — Verify/add the mandatory German Pflichtangaben-Hinweis (exact text per `30 §25`, must not be softened) on the food/beverage/supplement product + industry contexts. Legal-exposure → first.
 
