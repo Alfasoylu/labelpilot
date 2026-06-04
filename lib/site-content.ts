@@ -1797,7 +1797,7 @@ const topLevelPages: PublicPageData[] = [
         title: "Kontaktangaben",
         body: [
           "E-Mail: kontakt@labelpilot.de",
-          "Telefon: +852 3594334",
+          "Telefon: +852 35944334",
         ],
       },
       {
