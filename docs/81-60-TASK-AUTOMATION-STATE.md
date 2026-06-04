@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 1
+current_task: 2
 current_status: pending
-completed_at: 2026-06-04T20:18:02+03:00
-last_run_note: Task 0.13b completed by verification. Audited the quote / B2B / contact path and confirmed the manual-only Rechnungskauf message already exists in the correct place: the quote page renderer shows "Rechnungskauf auf Anfrage" for geprüfte Geschäftskunden, and the Angebots-FAQ repeats that it is handled manually in the Angebotsprozess and not via the Standard-Checkout. No self-serve checkout wording was changed, and no code change was required. Verification passed: check:lang, typecheck, build. Next unblocked task is 1 (Audit Track A).
+completed_at: 2026-06-04T20:22:48+03:00
+last_run_note: Task 1 completed by verification. Audited all public form submission paths and confirmed there is no broken submit target: QuoteRequestForm uses submitQuoteRequest, SampleBoxRequestForm uses submitSampleBoxRequest, ReorderStartForm posts to /api/reorders, and CustomSizePriceForm posts to /api/custom-size/price with the intended feature-gated fallback. No code change was required. Verification passed: check:lang, typecheck, build. Next unblocked task is 2.
 ```
 
 ---
