@@ -5,7 +5,7 @@
 
 # 63-PHASE-2-SEO-FOUNDATION.md
 
-# Labelpilot.de â€” Phase 2 SEO Foundation
+# Labelpilot.de - Phase 2 SEO Foundation
 
 ## 1. Purpose
 

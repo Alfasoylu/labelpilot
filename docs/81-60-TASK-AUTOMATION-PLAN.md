@@ -104,6 +104,9 @@ The automation must always respect these rules:
 5. Prefer small deployable changes.
 6. Preserve documentation and append updates instead of overwriting architectural knowledge.
 7. **One task = one commit.** After each task, build-verify (clean `prisma generate` + `npm run build` + `check:lang` + relevant tests) and `git commit` + `git push origin main` that task's changes as their own atomic commit BEFORE advancing. Never accumulate multiple tasks' work uncommitted (it hides work from review + the supervisor and recreates the broken-batch risk). See `60-CODEX-AGENT-PROTOCOL.md` §5.1.
+8. **File encoding = UTF-8 WITHOUT BOM (binding — fixes a real routine bug).** Never prepend a UTF-8 BOM (`EF BB BF`) to any file — a prior automation run added a BOM to this STATE file. When you write or rewrite a file, save it as UTF-8 without BOM. If you open a file and find a leading BOM you introduced, strip it.
+9. **Proper German umlauts, never transliteration or mojibake (binding).** All German text (customer-facing copy AND docs) must use real `ä ö ü Ä Ö Ü ß` — never ASCII transliteration (`ae/oe/ue/ss`) and never mojibake (`Ã¼`, `â€"`, `Â§`, etc.). When you edit a file that already contains such transliteration/mojibake in the lines you touch, correct it in the same commit. (`check:lang` does not catch these — they are a manual quality rule.)
+10. **Single executor.** This queue is processed by exactly ONE executor (the scheduled Codex routine). Do not run a second concurrent executor against this working tree — parallel execution causes STATE overwrites, BOM/encoding corruption, and failed rebases (observed 2026-06-04).
 
 ---
 
