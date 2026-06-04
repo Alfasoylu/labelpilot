@@ -1787,21 +1787,22 @@ const topLevelPages: PublicPageData[] = [
         title: "Anbieterkennzeichnung",
         body: [
           "Zhenkai Global Trading Limited",
-          "Rechtsform: ⚠️ Angabe ausstehend",
-          "Sitz und registrierte Anschrift: ⚠️ Angabe ausstehend",
+          "Rechtsform: Limited Company",
+          "Sitz und registrierte Anschrift: Unit 2A, 17/F, GLENEALY TOWER, NO:1 GLENEALY, CENTRAL, HONGKON",
           "HK Business Registration Number: ⚠️ Angabe ausstehend",
+          "Steuer-/VAT-Hinweis: 78363488",
         ],
       },
       {
         title: "Kontaktangaben",
         body: [
           "E-Mail: kontakt@labelpilot.de",
-          "Telefon: ⚠️ Angabe ausstehend",
+          "Telefon: 3594334",
         ],
       },
       {
         title: "Verantwortlich für den Inhalt",
-        body: ["Vertretungsberechtigte Person: ⚠️ Angabe ausstehend"],
+        body: ["Vertretungsberechtigte Person: SLEEK HONG KONG LIMITED"],
       },
     ],
   },
