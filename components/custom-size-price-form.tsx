@@ -22,6 +22,10 @@ type CalculatorState =
   | { status: "error"; message: string }
   | { status: "success"; result: CalculatorResult };
 
+type PriceErrorResponse = {
+  message?: string;
+};
+
 const materialLabels: Record<MaterialOption, string> = {
   OPAQUE_PP: "Opakes PP",
   TRANSPARENT_PP: "Transparentes PP",
@@ -82,6 +86,9 @@ export function CustomSizePriceForm() {
           quantity: Number(quantity),
         }),
       });
+      const responseBody = (await response
+        .json()
+        .catch(() => null)) as PriceErrorResponse | CalculatorResult | null;
 
       if (response.status === 404) {
         setState({
@@ -94,17 +101,22 @@ export function CustomSizePriceForm() {
       if (!response.ok) {
         setState({
           status: "error",
-          message: "Bitte pruefen Sie Material, Format und Menge.",
+          message:
+            responseBody &&
+            "message" in responseBody &&
+            typeof responseBody.message === "string"
+              ? responseBody.message
+              : "Bitte pruefen Sie Material, Format und Menge.",
         });
         return;
       }
 
-      const result = (await response.json()) as CalculatorResult;
-      setState({ status: "success", result });
+      setState({ status: "success", result: responseBody as CalculatorResult });
     } catch {
       setState({
         status: "error",
-        message: "Der Wunschformat-Rechner konnte gerade nicht antworten.",
+        message:
+          "Der Wunschformat-Rechner konnte gerade nicht antworten. Bitte nutzen Sie das Angebotsformular.",
       });
     }
   }
@@ -216,7 +228,14 @@ export function CustomSizePriceForm() {
           ) : null}
 
           {state.status === "error" ? (
-            <p className="form-status error">{state.message}</p>
+            <div className="section-stack">
+              <p className="form-status error">{state.message}</p>
+              <div className="inline-actions">
+                <Link href={quoteHref} className="secondary-link">
+                  Wunschformat als Angebot anfragen
+                </Link>
+              </div>
+            </div>
           ) : null}
 
           {state.status === "success" && !state.result.configured ? (
