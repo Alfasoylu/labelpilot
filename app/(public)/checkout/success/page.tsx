@@ -147,8 +147,8 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
                   <h3>{needsArtworkHelp ? "Wir melden uns" : "Druckdaten & Proof"}</h3>
                   <p>
                     {needsArtworkHelp
-                      ? "Sie haben Unterst?tzung bei Datei oder Gestaltung angefragt. Unser Team pr?ft Ihren Auftrag und meldet sich mit den n?chsten Schritten."
-                      : "Laden Sie Ihre Druckdaten hoch. Wir pr?fen sie technisch und senden Ihnen einen digitalen Proof zur Freigabe."}
+                      ? "Sie haben Unterstützung bei Datei oder Gestaltung angefragt. Unser Team prüft Ihren Auftrag und meldet sich mit den nächsten Schritten."
+                      : "Laden Sie Ihre Druckdaten hoch. Wir prüfen sie technisch und senden Ihnen einen digitalen Proof zur Freigabe."}
                   </p>
                 </article>
                 <article className="step-card">
@@ -162,12 +162,12 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
               </>
             ) : (
               <article className="step-card">
-                <span className="badge">N?chster Schritt</span>
-                <h3>Checkout-Zuordnung pr?fen</h3>
+                <span className="badge">Nächster Schritt</span>
+                <h3>Checkout-Zuordnung prüfen</h3>
                 <p>
                   Solange Bestellung und Stripe-Sitzung noch nicht sauber zugeordnet sind,
-                  senden Sie bitte keine Druckdaten. Nutzen Sie bei R?ckfragen den Kontaktweg,
-                  damit wir den Checkout zuerst pr?fen k?nnen.
+                  senden Sie bitte keine Druckdaten. Nutzen Sie bei Rückfragen den Kontaktweg,
+                  damit wir den Checkout zuerst prüfen können.
                 </p>
               </article>
             )}
