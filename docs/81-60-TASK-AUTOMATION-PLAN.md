@@ -103,10 +103,11 @@ The automation must always respect these rules:
 4. Do not push thin pages into index.
 5. Prefer small deployable changes.
 6. Preserve documentation and append updates instead of overwriting architectural knowledge.
-7. **One task = one commit.** After each task, build-verify (clean `prisma generate` + `npm run build` + `check:lang` + relevant tests) and `git commit` + `git push origin main` that task's changes as their own atomic commit BEFORE advancing. Never accumulate multiple tasks' work uncommitted (it hides work from review + the supervisor and recreates the broken-batch risk). See `60-CODEX-AGENT-PROTOCOL.md` §5.1.
-8. **File encoding = UTF-8 WITHOUT BOM (binding — fixes a real routine bug).** Never prepend a UTF-8 BOM (`EF BB BF`) to any file — a prior automation run added a BOM to this STATE file. When you write or rewrite a file, save it as UTF-8 without BOM. If you open a file and find a leading BOM you introduced, strip it.
-9. **Proper German umlauts, never transliteration or mojibake (binding).** All German text (customer-facing copy AND docs) must use real `ä ö ü Ä Ö Ü ß` — never ASCII transliteration (`ae/oe/ue/ss`) and never mojibake (`Ã¼`, `â€"`, `Â§`, etc.). When you edit a file that already contains such transliteration/mojibake in the lines you touch, correct it in the same commit. (`check:lang` does not catch these — they are a manual quality rule.)
+7. **One task = one commit.** After each task, build-verify (clean `prisma generate` + `npm run build` + `check:lang` + `check:encoding` + relevant tests) and `git commit` + `git push origin main` that task's changes as their own atomic commit BEFORE advancing. Never accumulate multiple tasks' work uncommitted (it hides work from review + the supervisor and recreates the broken-batch risk). See `60-CODEX-AGENT-PROTOCOL.md` §5.1. (`npm run build` runs `prebuild` = `check:lang` + `check:encoding` automatically, so a green build already enforces both guards.)
+8. **File encoding = UTF-8 WITHOUT BOM (binding — fixes a real routine bug).** Never prepend a UTF-8 BOM (`EF BB BF`) to any file — a prior automation run added a BOM to this STATE file. When you write or rewrite a file, save it as UTF-8 without BOM. If you open a file and find a leading BOM you introduced, strip it. **Now machine-enforced by `npm run check:encoding`** (fails the build on a leading BOM).
+9. **Proper German umlauts, never transliteration or mojibake (binding — now machine-enforced).** All German display text must use real `ä ö ü Ä Ö Ü ß` — never ASCII transliteration (`ae/oe/ue/ss`) and never mojibake (`Ã¼`, `â€"`, `Â§`, etc.). **`npm run check:encoding` (in `prebuild`) now FAILS the build** on mojibake, replacement chars (`�`), a dropped-umlaut `?` between letters, a BOM, or an ASCII transliteration of a German word (URLs / file names / slugs are skipped — they correctly stay ASCII). `check:lang` only catches Turkish; this guard catches the encoding-corruption class that `next build` otherwise compiles silently. Do not weaken or bypass it.
 10. **Single executor.** This queue is processed by exactly ONE executor (the scheduled Codex routine). Do not run a second concurrent executor against this working tree — parallel execution causes STATE overwrites, BOM/encoding corruption, and failed rebases (observed 2026-06-04).
+11. **Never write umlauts via shell echo/sed/heredoc with an uncertain locale.** The routine's prior corruption (`?`/mojibake) came from emitting umlauts through tooling that re-encoded them. When inserting German umlauts programmatically, write them as explicit UTF-8 (e.g. perl `\x{00FC}` for `ü`) or edit via a UTF-8-safe editor, then immediately run `npm run check:encoding` to confirm. If the guard flags your own write, fix it before committing — do not commit corrupted bytes.
 
 ---
 
@@ -116,15 +117,22 @@ The automation must always respect these rules:
 >
 > **Processing order (updated 2026-06-04):** Codex runs top-down. **Audit Track 0 (Produkte-Seite, current focus) runs first**, then the existing Audit Tracks A → F backlog (kept in priority order: functional stability → SEO safety → conversion → ops/admin → architecture → release). Within Audit Track 0 the order is P0 (doc-mandated compliance/thinness fixes — "fix before expand") → P1 (buyer-confidence) → P2 (flag-gated revenue surfaces, BLOCKED) → founder-gated (BLOCKED). Every task is a small, deployable, German-only change, reviewed under `61-CLAUDE-REVIEWER-PROTOCOL.md`; **BLOCKED** tasks must NOT be executed until their gate is cleared (§6).
 
-> ## ⛳ PRIORITY OVERRIDE (supervisor, 2026-06-04) — run Task UC-1 NEXT
+> ## ✅ RESOLVED — Task UC-1 DONE by supervisor (2026-06-04), do NOT re-run
 >
-> **Founder-approved insert.** On your NEXT run, BEFORE continuing Audit Track A:
-> 1. Set `current_task: UC-1` in the STATE `## Codex — Current Task` block.
-> 2. Execute **Task UC-1** (defined below) as one atomic commit (build-verify first).
-> 3. After UC-1 is committed+pushed, set `current_task` back to `3` and resume Audit Track A from Task 3.
-> Do NOT re-run already-completed tasks. Single executor only (guardrail 10).
+> The routine repeatedly skipped this override (it follows `current_task`
+> sequentially and does not re-point on injected PLAN notes). The founder paused
+> the routine and the supervisor completed UC-1 directly, plus a wider encoding
+> remediation, in commits:
+> - `c473aad` — restore dropped-umlaut `?` in `checkout/success/page.tsx`.
+> - `6e4a749` — repair live mojibake in `lib/seo/metadata.ts` + `lib/site-content.ts`; add the `check:encoding` guard (now in `prebuild`).
+> - `7331d61` — full ASCII-transliteration → umlaut cleanup across customer-facing copy, emails, forms, admin UI; extend `check:encoding` with a transliteration denylist.
+>
+> **Action for the routine on resume:** do NOT set `current_task` to UC-1 and do
+> NOT re-run UC-1. Leave `current_task` where it is and continue the queue in
+> order. Guardrails 7–11 (esp. the now-binding `check:encoding`) apply to every
+> future task. Single executor only (guardrail 10).
 
-### Task UC-1 — German umlaut / transliteration cleanup (Quality · P1)
+### Task UC-1 — German umlaut / transliteration cleanup (Quality · P1) — ✅ DONE (see RESOLVED note above)
 Customer-facing German copy still contains ASCII transliterations left by an earlier catch-up (`f2c2c38`). Replace the genuine transliterated German words with proper umlauts in the customer-facing files: `components/page-renderers.tsx`, `lib/site-content.ts`, and any other customer-facing component/page with such copy.
 
 **Approach — targeted word fixes, NOT a blind character replace.** Fix only real transliterated German words. Known targets (grep the customer-facing files for more):
