@@ -139,12 +139,16 @@ export async function POST(
         orderId: order.id,
       });
 
-      await sendEmail({
-        to: adminNotifyEmail,
-        subject: template.subject,
-        html: template.html,
-        text: template.text,
-      });
+      try {
+        await sendEmail({
+          to: adminNotifyEmail,
+          subject: template.subject,
+          html: template.html,
+          text: template.text,
+        });
+      } catch (error) {
+        console.error("Ops-Benachrichtigung nach Artwork-Upload fehlgeschlagen:", error);
+      }
     }
 
     return NextResponse.json({

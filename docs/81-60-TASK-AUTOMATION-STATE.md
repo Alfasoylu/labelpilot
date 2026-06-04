@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 8
+current_task: 9
 current_status: pending
-completed_at: 2026-06-04T21:40:12+03:00
-last_run_note: Task 7 completed. Audited the Stripe webhook processing path and fixed the highest-risk safety gap in app/api/stripe/webhook/route.ts: when the database connection or Stripe webhook configuration is unavailable, the route no longer returns 200/received and silently drops the event. It now returns 503 so Stripe can retry completed checkout events instead of treating them as successfully processed. Verification passed: check:lang, typecheck, build. Next unblocked task is 8.
+completed_at: 2026-06-04T21:54:03+03:00
+last_run_note: Task 8 completed. Audited the order artwork upload flow across app/api/orders/[orderId]/artwork/route.ts, lib/file-validation/artwork.ts, lib/storage/artwork.ts, and the customer upload surface. Server-side file-type and size guards are in place for PDF, AI, EPS, SVG, PNG, JPG/JPEG, and ZIP, with token-gated order access and upload status restrictions. Fixed the real broken-functionality risk in the upload route: if the post-upload admin notification email fails, the API no longer returns a false 500 after the file and order-state transaction already succeeded. The email side effect is now logged without breaking the successful upload response. Verification passed: check:lang, typecheck, build. Next unblocked task is 9.
 ```
 
 ---
