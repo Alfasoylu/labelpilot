@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 0.1
+current_task: 0.4
 current_status: pending
-completed_at:
-last_run_note: Awaiting first Codex execution run. Plan is ready.
+completed_at: 2026-06-04T19:59:26.0662097+03:00
+last_run_note: Task 0.2 completed. Added the mandatory reorder / accepted-print-files / legal-responsibility FAQs plus buyer-objection FAQs (Glanz vs. matt, Klebstoff, Weißdruck, Lieferzeit, Spender/Maschine) to /de/opake-pp-etiketten and /de/transparente-pp-etiketten, and expanded /de/pp-rollenetiketten to at least three buyer-facing FAQs. Verification passed: check:lang, typecheck, build. Next unblocked task is 0.4.
 ```
 
 ---

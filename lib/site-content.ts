@@ -754,6 +754,31 @@ const topLevelPages: PublicPageData[] = [
         answer:
           "Der Kunde bleibt für rechtliche Pflichtangaben, Zutaten, Nährwerte, Allergene, Health Claims und regulatorische Inhalte verantwortlich. Labelpilot.de übernimmt Druckproduktion, technische Dateiprüfung und Layout-Unterstützung, aber keine rechtliche Prüfung.",
       },
+      {
+        question: "Kann ich zwischen Glanz und matt wählen?",
+        answer:
+          "Ja. Die transparente PP-Basis ist für klare Premium-Optik gedacht. Wenn Sie matte Wirkung bevorzugen, klären wir das sauber im passenden Angebots- oder Zusatzleistungsweg, damit Optik und spätere Nachbestellung konsistent bleiben.",
+      },
+      {
+        question: "Welcher Klebstoff ist im Standard vorgesehen?",
+        answer:
+          "Im Fixpreis ist permanenter Klebstoff vorgesehen. Wenn Sie ablösbare oder anwendungsspezifische Klebstoffe brauchen, läuft das nicht über das Standardpaket, sondern über den Angebotsprozess.",
+      },
+      {
+        question: "Brauche ich Weißunterdruck bei transparenten Etiketten immer?",
+        answer:
+          "Nein. Weißunterdruck ist nur dann relevant, wenn Farben, Typografie oder Pflichtangaben auf transparentem Material ohne zusätzliche Deckung nicht sauber wirken würden. Deshalb ist Weißunterdruck nicht pauschal im Fixpreis enthalten, sondern wird bei Bedarf separat geklärt.",
+      },
+      {
+        question: "Wie lange dauert die Lieferung nach der Freigabe?",
+        answer:
+          "Die ehrliche Richtgröße liegt bei ca. 10–14 Werktagen nach Ihrer Freigabe für Produktion und Versand nach Deutschland. Das ist ein voraussichtlicher Zeitraum und keine bindende Garantie.",
+      },
+      {
+        question: "Sind die Rollen direkt für Spender oder Maschinen geeignet?",
+        answer:
+          "Der Standard ist für eine klare, wiederholbare Rollenspezifikation gedacht. Wenn Sie besondere Anforderungen an Kern, Wickelrichtung oder maschinelle Verarbeitung haben, sollte das vorab über das Angebot geklärt werden.",
+      },
     ],
     relatedLinks: [
       {
@@ -866,6 +891,31 @@ const topLevelPages: PublicPageData[] = [
         question: "Was passiert bei mehreren Sorten oder mehr als einem Design?",
         answer:
           "Der Fixpreis deckt ein Design pro Auftrag ab. Mehrere Sorten, Zusatzdesigns oder Sonderkonstellationen laufen sauber über den Angebotsprozess oder später über freigeschaltete Zusatzleistungen.",
+      },
+      {
+        question: "Kann ich zwischen Glanz und matt wählen?",
+        answer:
+          "Ja. Im Standard geht es um eine saubere, wiederholbare Spezifikation für opakes PP. Wenn eine matte Wirkung gewünscht ist, sollte sie bewusst gewählt werden, damit Proof, Freigabe und spätere Nachbestellung dieselbe Oberfläche beibehalten.",
+      },
+      {
+        question: "Welcher Klebstoff ist im Standard enthalten?",
+        answer:
+          "Der Fixpreis ist auf permanenten Klebstoff ausgelegt. Sobald ablösbare, tiefkühlgeeignete oder sonstige Sonderanforderungen im Raum stehen, ist das ein sauberer Angebotsfall statt eines stillen Standardversprechens.",
+      },
+      {
+        question: "Brauche ich Weißunterdruck auch bei opaken Etiketten?",
+        answer:
+          "In der Regel nein. Weißunterdruck ist vor allem bei transparenten Etiketten ein Thema, wenn Deckkraft gezielt aufgebaut werden muss. Wer diesen Effekt braucht, sollte die transparente Variante plus Angebotsweg prüfen.",
+      },
+      {
+        question: "Wie lange dauert die Lieferung nach der Freigabe?",
+        answer:
+          "Als ehrliche Orientierung gelten ca. 10–14 Werktage nach Ihrer Freigabe für Produktion und Versand nach Deutschland. Das ist ein voraussichtlicher Zeitraum, keine bindende Garantie.",
+      },
+      {
+        question: "Sind die Rollen direkt für Spender oder Maschinen geeignet?",
+        answer:
+          "Das Standardpaket ist auf eine klare, wiederholbare Rollenspezifikation ausgelegt. Wenn Kern, Wickelrichtung oder Maschinenanforderungen davon abweichen, sollte das vorab über das Angebot abgestimmt werden.",
       },
     ],
     relatedLinks: [
@@ -994,6 +1044,21 @@ const topLevelPages: PublicPageData[] = [
         question: "Wer ist für Pflichtangaben und regulatorische Inhalte verantwortlich?",
         answer:
           "Der Kunde bleibt für rechtliche Pflichtangaben, Zutaten, Nährwerte, Allergene, Health Claims und regulatorische Inhalte verantwortlich. Labelpilot.de übernimmt Druckproduktion, technische Dateiprüfung und Layout-Unterstützung, aber keine rechtliche Prüfung.",
+      },
+      {
+        question: "Wann wähle ich opakes und wann transparentes PP?",
+        answer:
+          "Opakes PP ist meist die sicherere Standardlösung für klare Deckkraft, Pflichtangaben und starke Farbflächen. Transparentes PP passt besser, wenn Glas, Flasche oder Produktoberfläche bewusst sichtbar bleiben sollen.",
+      },
+      {
+        question: "Welche Menge läuft nicht mehr als Standardpaket?",
+        answer:
+          "Die festen Pakete decken 1.000, 2.000, 5.000 und 10.000 Stück ab. Ab 20.000 Stück, bei mehreren Varianten oder bei Sonderanforderungen führt der saubere Weg über das Angebotsformular.",
+      },
+      {
+        question: "Wie lange dauert der Weg von Freigabe bis Lieferung?",
+        answer:
+          "Für die Standardlogik gilt als ehrliche Orientierung ein Zeitraum von ca. 10–14 Werktagen nach Ihrer Freigabe für Produktion und Versand nach Deutschland. Das ist kein starres Liefergarantie-Versprechen.",
       },
     ],
     relatedLinks: [
