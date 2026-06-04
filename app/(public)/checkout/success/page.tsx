@@ -140,23 +140,37 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
                 Stripe-Webhook final bestätigt.
               </p>
             </article>
-            <article className="step-card">
-              <span className="badge">Schritt 2</span>
-              <h3>{needsArtworkHelp ? "Wir melden uns" : "Druckdaten & Proof"}</h3>
-              <p>
-                {needsArtworkHelp
-                  ? "Sie haben Unterstützung bei Datei oder Gestaltung angefragt. Unser Team prüft Ihren Auftrag und meldet sich mit den nächsten Schritten."
-                  : "Laden Sie Ihre Druckdaten hoch. Wir prüfen sie technisch und senden Ihnen einen digitalen Proof zur Freigabe."}
-              </p>
-            </article>
-            <article className="step-card">
-              <span className="badge">Schritt 3</span>
-              <h3>Produktion & Versand</h3>
-              <p>
-                Nach Ihrer Freigabe produzieren wir Ihre PP-Rollenetiketten und versenden sie
-                innerhalb Deutschlands.
-              </p>
-            </article>
+            {hasResolvedCheckoutState ? (
+              <>
+                <article className="step-card">
+                  <span className="badge">Schritt 2</span>
+                  <h3>{needsArtworkHelp ? "Wir melden uns" : "Druckdaten & Proof"}</h3>
+                  <p>
+                    {needsArtworkHelp
+                      ? "Sie haben Unterst?tzung bei Datei oder Gestaltung angefragt. Unser Team pr?ft Ihren Auftrag und meldet sich mit den n?chsten Schritten."
+                      : "Laden Sie Ihre Druckdaten hoch. Wir pr?fen sie technisch und senden Ihnen einen digitalen Proof zur Freigabe."}
+                  </p>
+                </article>
+                <article className="step-card">
+                  <span className="badge">Schritt 3</span>
+                  <h3>Produktion & Versand</h3>
+                  <p>
+                    Nach Ihrer Freigabe produzieren wir Ihre PP-Rollenetiketten und versenden sie
+                    innerhalb Deutschlands.
+                  </p>
+                </article>
+              </>
+            ) : (
+              <article className="step-card">
+                <span className="badge">N?chster Schritt</span>
+                <h3>Checkout-Zuordnung pr?fen</h3>
+                <p>
+                  Solange Bestellung und Stripe-Sitzung noch nicht sauber zugeordnet sind,
+                  senden Sie bitte keine Druckdaten. Nutzen Sie bei R?ckfragen den Kontaktweg,
+                  damit wir den Checkout zuerst pr?fen k?nnen.
+                </p>
+              </article>
+            )}
           </div>
         </section>
       ) : null}

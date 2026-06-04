@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 6
+current_task: 7
 current_status: pending
-completed_at: 2026-06-04T21:21:17+03:00
-last_run_note: Task 5 completed. Audited the checkout session creation route in app/api/checkout/create-session/route.ts against valid package orders and found a real failure-state gap: if Stripe session creation failed after the draft order was created, the order could remain silently stuck in PENDING_PAYMENT. The route now marks such orders as PAYMENT_FAILED and records a status event when the session has no redirect URL or when checkout creation crashes before redirect. Verification passed: check:lang, typecheck, build. Next unblocked task is 6.
+completed_at: 2026-06-04T21:31:37+03:00
+last_run_note: Task 6 completed. Audited the Stripe success and cancel surfaces and fixed a real user-state mismatch in app/(public)/checkout/success/page.tsx: when checkout/session resolution is not available yet, the page no longer presents the order as definitively received or suggests immediate upload/proof steps. It now uses a more honest "Checkout wird gerade bestätigt" heading and swaps the later workflow cards for a single checkout-verification step until the Stripe session is cleanly mapped to an order. Verification passed: check:lang, typecheck, build. Next unblocked task is 7.
 ```
 
 ---
