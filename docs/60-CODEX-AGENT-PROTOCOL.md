@@ -143,6 +143,20 @@ If any customer-facing English remains, the task is not complete.
 
 ---
 
+## 5.1 Per-Task Commit & Push (one task = one commit)
+
+Codex MUST commit and push the changes for **each completed task as its own atomic commit, before starting the next task**. Do NOT accumulate several tasks' work uncommitted in the working tree (that hides the work from review, blinds the hourly supervisor which only sees pushed commits, and recreates the broken-batch problem).
+
+For every task:
+
+1. **Build-verify first** (each commit auto-deploys to production, so it must be green): clean `npx prisma generate` + `npm run build` + `npm run check:lang` + any relevant `npm run test:*` script must pass.
+2. `git add` only that task's files, commit with a message naming the task/scope, and `git push origin main`.
+3. Then record completion in the state file and advance to the next task.
+
+This keeps every change atomically reviewable under `61-CLAUDE-REVIEWER-PROTOCOL.md` and visible to the supervisor. If a task is blocked, do not commit a half-done change — mark it blocked in the state file and move on.
+
+---
+
 ## 6. Final Codex Operating Verdict
 
 Codex’s job is to implement the documented Labelpilot.de system:

@@ -103,6 +103,7 @@ The automation must always respect these rules:
 4. Do not push thin pages into index.
 5. Prefer small deployable changes.
 6. Preserve documentation and append updates instead of overwriting architectural knowledge.
+7. **One task = one commit.** After each task, build-verify (clean `prisma generate` + `npm run build` + `check:lang` + relevant tests) and `git commit` + `git push origin main` that task's changes as their own atomic commit BEFORE advancing. Never accumulate multiple tasks' work uncommitted (it hides work from review + the supervisor and recreates the broken-batch risk). See `60-CODEX-AGENT-PROTOCOL.md` §5.1.
 
 ---
 
@@ -367,7 +368,8 @@ A task is complete only if:
 1. The intended audit or implementation work was actually performed.
 2. The result is recorded in the state/progress file.
 3. Any blocking issue is clearly marked.
-4. The next task does not start until at least 10 minutes after the recorded completion time.
+4. The task's changes are build-verified and committed + pushed to `origin/main` as their OWN atomic commit (one task = one commit) — never bundled with other tasks, never left uncommitted in the working tree (Guardrail 7 / `60` §5.1).
+5. The next task does not start until at least 10 minutes after the recorded completion time.
 
 If a task is blocked, the automation should:
 
