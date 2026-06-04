@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 7
+current_task: 8
 current_status: pending
-completed_at: 2026-06-04T21:31:37+03:00
-last_run_note: Task 6 completed. Audited the Stripe success and cancel surfaces and fixed a real user-state mismatch in app/(public)/checkout/success/page.tsx: when checkout/session resolution is not available yet, the page no longer presents the order as definitively received or suggests immediate upload/proof steps. It now uses a more honest "Checkout wird gerade bestätigt" heading and swaps the later workflow cards for a single checkout-verification step until the Stripe session is cleanly mapped to an order. Verification passed: check:lang, typecheck, build. Next unblocked task is 7.
+completed_at: 2026-06-04T21:40:12+03:00
+last_run_note: Task 7 completed. Audited the Stripe webhook processing path and fixed the highest-risk safety gap in app/api/stripe/webhook/route.ts: when the database connection or Stripe webhook configuration is unavailable, the route no longer returns 200/received and silently drops the event. It now returns 503 so Stripe can retry completed checkout events instead of treating them as successfully processed. Verification passed: check:lang, typecheck, build. Next unblocked task is 8.
 ```
 
 ---

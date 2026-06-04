@@ -238,7 +238,10 @@ export async function POST(request: Request) {
   const prisma = getPrismaClient();
   if (!prisma) {
     console.error("Webhook nicht verfuegbar: DATABASE_URL fehlt.");
-    return NextResponse.json({ received: true });
+    return NextResponse.json(
+      { error: "Webhook-Verarbeitung nicht verfuegbar." },
+      { status: 503 },
+    );
   }
 
   let stripe;
@@ -249,7 +252,10 @@ export async function POST(request: Request) {
     webhookSecret = getStripeWebhookSecret();
   } catch (error) {
     console.error("Webhook nicht verfuegbar:", error);
-    return NextResponse.json({ received: true });
+    return NextResponse.json(
+      { error: "Webhook-Verarbeitung nicht verfuegbar." },
+      { status: 503 },
+    );
   }
 
   const signature = request.headers.get("stripe-signature");
