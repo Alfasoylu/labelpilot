@@ -1852,9 +1852,30 @@ const topLevelPages: PublicPageData[] = [
     sidebarTitle: "",
     sidebarBullets: [],
     sections: [
-      { title: "Liefergebiet und Versandmodell", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
-      { title: "Produktions- und Versandablauf", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
-      { title: "Hinweise zu Lieferzeiten", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      {
+        title: "Liefergebiet und Versandmodell",
+        body: [
+          "Liefergebiet: Deutschland.",
+          "Produktion und Versand erfolgen aus der Türkei. Export- und Logistikpartner ist Alfa Soylu Elektronik, Istanbul.",
+          "Versand per Luftfracht mit DHL oder UPS.",
+          "Die Lieferung erfolgt DDP (Delivered Duty Paid): Einfuhrumsatzsteuer und etwaige Zollabgaben sind im Preis enthalten und bereits entrichtet. Bei der Zustellung entstehen für Sie keine zusätzlichen Kosten.",
+        ],
+      },
+      {
+        title: "Produktions- und Versandablauf",
+        body: [
+          "Nach Zahlungseingang und Freigabe Ihrer Druckdaten startet die Produktion.",
+          "Der Versand erfolgt anschließend per DHL- oder UPS-Luftfracht.",
+          "Nach dem Versand stellen wir Ihnen die Sendungsverfolgung bereit.",
+        ],
+      },
+      {
+        title: "Hinweise zu Lieferzeiten",
+        body: [
+          "Die Lieferzeit beträgt in der Regel ca. 10–14 Werktage nach Ihrer Freigabe (Produktion und Versand nach Deutschland).",
+          "Es handelt sich um eine Orientierungsangabe, nicht um eine verbindliche Zustellgarantie.",
+        ],
+      },
     ],
   },
   {
