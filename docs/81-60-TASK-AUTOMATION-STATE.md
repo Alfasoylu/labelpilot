@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 3
+current_task: 4
 current_status: pending
-completed_at: 2026-06-04T20:48:54+03:00
-last_run_note: Task 2 completed. Audited the quote request form server action and validation behavior in lib/actions/quote-request.ts and fixed a real server-side weakness: targetDeliveryDate no longer relies on Date.parse normalization, and now only accepts valid ISO calendar dates in YYYY-MM-DD form. This prevents manipulated invalid dates from slipping into lead/quote records as silently normalized Date values. Verification passed: check:lang, typecheck, build. Next unblocked task is 3.
+completed_at: 2026-06-04T20:59:04+03:00
+last_run_note: Task 3 completed. Audited the sample box request form server action and validation behavior in lib/actions/sample-box-request.ts and fixed the same server-side date weakness there: targetDeliveryDate now only accepts valid ISO calendar dates in YYYY-MM-DD form instead of relying on Date.parse normalization. This prevents manipulated invalid dates from slipping into lead records or email content as silently normalized Date values. Verification passed: check:lang, typecheck, build. Next unblocked task is 4.
 ```
 
 ---
