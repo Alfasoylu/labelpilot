@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 0.10
+current_task: 0.13b
 current_status: pending
-completed_at: 2026-06-04T20:12:00+03:00
-last_run_note: Task 0.8 completed (gap G6). Added a dedicated "Kontakt & Support" surface-card in the product/pricing decision area (components/page-renderers.tsx, right after the package grid) with a direct "Angebot per E-Mail senden" mailto (kontakt@labelpilot.de, prefilled subject) plus Angebot-anfordern and Kontakt form links. Proper German umlauts. Verification passed: check:lang, typecheck, build. Next unblocked task is 0.10. (Note: the surrounding f2c2c38 renderer copy still uses ae/ue transliteration — out of 0.8 scope; flagged for a later cleanup pass.)
+completed_at: 2026-06-04T20:16:00+03:00
+last_run_note: Task 0.10 completed (59 §28). In buildSpecRows (components/page-renderers.tsx) added the missing "Temperaturbereich" row (honest: übliche Raum-/Lagerbedingungen; Tiefkühl-/Nässe-/Hitze über Angebot — no fabricated °C range) for BOTH opaque and transparent; the "Hinweis" Spender/Maschine note (76-mm-Kern / Wickelrichtung Standard → Angebot) was already present and is retained; Anwendung/Geeignet für rows kept. Also fixed ASCII umlaut transliterations in these suitability rows and aligned Finish to "Glanz (Standard) enthalten; matt auf Anfrage" (SoT #20-ii). Verification passed: check:lang, typecheck, build. Next unblocked task is 0.13b (skipping BLOCKED 0.11/0.12/0.11b per supervisor note; 0.13a/0.13c are catch-up-done).
 ```
 
 ---
