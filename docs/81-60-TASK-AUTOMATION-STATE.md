@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 0.5
+current_task: 0.8
 current_status: pending
-completed_at: 2026-06-04T20:05:14+03:00
-last_run_note: Task 0.4 completed. In fixedPriceIncludedRows (lib/site-content.ts) added an explicit Klebstoff row ("Permanent; ablösbare oder anwendungsspezifische Klebstoffe auf Anfrage (Angebot)") and changed Finish to "Glanz (Standard); matt auf Anfrage" (consistent with SoT #20-ii — gloss standard, matt not freely included; no flag enabled). Weißunterdruck note already explicit in fixedPriceExcludedRows (transparent). Verification passed: check:lang, typecheck, build. Next unblocked task is 0.5.
+completed_at: 2026-06-04T20:09:00+03:00
+last_run_note: Task 0.5 completed (27 §11 internal-link audit). Audit result — both product pages (opake + transparente) already link to ALL required targets with descriptive German anchors (no "hier klicken"): Angebot anfordern (commonCommercialLinks), Musterbox/Druckdaten/Nachbestellen (guideCommercialLinks), sibling material page + Etiketten 100x200 + Branchen pages (own relatedLinks). No link was missing. Genuine fix applied: corrected 6 ASCII-umlaut transliterations (fuer→für, spaeter→später) in the product-page relatedLinks descriptions. Verification passed: check:lang, typecheck, build. Next unblocked task is 0.8 (skip BLOCKED 0.6/0.7? — 0.6/0.7 are P1 catch-up-done; next remaining per supervisor list is 0.8).
 ```
 
 ---

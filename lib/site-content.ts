@@ -801,12 +801,12 @@ const topLevelPages: PublicPageData[] = [
       {
         label: "Etiketten 100x200 mm",
         href: "/de/etiketten-100x200",
-        description: "Formatseite fuer das feste 100x200-mm-Standardformat mit klarer Einordnung des Einsatzfalls.",
+        description: "Formatseite für das feste 100x200-mm-Standardformat mit klarer Einordnung des Einsatzfalls.",
       },
       {
         label: "Etiketten nachbestellen",
         href: "/de/nachbestellen",
-        description: "Wenn dieselbe freigegebene Spezifikation spaeter schneller erneut bestellt werden soll.",
+        description: "Wenn dieselbe freigegebene Spezifikation später schneller erneut bestellt werden soll.",
       },
       ...guideCommercialLinks,
     ],
@@ -935,22 +935,22 @@ const topLevelPages: PublicPageData[] = [
       {
         label: "Transparente PP-Etiketten",
         href: "/de/transparente-pp-etiketten",
-        description: "Die Gegenseite fuer Glas-, Flaschen- und Premium-Optiken mit sichtbarem Inhalt.",
+        description: "Die Gegenseite für Glas-, Flaschen- und Premium-Optiken mit sichtbarem Inhalt.",
       },
       {
         label: "Etiketten 100x200 mm",
         href: "/de/etiketten-100x200",
-        description: "Formatseite fuer das feste 100x200-mm-Standardformat und seine typische B2B-Verpackungslogik.",
+        description: "Formatseite für das feste 100x200-mm-Standardformat und seine typische B2B-Verpackungslogik.",
       },
       {
         label: "Etiketten nachbestellen",
         href: "/de/nachbestellen",
-        description: "Wenn eine freigegebene Produktlinie spaeter ohne neuen Start von vorn wiederholt werden soll.",
+        description: "Wenn eine freigegebene Produktlinie später ohne neuen Start von vorn wiederholt werden soll.",
       },
       {
         label: "Supplement-Etiketten",
         href: "/de/supplement-etiketten",
-        description: "Branchenseite fuer Dosen, Beutel und Flaschen mit wiederkehrenden Pflichtangaben und SKU-Logik.",
+        description: "Branchenseite für Dosen, Beutel und Flaschen mit wiederkehrenden Pflichtangaben und SKU-Logik.",
       },
       ...guideCommercialLinks,
     ],
