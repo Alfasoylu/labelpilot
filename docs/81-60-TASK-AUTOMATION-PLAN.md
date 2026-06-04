@@ -116,6 +116,24 @@ The automation must always respect these rules:
 >
 > **Processing order (updated 2026-06-04):** Codex runs top-down. **Audit Track 0 (Produkte-Seite, current focus) runs first**, then the existing Audit Tracks A → F backlog (kept in priority order: functional stability → SEO safety → conversion → ops/admin → architecture → release). Within Audit Track 0 the order is P0 (doc-mandated compliance/thinness fixes — "fix before expand") → P1 (buyer-confidence) → P2 (flag-gated revenue surfaces, BLOCKED) → founder-gated (BLOCKED). Every task is a small, deployable, German-only change, reviewed under `61-CLAUDE-REVIEWER-PROTOCOL.md`; **BLOCKED** tasks must NOT be executed until their gate is cleared (§6).
 
+> ## ⛳ PRIORITY OVERRIDE (supervisor, 2026-06-04) — run Task UC-1 NEXT
+>
+> **Founder-approved insert.** On your NEXT run, BEFORE continuing Audit Track A:
+> 1. Set `current_task: UC-1` in the STATE `## Codex — Current Task` block.
+> 2. Execute **Task UC-1** (defined below) as one atomic commit (build-verify first).
+> 3. After UC-1 is committed+pushed, set `current_task` back to `3` and resume Audit Track A from Task 3.
+> Do NOT re-run already-completed tasks. Single executor only (guardrail 10).
+
+### Task UC-1 — German umlaut / transliteration cleanup (Quality · P1)
+Customer-facing German copy still contains ASCII transliterations left by an earlier catch-up (`f2c2c38`). Replace the genuine transliterated German words with proper umlauts in the customer-facing files: `components/page-renderers.tsx`, `lib/site-content.ts`, and any other customer-facing component/page with such copy.
+
+**Approach — targeted word fixes, NOT a blind character replace.** Fix only real transliterated German words. Known targets (grep the customer-facing files for more):
+`fuer→für`, `Fuer→Für`, `ueber→über`, `moeglich→möglich`, `moeglichst→möglichst`, `Groesse→Größe`, `Glaeser→Gläser`, `faengt→fängt`, `klaeren→klären`, `bestaetig(en/t)→bestätig`, `naechst(e/en)→nächst`, `spaeter→später`, `Ausfuehrung→Ausführung`, `Fuelloptik→Fülloptik`, `Farbflaechen→Farbflächen`, `standardmaessig→standardmäßig`, `pruefung→prüfung`, `pruefen→prüfen`, `geprueft→geprüft`, `Stueck→Stück`, `Weissunterdruck→Weißunterdruck`, `Weissdruck→Weißdruck`.
+
+**Do NOT change** (legitimate, not transliterations): code identifiers, import paths, URLs / `mailto:`, and German words where the letter combo is correct (e.g. `neue`, `Status`, `Adresse`, `Prozess`, `muss`, `dass`). **Never** do a blind `ue→ü` or `ss→ß` substitution — go word by word.
+
+**Gates:** `npm run check:lang` + `npm run typecheck` + `npm run build` green. **One commit.** Then per the override above, set `current_task: 3`.
+
 ## Audit Track 0 - Produkte-Seite (aktueller Fokus, höchste Priorität)
 
 > Source: `80-PRODUKTE-PAGE-ANALYSIS.md` (+ `30 §13/§18/§25`, `04 §14/§28`, `27 §11`, `78`, `59 §28`). Additive product-page work; no price/scope change (SoT #15/#16); fixed-package base unchanged.
