@@ -1,6 +1,26 @@
 export const ROBOTS_ALLOW_PATHS = ["/de", "/de/"] as const;
-export const ROBOTS_DISALLOW_PATHS = ["/account/", "/admin/", "/api/", "/lp/", "/teklif/"] as const;
-export const NON_INDEXABLE_PREFIXES = ["/account", "/admin", "/api", "/lp", "/teklif"] as const;
+export const ROBOTS_DISALLOW_PATHS = [
+  "/account/",
+  "/admin/",
+  "/api/",
+  "/checkout/",
+  "/de/auftrag/",
+  "/de/checkout",
+  "/de/gespeicherte-druckdaten",
+  "/lp/",
+  "/teklif/",
+] as const;
+export const NON_INDEXABLE_PREFIXES = [
+  "/account",
+  "/admin",
+  "/api",
+  "/checkout",
+  "/de/auftrag",
+  "/de/checkout",
+  "/de/gespeicherte-druckdaten",
+  "/lp",
+  "/teklif",
+] as const;
 
 export function buildAbsoluteUrlFromBase(baseUrl: string, path: string) {
   const normalizedBase = baseUrl.replace(/\/$/, "");

@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 16
+current_task: 17
 current_status: pending
-completed_at: 2026-06-05T00:28:00+03:00
-last_run_note: Revenue-readiness audit ran before Task 16 again. Found a live checkout blocker in the customer flow: /de/checkout could still render the full intake form even when Prisma/DB runtime env or Stripe runtime env/base URL were unavailable, which forced customers into a dead-end before the API returned 503. Added a page-level availability preflight in app/(public)/de/checkout/page.tsx so the checkout page now shows a safe quote/contact fallback instead of the intake form when live checkout cannot run. Verification passed: check:lang, check:encoding, typecheck, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and admin email forwarding remains unverified per 00-SOURCE-OF-TRUTH. Current queue task 16 remains pending for the next run.
+completed_at: 2026-06-05T01:53:21.3261605+03:00
+last_run_note: Revenue-readiness audit ran before Task 16 and no higher-severity blocker displaced the queue. Task 16 is complete: audited app/robots.ts and centralized crawl governance. Added checkout and token/private German customer routes to lib/seo/governance.ts so /checkout/*, /de/checkout, /de/auftrag/* and /de/gespeicherte-druckdaten* are now explicitly disallowed in robots and treated as non-indexable by shared sitemap/indexability guards. Updated scripts/test-autonomous-safety.ts to lock the stronger policy and refreshed its expected German error strings to match current live validation copy. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 17.
 ```
 
 ---

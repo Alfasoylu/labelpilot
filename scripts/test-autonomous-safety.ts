@@ -21,10 +21,24 @@ import { metadataMap } from "../lib/seo/metadata.ts";
 import { sitemapEntries } from "../lib/site-content.ts";
 
 assert.deepEqual(ROBOTS_ALLOW_PATHS, ["/de", "/de/"]);
-assert.deepEqual(ROBOTS_DISALLOW_PATHS, ["/account/", "/admin/", "/api/", "/lp/", "/teklif/"]);
+assert.deepEqual(ROBOTS_DISALLOW_PATHS, [
+  "/account/",
+  "/admin/",
+  "/api/",
+  "/checkout/",
+  "/de/auftrag/",
+  "/de/checkout",
+  "/de/gespeicherte-druckdaten",
+  "/lp/",
+  "/teklif/",
+]);
 
 assert.equal(isNonIndexablePath("/admin"), true);
 assert.equal(isNonIndexablePath("/admin/orders"), true);
+assert.equal(isNonIndexablePath("/checkout/cancel"), true);
+assert.equal(isNonIndexablePath("/de/checkout"), true);
+assert.equal(isNonIndexablePath("/de/auftrag/order-123/druckdaten"), true);
+assert.equal(isNonIndexablePath("/de/gespeicherte-druckdaten"), true);
 assert.equal(isNonIndexablePath("/lp/test"), true);
 assert.equal(isNonIndexablePath("/teklif/foo"), true);
 assert.equal(isNonIndexablePath("/de"), false);
@@ -114,7 +128,7 @@ const invalidDecision = validateProofDecisionRequest({
 assert.deepEqual(invalidDecision, {
   ok: false,
   status: 400,
-  error: "Ungueltige Rueckmeldung.",
+  error: "Ungültige Rückmeldung.",
 });
 
 const missingChangeNote = validateProofDecisionRequest({
@@ -124,7 +138,7 @@ const missingChangeNote = validateProofDecisionRequest({
 assert.deepEqual(missingChangeNote, {
   ok: false,
   status: 400,
-  error: "Bitte beschreiben Sie den Aenderungswunsch.",
+  error: "Bitte beschreiben Sie den Änderungswunsch.",
 });
 
 const wrongOrder = validateProofDecisionRequest(
@@ -162,7 +176,7 @@ const wrongStatus = validateProofDecisionRequest(
 assert.deepEqual(wrongStatus, {
   ok: false,
   status: 409,
-  error: "Fuer diesen Proof ist derzeit keine Rueckmeldung moeglich.",
+  error: "Für diesen Proof ist derzeit keine Rückmeldung möglich.",
 });
 
 const wrongProofState = validateProofDecisionRequest(
@@ -181,7 +195,7 @@ const wrongProofState = validateProofDecisionRequest(
 assert.deepEqual(wrongProofState, {
   ok: false,
   status: 409,
-  error: "Fuer diesen Proof ist derzeit keine Rueckmeldung moeglich.",
+  error: "Für diesen Proof ist derzeit keine Rückmeldung möglich.",
 });
 
 const validApprove = validateProofDecisionRequest(
