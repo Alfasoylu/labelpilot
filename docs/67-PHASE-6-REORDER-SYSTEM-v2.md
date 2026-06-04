@@ -1,5 +1,8 @@
 # 67-PHASE-6-REORDER-SYSTEM-v2.md — v2
 
+> **LEGACY numbering — canonical phases live in `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md`.**
+> This document keeps its historical filename/label. When build-phase naming conflicts, `74` wins.
+
 # Labelpilot.de — Phase 6 Reorder System v2
 
 ## 1. Purpose

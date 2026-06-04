@@ -1,5 +1,8 @@
 # Canonical phase = 4 (per doc 74).
 
+> **LEGACY numbering — canonical phases live in `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md`.**
+> This document keeps its historical filename/label. When build-phase naming conflicts, `74` wins.
+
 # 64-PHASE-3-STRIPE-ORDER-FLOW.md
 
 # Labelpilot.de — Phase 3 Stripe Order Flow

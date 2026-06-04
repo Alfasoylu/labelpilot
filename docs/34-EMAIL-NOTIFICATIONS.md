@@ -1,5 +1,8 @@
 # 34-EMAIL-NOTIFICATIONS.md
 
+> **Live-status note:**
+> Email delivery is currently gated. If `RESEND_*` and sender configuration are missing, `lib/email` behaves as a no-op and these transactional flows do not send in production. Read the templates below as the canonical target state; live sending depends on operator/env setup.
+
 # Labelpilot.de — Email Notifications
 
 ## 1. Purpose

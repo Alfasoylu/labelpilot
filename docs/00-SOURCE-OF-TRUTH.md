@@ -71,44 +71,60 @@ The canonical phase scheme is the ordering declared in `74-CODEX-CLAUDE-BACKLOG-
 
 The older `62..69` / `43..51` scheme is retained only as legacy file numbering.
 
-### 4.1 Canonical Phase Table
+### 4.1 Resolved Canonical Build Phase Ladder
+
+`74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` is the single canonical build-phase authority.
+
+Use this normalized ladder when discussing current implementation order. Legacy numbers in `62..69` and `43..51` are filename/history labels only.
+
+| Canonical Build Phase | Name | Definition | Release Gate |
+|---|---|---|---|
+| P0 | Foundation | Repo/docs/env/public foundation and release-safe technical base. | Foundation is complete only when docs, env assumptions, and the minimum public/commercial base are aligned. |
+| P1 | Revenue-Capable MVP | Revenue-capable MVP with checkout and transactional email operational in production. | `checkout + email must be LIVE`, not only implemented in code. |
+| P2 | Artwork / Proof | Private upload, technical review, proofing, and production gate. | Paid orders must be able to move safely into artwork/proof workflow. |
+| P3 | Auth + Account | Real Supabase Auth and customer account layer. | Token-only stopgaps do not count as P3 completion. |
+| P4 | Repeat / B2B | Reorder, reminders, company-account/B2B flows, and repeat-order infrastructure. | Repeat UX must be operationally usable, not only schema-present. |
+| P5 | Admin / Ops | Admin control, quote/lead/order operations, shipment handling, and internal workflow safety. | Admin operations must support live order handling. |
+| P6 | SEO / Scale | GEO/content/template/programmatic scale after lower phases are stable. | Scale only after lower phases are live and stable. |
+
+### 4.2 Resolved Detailed Canonical Phase Table
 
 | Canonical Phase # | Name | Phase Doc | Execution Prompt | Status |
 |---|---|---|---|---|
 | 0 | Repository and planning setup | None | None | Canonical in `74`; no dedicated numbered phase doc or prompt exists. This reconciliation task serves as the docs-only precursor. |
 | 1 | Public MVP lead capture | `62-PHASE-1-MVP.md` | `43-CODEX-PHASE-1-EXECUTION-PROMPT.md` | Aligned. Prompt still cites some superseded inputs by legacy filename. |
-| 2 | SEO / GEO foundation | `63-PHASE-2-SEO-FOUNDATION.md` | `44-CODEX-PHASE-2-SEO-EXECUTION-PROMPT.md` | Canonical phase doc now exists. Legacy GEO assets `68` and `49` still overlap this scope but retain legacy numbering. |
-| 3 | Leads, analytics and GTM readiness | Missing | `50-CODEX-PHASE-8-B2B-LEAD-FLOW-EXECUTION-PROMPT.md` | Mismatch: canonical Phase 3 exists in `74`, but only a legacy “Phase 8” prompt exists. No dedicated numbered phase doc exists. |
-| 4 | Stripe fixed package checkout | `64-PHASE-3-STRIPE-ORDER-FLOW.md` | `45-CODEX-PHASE-3-STRIPE-EXECUTION-PROMPT.md` | Mismatch: content aligns to canonical Phase 4, but legacy files are numbered Phase 3. |
-| 5 | Artwork management v1 | No dedicated numbered phase doc; supporting doc `70-ARTWORK-MANAGEMENT-SYSTEM.md` | None | Mismatch: canonical Phase 5 exists in `74`, but the numbered phase file set jumps from 4 to 5 Admin. |
-| 6 | Admin operations | `66-PHASE-5-ADMIN-PANEL.md` | `47-CODEX-PHASE-5-ADMIN-EXECUTION-PROMPT.md` | Mismatch: content aligns to canonical Phase 6, but legacy files are numbered Phase 5. |
-| 7 | Reorder v2 | `67-PHASE-6-REORDER-SYSTEM-v2.md` | `48-CODEX-PHASE-6-REORDER-EXECUTION-PROMPT.md` | Mismatch: canonical Phase 7 uses legacy Phase 6 files. Prompt still points at v1 portal and reorder docs. |
+| 2 | SEO / GEO foundation | `63-PHASE-2-SEO-FOUNDATION.md` | `44-CODEX-PHASE-2-SEO-EXECUTION-PROMPT.md` | Resolved. Canonical phase doc exists; legacy GEO assets `68` and `49` are filename/history labels only. |
+| 3 | Leads, analytics and GTM readiness | Missing | `50-CODEX-PHASE-8-B2B-LEAD-FLOW-EXECUTION-PROMPT.md` | Resolved via `74`. The prompt keeps its legacy filename, but build-phase ownership is Phase 3 in `74`. |
+| 4 | Stripe fixed package checkout | `64-PHASE-3-STRIPE-ORDER-FLOW.md` | `45-CODEX-PHASE-3-STRIPE-EXECUTION-PROMPT.md` | Resolved via `74`. The docs keep legacy “Phase 3” filenames, but build-phase ownership is Phase 4 in `74`. |
+| 5 | Artwork management v1 | No dedicated numbered phase doc; supporting doc `70-ARTWORK-MANAGEMENT-SYSTEM.md` | None | Resolved via `74`. Canonical build-phase ownership is Phase 5 even though there is no same-number legacy doc. |
+| 6 | Admin operations | `66-PHASE-5-ADMIN-PANEL.md` | `47-CODEX-PHASE-5-ADMIN-EXECUTION-PROMPT.md` | Resolved via `74`. The docs keep legacy “Phase 5” filenames, but build-phase ownership is Phase 6 in `74`. |
+| 7 | Reorder v2 | `67-PHASE-6-REORDER-SYSTEM-v2.md` | `48-CODEX-PHASE-6-REORDER-EXECUTION-PROMPT.md` | Resolved via `74`. The docs keep legacy “Phase 6” filenames, but build-phase ownership is Phase 7 in `74`. |
 | 8 | Refill reminders | No dedicated phase doc; supporting material is embedded in `67-PHASE-6-REORDER-SYSTEM-v2.md` and `12-DATABASE-SCHEMA-v2.md` | None | Missing dedicated phase doc and prompt. |
 | 9 | Variable data automation | No dedicated numbered phase doc; supporting doc `71-VARIABLE-DATA-AUTOMATION.md` | None | Missing dedicated phase doc and prompt. |
 | 10 | B2B account portal | No dedicated numbered phase doc; supporting docs `14-AUTH-AND-ACCOUNTS.md` and `19-CUSTOMER-PORTAL-v2.md` | None | Missing dedicated phase doc and prompt. |
 | 11 | Template library MVP | No dedicated numbered phase doc; supporting doc `72-TEMPLATE-LIBRARY-AND-CANVAS-EDITOR.md` | None | Missing dedicated phase doc and prompt. |
 | 12 | Programmatic expansion | Missing | `51-CODEX-PROGRAMMATIC-SEO-EXECUTION-PROMPT.md` | Canonical in `74`; execution prompt exists, dedicated phase doc does not. |
 
-### 4.2 Legacy File Mapping Notes
+### 4.3 Resolved Legacy File Mapping Notes
 
 | Legacy File | Legacy Label | Canonical Mapping | Mismatch Summary |
 |---|---|---|---|
 | `62-PHASE-1-MVP.md` | Phase 1 | Phase 1 | Aligned |
-| `64-PHASE-3-STRIPE-ORDER-FLOW.md` | Phase 3 | Phase 4 | Legacy numbering is one phase early relative to `74`. |
-| `65-PHASE-4-FILE-UPLOAD-PROOFING.md` | Phase 4 | Supports canonical Phase 5 | Canonical artwork-management phase has no matching numbered doc in `74`. |
-| `66-PHASE-5-ADMIN-PANEL.md` | Phase 5 | Phase 6 | Legacy numbering is one phase early. |
+| `64-PHASE-3-STRIPE-ORDER-FLOW.md` | Phase 3 | Phase 4 | Resolved: legacy numbering is retained as filename only; `74` owns build-phase order. |
+| `65-PHASE-4-FILE-UPLOAD-PROOFING.md` | Phase 4 | Supports canonical Phase 5 | Resolved: legacy numbering is retained as filename only; `74` owns build-phase order. |
+| `66-PHASE-5-ADMIN-PANEL.md` | Phase 5 | Phase 6 | Resolved: legacy numbering is retained as filename only; `74` owns build-phase order. |
 | `67-PHASE-6-REORDER-SYSTEM.md` (removed) | Phase 6 | Superseded support for Phase 7 | Removed 2026-06-03; superseded by v2. |
-| `67-PHASE-6-REORDER-SYSTEM-v2.md` | Phase 6 v2 | Phase 7 | Canonical reorder doc, but legacy numbering remains one phase early. |
-| `68-PHASE-7-GEO-CONTENT-ENGINE.md` | Phase 7 | Supports canonical Phase 2 | Canonical `74` places GEO foundation much earlier and reserves Phase 7 for reorder. |
-| `69-PHASE-8-GERMANY-B2B-LEAD-FLOW.md` | Phase 8 | Supports canonical Phase 3 | Canonical `74` moves lead flow to Phase 3, not Phase 8. |
+| `67-PHASE-6-REORDER-SYSTEM-v2.md` | Phase 6 v2 | Phase 7 | Resolved: legacy numbering is retained as filename only; `74` owns build-phase order. |
+| `68-PHASE-7-GEO-CONTENT-ENGINE.md` | Phase 7 | Supports canonical Phase 2 | Resolved: legacy numbering is retained as filename only; `74` owns build-phase order. |
+| `69-PHASE-8-GERMANY-B2B-LEAD-FLOW.md` | Phase 8 | Supports canonical Phase 3 | Resolved: legacy numbering is retained as filename only; `74` owns build-phase order. |
 | `43-CODEX-PHASE-1-EXECUTION-PROMPT.md` | Phase 1 | Phase 1 | Aligned |
 | `44-CODEX-PHASE-2-SEO-EXECUTION-PROMPT.md` | Phase 2 | Phase 2 | Aligned; phase doc missing |
-| `45-CODEX-PHASE-3-STRIPE-EXECUTION-PROMPT.md` | Phase 3 | Phase 4 | Legacy numbering is one phase early |
-| `46-CODEX-PHASE-4-UPLOAD-PROOF-EXECUTION-PROMPT.md` | Phase 4 | Supports canonical Phase 5 | Canonical artwork-management phase has no same-number prompt |
-| `47-CODEX-PHASE-5-ADMIN-EXECUTION-PROMPT.md` | Phase 5 | Phase 6 | Legacy numbering is one phase early |
-| `48-CODEX-PHASE-6-REORDER-EXECUTION-PROMPT.md` | Phase 6 | Phase 7 | Legacy numbering is one phase early |
-| `49-CODEX-PHASE-7-GEO-CONTENT-EXECUTION-PROMPT.md` | Phase 7 | Supports canonical Phase 2 | Canonical `74` places GEO foundation much earlier |
-| `50-CODEX-PHASE-8-B2B-LEAD-FLOW-EXECUTION-PROMPT.md` | Phase 8 | Phase 3 | Canonical `74` moves lead flow to Phase 3 |
+| `45-CODEX-PHASE-3-STRIPE-EXECUTION-PROMPT.md` | Phase 3 | Phase 4 | Resolved: legacy numbering is retained as filename only; `74` owns build-phase order. |
+| `46-CODEX-PHASE-4-UPLOAD-PROOF-EXECUTION-PROMPT.md` | Phase 4 | Supports canonical Phase 5 | Resolved: legacy numbering is retained as filename only; `74` owns build-phase order. |
+| `47-CODEX-PHASE-5-ADMIN-EXECUTION-PROMPT.md` | Phase 5 | Phase 6 | Resolved: legacy numbering is retained as filename only; `74` owns build-phase order. |
+| `48-CODEX-PHASE-6-REORDER-EXECUTION-PROMPT.md` | Phase 6 | Phase 7 | Resolved: legacy numbering is retained as filename only; `74` owns build-phase order. |
+| `49-CODEX-PHASE-7-GEO-CONTENT-EXECUTION-PROMPT.md` | Phase 7 | Supports canonical Phase 2 | Resolved: legacy numbering is retained as filename only; `74` owns build-phase order. |
+| `50-CODEX-PHASE-8-B2B-LEAD-FLOW-EXECUTION-PROMPT.md` | Phase 8 | Phase 3 | Resolved: legacy numbering is retained as filename only; `74` owns build-phase order. |
 | `51-CODEX-PROGRAMMATIC-SEO-EXECUTION-PROMPT.md` | Programmatic SEO | Phase 12 | Missing matching numbered phase doc |
 
 ---
@@ -135,6 +151,36 @@ The owner has explicitly locked the following decisions. These are no longer ope
 16. **Self-serve add-on pricing + custom-size area pricing engine are APPROVED (founder, 2026-06-03); build is phased.** (a) **Add-ons** (`04 §28`): Designservice **€40** (free for orders ≥ `€2.000` net, free if the customer uploads print-ready data); **physischer Andruck €10** (one digital proof stays free); **Express +€9,90**; **+€19 per extra design** (1 included); matt-finish surcharge (start quote → then per-tier). Standard data check + one digital proof stay free; **reorder re-setup = €0**. (b) **Custom-size engine** (`04 §29`): price from area (m²), compute digital (no plate) vs flexo (lower per-m² + fixed plate/Kalıp cost), sell at `min(digital, flexo) / (1 − margin)`, floored + rounded, net + gross; admin-configurable cost params via the cost-parameter screen (`18 §30A`); gated behind real operator-entered costs + quote-fallback limits; cost params never shown to customers. The **fixed `100×200` packages remain the default path and keep the no-plate/no-setup spec of #15** — the plate cost applies only to the optional custom-size engine. This **extends** #15 and `04 §14`; update `04 §14`, doc 30 and catalog scope to match as each phase ships. No live prices/behaviour change until built.
 17. **One scroll-driven signature animation is APPROVED as a scoped exception to the low-motion rule (founder, 2026-06-03).** The homepage **"Label Journey" (`Vom Material zum Regal`)** section — fully specified in `79-AWARD-WINNING-LABEL-JOURNEY-SCROLL.md` — is the **single** place sitewide where motion may exceed the `78 §6` micro-interaction ceiling. Mandatory guardrails (all binding): (a) **CSS / native only** — `position: sticky` + a `requestAnimationFrame` scroll-progress reader; **no animation library** (no framer-motion / GSAP), no WebGL / 3D; (b) **`prefers-reduced-motion: reduce`, no-JS, and SSR must render a fully readable static fallback** with identical content + SEO; (c) **`transform` / `opacity` only** (compositor-driven, no layout-affecting animation, zero CLS); (d) **LCP-safe** — the hero remains the LCP element, the journey lives below the fold; (e) **on-brand** — Ivory Industrial Premium palette, calm "expensive" easing, no neon / bounce / gimmick; (f) **scoped** — exactly one section sitewide; mobile may fall back to the static version; any *second* motion feature requires a new founder decision. This is an **exception to**, not a repeal of, decision #14 / `78 §6`; the rest of the site stays low-motion.
 18. **Produkte-page founder decisions (2026-06-04).** (a) **Lieferzeit** is stated as an honest range **"ca. 10–14 Werktage nach Ihrer Freigabe"** (Produktion + Versand nach Deutschland) — a *stated range, not a binding SLA*. (b) **Rechnungskauf / Net-14** is offered **only on manual approval** for vetted Geschäftskunden via the Angebot/Account path — **NOT** in the self-serve checkout; the public page may say *"Rechnungskauf für geprüfte Geschäftskunden auf Anfrage"* but must not promise terms self-serve (eligibility/credit/Zahlungsbedingungen handled by the operator + AGB). (c) **Nachhaltigkeit:** honest PP material statement only, **no eco/recyclable claims** (recyclable/sustainable variants → Angebot/roadmap); no greenwashing. (d) **Finish selectable:** Glanz/matt selectable, **matt = fixed +15% net surcharge** (server-priced exactly like the SoT #16 add-ons: gross = net × 1.19, behind the add-ons feature flag + Stripe-TEST-gated, no client price trust); **Klebstoff stays permanent**, removable → Angebot. Updates `04 §28` (matt surcharge now fixed +15% net, was quote-only) and drives `80-PRODUKTE-PAGE-ANALYSIS` + `81` Phase 0. No live behaviour until built; the matt surcharge stays flag-/Stripe-gated like #16.
+
+---
+
+## Production Readiness (live status)
+
+This section records current production blockers without changing source-of-truth business decisions.
+
+### Checkout
+
+- **Status:** implemented in code, but **not live in production today**.
+- **Observed live behavior:** `/api/checkout/create-session` returns `503` when required Stripe or database environment is missing.
+- **Operational consequence:** the site is effectively **quote-only right now** even though checkout code exists.
+- **Blocker:** production `STRIPE_*` variables and `DATABASE_URL` / runtime DB connectivity are not fully available to the live app.
+- **Responsible:** operator / production env owner.
+
+### Email
+
+- **Status:** `lib/email` is gated and behaves as a no-op when email env is missing.
+- **Observed live behavior:** transactional email flows do not send if `RESEND_*` or sender env is absent.
+- **Operational consequence:** quote/sample/payment/order emails are not live until env and sender-domain setup are completed.
+- **Blocker:** missing `RESEND_API_KEY`, sender/reply-to configuration, and production sender-domain readiness.
+- **Responsible:** operator / production env owner.
+
+### Auth
+
+- **Status:** real customer auth is **not implemented live**.
+- **Observed live behavior:** customer login/account is absent; customer access is currently token-based for specific upload/proof/order actions, while admin access is protected by a Basic-Auth stopgap.
+- **Operational consequence:** the documented Supabase Auth account layer is not yet live; current access control is a transitional operational safeguard.
+- **Blocker:** full Supabase Auth implementation, account linking, and production auth rollout have not been completed.
+- **Responsible:** implementation phase owner plus operator for env rollout.
 
 ---
 

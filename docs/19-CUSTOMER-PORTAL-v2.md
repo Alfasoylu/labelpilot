@@ -1,5 +1,8 @@
 # 19-CUSTOMER-PORTAL-v2.md — v2
 
+> **Status: NOT IMPLEMENTED (live).**
+> Today there is no real customer login/account portal in production. Customer access is currently token-based for specific order/upload/proof actions; real Supabase Auth and the full account/portal layer belong to canonical build phase **P3 / Auth + Account**. Read this document as target-state architecture, not current live-state behavior.
+
 # Labelpilot.de — Customer Portal v2
 
 ## 1. Purpose

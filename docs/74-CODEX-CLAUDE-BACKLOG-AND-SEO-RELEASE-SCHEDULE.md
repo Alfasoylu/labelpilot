@@ -20,6 +20,28 @@ It defines:
 
 This is the master backlog file.
 
+## Canonical Phase Authority
+
+`74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` is the **only canonical build-phase authority** for Labelpilot.de.
+
+Legacy filenames such as `62..69` and execution prompts `43..51` are retained for history and implementation context, but their numeric labels are **not** the build-phase truth. When a legacy filename number conflicts with the real build order, `74` wins.
+
+### Normalized Build Phase Ladder
+
+Use this simplified ladder when discussing current implementation order:
+
+| Canonical Build Phase | Name | Meaning |
+|---|---|---|
+| P0 | Foundation | Repo/docs/env/public foundation and release-safe technical base. |
+| P1 | Revenue-Capable MVP | Revenue path is live only when checkout **and** transactional email are operational in production. |
+| P2 | Artwork / Proof | File upload, technical review, proofing, and production gate. |
+| P3 | Auth + Account | Real Supabase Auth, customer account access, and account-bound ownership. |
+| P4 | Repeat / B2B | Reorder, reminders, company-account/B2B flows, and repeat-order infrastructure. |
+| P5 | Admin / Ops | Operational admin control, shipment handling, quote/lead/order workflow. |
+| P6 | SEO / Scale | GEO/content/template/programmatic scale after lower phases are stable. |
+
+The detailed week-by-week and legacy-numbered sections below remain useful implementation history, but they do not override this normalized build ladder.
+
 ---
 
 ## 2. Executive Verdict
@@ -316,6 +338,8 @@ chase every feature before first leads
 ---
 
 ## 6. Master Timeline Overview
+
+> **Resolved numbering note:** the weekly timeline below remains canonical, but any conflicting numbers in `62..69` or `43..51` are filename labels only. Build-phase ownership stays here in `74`.
 
 Recommended controlled timeline:
 

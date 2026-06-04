@@ -1,5 +1,8 @@
 # Canonical phase = 1 (per doc 74).
 
+> **LEGACY numbering — canonical phases live in `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md`.**
+> This document keeps its historical filename/label. When build-phase naming conflicts, `74` wins.
+
 # 62-PHASE-1-MVP.md
 
 # Labelpilot.de — Phase 1 MVP Implementation Plan

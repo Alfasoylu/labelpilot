@@ -1,5 +1,8 @@
 # 14-AUTH-AND-ACCOUNTS.md
 
+> **Status: NOT IMPLEMENTED (live).**
+> Today the production access model is token-based for specific customer actions (for example upload/proof/order access), while admin is protected by a Basic-Auth stopgap. Real Supabase Auth + customer account rollout belongs to canonical build phase **P3 / Auth + Account**; until that lands, treat this document as target-state architecture, not live-state behavior.
+
 # Labelpilot.de — Auth and Accounts
 
 ## 1. Purpose

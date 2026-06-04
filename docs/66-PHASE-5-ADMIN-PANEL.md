@@ -1,5 +1,8 @@
 # Canonical phase = 6 (per doc 74).
 
+> **LEGACY numbering — canonical phases live in `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md`.**
+> This document keeps its historical filename/label. When build-phase naming conflicts, `74` wins.
+
 # 66-PHASE-5-ADMIN-PANEL.md
 
 # Labelpilot.de — Phase 5 Admin Panel

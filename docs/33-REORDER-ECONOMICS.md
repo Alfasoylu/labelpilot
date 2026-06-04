@@ -1,5 +1,8 @@
 # 33-REORDER-ECONOMICS.md
 
+> **Live-status note:**
+> Reorder economics remain the business target, but the live reorder UX is still constrained by auth and email readiness. Full customer-account reorder convenience and reminder-based repeat-order flow depend on real auth/account rollout and live transactional email; until then, reorder behavior is partially operational and partly manual/token-scoped.
+
 # Labelpilot.de — Reorder Economics
 
 ## 1. Purpose

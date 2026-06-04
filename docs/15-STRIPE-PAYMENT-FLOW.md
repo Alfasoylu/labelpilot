@@ -1,5 +1,8 @@
 # 15-STRIPE-PAYMENT-FLOW.md
 
+> **Production env status note:**
+> The checkout code path requires live `STRIPE_*` variables plus `DATABASE_URL`/runtime DB connectivity. If those production env requirements are missing, `/api/checkout/create-session` returns `503` and the site is operationally quote-only until the operator/env owner finishes setup.
+
 # Labelpilot.de — Stripe Payment Flow
 
 ## 1. Purpose

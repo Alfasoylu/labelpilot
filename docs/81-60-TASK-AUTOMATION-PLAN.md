@@ -6,7 +6,7 @@
 
 This document defines a sequential execution queue for Labelpilot.de and explains how a Codex automation can process tasks one by one with a 10-minute delay between completed tasks.
 
-**Current ordering (2026-06-04):** a high-priority **Phase 0 — Produkte-Seite** (derived from `80-PRODUKTE-PAGE-ANALYSIS.md`) is prepended ahead of the original 60 audit tasks (Phases A–F). Codex processes Phase 0 first, then Phases A→F in their existing priority order. See the processing-order note in §5.
+**Current ordering (2026-06-04):** a high-priority **Audit Track 0 — Produkte-Seite** (derived from `80-PRODUKTE-PAGE-ANALYSIS.md`) is prepended ahead of the original 60 audit tasks (Audit Tracks A–F). Codex processes Audit Track 0 first, then Audit Tracks A→F in their existing priority order. See the processing-order note in §5.
 
 This is an operations document.
 
@@ -109,9 +109,11 @@ The automation must always respect these rules:
 
 ## 5. Task Queue
 
-> **Processing order (updated 2026-06-04):** Codex runs top-down. **Phase 0 (Produkte-Seite, current focus) runs first**, then the existing Phase A → F audit backlog (kept in priority order: functional stability → SEO safety → conversion → ops/admin → architecture → release). Within Phase 0 the order is P0 (doc-mandated compliance/thinness fixes — "fix before expand") → P1 (buyer-confidence) → P2 (flag-gated revenue surfaces, BLOCKED) → founder-gated (BLOCKED). Every task is a small, deployable, German-only change, reviewed under `61-CLAUDE-REVIEWER-PROTOCOL.md`; **BLOCKED** tasks must NOT be executed until their gate is cleared (§6).
+> **Naming guardrail:** this file defines an **audit queue**, not the canonical build-phase order. Build phases are owned only by `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md`.
+>
+> **Processing order (updated 2026-06-04):** Codex runs top-down. **Audit Track 0 (Produkte-Seite, current focus) runs first**, then the existing Audit Tracks A → F backlog (kept in priority order: functional stability → SEO safety → conversion → ops/admin → architecture → release). Within Audit Track 0 the order is P0 (doc-mandated compliance/thinness fixes — "fix before expand") → P1 (buyer-confidence) → P2 (flag-gated revenue surfaces, BLOCKED) → founder-gated (BLOCKED). Every task is a small, deployable, German-only change, reviewed under `61-CLAUDE-REVIEWER-PROTOCOL.md`; **BLOCKED** tasks must NOT be executed until their gate is cleared (§6).
 
-## Phase 0 - Produkte-Seite (aktueller Fokus, höchste Priorität)
+## Audit Track 0 - Produkte-Seite (aktueller Fokus, höchste Priorität)
 
 > Source: `80-PRODUKTE-PAGE-ANALYSIS.md` (+ `30 §13/§18/§25`, `04 §14/§28`, `27 §11`, `78`, `59 §28`). Additive product-page work; no price/scope change (SoT #15/#16); fixed-package base unchanged.
 
@@ -190,7 +192,7 @@ P1 · gap G3 — **Rechnungskauf (founder-decided, SoT #18b):** on the quote / B
 ### Task 0.13c
 P1 · gap G7 — **Nachhaltigkeit (founder-decided, SoT #18c):** add an honest PP-material statement, **no eco/recyclable claims, no greenwashing**; recyclable/sustainable variants → Angebot/roadmap.
 
-## Phase A - Functional Stability
+## Audit Track A - Functional Stability
 
 ### Task 1
 Audit all public forms for broken submission paths.
@@ -237,7 +239,7 @@ Verify stored design routes for account users resolve valid design ownership.
 ### Task 15
 Fix the highest-severity broken functionality found in Tasks 1-14.
 
-## Phase B - SEO and Indexing Safety
+## Audit Track B - SEO and Indexing Safety
 
 ### Task 16
 Audit `app/robots.ts` for correct crawl and noindex policy handling.
@@ -269,7 +271,7 @@ Verify JSON-LD output matches visible page content.
 ### Task 25
 Fix the highest-severity technical SEO issue found in Tasks 16-24.
 
-## Phase C - Conversion and Commercial Clarity
+## Audit Track C - Conversion and Commercial Clarity
 
 ### Task 26
 Audit homepage CTA clarity for quote, sample box, and reorder paths.
@@ -301,7 +303,7 @@ Audit quote and sample-box thank-you states for next-step clarity.
 ### Task 35
 Fix the highest-value conversion issue found in Tasks 26-34.
 
-## Phase D - Operations and Admin Readiness
+## Audit Track D - Operations and Admin Readiness
 
 ### Task 36
 Audit order status transitions against documented lifecycle rules.
@@ -333,7 +335,7 @@ Audit environment variable usage for missing runtime guards.
 ### Task 45
 Fix the highest-severity operations issue found in Tasks 36-44.
 
-## Phase E - Content and Architecture Hygiene
+## Audit Track E - Content and Architecture Hygiene
 
 ### Task 46
 Audit `docs/` and implementation alignment for stale execution assumptions.
@@ -365,7 +367,7 @@ Audit middleware and auth guards for route-scope correctness.
 ### Task 55
 Fix the highest-risk architecture or content-governance issue found in Tasks 46-54.
 
-## Phase F - Release Discipline and Monitoring
+## Audit Track F - Release Discipline and Monitoring
 
 ### Task 56
 Create a concise PASS/FAIL release checklist for current production-critical flows.
