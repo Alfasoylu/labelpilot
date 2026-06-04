@@ -21,7 +21,7 @@ import { metadataMap } from "../lib/seo/metadata.ts";
 import { sitemapEntries } from "../lib/site-content.ts";
 
 assert.deepEqual(ROBOTS_ALLOW_PATHS, ["/de", "/de/"]);
-assert.deepEqual(ROBOTS_DISALLOW_PATHS, ["/account/", "/admin/", "/api/", "/lp/"]);
+assert.deepEqual(ROBOTS_DISALLOW_PATHS, ["/account/", "/admin/", "/api/", "/lp/", "/teklif/"]);
 
 assert.equal(isNonIndexablePath("/admin"), true);
 assert.equal(isNonIndexablePath("/admin/orders"), true);
