@@ -168,10 +168,10 @@ This section records current production blockers without changing source-of-trut
 
 ### Email
 
-- **Status:** `lib/email` is gated and behaves as a no-op when email env is missing.
-- **Observed live behavior:** transactional email flows do not send if `RESEND_*` or sender env is absent.
-- **Operational consequence:** quote/sample/payment/order emails are not live until env and sender-domain setup are completed.
-- **Blocker:** missing `RESEND_API_KEY`, sender/reply-to configuration, and production sender-domain readiness.
+- **Status (2026-06-04): email SENDING is now CONFIGURED and LIVE in production.** `RESEND_API_KEY`, `EMAIL_FROM` (`Labelpilot.de <noreply@labelpilot.de>`), `EMAIL_REPLY_TO` (`kontakt@labelpilot.de`) and `ADMIN_NOTIFY_EMAIL` (`kontakt@labelpilot.de`) are set in Vercel (Production + Preview, marked Sensitive); domain `labelpilot.de` is **Verified for sending** in Resend (DKIM `resend._domainkey` + SPF `send` MX/TXT, region eu-west-1); production was redeployed so the env is active.
+- **Verified:** a live test Angebot produced two Resend sends — the admin ops notification to `kontakt@labelpilot.de` = **Sent**; the customer confirmation to a fake test address (`alp@deneme.com`) = **Bounced** (expected: non-existent recipient — confirms sender/API key/DKIM/SPF are correct).
+- **DNS reference (NameSilo):** Resend send records live (DKIM + SPF on `send.labelpilot.de`); apex forwarding MX `mx4/mx5/mx6.emailowl.com` (pri 10/20/30) added for `kontakt@` → `alperen_aydinn@hotmail.com` forwarding; the old Resend inbound apex MX was removed and Resend "Enable Receiving" disabled (the domain is **send-only**).
+- **⚠️ OPEN FOLLOW-UP — REVISIT (deferred by founder 2026-06-04):** the `kontakt@labelpilot.de` → Hotmail **forwarding delivery is UNVERIFIED**. The admin test notification showed **Sent** in Resend (accepted by the EMAILOWL forwarder MX) but **did not arrive in the Hotmail inbox** (Junk not confirmed). Free NameSilo forwarding + Microsoft filtering is the fragile link for the critical order/lead alert. **Recommended fix when revisited:** point `ADMIN_NOTIFY_EMAIL` **directly** at `alperen_aydinn@hotmail.com` (Resend → Hotmail direct, no forwarding hop), keeping `EMAIL_REPLY_TO = kontakt@labelpilot.de` for the customer-facing reply address. Implementation: the Vercel var is Sensitive (value not editable) → **delete + recreate `ADMIN_NOTIFY_EMAIL`** with the Hotmail value, then redeploy. Also re-test with a **real** recipient address (fake addresses bounce and hurt sender reputation).
 - **Responsible:** operator / production env owner.
 
 ### Auth
@@ -181,6 +181,16 @@ This section records current production blockers without changing source-of-trut
 - **Operational consequence:** the documented Supabase Auth account layer is not yet live; current access control is a transitional operational safeguard.
 - **Blocker:** full Supabase Auth implementation, account linking, and production auth rollout have not been completed.
 - **Responsible:** implementation phase owner plus operator for env rollout.
+
+### ⏸️ Deferred — founder-requested pre-Stripe customer purchase + account layer (REVISIT)
+
+- **Request (founder, 2026-06-04):** *before* wiring Stripe, build a customer purchase + account layer: (1) **add-to-cart**, (2) **cart view** (`sepet görüntüleme`), (3) **account creation / sign-up** (`hesap oluşturma`), (4) **account-management pages** (`hesap yönetim sayfaları`).
+- **Status:** **DEFERRED / not started** — paused at the user's request ("şimdilik bir şey yapmayalım"); the codebase exploration to scope it was interrupted before any plan or code.
+- **Must reconcile before building (open design questions):**
+  1. **Cart vs locked model:** a multi-item cart may conflict with the locked fixed-package spec (#15: `1 design per order`, single-item) and the current guest-checkout flow. Decide whether the cart is genuinely multi-item or just a configure→review staging step, and whether multi-item orders are in scope.
+  2. **"Account creation" = real auth:** sign-up means real **Supabase Auth** — which is the **P3 Auth** item (today it is the token-only / admin Basic-Auth stopgap, see Auth status above). Building this now pulls P3 forward; confirm that sequencing.
+  3. **Overlap with existing portal:** account-management overlaps the existing `(account)` customer portal (saved designs, reorder, order history) per `19-CUSTOMER-PORTAL-v2.md` — extend, don't duplicate.
+- **Next step when resumed:** map current cart/auth/account state in code → reconcile with #15/guest-checkout + Supabase-Auth decisions → produce a sequenced plan + Codex prompts.
 
 ---
 
