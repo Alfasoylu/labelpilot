@@ -12,7 +12,7 @@ export async function GET(
   const prisma = getPrismaClient();
 
   if (!prisma) {
-    return NextResponse.json({ error: "Datei ist derzeit nicht verfuegbar." }, { status: 503 });
+    return NextResponse.json({ error: "Datei ist derzeit nicht verfügbar." }, { status: 503 });
   }
 
   const { orderId, fileId } = await context.params;
@@ -53,6 +53,6 @@ export async function GET(
     return NextResponse.redirect(signedUrl, { status: 302 });
   } catch (error) {
     console.error("Signed URL fehlgeschlagen:", error);
-    return NextResponse.json({ error: "Datei ist derzeit nicht verfuegbar." }, { status: 500 });
+    return NextResponse.json({ error: "Datei ist derzeit nicht verfügbar." }, { status: 500 });
   }
 }

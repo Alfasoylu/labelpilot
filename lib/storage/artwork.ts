@@ -24,7 +24,7 @@ function getStorageClient() {
   const client = getSupabaseServerClient();
 
   if (!client) {
-    throw new Error("Supabase Storage ist nicht verfuegbar.");
+    throw new Error("Supabase Storage ist nicht verfügbar.");
   }
 
   return client;

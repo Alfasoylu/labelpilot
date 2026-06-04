@@ -12,7 +12,7 @@ export async function GET(
   const prisma = getPrismaClient();
 
   if (!prisma) {
-    console.error("Admin-Dateidownload nicht verfuegbar: DATABASE_URL fehlt.");
+    console.error("Admin-Dateidownload nicht verfügbar: DATABASE_URL fehlt.");
     return NextResponse.json(
       { error: "Datei konnte nicht geladen werden." },
       { status: 503 },

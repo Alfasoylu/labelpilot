@@ -39,14 +39,14 @@ export async function POST(request: Request) {
   const parsed = reorderSchema.safeParse(await request.json());
 
   if (!parsed.success) {
-    return NextResponse.json({ error: "Ungueltige Nachbestellanfrage." }, { status: 400 });
+    return NextResponse.json({ error: "Ungültige Nachbestellanfrage." }, { status: 400 });
   }
 
   const prisma = getPrismaClient();
 
   if (!prisma) {
     return NextResponse.json(
-      { error: "Nachbestellung ist derzeit nicht verfuegbar." },
+      { error: "Nachbestellung ist derzeit nicht verfügbar." },
       { status: 503 },
     );
   }
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
 
   if (parsed.data.artworkVersionId && !requestedVersion) {
     return NextResponse.json(
-      { error: "Die angeforderte Druckdatenversion gehoert nicht zu dieser Nachbestellung." },
+      { error: "Die angeforderte Druckdatenversion gehört nicht zu dieser Nachbestellung." },
       { status: 409 },
     );
   }
@@ -96,14 +96,14 @@ export async function POST(request: Request) {
 
   if (!selectedVersion) {
     return NextResponse.json(
-      { error: "Keine freigegebene Druckdatenversion verfuegbar." },
+      { error: "Keine freigegebene Druckdatenversion verfügbar." },
       { status: 409 },
     );
   }
 
   if (!selectedVersion.approvedAt || selectedVersion.status !== "APPROVED") {
     return NextResponse.json(
-      { error: "Fuer die Nachbestellung ist keine freigegebene Druckdatenversion verfuegbar." },
+      { error: "Für die Nachbestellung ist keine freigegebene Druckdatenversion verfügbar." },
       { status: 409 },
     );
   }
@@ -139,7 +139,7 @@ export async function POST(request: Request) {
 
   if (!pkg) {
     return NextResponse.json(
-      { error: "Fuer diese Nachbestellung wurde kein passendes Paket gefunden." },
+      { error: "Für diese Nachbestellung wurde kein passendes Paket gefunden." },
       { status: 409 },
     );
   }
@@ -151,9 +151,9 @@ export async function POST(request: Request) {
     stripe = getStripeServerClient();
     baseUrl = getCheckoutBaseUrl();
   } catch (error) {
-    console.error("Reorder-Checkout nicht verfuegbar:", error);
+    console.error("Reorder-Checkout nicht verfügbar:", error);
     return NextResponse.json(
-      { error: "Checkout ist derzeit nicht verfuegbar. Bitte nutzen Sie das Angebotsformular." },
+      { error: "Checkout ist derzeit nicht verfügbar. Bitte nutzen Sie das Angebotsformular." },
       { status: 503 },
     );
   }
@@ -224,8 +224,8 @@ export async function POST(request: Request) {
             name: getPackageDisplayName(pkg.productSlug, pkg.material),
             description:
               parsed.data.mode === "SAME_ARTWORK"
-                ? `${pkg.quantity.toLocaleString("de-DE")} Stueck, Nachbestellung identisches Artwork`
-                : `${pkg.quantity.toLocaleString("de-DE")} Stueck, Nachbestellung mit kleiner Anpassung`,
+                ? `${pkg.quantity.toLocaleString("de-DE")} Stück, Nachbestellung identisches Artwork`
+                : `${pkg.quantity.toLocaleString("de-DE")} Stück, Nachbestellung mit kleiner Anpassung`,
           },
         },
       },

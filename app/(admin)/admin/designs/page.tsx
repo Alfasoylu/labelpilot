@@ -58,7 +58,7 @@ export default async function AdminDesignsPage({ searchParams }: AdminDesignsPag
   if (!prisma) {
     return (
       <article className="legal-card">
-        <h2>Designsuche ist derzeit nicht verfuegbar.</h2>
+        <h2>Designsuche ist derzeit nicht verfügbar.</h2>
         <p>Die Datenbankverbindung fehlt.</p>
       </article>
     );
@@ -132,7 +132,7 @@ export default async function AdminDesignsPage({ searchParams }: AdminDesignsPag
       <article className="surface-card">
         <h2>Treffer</h2>
         {designs.length === 0 ? (
-          <p className="price-note">Keine gespeicherten Designs fuer den aktuellen Filter.</p>
+          <p className="price-note">Keine gespeicherten Designs für den aktuellen Filter.</p>
         ) : (
           <div className="section-stack">
             {designs.map((design: (typeof designs)[number]) => (
@@ -150,7 +150,7 @@ export default async function AdminDesignsPage({ searchParams }: AdminDesignsPag
                   Letzte Freigabe: {formatStoredDesignDate(design.currentArtworkVersion?.approvedAt ?? null)}
                 </p>
                 <p className="field-hint">
-                  <strong>Reorder-Branches:</strong> Gleiches Artwork moeglich - Kleine Anpassung moeglich
+                  <strong>Reorder-Branches:</strong> Gleiches Artwork möglich - Kleine Anpassung möglich
                 </p>
                 <div className="cta-row">
                   {design.lastOrder?.id ? (

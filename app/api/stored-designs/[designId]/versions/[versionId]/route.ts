@@ -17,7 +17,7 @@ export async function GET(
 
   if (!prisma) {
     return NextResponse.json(
-      { error: "Gespeicherte Druckdaten sind derzeit nicht verfuegbar." },
+      { error: "Gespeicherte Druckdaten sind derzeit nicht verfügbar." },
       { status: 503 },
     );
   }
@@ -60,7 +60,7 @@ export async function GET(
 
   if (!file?.storagePath) {
     return NextResponse.json(
-      { error: "Diese Datei steht fuer den Download nicht bereit." },
+      { error: "Diese Datei steht für den Download nicht bereit." },
       { status: 404 },
     );
   }

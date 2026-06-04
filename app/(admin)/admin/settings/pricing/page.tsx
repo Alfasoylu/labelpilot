@@ -38,7 +38,7 @@ export default async function PricingSettingsPage({
   if (!snapshot) {
     return (
       <article className="legal-card">
-        <h2>Preisparameter sind derzeit nicht verfuegbar.</h2>
+        <h2>Preisparameter sind derzeit nicht verfügbar.</h2>
         <p>Die Datenbankverbindung fehlt.</p>
       </article>
     );
@@ -66,9 +66,9 @@ export default async function PricingSettingsPage({
   return (
     <section className="section-stack">
       <article className="surface-card">
-        <h2>Preisparameter fuer Custom Size</h2>
+        <h2>Preisparameter für Custom Size</h2>
         <p className="price-note">
-          Nur fuer den internen Rechner. Keine kundenseitige Freigabe in diesem Schritt.
+          Nur für den internen Rechner. Keine kundenseitige Freigabe in diesem Schritt.
         </p>
         {feedback.message ? <p className="form-status success">{feedback.message}</p> : null}
         {feedback.error ? <p className="form-status error">{feedback.error}</p> : null}
@@ -94,7 +94,7 @@ export default async function PricingSettingsPage({
               <input id="widthMm" name="widthMm" type="number" min="1" defaultValue="100" />
             </div>
             <div>
-              <label htmlFor="heightMm">Hoehe in mm</label>
+              <label htmlFor="heightMm">Höhe in mm</label>
               <input id="heightMm" name="heightMm" type="number" min="1" defaultValue="200" />
             </div>
             <div>
@@ -119,12 +119,12 @@ export default async function PricingSettingsPage({
               </li>
               <li>Menge: {calcResult.quantity}</li>
               <li>Quote erforderlich: {calcResult.quoteRequired ? "Ja" : "Nein"}</li>
-              <li>Gewaehlte Methode: {calcResult.method}</li>
+              <li>Gewählte Methode: {calcResult.method}</li>
               <li>Digitalkosten: €{calcResult.digital} netto</li>
               <li>Flexokosten: €{calcResult.flexo} netto</li>
               <li>Produktionskosten: €{calcResult.production} netto</li>
-              <li>Labelflaeche: {calcResult.labelArea} m²</li>
-              <li>Gesamtflaeche inkl. Ausschuss: {calcResult.totalArea} m²</li>
+              <li>Labelfläche: {calcResult.labelArea} m²</li>
+              <li>Gesamtfläche inkl. Ausschuss: {calcResult.totalArea} m²</li>
               <li>Verkauf netto: €{calcResult.net}</li>
               <li>Verkauf brutto: €{calcResult.gross}</li>
             </ul>
@@ -301,7 +301,7 @@ export default async function PricingSettingsPage({
                   />
                 </div>
                 <div>
-                  <label htmlFor="settings-customMaxHeightMm">Max. Hoehe in mm</label>
+                  <label htmlFor="settings-customMaxHeightMm">Max. Höhe in mm</label>
                   <input
                     id="settings-customMaxHeightMm"
                     name="settings.customMaxHeightMm"
@@ -394,9 +394,9 @@ export default async function PricingSettingsPage({
       </article>
 
       <article className="surface-card">
-        <h2>Aenderungsprotokoll</h2>
+        <h2>Änderungsprotokoll</h2>
         {snapshot.audits.length === 0 ? (
-          <p className="price-note">Noch keine Aenderungen gespeichert.</p>
+          <p className="price-note">Noch keine Änderungen gespeichert.</p>
         ) : (
           <div className="section-stack">
             {snapshot.audits.map((audit: PricingAuditRecord) => (

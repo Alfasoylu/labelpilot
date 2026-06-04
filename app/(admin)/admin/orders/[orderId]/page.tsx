@@ -38,7 +38,7 @@ export default async function AdminOrderDetailPage({
   if (!prisma) {
     return (
       <article className="legal-card">
-        <h2>Bestellung ist derzeit nicht verfuegbar.</h2>
+        <h2>Bestellung ist derzeit nicht verfügbar.</h2>
         <p>Die Datenbankverbindung fehlt.</p>
       </article>
     );
@@ -78,7 +78,7 @@ export default async function AdminOrderDetailPage({
       <article className="legal-card">
         <h2>Bestellung wurde nicht gefunden.</h2>
         <Link href="/admin/orders" className="secondary-link">
-          Zurueck zur Bestellliste
+          Zurück zur Bestellliste
         </Link>
       </article>
     );
@@ -132,13 +132,13 @@ export default async function AdminOrderDetailPage({
       <article className="surface-card">
         <div className="cta-row">
           <Link href="/admin/orders" className="secondary-link">
-            Zurueck zur Bestellliste
+            Zurück zur Bestellliste
           </Link>
           <Link
             href={`/de/auftrag/${order.id}/druckdaten?token=${encodeURIComponent(order.uploadToken)}`}
             className="secondary-link"
           >
-            Kundenseite oeffnen
+            Kundenseite öffnen
           </Link>
         </div>
         <h2>{order.orderNumber}</h2>
@@ -158,7 +158,7 @@ export default async function AdminOrderDetailPage({
             <li>Paket: {pkg ? pkg.label : order.packageId}</li>
             <li>Produkt: {order.productSlug}</li>
             <li>Material: {getMaterialLabel(order.material)}</li>
-            <li>Menge: {order.quantity.toLocaleString("de-DE")} Stueck</li>
+            <li>Menge: {order.quantity.toLocaleString("de-DE")} Stück</li>
             <li>Betrag: {formatCurrencyFromCents(order.amountCents, order.currency)}</li>
             <li>Zahlung: {order.payments[0]?.status ?? "PENDING"}</li>
           </ul>
@@ -225,7 +225,7 @@ export default async function AdminOrderDetailPage({
       <article className="surface-card">
         <h2>Druckdateien</h2>
         {order.artworkFiles.length === 0 ? (
-          <p className="price-note">Keine Dateien fuer diese Bestellung vorhanden.</p>
+          <p className="price-note">Keine Dateien für diese Bestellung vorhanden.</p>
         ) : (
           <div className="section-stack">
             {order.artworkFiles.map((file: (typeof order.artworkFiles)[number]) => (
@@ -259,7 +259,7 @@ export default async function AdminOrderDetailPage({
                   <input type="hidden" name="redirectTo" value={`/admin/orders/${order.id}`} />
                   <div className="form-grid">
                     <div className="field-full">
-                      <label htmlFor={`note-${file.id}`}>Hinweis fuer Kunde oder Produktion</label>
+                      <label htmlFor={`note-${file.id}`}>Hinweis für Kunde oder Produktion</label>
                       <textarea
                         id={`note-${file.id}`}
                         name="note"
@@ -270,7 +270,7 @@ export default async function AdminOrderDetailPage({
                   </div>
                   <div className="inline-actions">
                     <button type="submit" name="action" value="under_review" className="secondary-link">
-                      Datei pruefen
+                      Datei prüfen
                     </button>
                     <button type="submit" name="action" value="approve" className="secondary-link">
                       Datei freigeben
@@ -311,7 +311,7 @@ export default async function AdminOrderDetailPage({
                 id="proof-note"
                 name="note"
                 rows={3}
-                placeholder="Optionaler Hinweis fuer den Kunden."
+                placeholder="Optionaler Hinweis für den Kunden."
               />
             </div>
           </div>
@@ -335,7 +335,7 @@ export default async function AdminOrderDetailPage({
                 {proof.adminNote ? <p className="field-hint">Hinweis: {proof.adminNote}</p> : null}
                 {proof.customerChangeRequestNote ? (
                   <p className="field-hint">
-                    Aenderungswunsch: {proof.customerChangeRequestNote}
+                    Änderungswunsch: {proof.customerChangeRequestNote}
                   </p>
                 ) : null}
                 {proof.customerApprovedAt ? (
@@ -366,7 +366,7 @@ export default async function AdminOrderDetailPage({
             <div>
               <label htmlFor="shippingMode">Versandart</label>
               <select id="shippingMode" name="shippingMode" defaultValue={order.shippingMode ?? ""}>
-                <option value="">Bitte waehlen</option>
+                <option value="">Bitte wählen</option>
                 <option value="DIRECT_TR">Direktversand Türkei → Deutschland</option>
                 <option value="CONSOLIDATED">Sammelversand / Teilladung</option>
                 <option value="DE_HUB">Versand über Deutschland-Hub</option>
@@ -425,7 +425,7 @@ export default async function AdminOrderDetailPage({
       <article className="surface-card">
         <h2>Statushistorie</h2>
         {order.statusEvents.length === 0 ? (
-          <p className="price-note">Noch keine Statusaenderung vorhanden.</p>
+          <p className="price-note">Noch keine Statusänderung vorhanden.</p>
         ) : (
           <div className="section-stack">
             {order.statusEvents.map((event: (typeof order.statusEvents)[number]) => (

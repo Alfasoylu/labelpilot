@@ -60,8 +60,8 @@ export default async function SavedDesignDetailPage({
         <span className="eyebrow">Designdetail</span>
         <h1>{design.name}</h1>
         <p>
-          Gespeicherte Spezifikation fuer spaetere Nachbestellungen. Die originale Bestellung
-          bleibt unveraendert, jede freigegebene Version wird separat gefuehrt.
+          Gespeicherte Spezifikation für spätere Nachbestellungen. Die originale Bestellung
+          bleibt unverändert, jede freigegebene Version wird separat geführt.
         </p>
       </article>
 
@@ -79,9 +79,9 @@ export default async function SavedDesignDetailPage({
         </article>
 
         <article className="surface-card">
-          <h2>Naechster Schritt</h2>
+          <h2>Nächster Schritt</h2>
           <p>
-            Dieses Design ist fuer die Nachbestellstrecke vorbereitet. Sie koennen dieselbe
+            Dieses Design ist für die Nachbestellstrecke vorbereitet. Sie können dieselbe
             Spezifikation erneut bestellen oder eine kleine Anpassung auf Basis der letzten
             freigegebenen Version starten.
           </p>
@@ -158,8 +158,8 @@ function InvalidSavedDesignAccess() {
     <div className="container section-stack">
       <article className="legal-card">
         <span className="eyebrow">Designdetail</span>
-        <h1>Design konnte nicht geoeffnet werden.</h1>
-        <p>Der Zugriff auf diese gespeicherten Druckdaten ist nicht verfuegbar.</p>
+        <h1>Design konnte nicht geöffnet werden.</h1>
+        <p>Der Zugriff auf diese gespeicherten Druckdaten ist nicht verfügbar.</p>
         <div className="cta-row">
           <Link href="/de/kontakt" className="cta-link">
             Kontakt

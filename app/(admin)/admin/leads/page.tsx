@@ -40,7 +40,7 @@ export default async function AdminLeadsPage({ searchParams }: LeadListPageProps
   if (!prisma) {
     return (
       <article className="legal-card">
-        <h2>Lead-Verwaltung ist derzeit nicht verfuegbar.</h2>
+        <h2>Lead-Verwaltung ist derzeit nicht verfügbar.</h2>
         <p>Die Datenbankverbindung fehlt.</p>
       </article>
     );
@@ -71,7 +71,7 @@ export default async function AdminLeadsPage({ searchParams }: LeadListPageProps
                 <option value="QUALIFYING">In Qualifizierung</option>
                 <option value="QUALIFIED">Qualifiziert</option>
                 <option value="SAMPLE_SENT">Muster versendet</option>
-                <option value="QUOTE_NEEDED">Angebot noetig</option>
+                <option value="QUOTE_NEEDED">Angebot nötig</option>
                 <option value="QUOTE_SENT">Angebot gesendet</option>
                 <option value="FOLLOW_UP">Follow-up</option>
                 <option value="WON">Gewonnen</option>
@@ -87,7 +87,7 @@ export default async function AdminLeadsPage({ searchParams }: LeadListPageProps
                 <option value="SAMPLE_BOX_REQUEST">Sample Box</option>
                 <option value="CONTACT_REQUEST">Kontakt</option>
                 <option value="REORDER_INTEREST">Nachbestellung</option>
-                <option value="BULK_ORDER_INTEREST">Grossmenge</option>
+                <option value="BULK_ORDER_INTEREST">Großmenge</option>
               </select>
             </div>
             <div>
@@ -111,9 +111,9 @@ export default async function AdminLeadsPage({ searchParams }: LeadListPageProps
       </article>
 
       <article className="surface-card">
-        <h2>Aktuelle Eintraege</h2>
+        <h2>Aktuelle Einträge</h2>
         {leads.length === 0 ? (
-          <p className="price-note">Keine Leads fuer den aktuellen Filter.</p>
+          <p className="price-note">Keine Leads für den aktuellen Filter.</p>
         ) : (
           <div className="section-stack">
             {leads.map((lead) => (

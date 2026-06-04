@@ -81,7 +81,7 @@ export function ProofApprovalPanel({
         setDecisionState({
           type: "error",
           message:
-            payload?.error ?? "Rueckmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+            payload?.error ?? "Rückmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
         });
         return;
       }
@@ -107,7 +107,7 @@ export function ProofApprovalPanel({
     } catch {
       setDecisionState({
         type: "error",
-        message: "Rueckmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+        message: "Rückmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
       });
     } finally {
       setIsPending(false);
@@ -127,7 +127,7 @@ export function ProofApprovalPanel({
     if (!note) {
       setDecisionState({
         type: "error",
-        message: "Bitte beschreiben Sie den Aenderungswunsch.",
+        message: "Bitte beschreiben Sie den Änderungswunsch.",
       });
       return;
     }
@@ -153,7 +153,7 @@ export function ProofApprovalPanel({
               </p>
               {proof.adminNote ? <p className="field-hint">Hinweis: {proof.adminNote}</p> : null}
               {proof.customerChangeRequestNote ? (
-                <p className="field-hint">Aenderungswunsch: {proof.customerChangeRequestNote}</p>
+                <p className="field-hint">Änderungswunsch: {proof.customerChangeRequestNote}</p>
               ) : null}
               <a href={proof.downloadHref} className="secondary-link">
                 Proof herunterladen
@@ -179,19 +179,19 @@ export function ProofApprovalPanel({
           <form className="quote-form" onSubmit={onRequestChanges}>
             <div className="form-grid">
               <div className="field-full">
-                <label htmlFor="changeNote">Aenderungswunsch</label>
+                <label htmlFor="changeNote">Änderungswunsch</label>
                 <textarea
                   id="changeNote"
                   name="changeNote"
                   rows={4}
-                  placeholder="Bitte beschreiben Sie die benoetigte Anpassung."
+                  placeholder="Bitte beschreiben Sie die benötigte Anpassung."
                   disabled={isPending}
                 />
               </div>
             </div>
             <div className="inline-actions">
               <button type="submit" className="cta-button" disabled={isPending}>
-                Aenderung anfragen
+                Änderung anfragen
               </button>
             </div>
           </form>

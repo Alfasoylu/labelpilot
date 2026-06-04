@@ -32,9 +32,9 @@ export async function POST(
   const prisma = getPrismaClient();
 
   if (!prisma) {
-    console.error("Proof-Freigabe nicht verfuegbar: DATABASE_URL fehlt.");
+    console.error("Proof-Freigabe nicht verfügbar: DATABASE_URL fehlt.");
     return NextResponse.json(
-      { error: "Proof-Freigabe ist derzeit nicht verfuegbar." },
+      { error: "Proof-Freigabe ist derzeit nicht verfügbar." },
       { status: 503 },
     );
   }
@@ -129,7 +129,7 @@ export async function POST(
       });
 
       return {
-        message: "Proof freigegeben. Die Bestellung ist fuer die Produktion vorbereitet.",
+        message: "Proof freigegeben. Die Bestellung ist für die Produktion vorbereitet.",
         proofStatusLabel: getProofFileStatusLabel(updatedProof.status),
         orderStatusLabel: getOrderStatusLabel("APPROVED_FOR_PRODUCTION"),
       };
@@ -164,12 +164,12 @@ export async function POST(
       data: {
         orderId: order.id,
         status: "FILE_REVIEW",
-        note: payload.note?.trim() ?? "Aenderungswunsch zum Proof eingegangen.",
+        note: payload.note?.trim() ?? "Änderungswunsch zum Proof eingegangen.",
       },
     });
 
     return {
-      message: "Aenderungswunsch gesendet. Wir pruefen die Anpassung und melden uns mit dem naechsten Proof.",
+      message: "Änderungswunsch gesendet. Wir prüfen die Anpassung und melden uns mit dem nächsten Proof.",
       proofStatusLabel: getProofFileStatusLabel(updatedProof.status),
       orderStatusLabel: getOrderStatusLabel("FILE_REVIEW"),
     };
@@ -192,7 +192,7 @@ export async function POST(
         console.error("Proof-Freigabemail fehlgeschlagen:", error);
       }
     } else {
-      console.debug(`Proof-Freigabemail uebersprungen: keine E-Mail fuer ${order.id}.`);
+      console.debug(`Proof-Freigabemail übersprungen: keine E-Mail für ${order.id}.`);
     }
   }
 

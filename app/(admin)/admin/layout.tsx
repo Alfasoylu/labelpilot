@@ -20,11 +20,11 @@ export default function AdminLayout({
         <p className="eyebrow">Admin</p>
         <h1>Labelpilot Operations</h1>
         <p className="price-note">
-          Stopgap-Zugang per Basic Auth. Spaeter durch Supabase Auth ersetzen.
+          Stopgap-Zugang per Basic Auth. Später durch Supabase Auth ersetzen.
         </p>
         <nav className="cta-row">
           <Link href="/admin" className="secondary-link">
-            Uebersicht
+            Übersicht
           </Link>
           <Link href="/admin/orders" className="secondary-link">
             Bestellungen

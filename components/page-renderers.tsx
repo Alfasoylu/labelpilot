@@ -235,7 +235,7 @@ const differentiationLabelpilot = [
 ];
 
 const regulatoryDisclaimerBody =
-  "Hinweis: Fuer rechtliche Pflichtangaben, Zutaten, Naehrwerte, Allergene, Health Claims und regulatorische Inhalte ist der Kunde verantwortlich. Labelpilot.de uebernimmt Druckproduktion, technische Dateipruefung und Layout-Unterstuetzung, jedoch keine rechtliche Pruefung.";
+  "Hinweis: Für rechtliche Pflichtangaben, Zutaten, Nährwerte, Allergene, Health Claims und regulatorische Inhalte ist der Kunde verantwortlich. Labelpilot.de übernimmt Druckproduktion, technische Dateiprüfung und Layout-Unterstützung, jedoch keine rechtliche Prüfung.";
 
 const productTrustItems = [
   {
@@ -244,7 +244,7 @@ const productTrustItems = [
   },
   {
     title: "Kostenloser Datencheck",
-    body: "Die Standard-Datenpruefung faengt typische Format-, Beschnitt- und Versionsfehler vor dem Druck ab.",
+    body: "Die Standard-Datenprüfung fängt typische Format-, Beschnitt- und Versionsfehler vor dem Druck ab.",
   },
   {
     title: "Musterbox vor Mengenentscheidung",
@@ -252,7 +252,7 @@ const productTrustItems = [
   },
   {
     title: "Sichere Zahlung und sauberer Prozess",
-    body: "Checkout, Zahlungsbestaetigung und Auftragsbestaetigung laufen verifiziert. Kontakt-, Auftrags- und Freigabedaten bleiben fuer den sichtbaren B2B-Prozess sauber nachvollziehbar.",
+    body: "Checkout, Zahlungsbestätigung und Auftragsbestätigung laufen verifiziert. Kontakt-, Auftrags- und Freigabedaten bleiben für den sichtbaren B2B-Prozess sauber nachvollziehbar.",
   },
 ];
 
@@ -333,8 +333,8 @@ export function HomePage({ page }: HomePageProps) {
             Produktion nach Proof-Freigabe. Versand nach Deutschland inklusive.
           </p>
           <p className="package-note">
-            Standardweg fuer diese Pakete: 100×200 mm, 1 Design pro Auftrag, Standard-Datenpruefung
-            und 1 Proof-Runde. Ab 20.000 Stueck oder bei Sonderumfang fuehrt der Weg ins B2B-Angebot.
+            Standardweg für diese Pakete: 100×200 mm, 1 Design pro Auftrag, Standard-Datenprüfung
+            und 1 Proof-Runde. Ab 20.000 Stück oder bei Sonderumfang führt der Weg ins B2B-Angebot.
           </p>
           <div className="hero-actions">
             <Link href="/de/druckdaten" className="cta-link">
@@ -428,7 +428,7 @@ export function HomePage({ page }: HomePageProps) {
               Nachbestellprozess ansehen
             </Link>
             <Link href="/de/pp-rollenetiketten" className="secondary-link">
-              PP-Rollenetiketten im Ueberblick
+              PP-Rollenetiketten im Überblick
             </Link>
           </div>
         </Section>
@@ -694,13 +694,13 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
             <div className="surface-card">
               <h2>Lieferzeit nach Ihrer Freigabe</h2>
               <p>
-                Fuer diese Standardpakete planen wir in der Regel mit ca. 10-14 Werktagen
+                Für diese Standardpakete planen wir in der Regel mit ca. 10-14 Werktagen
                 nach Ihrer Proof-Freigabe. Darin enthalten sind Produktion und Versand nach
                 Deutschland.
               </p>
               <p className="field-hint">
-                Das ist eine ehrliche Orientierung fuer die Planung, keine garantierte SLA.
-                Den konkreten Termin bestaetigen wir mit Auftrag oder Angebot.
+                Das ist eine ehrliche Orientierung für die Planung, keine garantierte SLA.
+                Den konkreten Termin bestätigen wir mit Auftrag oder Angebot.
               </p>
             </div>
           ) : null}
@@ -708,9 +708,9 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
             <div className="surface-card">
               <h2>Andere Menge als Standardpaket?</h2>
               <p>
-                Wenn Sie genau 3.000, 7.500 oder weniger als 1.000 Etiketten benoetigen,
+                Wenn Sie genau 3.000, 7.500 oder weniger als 1.000 Etiketten benötigen,
                 sind die sichtbaren Pakete nicht der einzige Weg. Solche Mengen laufen sauber
-                ueber das B2B-Angebot statt in einen unpassenden Standard-Checkout.
+                über das B2B-Angebot statt in einen unpassenden Standard-Checkout.
               </p>
               <div className="inline-actions">
                 <Link href="/de/angebot-anfordern" className="secondary-link">
@@ -721,11 +721,11 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
           ) : null}
           {hasFixedPriceScope(page.path) ? (
             <div className="surface-card">
-              <h2>Druckdaten und Proof kurz erklaert</h2>
+              <h2>Druckdaten und Proof kurz erklärt</h2>
               <ul className="simple-list">
-                <li>Bevorzugte Dateien: PDF, AI oder EPS. SVG ist moeglich, wenn Groesse und finale Version sauber vorbereitet sind.</li>
-                <li>Druckdaten sollten mit Beschnitt, CMYK-Farben und moeglichst vektorbasierter Anlage geliefert werden.</li>
-                <li>Der kostenlose Datencheck faengt typische Fehler bei Format, Beschnitt und Datei-Stand vor dem Druck ab.</li>
+                <li>Bevorzugte Dateien: PDF, AI oder EPS. SVG ist möglich, wenn Größe und finale Version sauber vorbereitet sind.</li>
+                <li>Druckdaten sollten mit Beschnitt, CMYK-Farben und möglichst vektorbasierter Anlage geliefert werden.</li>
+                <li>Der kostenlose Datencheck fängt typische Fehler bei Format, Beschnitt und Datei-Stand vor dem Druck ab.</li>
                 <li>Der digitale Proof dient der Freigabe vor der Produktion. Farbverbindlich wird es erst mit einem physischen Andruck.</li>
               </ul>
               <div className="inline-actions">
@@ -733,7 +733,7 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
                   Druckdaten-Anforderungen ansehen
                 </Link>
                 <Link href="/de/kontakt" className="secondary-link">
-                  Frage vorab klaeren
+                  Frage vorab klären
                 </Link>
               </div>
               <p className="field-hint">
@@ -748,24 +748,24 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
       {hasFixedPriceScope(page.path) ? (
         <Section
           eyebrow="Sicherheit"
-          title="Warum der Ablauf fuer B2B-Etiketten berechenbar bleibt"
-          lead="Vertrauen entsteht hier nicht ueber Bewertungen, sondern ueber einen klar sichtbaren Produktions- und Pruefprozess."
+          title="Warum der Ablauf für B2B-Etiketten berechenbar bleibt"
+          lead="Vertrauen entsteht hier nicht über Bewertungen, sondern über einen klar sichtbaren Produktions- und Prüfprozess."
         >
           <TrustBar items={productTrustItems} />
           <div className="surface-card">
             <h2>Materialhinweis zu PP</h2>
             <p>
-              Unsere Standardprodukte laufen auf PP-Material, weil es fuer viele
+              Unsere Standardprodukte laufen auf PP-Material, weil es für viele
               wiederkehrende Produktetiketten robust und prozesssicher ist.
             </p>
             <p className="field-hint">
-              Nach Freigabe bleiben Spezifikation und Druckdaten als klare Basis fuer
-              spaetere Auftragsbestaetigung und schnellere Nachbestellung erhalten.
+              Nach Freigabe bleiben Spezifikation und Druckdaten als klare Basis für
+              spätere Auftragsbestätigung und schnellere Nachbestellung erhalten.
             </p>
             <p className="field-hint">
               Daraus leiten wir keine pauschalen Nachhaltigkeits- oder Recyclingversprechen
-              ab. Wenn Sie Varianten mit anderem Materialfokus pruefen moechten, klaeren wir
-              das sauber ueber Angebot oder Musterbox.
+              ab. Wenn Sie Varianten mit anderem Materialfokus prüfen möchten, klären wir
+              das sauber über Angebot oder Musterbox.
             </p>
           </div>
         </Section>
@@ -1019,7 +1019,7 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
       {page.path === "/de/musterbox" ? (
         <Section
           eyebrow="Anfrageformular"
-          title="Musterbox nur fuer ernsthafte B2B-Anfragen"
+          title="Musterbox nur für ernsthafte B2B-Anfragen"
           lead="Die Anfrage sammelt Materialinteresse, Mengenrahmen und Lieferkontext, damit die Musterbox nicht zur Streuaktion wird."
         >
           <div className="two-column">
@@ -1036,8 +1036,8 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
                   <p>Die Musterbox soll B2B-Bedarf vorbereiten, nicht lose Einmalanfragen bedienen.</p>
                 </article>
                 <article className="feature-card">
-                  <h3>Naechster Schritt</h3>
-                  <p>Die Anfrage fuehrt in Qualifizierung, Angebot oder Materialklaerung statt in einen Blindversand.</p>
+                  <h3>Nächster Schritt</h3>
+                  <p>Die Anfrage führt in Qualifizierung, Angebot oder Materialklärung statt in einen Blindversand.</p>
                 </article>
               </div>
             </div>
@@ -1407,8 +1407,8 @@ function QuotePage({ page, canonicalPath }: DynamicPageProps) {
             </div>
             <h3>Rechnungskauf auf Anfrage</h3>
             <p>
-              Rechnungskauf ist fuer gepruefte Geschaeftskunden auf Anfrage moeglich.
-              Die Freigabe erfolgt manuell im Angebotsprozess und nicht ueber den
+              Rechnungskauf ist für geprüfte Geschäftskunden auf Anfrage möglich.
+              Die Freigabe erfolgt manuell im Angebotsprozess und nicht über den
               Standard-Checkout.
             </p>
           </div>

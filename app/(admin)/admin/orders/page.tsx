@@ -34,7 +34,7 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
   if (!prisma) {
     return (
       <article className="legal-card">
-        <h2>Bestellungen sind derzeit nicht verfuegbar.</h2>
+        <h2>Bestellungen sind derzeit nicht verfügbar.</h2>
         <p>Die Datenbankverbindung fehlt.</p>
       </article>
     );
@@ -68,12 +68,12 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
           <div>
             <label htmlFor="status">Status</label>
             <select id="status" name="status" defaultValue={statusFilter}>
-              <option value="review-needed">Pruefung noetig</option>
+              <option value="review-needed">Prüfung nötig</option>
               <option value="all">Alle</option>
-              <option value="FILE_REVIEW">Dateipruefung</option>
+              <option value="FILE_REVIEW">Dateiprüfung</option>
               <option value="CORRECTION_REQUIRED">Korrektur erforderlich</option>
               <option value="WAITING_CUSTOMER_APPROVAL">Proof wartet</option>
-              <option value="APPROVED_FOR_PRODUCTION">Freigegeben fuer Produktion</option>
+              <option value="APPROVED_FOR_PRODUCTION">Freigegeben für Produktion</option>
               <option value="READY_TO_SHIP">Versandbereit</option>
               <option value="SHIPPED">Versendet</option>
               <option value="DELIVERED">Zugestellt</option>
@@ -126,7 +126,7 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
                   </div>
                   <div>
                     <p className="price-note">
-                      Menge: {order.quantity.toLocaleString("de-DE")} Stueck
+                      Menge: {order.quantity.toLocaleString("de-DE")} Stück
                     </p>
                     <p className="price-note">
                       Zahlung: {order.payments[0]?.status ?? "PENDING"}
@@ -135,7 +135,7 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
                   </div>
                 </div>
                 <Link href={`/admin/orders/${order.id}`} className="secondary-link">
-                  Bestellung oeffnen
+                  Bestellung öffnen
                 </Link>
               </div>
             ))}

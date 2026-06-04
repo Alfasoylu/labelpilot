@@ -92,7 +92,7 @@ export function ReorderStartForm({
       }
 
       if (result.kind === "quote") {
-        setMessage("Fuer diese Menge wird die Anfrage zur Angebotsstrecke weitergeleitet.");
+        setMessage("Für diese Menge wird die Anfrage zur Angebotsstrecke weitergeleitet.");
         trackLeadEvent("reorder_quote_redirect", {
           designId,
           quantity: payload.quantity,
@@ -162,7 +162,7 @@ export function ReorderStartForm({
       {error ? <p className="form-status error">{error}</p> : null}
       <p className="field-hint">
         Identisches Artwork geht direkt in den Checkout. Bei kleinen Anpassungen wird dieselbe
-        Spezifikation als neue Bestellung vorbereitet, damit Sie spaeter korrigierte Druckdaten hochladen koennen.
+        Spezifikation als neue Bestellung vorbereitet, damit Sie später korrigierte Druckdaten hochladen können.
       </p>
     </form>
   );

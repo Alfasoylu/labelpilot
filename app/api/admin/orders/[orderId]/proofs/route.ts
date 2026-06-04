@@ -28,7 +28,7 @@ export async function POST(
 
   if (!prisma) {
     return NextResponse.json(
-      { error: "Proof-Upload ist derzeit nicht verfuegbar." },
+      { error: "Proof-Upload ist derzeit nicht verfügbar." },
       { status: 503 },
     );
   }
@@ -154,7 +154,7 @@ export async function POST(
       text: template.text,
     });
   } else {
-    console.debug(`Proof-Mail uebersprungen: keine E-Mail fuer ${order.id}.`);
+    console.debug(`Proof-Mail übersprungen: keine E-Mail für ${order.id}.`);
   }
 
   return redirectWithMessage(request, redirectTo, {

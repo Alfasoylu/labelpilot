@@ -66,7 +66,7 @@ export function CustomSizePriceForm() {
     if (!customSizeFeatureEnabled) {
       setState({
         status: "error",
-        message: "Der Wunschformat-Rechner ist aktuell nicht verfuegbar.",
+        message: "Der Wunschformat-Rechner ist aktuell nicht verfügbar.",
       });
       return;
     }
@@ -93,7 +93,7 @@ export function CustomSizePriceForm() {
       if (response.status === 404) {
         setState({
           status: "error",
-          message: "Der Wunschformat-Rechner ist aktuell nicht verfuegbar.",
+          message: "Der Wunschformat-Rechner ist aktuell nicht verfügbar.",
         });
         return;
       }
@@ -106,7 +106,7 @@ export function CustomSizePriceForm() {
             "message" in responseBody &&
             typeof responseBody.message === "string"
               ? responseBody.message
-              : "Bitte pruefen Sie Material, Format und Menge.",
+              : "Bitte prüfen Sie Material, Format und Menge.",
         });
         return;
       }
@@ -124,15 +124,15 @@ export function CustomSizePriceForm() {
   return (
     <div className="container section-stack">
       <article className="legal-card">
-        <h1>Wunschformat fuer PP-Rollenetiketten</h1>
+        <h1>Wunschformat für PP-Rollenetiketten</h1>
         <p>
-          Berechnen Sie einen Richtpreis fuer Ihr Sonderformat, solange Materialkosten
-          und Preisparameter aktiv gepflegt sind. Groessere Formate oder Mengen laufen
-          weiterhin sauber ueber ein individuelles Angebot.
+          Berechnen Sie einen Richtpreis für Ihr Sonderformat, solange Materialkosten
+          und Preisparameter aktiv gepflegt sind. Größere Formate oder Mengen laufen
+          weiterhin sauber über ein individuelles Angebot.
         </p>
         <p className="field-hint">
           Der Rechner ist eine Orientierungs- und Vorqualifizierungsstufe. Die festen
-          100x200-Pakete bleiben der Standardweg; Sonderfaelle und Grenzwerte fuehren
+          100x200-Pakete bleiben der Standardweg; Sonderfälle und Grenzwerte führen
           bewusst in den Angebotsprozess.
         </p>
       </article>
@@ -141,9 +141,9 @@ export function CustomSizePriceForm() {
         <article className="surface-card">
           <form className="quote-form" onSubmit={onSubmit}>
             <div>
-              <h2>Preis fuer Ihr Wunschformat berechnen</h2>
+              <h2>Preis für Ihr Wunschformat berechnen</h2>
               <p className="field-hint">
-                Geben Sie Material, Breite, Hoehe und Menge ein. Der Rechner zeigt nur
+                Geben Sie Material, Breite, Höhe und Menge ein. Der Rechner zeigt nur
                 einen Kundenpreis zur Orientierung und keine internen Kostenpositionen.
               </p>
             </div>
@@ -176,7 +176,7 @@ export function CustomSizePriceForm() {
                 />
               </div>
               <div className="field">
-                <label htmlFor="custom-size-height">Hoehe (mm)</label>
+                <label htmlFor="custom-size-height">Höhe (mm)</label>
                 <input
                   id="custom-size-height"
                   name="heightMm"
@@ -222,7 +222,7 @@ export function CustomSizePriceForm() {
           <h2>Ergebnis</h2>
           {state.status === "idle" ? (
             <p>
-              Geben Sie Ihre Daten ein und starten Sie die Berechnung. Bei Grenzfaellen
+              Geben Sie Ihre Daten ein und starten Sie die Berechnung. Bei Grenzfällen
               erhalten Sie direkt den passenden Angebotsweg.
             </p>
           ) : null}
@@ -243,7 +243,7 @@ export function CustomSizePriceForm() {
               <p>Aktuell nur auf Anfrage.</p>
               <div className="inline-actions">
                 <Link href={quoteHref} className="cta-link">
-                  Angebot fuer Wunschformat anfordern
+                  Angebot für Wunschformat anfordern
                 </Link>
               </div>
             </div>
@@ -253,7 +253,7 @@ export function CustomSizePriceForm() {
           state.result.configured &&
           state.result.quoteRequired ? (
             <div className="section-stack">
-              <p>Fuer dieses Format erstellen wir ein individuelles Angebot.</p>
+              <p>Für dieses Format erstellen wir ein individuelles Angebot.</p>
               <div className="inline-actions">
                 <Link href={quoteHref} className="cta-link">
                   Individuelles Angebot anfordern
@@ -271,9 +271,9 @@ export function CustomSizePriceForm() {
                 {formatCurrency(state.result.grossPrice)} inkl. 19% MwSt
               </p>
               <p className="field-hint">
-                Der Richtpreis basiert auf den aktuell gepflegten Parametern fuer
+                Der Richtpreis basiert auf den aktuell gepflegten Parametern für
                 Material und Sonderformat. Er ersetzt noch kein finales B2B-Angebot,
-                falls sich Spezifikation, Datenstand oder Zusatzwuensche aendern.
+                falls sich Spezifikation, Datenstand oder Zusatzwünsche ändern.
               </p>
               <div className="inline-actions">
                 <Link href={quoteHref} className="secondary-link">
@@ -281,7 +281,7 @@ export function CustomSizePriceForm() {
                 </Link>
               </div>
               <p className="field-hint">
-                Wenn Sie mehrere Varianten, Zusatzdesigns oder ein groesseres Projekt
+                Wenn Sie mehrere Varianten, Zusatzdesigns oder ein größeres Projekt
                 planen, ist der Angebotsweg trotz Richtpreis der sauberere Einstieg.
               </p>
             </div>

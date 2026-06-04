@@ -101,7 +101,7 @@ export function validateArtworkFile(file: File) {
   if (!(extension in artworkRules)) {
     return {
       ok: false as const,
-      message: "Dieses Dateiformat wird nicht unterstuetzt.",
+      message: "Dieses Dateiformat wird nicht unterstützt.",
     };
   }
 
@@ -119,7 +119,7 @@ export function validateArtworkFile(file: File) {
   if (file.type && !mimeTypes.includes(file.type)) {
     return {
       ok: false as const,
-      message: "Dieses Dateiformat wird nicht unterstuetzt.",
+      message: "Dieses Dateiformat wird nicht unterstützt.",
     };
   }
 
@@ -136,7 +136,7 @@ export function validateProofFile(file: File) {
   if (!(extension in proofRules)) {
     return {
       ok: false as const,
-      message: "Dieses Dateiformat wird nicht unterstuetzt.",
+      message: "Dieses Dateiformat wird nicht unterstützt.",
     };
   }
 
@@ -154,7 +154,7 @@ export function validateProofFile(file: File) {
   if (file.type && !mimeTypes.includes(file.type)) {
     return {
       ok: false as const,
-      message: "Dieses Dateiformat wird nicht unterstuetzt.",
+      message: "Dieses Dateiformat wird nicht unterstützt.",
     };
   }
 

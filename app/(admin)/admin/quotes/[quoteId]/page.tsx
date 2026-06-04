@@ -51,7 +51,7 @@ export default async function AdminQuoteDetailPage({
   if (!prisma) {
     return (
       <article className="legal-card">
-        <h2>Quote-Verwaltung ist derzeit nicht verfuegbar.</h2>
+        <h2>Quote-Verwaltung ist derzeit nicht verfügbar.</h2>
         <p>Die Datenbankverbindung fehlt.</p>
       </article>
     );
@@ -104,8 +104,8 @@ export default async function AdminQuoteDetailPage({
               <label htmlFor="status">Status</label>
               <select id="status" name="status" defaultValue={quote.status}>
                 <option value="NEW">Neu</option>
-                <option value="UNDER_REVIEW">In Pruefung</option>
-                <option value="NEEDS_MORE_INFO">Weitere Informationen benoetigt</option>
+                <option value="UNDER_REVIEW">In Prüfung</option>
+                <option value="NEEDS_MORE_INFO">Weitere Informationen benötigt</option>
                 <option value="QUOTE_SENT">Angebot gesendet</option>
                 <option value="ACCEPTED">Akzeptiert</option>
                 <option value="REJECTED">Abgelehnt</option>
@@ -120,7 +120,7 @@ export default async function AdminQuoteDetailPage({
                 name="adminNote"
                 rows={5}
                 defaultValue={quote.adminNote ?? ""}
-                placeholder="Interne Bearbeitungsnotiz oder Hinweis fuer Kundenmail."
+                placeholder="Interne Bearbeitungsnotiz oder Hinweis für Kundenmail."
               />
             </div>
           </div>
@@ -143,7 +143,7 @@ export default async function AdminQuoteDetailPage({
           <li>Website / Shop: {quote.website || "Nicht angegeben"}</li>
           <li>Branche: {quote.industry || "Nicht angegeben"}</li>
           <li>Produkttyp: {quote.productType || "Nicht angegeben"}</li>
-          <li>Etikettengroesse: {quote.labelSize || "Nicht angegeben"}</li>
+          <li>Etikettengröße: {quote.labelSize || "Nicht angegeben"}</li>
           <li>Material: {quote.material || "Nicht angegeben"}</li>
           <li>Menge: {quote.quantity || "Nicht angegeben"}</li>
           <li>Wiederkehrender Bedarf: {quote.recurringNeed || "Nicht angegeben"}</li>

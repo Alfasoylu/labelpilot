@@ -100,7 +100,7 @@ export async function POST(request: Request) {
 
     return NextResponse.redirect(
       buildRedirectUrl(request, {
-        error: firstIssue ?? "Bitte alle Preisparameter gueltig ausfuellen.",
+        error: firstIssue ?? "Bitte alle Preisparameter gültig ausfuellen.",
       }),
       { status: 303 },
     );

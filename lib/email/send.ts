@@ -16,7 +16,7 @@ export async function sendEmail({
   text,
 }: SendEmailInput): Promise<{ ok: boolean }> {
   if (!hasResendEnv()) {
-    console.debug("E-Mail-Versand uebersprungen: E-Mail-Umgebung ist nicht konfiguriert.");
+    console.debug("E-Mail-Versand übersprungen: E-Mail-Umgebung ist nicht konfiguriert.");
     return { ok: false };
   }
 
@@ -24,7 +24,7 @@ export async function sendEmail({
   const env = getServerEnv();
 
   if (!client || !env.EMAIL_FROM || !env.EMAIL_REPLY_TO) {
-    console.debug("E-Mail-Versand uebersprungen: Absenderdaten fehlen.");
+    console.debug("E-Mail-Versand übersprungen: Absenderdaten fehlen.");
     return { ok: false };
   }
 

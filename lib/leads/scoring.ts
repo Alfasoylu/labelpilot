@@ -71,7 +71,7 @@ export function computeLeadScore(input: LeadScoringInput) {
     score += 5;
   }
 
-  if (includesAny(input.notes, ["billig", "günstig", "guenstig", "cheapest", "nur preis"])) {
+  if (includesAny(input.notes, ["billig", "günstig", "günstig", "cheapest", "nur preis"])) {
     score -= 15;
   }
 

@@ -120,7 +120,7 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
       data: {
         orderId: order.id,
         status: "PAID",
-        note: "Stripe Checkout bestaetigt.",
+        note: "Stripe Checkout bestätigt.",
       },
     }),
     ...(isSameArtworkReorder
@@ -129,7 +129,7 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
             data: {
               orderId: order.id,
               status: "APPROVED_FOR_PRODUCTION",
-              note: "Nachbestellung mit identischem Artwork wurde direkt fuer die Produktion vorbereitet.",
+              note: "Nachbestellung mit identischem Artwork wurde direkt für die Produktion vorbereitet.",
             },
           }),
         ]
@@ -153,7 +153,7 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
   }
 
   if (!customerEmail) {
-    console.debug(`Bestellbestaetigung uebersprungen: keine E-Mail fuer ${order.id}.`);
+    console.debug(`Bestellbestätigung übersprungen: keine E-Mail für ${order.id}.`);
     return;
   }
 
@@ -237,9 +237,9 @@ async function handlePaymentFailed(event: Stripe.Event) {
 export async function POST(request: Request) {
   const prisma = getPrismaClient();
   if (!prisma) {
-    console.error("Webhook nicht verfuegbar: DATABASE_URL fehlt.");
+    console.error("Webhook nicht verfügbar: DATABASE_URL fehlt.");
     return NextResponse.json(
-      { error: "Webhook-Verarbeitung nicht verfuegbar." },
+      { error: "Webhook-Verarbeitung nicht verfügbar." },
       { status: 503 },
     );
   }
@@ -251,9 +251,9 @@ export async function POST(request: Request) {
     stripe = getStripeServerClient();
     webhookSecret = getStripeWebhookSecret();
   } catch (error) {
-    console.error("Webhook nicht verfuegbar:", error);
+    console.error("Webhook nicht verfügbar:", error);
     return NextResponse.json(
-      { error: "Webhook-Verarbeitung nicht verfuegbar." },
+      { error: "Webhook-Verarbeitung nicht verfügbar." },
       { status: 503 },
     );
   }
@@ -271,7 +271,7 @@ export async function POST(request: Request) {
     event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
   } catch (error) {
     console.error("Stripe-Signatur konnte nicht verifiziert werden:", error);
-    return NextResponse.json({ error: "Ungueltige Signatur." }, { status: 400 });
+    return NextResponse.json({ error: "Ungültige Signatur." }, { status: 400 });
   }
 
   const existingEvent = await prisma.stripeEvent.findUnique({

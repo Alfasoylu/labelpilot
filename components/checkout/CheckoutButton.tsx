@@ -72,7 +72,7 @@ export function CheckoutButton({
               checked={designService}
               onChange={(event) => setDesignService(event.target.checked)}
             />
-            <span>Designservice hinzufuegen (40,00 EUR netto)</span>
+            <span>Designservice hinzufügen (40,00 EUR netto)</span>
           </label>
           <p className="field-hint">
             Kostenlos ab 2.000 EUR netto oder wenn Sie druckfertige Daten selbst hochladen.
@@ -91,7 +91,7 @@ export function CheckoutButton({
               checked={physicalProof}
               onChange={(event) => setPhysicalProof(event.target.checked)}
             />
-            <span>Physischen Andruck hinzufuegen (10,00 EUR netto)</span>
+            <span>Physischen Andruck hinzufügen (10,00 EUR netto)</span>
           </label>
           <p className="field-hint">Ein digitaler Proof bleibt weiterhin ohne Aufpreis enthalten.</p>
           <label className="checkbox-field">
@@ -100,7 +100,7 @@ export function CheckoutButton({
               checked={express}
               onChange={(event) => setExpress(event.target.checked)}
             />
-            <span>Express hinzufuegen (+9,90 EUR netto)</span>
+            <span>Express hinzufügen (+9,90 EUR netto)</span>
           </label>
           <p className="field-hint">
             Express priorisiert den Auftrag nach Ihrer Freigabe, ersetzt aber keine separate SLA.

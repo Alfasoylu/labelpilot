@@ -38,7 +38,7 @@ export default async function AdminQuotesPage({ searchParams }: QuoteListPagePro
   if (!prisma) {
     return (
       <article className="legal-card">
-        <h2>Quote-Verwaltung ist derzeit nicht verfuegbar.</h2>
+        <h2>Quote-Verwaltung ist derzeit nicht verfügbar.</h2>
         <p>Die Datenbankverbindung fehlt.</p>
       </article>
     );
@@ -66,8 +66,8 @@ export default async function AdminQuotesPage({ searchParams }: QuoteListPagePro
               <select id="status" name="status" defaultValue={filters.status ?? "all"}>
                 <option value="all">Alle</option>
                 <option value="NEW">Neu</option>
-                <option value="UNDER_REVIEW">In Pruefung</option>
-                <option value="NEEDS_MORE_INFO">Weitere Informationen benoetigt</option>
+                <option value="UNDER_REVIEW">In Prüfung</option>
+                <option value="NEEDS_MORE_INFO">Weitere Informationen benötigt</option>
                 <option value="QUOTE_SENT">Angebot gesendet</option>
                 <option value="ACCEPTED">Akzeptiert</option>
                 <option value="REJECTED">Abgelehnt</option>
@@ -99,9 +99,9 @@ export default async function AdminQuotesPage({ searchParams }: QuoteListPagePro
       </article>
 
       <article className="surface-card">
-        <h2>Aktuelle Eintraege</h2>
+        <h2>Aktuelle Einträge</h2>
         {quotes.length === 0 ? (
-          <p className="price-note">Keine Angebotsanfragen fuer den aktuellen Filter.</p>
+          <p className="price-note">Keine Angebotsanfragen für den aktuellen Filter.</p>
         ) : (
           <div className="section-stack">
             {quotes.map((quote) => (

@@ -13,7 +13,7 @@ export async function GET(
 
   if (!prisma) {
     return NextResponse.json(
-      { error: "Variable-Data-Download ist derzeit nicht verfuegbar." },
+      { error: "Variable-Data-Download ist derzeit nicht verfügbar." },
       { status: 503 },
     );
   }

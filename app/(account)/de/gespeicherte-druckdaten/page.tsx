@@ -46,10 +46,10 @@ export default async function SavedDesignsPage({ searchParams }: SavedDesignsPag
     <div className="container section-stack">
       <article className="legal-card">
         <span className="eyebrow">Gespeicherte Druckdaten</span>
-        <h1>Ihre freigegebenen Designs fuer schnelle Nachbestellungen</h1>
+        <h1>Ihre freigegebenen Designs für schnelle Nachbestellungen</h1>
         <p>
           Hier sehen Sie freigegebene Druckdaten aus Ihren bisherigen Bestellungen.
-          Jede Version bleibt getrennt gespeichert und kann fuer spaetere Nachbestellungen
+          Jede Version bleibt getrennt gespeichert und kann für spätere Nachbestellungen
           wiederverwendet werden.
         </p>
       </article>
@@ -57,14 +57,14 @@ export default async function SavedDesignsPage({ searchParams }: SavedDesignsPag
       <article className="surface-card">
         <h2>Zugriff</h2>
         <p className="price-note">
-          Freigeschaltet fuer {access.companyName || access.customerName || access.customerEmail}
+          Freigeschaltet für {access.companyName || access.customerName || access.customerEmail}
         </p>
         <div className="cta-row">
           <Link
             href={`/de/auftrag/${order}/druckdaten?token=${encodeURIComponent(token)}`}
             className="secondary-link"
           >
-            Zurueck zur Bestellansicht
+            Zurück zur Bestellansicht
           </Link>
           <Link href="/de/nachbestellen" className="secondary-link">
             Nachbestellprozess ansehen
@@ -73,11 +73,11 @@ export default async function SavedDesignsPage({ searchParams }: SavedDesignsPag
       </article>
 
       <article className="surface-card">
-        <h2>Verfuegbare Designs</h2>
+        <h2>Verfügbare Designs</h2>
         {designs.length === 0 ? (
           <p className="price-note">
-            Noch keine freigegebenen Designs verfuegbar. Sobald ein Auftrag freigegeben ist,
-            erscheint er hier fuer spaetere Nachbestellungen.
+            Noch keine freigegebenen Designs verfügbar. Sobald ein Auftrag freigegeben ist,
+            erscheint er hier für spätere Nachbestellungen.
           </p>
         ) : (
           <div className="section-stack">
@@ -117,8 +117,8 @@ function InvalidSavedDesignAccess() {
     <div className="container section-stack">
       <article className="legal-card">
         <span className="eyebrow">Gespeicherte Druckdaten</span>
-        <h1>Zugriff nicht verfuegbar</h1>
-        <p>Diese Ansicht erfordert einen gueltigen Bestelllink.</p>
+        <h1>Zugriff nicht verfügbar</h1>
+        <p>Diese Ansicht erfordert einen gültigen Bestelllink.</p>
         <div className="cta-row">
           <Link href="/de/kontakt" className="cta-link">
             Kontakt

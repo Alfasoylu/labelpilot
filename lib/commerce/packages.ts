@@ -90,7 +90,7 @@ const expectedGrossCentsById: Record<string, number> = {
 
 for (const pkg of PACKAGES) {
   if (expectedGrossCentsById[pkg.id] !== pkg.grossAmountCents) {
-    throw new Error(`Ungueltige Paketkonfiguration fuer ${pkg.id}.`);
+    throw new Error(`Ungültige Paketkonfiguration für ${pkg.id}.`);
   }
 }
 

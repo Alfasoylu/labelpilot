@@ -108,21 +108,21 @@ export default async function OrderArtworkPage({
     <div className="container section-stack">
       <article className="legal-card">
         <span className="eyebrow">Bestellung</span>
-        <h1>Druckdaten fuer Ihre Bestellung</h1>
+        <h1>Druckdaten für Ihre Bestellung</h1>
         <p>
-          Hier koennen Sie Druckdaten hochladen, den Dateistatus sehen und bei Bedarf
+          Hier können Sie Druckdaten hochladen, den Dateistatus sehen und bei Bedarf
           eine korrigierte Datei senden.
         </p>
       </article>
 
       <div className="two-column">
         <article className="surface-card">
-          <h2>Bestelluebersicht</h2>
+          <h2>Bestellübersicht</h2>
           <ul className="simple-list">
             <li>Bestellnummer: {order.orderNumber}</li>
-            <li>Paket: {pkg ? `${pkg.label} (${pkg.quantity.toLocaleString("de-DE")} Stueck)` : order.packageId}</li>
+            <li>Paket: {pkg ? `${pkg.label} (${pkg.quantity.toLocaleString("de-DE")} Stück)` : order.packageId}</li>
             <li>Material: {getMaterialLabel(order.material)}</li>
-            <li>Menge: {order.quantity.toLocaleString("de-DE")} Stueck</li>
+            <li>Menge: {order.quantity.toLocaleString("de-DE")} Stück</li>
             <li>Bestellstatus: {getOrderStatusLabel(order.status)}</li>
             <li>Druckdatenstatus: {getArtworkStatusLabel(order.artworkStatus)}</li>
           </ul>
@@ -131,12 +131,12 @@ export default async function OrderArtworkPage({
       <article className="surface-card">
         <h2>Wichtiger Hinweis</h2>
         <p>
-          Rechtliche Pflichtangaben, Zutaten und Naehrwerte bleiben in Ihrer
+          Rechtliche Pflichtangaben, Zutaten und Nährwerte bleiben in Ihrer
             Verantwortung.
           </p>
           <p className="price-note">
-            Fuer Allergene, Health Claims und sonstige regulatorische Inhalte fuehren wir
-            keine rechtliche Pruefung durch.
+            Für Allergene, Health Claims und sonstige regulatorische Inhalte führen wir
+            keine rechtliche Prüfung durch.
           </p>
           <div className="cta-row">
             <Link href="/de/druckdaten" className="secondary-link">
@@ -186,8 +186,8 @@ function InvalidOrderAccess() {
     <div className="container section-stack">
       <article className="legal-card">
         <span className="eyebrow">Bestellung</span>
-        <h1>Bestellung konnte nicht geoeffnet werden.</h1>
-        <p>Der Zugriff auf diese Seite ist nicht verfuegbar oder der Link ist ungueltig.</p>
+        <h1>Bestellung konnte nicht geöffnet werden.</h1>
+        <p>Der Zugriff auf diese Seite ist nicht verfügbar oder der Link ist ungültig.</p>
         <div className="cta-row">
           <Link href="/de/kontakt" className="cta-link">
             Kontakt

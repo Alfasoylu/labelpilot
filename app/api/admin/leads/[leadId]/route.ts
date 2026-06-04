@@ -56,7 +56,7 @@ export async function POST(
   if (!parsed.success) {
     return NextResponse.redirect(
       buildRedirectUrl(request, leadId, {
-        error: "Bitte pruefen Sie die Lead-Angaben.",
+        error: "Bitte prüfen Sie die Lead-Angaben.",
       }),
       { status: 303 },
     );

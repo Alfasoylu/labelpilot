@@ -37,7 +37,7 @@ export function validateProofDecisionRequest(
     return {
       ok: false,
       status: 400,
-      error: "Ungueltige Rueckmeldung.",
+      error: "Ungültige Rückmeldung.",
     };
   }
 
@@ -45,7 +45,7 @@ export function validateProofDecisionRequest(
     return {
       ok: false,
       status: 400,
-      error: "Bitte beschreiben Sie den Aenderungswunsch.",
+      error: "Bitte beschreiben Sie den Änderungswunsch.",
     };
   }
 
@@ -61,7 +61,7 @@ export function validateProofDecisionRequest(
     return {
       ok: false,
       status: 409,
-      error: "Fuer diesen Proof ist derzeit keine Rueckmeldung moeglich.",
+      error: "Für diesen Proof ist derzeit keine Rückmeldung möglich.",
     };
   }
 
@@ -69,7 +69,7 @@ export function validateProofDecisionRequest(
     return {
       ok: false,
       status: 409,
-      error: "Fuer diesen Proof ist derzeit keine Rueckmeldung moeglich.",
+      error: "Für diesen Proof ist derzeit keine Rückmeldung möglich.",
     };
   }
 

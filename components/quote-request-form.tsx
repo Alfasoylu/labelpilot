@@ -110,8 +110,8 @@ export function QuoteRequestForm() {
       <div>
         <h2>B2B-Angebot anfordern</h2>
         <p className="field-hint">
-          Je genauer Ihre Angaben zu Material, Groesse, Menge und Verpackung sind,
-          desto schneller kann der naechste Schritt vorbereitet werden.
+          Je genauer Ihre Angaben zu Material, Größe, Menge und Verpackung sind,
+          desto schneller kann der nächste Schritt vorbereitet werden.
         </p>
       </div>
 
@@ -178,7 +178,7 @@ export function QuoteRequestForm() {
           </select>
         </div>
         <div className="field">
-          <label htmlFor="labelSize">Etikettengroesse</label>
+          <label htmlFor="labelSize">Etikettengröße</label>
           <select id="labelSize" name="labelSize" defaultValue={defaults.labelSize}>
             {sizes.map((size) => (
               <option key={size} value={size}>
@@ -212,9 +212,9 @@ export function QuoteRequestForm() {
           <select
             id="recurringNeed"
             name="recurringNeed"
-            defaultValue="Ja, regelmaessig"
+            defaultValue="Ja, regelmäßig"
           >
-            <option value="Ja, regelmaessig">Ja, regelmaessig</option>
+            <option value="Ja, regelmäßig">Ja, regelmäßig</option>
             <option value="Gelegentlich">Gelegentlich</option>
             <option value="Noch offen">Noch offen</option>
           </select>
@@ -245,7 +245,7 @@ export function QuoteRequestForm() {
             id="notes"
             name="notes"
             defaultValue={defaults.notes}
-            placeholder="Verpackung, Anwendung, Rollenanzahl, gewuenschte Optik oder offene Fragen."
+            placeholder="Verpackung, Anwendung, Rollenanzahl, gewünschte Optik oder offene Fragen."
           />
         </div>
         <div className="field-full checkbox-field">
@@ -268,8 +268,8 @@ export function QuoteRequestForm() {
       ) : null}
 
       <p className="field-hint">
-        Druckdateien koennen Sie spaeter senden. Fuer ein erstes Angebot reichen
-        Angaben zu Material, Groesse, Menge und Verpackung.
+        Druckdateien können Sie später senden. Für ein erstes Angebot reichen
+        Angaben zu Material, Größe, Menge und Verpackung.
       </p>
     </form>
   );

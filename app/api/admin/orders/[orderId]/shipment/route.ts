@@ -12,7 +12,7 @@ const shipmentSchema = z.object({
   shippingCarrier: z.string().trim().optional(),
   trackingNumber: z.string().trim().optional(),
   trackingUrl: z
-    .union([z.literal(""), z.string().trim().url("Bitte geben Sie eine gueltige Tracking-URL ein.")])
+    .union([z.literal(""), z.string().trim().url("Bitte geben Sie eine gültige Tracking-URL ein.")])
     .transform((value) => (value === "" ? null : value))
     .optional(),
   packageCount: z
@@ -72,7 +72,7 @@ export async function POST(
   if (!parsed.success) {
     return NextResponse.redirect(
       buildRedirectUrl(request, orderId, {
-        error: parsed.error.issues[0]?.message ?? "Bitte pruefen Sie die Versandangaben.",
+        error: parsed.error.issues[0]?.message ?? "Bitte prüfen Sie die Versandangaben.",
       }),
       { status: 303 },
     );

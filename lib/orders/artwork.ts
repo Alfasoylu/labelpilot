@@ -22,7 +22,7 @@ export function getArtworkFileStatusLabel(status: ArtworkFileStatusValue) {
     case "UPLOADED":
       return "Datei erhalten";
     case "UNDER_REVIEW":
-      return "Wird geprueft";
+      return "Wird geprüft";
     case "APPROVED":
       return "Freigegeben";
     case "CORRECTION_REQUIRED":
@@ -55,7 +55,7 @@ export function getProofFileStatusLabel(status: ProofFileStatusValue) {
     case "APPROVED":
       return "Proof freigegeben";
     case "CHANGES_REQUESTED":
-      return "Aenderungswunsch gesendet";
+      return "Änderungswunsch gesendet";
     case "SUPERSEDED":
       return "Durch neueren Proof ersetzt";
     default:
@@ -74,13 +74,13 @@ export function getOrderStatusLabel(status: string) {
     case "PAID":
       return "Bezahlt";
     case "FILE_REVIEW":
-      return "Dateipruefung";
+      return "Dateiprüfung";
     case "CORRECTION_REQUIRED":
       return "Korrektur erforderlich";
     case "ON_HOLD":
-      return "Wartet auf Rueckmeldung";
+      return "Wartet auf Rückmeldung";
     case "APPROVED_FOR_PRODUCTION":
-      return "Fuer Produktion freigegeben";
+      return "Für Produktion freigegeben";
     case "PROOF_REQUIRED":
       return "Proof wird vorbereitet";
     case "WAITING_CUSTOMER_APPROVAL":

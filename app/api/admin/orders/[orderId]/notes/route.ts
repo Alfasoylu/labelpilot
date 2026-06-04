@@ -42,7 +42,7 @@ export async function POST(
   if (!parsed.success) {
     return NextResponse.redirect(
       buildRedirectUrl(request, orderId, {
-        error: parsed.error.issues[0]?.message ?? "Bitte pruefen Sie die Notiz.",
+        error: parsed.error.issues[0]?.message ?? "Bitte prüfen Sie die Notiz.",
       }),
       { status: 303 },
     );

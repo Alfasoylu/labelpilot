@@ -26,7 +26,7 @@ export default async function AdminVariableDataPage({
   if (!prisma) {
     return (
       <article className="legal-card">
-        <h2>Variable-Data-Review ist derzeit nicht verfuegbar.</h2>
+        <h2>Variable-Data-Review ist derzeit nicht verfügbar.</h2>
         <p>Die Datenbankverbindung fehlt.</p>
       </article>
     );
@@ -124,7 +124,7 @@ export default async function AdminVariableDataPage({
                 </p>
                 <div className="cta-row">
                   <Link href={`/admin/variable-data?batchId=${batch.id}`} className="secondary-link">
-                    Review oeffnen
+                    Review öffnen
                   </Link>
                   {batch.validRows > 0 ? (
                     <a

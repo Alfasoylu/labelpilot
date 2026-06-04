@@ -55,25 +55,25 @@ export function orderConfirmation(input: {
   const orderLink = getOrderLink(input.orderId, input.uploadToken);
   const subject = `Ihre Bestellung ${input.orderNumber} ist eingegangen`;
   const text = [
-    `Vielen Dank fuer Ihre Bestellung ${input.orderNumber}.`,
+    `Vielen Dank für Ihre Bestellung ${input.orderNumber}.`,
     "",
-    "Bitte laden Sie jetzt Ihre Druckdaten hoch oder speichern Sie den Link fuer spaeter:",
+    "Bitte laden Sie jetzt Ihre Druckdaten hoch oder speichern Sie den Link für später:",
     orderLink,
     "",
-    "Bitte bewahren Sie diesen Link gut auf. Ueber ihn erreichen Sie den Upload und spaeter auch den Proof.",
+    "Bitte bewahren Sie diesen Link gut auf. Über ihn erreichen Sie den Upload und später auch den Proof.",
   ].join("\n");
 
   return {
     subject,
     text,
     html: renderShell({
-      heading: "Vielen Dank fuer Ihre Bestellung.",
+      heading: "Vielen Dank für Ihre Bestellung.",
       intro: `Ihre Bestellung ${input.orderNumber} wurde erfasst.`,
       actionLabel: "Druckdaten hochladen",
       actionHref: orderLink,
       bodyHtml: `
-        <p style="margin:0 0 16px 0;">Bitte laden Sie jetzt Ihre Druckdaten hoch oder speichern Sie den Link fuer spaeter.</p>
-        <p style="margin:0;">Bitte bewahren Sie diesen Link gut auf. Ueber ihn erreichen Sie den Upload und spaeter auch den Proof.</p>
+        <p style="margin:0 0 16px 0;">Bitte laden Sie jetzt Ihre Druckdaten hoch oder speichern Sie den Link für später.</p>
+        <p style="margin:0;">Bitte bewahren Sie diesen Link gut auf. Über ihn erreichen Sie den Upload und später auch den Proof.</p>
       `,
     }),
   };
@@ -86,14 +86,14 @@ export function correctionRequested(input: {
   adminNote: string;
 }): TemplateResult {
   const orderLink = getOrderLink(input.orderId, input.uploadToken);
-  const subject = `Korrektur erforderlich fuer ${input.orderNumber}`;
+  const subject = `Korrektur erforderlich für ${input.orderNumber}`;
   const escapedNote = escapeHtml(input.adminNote);
   const text = [
-    `Fuer Ihre Bestellung ${input.orderNumber} benoetigen wir eine korrigierte Druckdatei.`,
+    `Für Ihre Bestellung ${input.orderNumber} benötigen wir eine korrigierte Druckdatei.`,
     "",
     `Hinweis: ${input.adminNote}`,
     "",
-    "Bitte laden Sie die korrigierte Datei ueber diesen Link hoch:",
+    "Bitte laden Sie die korrigierte Datei über diesen Link hoch:",
     orderLink,
   ].join("\n");
 
@@ -102,12 +102,12 @@ export function correctionRequested(input: {
     text,
     html: renderShell({
       heading: "Ihre Druckdatei braucht eine Korrektur.",
-      intro: `Fuer die Bestellung ${input.orderNumber} benoetigen wir eine aktualisierte Datei.`,
+      intro: `Für die Bestellung ${input.orderNumber} benötigen wir eine aktualisierte Datei.`,
       actionLabel: "Korrigierte Datei hochladen",
       actionHref: orderLink,
       bodyHtml: `
         <p style="margin:0 0 16px 0;"><strong>Hinweis:</strong> ${escapedNote}</p>
-        <p style="margin:0;">Bitte laden Sie die korrigierte Datei ueber den Link oben hoch.</p>
+        <p style="margin:0;">Bitte laden Sie die korrigierte Datei über den Link oben hoch.</p>
       `,
     }),
   };
@@ -119,11 +119,11 @@ export function proofReady(input: {
   uploadToken: string;
 }): TemplateResult {
   const orderLink = getOrderLink(input.orderId, input.uploadToken);
-  const subject = `Proof bereit fuer ${input.orderNumber}`;
+  const subject = `Proof bereit für ${input.orderNumber}`;
   const text = [
-    `Fuer Ihre Bestellung ${input.orderNumber} steht ein Proof zur Freigabe bereit.`,
+    `Für Ihre Bestellung ${input.orderNumber} steht ein Proof zur Freigabe bereit.`,
     "",
-    "Bitte pruefen Sie den Proof ueber diesen Link und geben Sie ihn frei oder senden Sie einen Aenderungswunsch:",
+    "Bitte prüfen Sie den Proof über diesen Link und geben Sie ihn frei oder senden Sie einen Änderungswunsch:",
     orderLink,
   ].join("\n");
 
@@ -132,11 +132,11 @@ export function proofReady(input: {
     text,
     html: renderShell({
       heading: "Ihr Proof steht bereit.",
-      intro: `Fuer die Bestellung ${input.orderNumber} koennen Sie jetzt den Proof pruefen.`,
+      intro: `Für die Bestellung ${input.orderNumber} können Sie jetzt den Proof prüfen.`,
       actionLabel: "Proof ansehen",
       actionHref: orderLink,
       bodyHtml: `
-        <p style="margin:0;">Bitte pruefen Sie den Proof ueber den Link oben und geben Sie ihn frei oder senden Sie einen Aenderungswunsch.</p>
+        <p style="margin:0;">Bitte prüfen Sie den Proof über den Link oben und geben Sie ihn frei oder senden Sie einen Änderungswunsch.</p>
       `,
     }),
   };
@@ -145,11 +145,11 @@ export function proofReady(input: {
 export function proofApproved(input: {
   orderNumber: string;
 }): TemplateResult {
-  const subject = `Proof freigegeben fuer ${input.orderNumber}`;
+  const subject = `Proof freigegeben für ${input.orderNumber}`;
   const text = [
-    `Vielen Dank. Der Proof fuer Ihre Bestellung ${input.orderNumber} wurde freigegeben.`,
+    `Vielen Dank. Der Proof für Ihre Bestellung ${input.orderNumber} wurde freigegeben.`,
     "",
-    "Es ist keine weitere Aktion noetig. Wir bereiten den naechsten Produktionsschritt vor.",
+    "Es ist keine weitere Aktion nötig. Wir bereiten den nächsten Produktionsschritt vor.",
   ].join("\n");
 
   return {
@@ -157,9 +157,9 @@ export function proofApproved(input: {
     text,
     html: renderShell({
       heading: "Proof erfolgreich freigegeben.",
-      intro: `Vielen Dank. Der Proof fuer die Bestellung ${input.orderNumber} wurde bestaetigt.`,
+      intro: `Vielen Dank. Der Proof für die Bestellung ${input.orderNumber} wurde bestätigt.`,
       bodyHtml: `
-        <p style="margin:0;">Es ist keine weitere Aktion noetig. Wir bereiten den naechsten Produktionsschritt vor.</p>
+        <p style="margin:0;">Es ist keine weitere Aktion nötig. Wir bereiten den nächsten Produktionsschritt vor.</p>
       `,
     }),
   };
@@ -196,9 +196,9 @@ export function shippedOrderCustomer(input: {
       actionLabel: input.trackingUrl ? "Sendung verfolgen" : "Bestellstatus ansehen",
       actionHref: input.trackingUrl || orderLink,
       bodyHtml: `
-        <p style="margin:0 0 8px 0;"><strong>Versanddienstleister:</strong> ${escapeHtml(input.shippingCarrier || "Wird separat bestaetigt")}</p>
-        <p style="margin:0 0 8px 0;"><strong>Trackingnummer:</strong> ${escapeHtml(input.trackingNumber || "Noch nicht verfuegbar")}</p>
-        <p style="margin:0;">Den aktuellen Status Ihrer Bestellung finden Sie auch ueber Ihren Bestelllink.</p>
+        <p style="margin:0 0 8px 0;"><strong>Versanddienstleister:</strong> ${escapeHtml(input.shippingCarrier || "Wird separat bestätigt")}</p>
+        <p style="margin:0 0 8px 0;"><strong>Trackingnummer:</strong> ${escapeHtml(input.trackingNumber || "Noch nicht verfügbar")}</p>
+        <p style="margin:0;">Den aktuellen Status Ihrer Bestellung finden Sie auch über Ihren Bestelllink.</p>
       `,
     }),
   };
@@ -211,9 +211,9 @@ export function artworkUploadedOpsNotification(input: {
 }): TemplateResult {
   const baseUrl = getPublicEnv().NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
   const adminOrderLink = `${baseUrl}/admin/orders/${input.orderId}`;
-  const subject = `Neue Druckdaten fuer ${input.orderNumber}`;
+  const subject = `Neue Druckdaten für ${input.orderNumber}`;
   const text = [
-    `Fuer die Bestellung ${input.orderNumber} wurden neue Druckdaten hochgeladen.`,
+    `Für die Bestellung ${input.orderNumber} wurden neue Druckdaten hochgeladen.`,
     `Kunden-E-Mail: ${input.customerEmail}`,
     "",
     `Admin-Link: ${adminOrderLink}`,
@@ -224,8 +224,8 @@ export function artworkUploadedOpsNotification(input: {
     text,
     html: renderShell({
       heading: "Neue Druckdaten eingegangen.",
-      intro: `Fuer die Bestellung ${input.orderNumber} liegt eine neue Datei vor.`,
-      actionLabel: "Bestellung im Admin oeffnen",
+      intro: `Für die Bestellung ${input.orderNumber} liegt eine neue Datei vor.`,
+      actionLabel: "Bestellung im Admin öffnen",
       actionHref: adminOrderLink,
       bodyHtml: `
         <p style="margin:0;">Kunden-E-Mail: ${escapeHtml(input.customerEmail)}</p>
@@ -241,9 +241,9 @@ export function quoteRequestReceivedCustomer(input: {
 }): TemplateResult {
   const subject = "Ihre Anfrage ist eingegangen – Labelpilot.de";
   const text = [
-    "Vielen Dank fuer Ihre Anfrage.",
+    "Vielen Dank für Ihre Anfrage.",
     "",
-    "Wir pruefen Ihre Angaben zu Material, Groesse, Menge und Verpackung und melden uns mit dem naechsten Schritt fuer Ihr Etikettenangebot.",
+    "Wir prüfen Ihre Angaben zu Material, Größe, Menge und Verpackung und melden uns mit dem nächsten Schritt für Ihr Etikettenangebot.",
     "",
     `Firma: ${input.companyName}`,
     `Produkttyp: ${input.productType || "Nicht angegeben"}`,
@@ -256,7 +256,7 @@ export function quoteRequestReceivedCustomer(input: {
     html: renderShell({
       heading: "Ihre Anfrage ist eingegangen.",
       intro:
-        "Wir pruefen Ihre Angaben zu Material, Groesse, Menge und Verpackung und melden uns mit dem naechsten Schritt.",
+        "Wir prüfen Ihre Angaben zu Material, Größe, Menge und Verpackung und melden uns mit dem nächsten Schritt.",
       bodyHtml: `
         <p style="margin:0 0 16px 0;"><strong>Firma:</strong> ${escapeHtml(input.companyName)}</p>
         <p style="margin:0 0 8px 0;"><strong>Produkttyp:</strong> ${escapeHtml(input.productType || "Nicht angegeben")}</p>
@@ -315,11 +315,11 @@ export function quoteNeedsMoreInfoCustomer(input: {
   companyName: string;
   adminNote?: string | null;
 }): TemplateResult {
-  const subject = "Weitere Informationen benoetigt – Labelpilot.de";
+  const subject = "Weitere Informationen benötigt – Labelpilot.de";
   const text = [
     `Vielen Dank, ${input.companyName}.`,
     "",
-    "Fuer die Bearbeitung Ihrer Anfrage benoetigen wir noch weitere Informationen.",
+    "Für die Bearbeitung Ihrer Anfrage benötigen wir noch weitere Informationen.",
     input.adminNote ? `Hinweis: ${input.adminNote}` : "",
   ]
     .filter(Boolean)
@@ -329,8 +329,8 @@ export function quoteNeedsMoreInfoCustomer(input: {
     subject,
     text,
     html: renderShell({
-      heading: "Wir brauchen noch eine kurze Rueckmeldung.",
-      intro: "Fuer die Bearbeitung Ihrer Anfrage benoetigen wir noch weitere Informationen.",
+      heading: "Wir brauchen noch eine kurze Rückmeldung.",
+      intro: "Für die Bearbeitung Ihrer Anfrage benötigen wir noch weitere Informationen.",
       bodyHtml: input.adminNote
         ? `<p style="margin:0;"><strong>Hinweis:</strong> ${escapeHtml(input.adminNote)}</p>`
         : `<p style="margin:0;">Bitte antworten Sie direkt auf diese E-Mail mit den fehlenden Angaben.</p>`,
@@ -357,10 +357,10 @@ export function quoteSentCustomer(input: {
     text,
     html: renderShell({
       heading: "Ihr Angebot ist vorbereitet.",
-      intro: "Wir haben Ihre Anfrage geprueft und das Angebot vorbereitet.",
+      intro: "Wir haben Ihre Anfrage geprüft und das Angebot vorbereitet.",
       bodyHtml: input.adminNote
         ? `<p style="margin:0;"><strong>Hinweis:</strong> ${escapeHtml(input.adminNote)}</p>`
-        : `<p style="margin:0;">Bitte antworten Sie direkt auf diese E-Mail, falls Rueckfragen offen sind.</p>`,
+        : `<p style="margin:0;">Bitte antworten Sie direkt auf diese E-Mail, falls Rückfragen offen sind.</p>`,
     }),
   };
 }

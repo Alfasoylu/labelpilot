@@ -12,7 +12,7 @@ export default async function AdminDashboardPage() {
   if (!prisma) {
     return (
       <article className="legal-card">
-        <h2>Admin ist derzeit nicht verfuegbar.</h2>
+        <h2>Admin ist derzeit nicht verfügbar.</h2>
         <p>Die Datenbankverbindung fehlt.</p>
       </article>
     );
@@ -60,10 +60,10 @@ export default async function AdminDashboardPage() {
         <h2>Aktionen heute</h2>
         <div className="feature-grid">
           <div className="section-card">
-            <h3>Dateipruefung</h3>
+            <h3>Dateiprüfung</h3>
             <p className="price-note">{reviewCount} Bestellungen offen</p>
             <Link href="/admin/orders?status=review-needed" className="secondary-link">
-              Zur Pruefung
+              Zur Prüfung
             </Link>
           </div>
           <div className="section-card">
@@ -78,7 +78,7 @@ export default async function AdminDashboardPage() {
           </div>
           <div className="section-card">
             <h3>Freigegeben</h3>
-            <p className="price-note">{productionReadyCount} bereit fuer Produktion</p>
+            <p className="price-note">{productionReadyCount} bereit für Produktion</p>
             <Link
               href="/admin/orders?status=APPROVED_FOR_PRODUCTION"
               className="secondary-link"

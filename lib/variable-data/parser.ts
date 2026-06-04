@@ -48,7 +48,7 @@ export function parseVariableDataFile(input: {
   const firstSheetName = workbook.SheetNames[0];
 
   if (!firstSheetName) {
-    throw new Error("Die Datei enthaelt kein lesbares Tabellenblatt.");
+    throw new Error("Die Datei enthält kein lesbares Tabellenblatt.");
   }
 
   const sheet = workbook.Sheets[firstSheetName];
@@ -92,7 +92,7 @@ function normalizeVariableDataRow(
   }
 
   if (payload.bestBeforeDate && !isSupportedDate(payload.bestBeforeDate)) {
-    validationErrors.push("bestBeforeDate ist kein gueltiges Datum.");
+    validationErrors.push("bestBeforeDate ist kein gültiges Datum.");
   }
 
   return {
@@ -170,5 +170,5 @@ function getVariableDataFileType(fileName: string) {
     return "xlsx";
   }
 
-  throw new Error("Unterstuetzte Formate sind CSV, TSV, XLS und XLSX.");
+  throw new Error("Unterstützte Formate sind CSV, TSV, XLS und XLSX.");
 }

@@ -37,7 +37,7 @@ export async function POST(request: Request) {
   if (!parsed.success) {
     return NextResponse.redirect(
       buildRedirectUrl(request, {
-        error: "Bitte gueltige Testwerte eingeben.",
+        error: "Bitte gültige Testwerte eingeben.",
       }),
       { status: 303 },
     );

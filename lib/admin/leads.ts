@@ -16,7 +16,7 @@ export function getLeadStatusLabel(status: string) {
     case "SAMPLE_SENT":
       return "Muster versendet";
     case "QUOTE_NEEDED":
-      return "Angebot noetig";
+      return "Angebot nötig";
     case "QUOTE_SENT":
       return "Angebot gesendet";
     case "FOLLOW_UP":

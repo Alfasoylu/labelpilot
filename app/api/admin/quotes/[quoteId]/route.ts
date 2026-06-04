@@ -55,7 +55,7 @@ export async function POST(
   if (!parsed.success) {
     return NextResponse.redirect(
       buildRedirectUrl(request, quoteId, {
-        error: "Bitte pruefen Sie die Quote-Angaben.",
+        error: "Bitte prüfen Sie die Quote-Angaben.",
       }),
       { status: 303 },
     );
@@ -95,7 +95,7 @@ export async function POST(
         text: template.text,
       });
     } catch (error) {
-      console.error("Quote-Rueckfragemail fehlgeschlagen:", error);
+      console.error("Quote-Rückfragemail fehlgeschlagen:", error);
     }
   }
 

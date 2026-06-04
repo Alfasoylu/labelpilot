@@ -25,9 +25,9 @@ export async function POST(
   const prisma = getPrismaClient();
 
   if (!prisma) {
-    console.error("Upload nicht verfuegbar: DATABASE_URL fehlt.");
+    console.error("Upload nicht verfügbar: DATABASE_URL fehlt.");
     return NextResponse.json(
-      { error: "Upload ist derzeit nicht verfuegbar." },
+      { error: "Upload ist derzeit nicht verfügbar." },
       { status: 503 },
     );
   }
@@ -43,7 +43,7 @@ export async function POST(
 
   if (!(file instanceof File)) {
     return NextResponse.json(
-      { error: "Bitte laden Sie eine Druckdatei hoch oder senden Sie diese spaeter." },
+      { error: "Bitte laden Sie eine Druckdatei hoch oder senden Sie diese später." },
       { status: 400 },
     );
   }
@@ -66,7 +66,7 @@ export async function POST(
 
   if (order.status === "PENDING_PAYMENT" || order.status === "PAYMENT_FAILED" || order.status === "CANCELLED") {
     return NextResponse.json(
-      { error: "Fuer diese Bestellung koennen derzeit keine Druckdaten hochgeladen werden." },
+      { error: "Für diese Bestellung können derzeit keine Druckdaten hochgeladen werden." },
       { status: 409 },
     );
   }
@@ -152,7 +152,7 @@ export async function POST(
     }
 
     return NextResponse.json({
-      message: "Datei erfolgreich hochgeladen. Die Datei wird geprueft.",
+      message: "Datei erfolgreich hochgeladen. Die Datei wird geprüft.",
       file: {
         id: createdFile.id,
         fileName: createdFile.fileName,

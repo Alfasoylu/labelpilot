@@ -12,9 +12,9 @@ export async function GET(
   const prisma = getPrismaClient();
 
   if (!prisma) {
-    console.error("Proof-Download nicht verfuegbar: DATABASE_URL fehlt.");
+    console.error("Proof-Download nicht verfügbar: DATABASE_URL fehlt.");
     return NextResponse.json(
-      { error: "Proof ist derzeit nicht verfuegbar." },
+      { error: "Proof ist derzeit nicht verfügbar." },
       { status: 503 },
     );
   }

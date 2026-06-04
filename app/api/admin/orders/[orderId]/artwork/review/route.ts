@@ -29,7 +29,7 @@ export async function POST(
 
   if (!prisma) {
     return NextResponse.json(
-      { error: "Review ist derzeit nicht verfuegbar." },
+      { error: "Review ist derzeit nicht verfügbar." },
       { status: 503 },
     );
   }
@@ -50,7 +50,7 @@ export async function POST(
     !["under_review", "approve", "request_correction"].includes(action)
   ) {
     return redirectWithMessage(request, redirectTo, {
-      error: "Ungueltige Review-Anfrage.",
+      error: "Ungültige Review-Anfrage.",
     });
   }
 
@@ -104,7 +104,7 @@ export async function POST(
         data: {
           orderId: order.id,
           status: "FILE_REVIEW",
-          note: note || "Datei in technischer Pruefung.",
+          note: note || "Datei in technischer Prüfung.",
         },
       });
 
@@ -131,7 +131,7 @@ export async function POST(
         data: {
           orderId: order.id,
           status: "APPROVED_FOR_PRODUCTION",
-          note: note || "Datei fuer Produktion freigegeben.",
+          note: note || "Datei für Produktion freigegeben.",
         },
       });
 
@@ -140,7 +140,7 @@ export async function POST(
         order,
         sourceType: "CUSTOMER_UPLOAD",
         originalArtworkFileId: artworkFile.id,
-        changeSummary: note || "Datei fuer Produktion freigegeben.",
+        changeSummary: note || "Datei für Produktion freigegeben.",
       });
 
       return;
@@ -174,7 +174,7 @@ export async function POST(
     action === "approve"
       ? "Datei freigegeben."
       : action === "under_review"
-        ? "Datei zur Pruefung markiert."
+        ? "Datei zur Prüfung markiert."
         : "Korrektur wurde angefordert.";
 
   if (action === "request_correction") {
@@ -193,7 +193,7 @@ export async function POST(
         text: template.text,
       });
     } else {
-      console.debug(`Korrekturmail uebersprungen: keine E-Mail fuer ${order.id}.`);
+      console.debug(`Korrekturmail übersprungen: keine E-Mail für ${order.id}.`);
     }
   }
 

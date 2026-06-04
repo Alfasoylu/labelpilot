@@ -13,7 +13,7 @@ export function buildGeneratedPrintFilePlaceholder(input: {
   const validRows = input.rows.filter((row) => row.isValid);
 
   if (validRows.length === 0) {
-    throw new Error("Fuer den Platzhalter werden mindestens eine gueltige Zeile benoetigt.");
+    throw new Error("Für den Platzhalter werden mindestens eine gültige Zeile benötigt.");
   }
 
   const columns = Array.from(

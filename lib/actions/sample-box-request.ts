@@ -32,18 +32,18 @@ const optionalIsoDateString = z
     }
 
     return isValidIsoCalendarDate(value);
-  }, "Bitte geben Sie einen gueltigen Liefertermin ein.");
+  }, "Bitte geben Sie einen gültigen Liefertermin ein.");
 
 const sampleBoxRequestSchema = z.object({
   companyName: z.string().trim().min(1, "Bitte geben Sie den Firmennamen ein."),
   contactName: z.string().trim().optional(),
-  email: z.string().trim().email("Bitte geben Sie eine gueltige E-Mail-Adresse ein."),
+  email: z.string().trim().email("Bitte geben Sie eine gültige E-Mail-Adresse ein."),
   phone: z.string().trim().optional(),
   country: z.string().trim().min(1),
   website: z.string().trim().optional(),
   industry: z.string().trim().optional(),
-  productType: z.string().trim().min(1, "Bitte waehlen Sie ein Interesse aus."),
-  quantity: z.string().trim().min(1, "Bitte waehlen Sie eine Menge aus."),
+  productType: z.string().trim().min(1, "Bitte wählen Sie ein Interesse aus."),
+  quantity: z.string().trim().min(1, "Bitte wählen Sie eine Menge aus."),
   recurringNeed: z.string().trim().optional(),
   targetDeliveryDate: optionalIsoDateString,
   notes: z.string().trim().optional(),
@@ -98,7 +98,7 @@ export async function submitSampleBoxRequest(
   if (!parsed.success) {
     return {
       status: "error",
-      message: parsed.error.issues[0]?.message ?? "Bitte pruefen Sie Ihre Angaben.",
+      message: parsed.error.issues[0]?.message ?? "Bitte prüfen Sie Ihre Angaben.",
     };
   }
 
@@ -167,7 +167,7 @@ export async function submitSampleBoxRequest(
   const adminInbox = getServerEnv().EMAIL_REPLY_TO;
   const emailResult = await sendTransactionalEmail({
     to: adminInbox || values.email,
-    subject: "Neue Musterbox-Anfrage ueber Labelpilot.de",
+    subject: "Neue Musterbox-Anfrage über Labelpilot.de",
     text:
       `Neue Musterbox-Anfrage von ${values.companyName}. Interesse: ${values.productType}. Menge: ${values.quantity}.`,
     html: `
@@ -201,6 +201,6 @@ export async function submitSampleBoxRequest(
   return {
     status: "success",
     message:
-      "Vielen Dank. Wir pruefen Ihre Anfrage und melden uns mit dem naechsten Schritt zur Musterbox.",
+      "Vielen Dank. Wir prüfen Ihre Anfrage und melden uns mit dem nächsten Schritt zur Musterbox.",
   };
 }

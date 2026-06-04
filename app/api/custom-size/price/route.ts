@@ -33,7 +33,7 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json(
       {
-        message: "Bitte gueltige Material-, Format- und Mengendaten senden.",
+        message: "Bitte gültige Material-, Format- und Mengendaten senden.",
       },
       { status: 400 },
     );
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
   if (!parsed.success) {
     return NextResponse.json(
       {
-        message: "Bitte gueltige Material-, Format- und Mengendaten senden.",
+        message: "Bitte gültige Material-, Format- und Mengendaten senden.",
       },
       { status: 400 },
     );
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
     console.error("[custom-size-price] pricing computation failed:", error);
     return NextResponse.json(
       {
-        message: "Preisberechnung aktuell nicht verfuegbar. Bitte nutzen Sie das Angebotsformular.",
+        message: "Preisberechnung aktuell nicht verfügbar. Bitte nutzen Sie das Angebotsformular.",
       },
       { status: 503 },
     );

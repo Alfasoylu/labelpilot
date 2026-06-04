@@ -10,9 +10,9 @@ export function getQuoteStatusLabel(status: string) {
     case "NEW":
       return "Neu";
     case "UNDER_REVIEW":
-      return "In Pruefung";
+      return "In Prüfung";
     case "NEEDS_MORE_INFO":
-      return "Weitere Informationen benoetigt";
+      return "Weitere Informationen benötigt";
     case "QUOTE_SENT":
       return "Angebot gesendet";
     case "ACCEPTED":

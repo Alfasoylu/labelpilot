@@ -62,7 +62,7 @@ export function SampleBoxRequestForm() {
         <h2>Musterbox anfragen</h2>
         <p className="field-hint">
           Die Anfrage dient der Qualifizierung. Materialvergleich, Menge und Einsatzfall
-          helfen bei der Entscheidung, ob die Musterbox der richtige naechste Schritt ist.
+          helfen bei der Entscheidung, ob die Musterbox der richtige nächste Schritt ist.
         </p>
       </div>
 
@@ -143,15 +143,15 @@ export function SampleBoxRequestForm() {
           <select
             id="sample-recurringNeed"
             name="recurringNeed"
-            defaultValue="Ja, regelmaessig"
+            defaultValue="Ja, regelmäßig"
           >
-            <option value="Ja, regelmaessig">Ja, regelmaessig</option>
+            <option value="Ja, regelmäßig">Ja, regelmäßig</option>
             <option value="Vielleicht">Vielleicht</option>
             <option value="Nein, einmalig">Nein, einmalig</option>
           </select>
         </div>
         <div className="field">
-          <label htmlFor="sample-targetDeliveryDate">Wann benoetigen Sie Etiketten?</label>
+          <label htmlFor="sample-targetDeliveryDate">Wann benötigen Sie Etiketten?</label>
           <input id="sample-targetDeliveryDate" name="targetDeliveryDate" type="date" />
         </div>
         <div className="field-full">
@@ -161,7 +161,7 @@ export function SampleBoxRequestForm() {
             name="shippingAddress"
             rows={3}
             required
-            placeholder="Strasse, Ort oder mindestens PLZ fuer die Qualifizierung."
+            placeholder="Straße, Ort oder mindestens PLZ für die Qualifizierung."
           />
         </div>
 

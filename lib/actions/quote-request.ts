@@ -40,12 +40,12 @@ const optionalIsoDateString = z
     }
 
     return isValidIsoCalendarDate(value);
-  }, "Bitte geben Sie einen gueltigen Liefertermin ein.");
+  }, "Bitte geben Sie einen gültigen Liefertermin ein.");
 
 const quoteRequestSchema = z.object({
   companyName: z.string().trim().min(1, "Bitte geben Sie den Firmennamen ein."),
   contactName: z.string().trim().optional(),
-  email: z.string().trim().email("Bitte geben Sie eine gueltige E-Mail-Adresse ein."),
+  email: z.string().trim().email("Bitte geben Sie eine gültige E-Mail-Adresse ein."),
   phone: z.string().trim().optional(),
   country: z.string().trim().min(1),
   website: z.string().trim().optional(),
@@ -53,7 +53,7 @@ const quoteRequestSchema = z.object({
   productType: z.string().trim().optional(),
   labelSize: z.string().trim().optional(),
   material: z.string().trim().optional(),
-  quantity: z.string().trim().min(1, "Bitte waehlen Sie eine Menge aus."),
+  quantity: z.string().trim().min(1, "Bitte wählen Sie eine Menge aus."),
   recurringNeed: z.string().trim().optional(),
   hasArtwork: z.enum(["ja", "nein", "teilweise"]),
   targetDeliveryDate: optionalIsoDateString,
@@ -112,7 +112,7 @@ export async function submitQuoteRequest(
   if (!parsed.success) {
     return {
       status: "error",
-      message: parsed.error.issues[0]?.message ?? "Bitte pruefen Sie Ihre Angaben.",
+      message: parsed.error.issues[0]?.message ?? "Bitte prüfen Sie Ihre Angaben.",
     };
   }
 
@@ -257,6 +257,6 @@ export async function submitQuoteRequest(
   return {
     status: "success",
     message:
-      "Vielen Dank. Ihre Anfrage ist eingegangen. Wir pruefen Ihre Angaben und melden uns mit dem naechsten Schritt.",
+      "Vielen Dank. Ihre Anfrage ist eingegangen. Wir prüfen Ihre Angaben und melden uns mit dem nächsten Schritt.",
   };
 }

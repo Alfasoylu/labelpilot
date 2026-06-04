@@ -26,7 +26,7 @@ export default async function AdminLeadDetailPage({
   if (!prisma) {
     return (
       <article className="legal-card">
-        <h2>Lead-Verwaltung ist derzeit nicht verfuegbar.</h2>
+        <h2>Lead-Verwaltung ist derzeit nicht verfügbar.</h2>
         <p>Die Datenbankverbindung fehlt.</p>
       </article>
     );
@@ -73,7 +73,7 @@ export default async function AdminLeadDetailPage({
                 <option value="QUALIFYING">In Qualifizierung</option>
                 <option value="QUALIFIED">Qualifiziert</option>
                 <option value="SAMPLE_SENT">Muster versendet</option>
-                <option value="QUOTE_NEEDED">Angebot noetig</option>
+                <option value="QUOTE_NEEDED">Angebot nötig</option>
                 <option value="QUOTE_SENT">Angebot gesendet</option>
                 <option value="FOLLOW_UP">Follow-up</option>
                 <option value="WON">Gewonnen</option>
@@ -82,7 +82,7 @@ export default async function AdminLeadDetailPage({
               </select>
             </div>
             <div>
-              <label htmlFor="nextFollowUpAt">Naechstes Follow-up</label>
+              <label htmlFor="nextFollowUpAt">Nächstes Follow-up</label>
               <input
                 id="nextFollowUpAt"
                 name="nextFollowUpAt"

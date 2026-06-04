@@ -15,6 +15,8 @@
  *      when an umlaut is dropped, e.g. "pr?fen", "N?chster". URL query strings
  *      ("...?token=", "...?session_id=") are explicitly NOT flagged.
  *   4. UTF-8 BOM (U+FEFF) at the start of a file.
+ *   5. ASCII transliteration of umlauts in display copy (e.g. "fuer", "pruefen").
+ *      Skipped inside paths/file names/URLs, where ASCII is correct.
  *
  * Scans the same customer-facing dirs as the language guard. docs/ excluded.
  * Runs automatically as part of `npm run build` (prebuild) and in test:safety.
@@ -46,6 +48,34 @@ function hasCorruptQuestionMark(line) {
     return true;
   }
   return false;
+}
+
+// ASCII transliteration of umlauts in German display copy (e.g. "fuer" for
+// "für", "pruefen" for "prüfen"). These exact letter sequences are never valid
+// German words — the correct spelling uses ä/ö/ü/ß. Listed as morphemes so
+// compounds (Dateipruefung, hinzufuegen, ...) are caught too. URLs, file names
+// and import paths legitimately use ASCII transliteration (e.g.
+// "/images/druckdaten-pruefung.webp"), so any match inside a path/asset token
+// is skipped.
+const TRANSLIT = /(ueber|fuer|fueg|fuehr|pruef|groess|koenn|moeglich|spaet|naech|waehl|oeffn|verfueg|qualitaet|gueltig|stueck|rueck|noetig|stuetz|hoeh|bestaet|maessig|gemaess|traeg|flaech|schaeft|faell|klaer|naehr|aender|wuensch|haelt|faeng|hoer|moecht|guenstig)/gi;
+const PATH_CHAR = /[A-Za-z0-9_./-]/;
+const ASSET_EXT = /\.(webp|png|jpe?g|svg|gif|pdf|ico|woff2?|css|mjs|cjs|tsx?|jsx?|json)$/i;
+
+function findTransliteration(line) {
+  let m;
+  TRANSLIT.lastIndex = 0;
+  while ((m = TRANSLIT.exec(line)) !== null) {
+    // Expand to the surrounding "blob" of path/identifier characters.
+    let s = m.index;
+    let e = m.index + m[0].length;
+    while (s > 0 && PATH_CHAR.test(line[s - 1])) s--;
+    while (e < line.length && PATH_CHAR.test(line[e])) e++;
+    const blob = line.slice(s, e);
+    if (blob.includes("/")) continue; // path / URL → ASCII is correct there
+    if (ASSET_EXT.test(blob)) continue; // file name → ASCII is correct there
+    return blob; // a real German word written with ASCII transliteration
+  }
+  return null;
 }
 
 const offenders = [];
@@ -80,6 +110,8 @@ function walk(dir) {
       raw.split(/\r?\n/).forEach((line, i) => {
         if (MOJIBAKE.test(line)) flag(full, i, line, "mojibake");
         if (hasCorruptQuestionMark(line)) flag(full, i, line, "dropped-umlaut '?'");
+        const t = findTransliteration(line);
+        if (t) flag(full, i, line, `ASCII transliteration "${t}"`);
       });
     }
   }
@@ -90,7 +122,7 @@ for (const dir of SCAN_DIRS) walk(dir);
 if (offenders.length > 0) {
   console.error("\n❌  Encoding corruption detected in customer-facing files.");
   console.error(
-    "   Mojibake (Ã/Â/â€), replacement chars (�), dropped-umlaut '?', or a BOM.\n"
+    "   Mojibake (Ã/Â/â€), replacement chars (�), dropped-umlaut '?', BOM, or ASCII transliteration.\n"
   );
   console.error(offenders.join("\n"));
   console.error(
@@ -99,4 +131,4 @@ if (offenders.length > 0) {
   process.exit(1);
 }
 
-console.log("✓ Encoding guard: no mojibake, dropped-umlaut '?', replacement chars or BOM.");
+console.log("✓ Encoding guard: no mojibake, dropped-umlaut '?', replacement chars, BOM or ASCII transliteration.");

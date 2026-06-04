@@ -48,7 +48,7 @@ export function ArtworkUploadForm({
     if (!file) {
       setUploadState({
         type: "error",
-        message: "Bitte laden Sie eine Druckdatei hoch oder senden Sie diese spaeter.",
+        message: "Bitte laden Sie eine Druckdatei hoch oder senden Sie diese später.",
       });
       return;
     }
@@ -87,7 +87,7 @@ export function ArtworkUploadForm({
       setUploadState({
         type: "success",
         message:
-          payload.message ?? "Datei erfolgreich hochgeladen. Die Datei wird geprueft.",
+          payload.message ?? "Datei erfolgreich hochgeladen. Die Datei wird geprüft.",
       });
       form.reset();
     } catch {
@@ -106,7 +106,7 @@ export function ArtworkUploadForm({
         <div>
           <h2>Druckdaten hochladen</h2>
           <p className="field-hint">
-            Laden Sie Ihre Druckdatei hoch. Bevor wir produzieren, pruefen wir die Datei
+            Laden Sie Ihre Druckdatei hoch. Bevor wir produzieren, prüfen wir die Datei
             technisch und melden uns, falls etwas fehlt.
           </p>
           <p className="field-hint">{requirementsText}</p>
@@ -139,7 +139,7 @@ export function ArtworkUploadForm({
 
         {!canUpload ? (
           <p className="field-hint">
-            Fuer diese Bestellung koennen aktuell keine neuen Druckdaten hochgeladen werden.
+            Für diese Bestellung können aktuell keine neuen Druckdaten hochgeladen werden.
           </p>
         ) : null}
       </form>
