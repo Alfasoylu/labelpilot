@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 0.13b
+current_task: 1
 current_status: pending
-completed_at: 2026-06-04T20:16:00+03:00
-last_run_note: Task 0.10 completed (59 §28). In buildSpecRows (components/page-renderers.tsx) added the missing "Temperaturbereich" row (honest: übliche Raum-/Lagerbedingungen; Tiefkühl-/Nässe-/Hitze über Angebot — no fabricated °C range) for BOTH opaque and transparent; the "Hinweis" Spender/Maschine note (76-mm-Kern / Wickelrichtung Standard → Angebot) was already present and is retained; Anwendung/Geeignet für rows kept. Also fixed ASCII umlaut transliterations in these suitability rows and aligned Finish to "Glanz (Standard) enthalten; matt auf Anfrage" (SoT #20-ii). Verification passed: check:lang, typecheck, build. Next unblocked task is 0.13b (skipping BLOCKED 0.11/0.12/0.11b per supervisor note; 0.13a/0.13c are catch-up-done).
+completed_at: 2026-06-04T20:18:02+03:00
+last_run_note: Task 0.13b completed by verification. Audited the quote / B2B / contact path and confirmed the manual-only Rechnungskauf message already exists in the correct place: the quote page renderer shows "Rechnungskauf auf Anfrage" for geprüfte Geschäftskunden, and the Angebots-FAQ repeats that it is handled manually in the Angebotsprozess and not via the Standard-Checkout. No self-serve checkout wording was changed, and no code change was required. Verification passed: check:lang, typecheck, build. Next unblocked task is 1 (Audit Track A).
 ```
 
 ---
