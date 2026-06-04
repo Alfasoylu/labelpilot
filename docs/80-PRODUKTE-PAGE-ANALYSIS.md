@@ -80,6 +80,12 @@ Proposed section order for the two **product** pages:
 10. **Regulatory disclaimer** (`30 §25`) where food/beverage/supplement applies.
 11. **Related links** (quote, musterbox, nachbestellen, druckdaten, sibling material, Branchen, 100×200) + **Final CTA** (`Angebot anfordern` / `Etiketten nachbestellen`).
 
+**Trust & Lieferung block** (placed near *Pakete & Preise*, covers G1–G3/G6) — must use the **canonical Lieferzeit text (SoT #20-v), verbatim:**
+
+> **Lieferzeit:** ca. 10–14 Werktage nach Ihrer Freigabe (Produktion + Versand nach Deutschland). Dies ist ein voraussichtlicher Zeitraum, keine bindende Garantie.
+
+(Payment line per SoT #18b: *"Rechnungskauf für geprüfte Geschäftskunden auf Anfrage"* — not self-serve. Sustainability per SoT #18c: honest PP material statement, no eco/recyclable claims.)
+
 The **collection hub** (`/de/pp-rollenetiketten`) should stay a routing/overview page but: own its keyword cluster more strongly, expand FAQ beyond 1, and clearly funnel to the two material pages + Musterbox + quote.
 
 > **Not sufficient on its own:** §1–§5 cover spec / price / SEO confidence, but a buyer still needs **trust, delivery time, payment, exact-quantity and contact** clarity — these are missing and are added in **§6**.

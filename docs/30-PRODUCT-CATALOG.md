@@ -328,6 +328,8 @@ Geeignet für:
 - Hochwertige Produktverpackungen
 - Produkte, bei denen der Verpackungsinhalt sichtbar bleiben soll
 
+> **Hinweis (SoT #20-i):** Weißunterdruck (Deckweiß) auf transparentem Material ist **quote-only** und **kein Self-Serve-Checkout-Add-on** (siehe §15.0 und `04 §28.2`).
+
 ### 9.3 Zielkunden
 
 Primär:
@@ -665,6 +667,10 @@ Zusätzlich zur Basis-Konfiguration sind folgende Optionen **freigegeben** und *
 - **Wunschformat** (`NEXT_PUBLIC_FEATURE_CUSTOM_SIZE`): flächenbasierte Preisberechnung für individuelle Größen mit Angebots-Fallback oberhalb der Grenzwerte. Logik: `04 §29`, Admin-Kostenscreen: `18 §30A`.
 
 Die festen `100×200`-Pakete bleiben der Standardweg; ihre Basis-Spezifikation und Preise (SoT #15) bleiben unverändert.
+
+**Nicht self-serve (quote-only):** Weißunterdruck / Deckweiß ist **kein** Checkout-Add-on, sondern **quote-only** (Angebot) — ebenso Laminat/Folie, Sonderkleber, variable Daten und Konturschnitt (SoT #20-i; `04 §28.2`).
+
+**Flag-Freigabe-Gate (SoT #20):** Die Checkout-Add-ons und das Matt-Finish-Add-on bleiben **standardmäßig aus**, bis **Founder-Freigabe UND ein erfolgreicher Stripe-TEST-Durchlauf** vorliegen (vorhandene Live-Stripe-Keys aktivieren das Flag nicht automatisch). **Wunschformat** bleibt **aus**, bis der Betreiber echte Kostenparameter in Admin `§30A` validiert und sperrt.
 
 Für PP-Etiketten muss die Konfiguration mindestens enthalten:
 

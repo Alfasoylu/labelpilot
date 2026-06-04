@@ -734,7 +734,7 @@ Every fixed PP package is defined as:
 - on roll
 - full-colour `CMYK` digital print
 - no setup / plate fee
-- one finish: `gloss` or `matte`
+- standard finish: `gloss` is included; `matte` is a paid add-on at **+15% net** (see §28.1 / SoT #18d / #20-ii), not part of the included base spec
 - free standard data check
 - one proof round
 - shipping to Germany included
@@ -790,7 +790,7 @@ The final price level must always be interpreted through this factor matrix:
 | Adhesive | permanent | special adhesive quote |
 | Indoor/outdoor use | standard product-label use | tougher use cases may require upgrades |
 | Water/oil resistance | standard PP suitability | heavier resistance requirements may affect material choice |
-| Finish | one finish included: gloss or matte | extra finishing quote |
+| Finish | gloss included (standard); matte = +15% net add-on (§28.1, SoT #20-ii) | other finishing quote |
 | Lamination | not included | quote |
 | White ink | not included on transparent | paid add-on / quote |
 | Foil / metallic | not included | quote |
@@ -1252,7 +1252,7 @@ Then convert them into repeat customers.
 | **Nachbestellung — Neueinrichtung** | **€0 (no re-setup / no re-design fee on reorder)** | competitors re-charge setup+design each time | the reorder moat, made explicit and priced at zero |
 
 ### 28.2 Keep QUOTE-only (do not self-serve yet)
-white-ink-heavy transparent, lamination / soft-touch, foil / metallic, removable / freezer-safe / special adhesives, custom size, contour/freeform die-cut with new tool, variable-data **workflow** (Excel validation + Lot/SKT automation + batch review), multi-SKU sets, 20.000+, pallet / express-heavy. (Per §14 + doc 30.)
+**Weißdruck / white underprint (transparent) = quote-only — it is NOT a self-serve checkout add-on** (SoT #20-i; cf. §14.4). Also quote-only: white-ink-heavy transparent, lamination / soft-touch, foil / metallic, removable / freezer-safe / special adhesives, custom size, contour/freeform die-cut with new tool, variable-data **workflow** (Excel validation + Lot/SKT automation + batch review), multi-SKU sets, 20.000+, pallet / express-heavy. (Per §14 + doc 30.)
 
 ### 28.3 Margin + differentiation logic
 - Design / physical-proof / express / extra-version are currently **unpriced** in our model → pure margin upside; the market proves buyers pay for them.
@@ -1261,6 +1261,11 @@ white-ink-heavy transparent, lamination / soft-touch, foil / metallic, removable
 
 ### 28.4 Founder decision
 Approve the §28.1 numbers (esp. Designservice €40 / free ≥ €2.000 / free own-data, and physical proof €10) → then update §14 included-scope table, SoT #15, and doc 30. Full dimension gap-analysis + same-page UX + roadmap live in `59` §28.
+
+### 28.5 Flag-enablement gate (SoT #20, 2026-06-04)
+- The self-serve add-ons (`NEXT_PUBLIC_FEATURE_ADDONS`) — Designservice, physischer Andruck, Express, Zusatzdesign — **and the matt-finish add-on** stay **OFF** until BOTH (a) founder approval AND (b) a successful Stripe **TEST** round-trip are completed. Live Stripe keys being present does **not** auto-enable the flag.
+- The **Wunschformat / custom-size engine** (`NEXT_PUBLIC_FEATURE_CUSTOM_SIZE`, §29) stays **OFF** until the operator validates and **locks real cost parameters** in Admin `§30A`; until then it is quote-only.
+- Tracking of these gates lives as BLOCKED tasks in `81-60-TASK-AUTOMATION-PLAN.md`.
 
 ---
 
