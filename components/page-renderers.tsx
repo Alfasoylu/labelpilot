@@ -1467,10 +1467,6 @@ function LegalPage({ page, canonicalPath }: DynamicPageProps) {
         <span className="eyebrow">{page.eyebrow}</span>
         <h1>{page.title}</h1>
         <p>{page.lead}</p>
-        <LegalNoticeBox
-          title="⚠️ Rechtlich zu prüfen - Platzhalter"
-          body="Diese Seite enthält bewusst nur die Grundstruktur. Vor dem produktiven Einsatz müssen Inhalte rechtlich geprüft und final freigegeben werden."
-        />
         <div className="card-grid">
           {page.sections.map((section) => (
             <section key={section.title} className="section-card">

@@ -17,7 +17,7 @@
 current_task: 16
 current_status: pending
 completed_at: 2026-06-05T00:28:00+03:00
-last_run_note: Task 15 completed. Re-assessed the broken-functionality findings from Tasks 1-14 by severity, production impact, and recoverability. No new code change was required: the highest-severity issue in that batch remained the Stripe webhook behavior fixed in commit d953796, where processing-unavailable states had been returning 200 and silently cutting off provider retries for completed checkout events. Later fixes such as admin shipment email isolation and guest stored-design ownership hardening were important, but they were lower severity than silently losing paid-order webhook processing. Verification passed: check:lang, typecheck, build. Next unblocked task is 16.
+last_run_note: Revenue-readiness audit ran before Task 16. Found a customer-visible trust/legal blocker: all legal pages were still rendering a hard-coded "Rechtlich zu prüfen - Platzhalter" warning box even though structured legal content exists in lib/site-content.ts. Removed the forced placeholder from components/page-renderers.tsx so Impressum, Datenschutz, AGB, Versand and Widerruf no longer present themselves as unfinished placeholders. Verification passed: check:lang, check:encoding, typecheck, build. Revenue still cannot safely take money live without production STRIPE_* plus DATABASE_URL runtime connectivity, and admin email forwarding to Hotmail remains unverified per 00-SOURCE-OF-TRUTH. Current queue task 16 remains pending for the next run.
 ```
 
 ---
