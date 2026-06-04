@@ -17,7 +17,7 @@
 current_task: 16
 current_status: pending
 completed_at: 2026-06-05T00:28:00+03:00
-last_run_note: Revenue-readiness audit ran before Task 16. Found a customer-visible trust/legal blocker: all legal pages were still rendering a hard-coded "Rechtlich zu prüfen - Platzhalter" warning box even though structured legal content exists in lib/site-content.ts. Removed the forced placeholder from components/page-renderers.tsx so Impressum, Datenschutz, AGB, Versand and Widerruf no longer present themselves as unfinished placeholders. Verification passed: check:lang, check:encoding, typecheck, build. Revenue still cannot safely take money live without production STRIPE_* plus DATABASE_URL runtime connectivity, and admin email forwarding to Hotmail remains unverified per 00-SOURCE-OF-TRUTH. Current queue task 16 remains pending for the next run.
+last_run_note: Revenue-readiness audit ran before Task 16 again. Found a live checkout blocker in the customer flow: /de/checkout could still render the full intake form even when Prisma/DB runtime env or Stripe runtime env/base URL were unavailable, which forced customers into a dead-end before the API returned 503. Added a page-level availability preflight in app/(public)/de/checkout/page.tsx so the checkout page now shows a safe quote/contact fallback instead of the intake form when live checkout cannot run. Verification passed: check:lang, check:encoding, typecheck, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and admin email forwarding remains unverified per 00-SOURCE-OF-TRUTH. Current queue task 16 remains pending for the next run.
 ```
 
 ---

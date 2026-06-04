@@ -11,6 +11,7 @@ import {
 } from "@/lib/checkout/intake";
 import { isAddonsEnabled } from "@/lib/pricing/addons-feature";
 import { buildCheckoutAddons } from "@/lib/pricing/checkout-addons";
+import { getCheckoutBaseUrl, getStripeServerClient } from "@/lib/stripe/server";
 
 export const metadata: Metadata = {
   title: "Checkout | Labelpilot.de",
@@ -56,6 +57,18 @@ function buildAddonSummary(input: {
 
 export default async function CheckoutPage({ searchParams }: CheckoutPageProps) {
   const params = parseCheckoutSearchParams(await searchParams);
+  const prisma = getPrismaClient();
+
+  let checkoutAvailable = Boolean(prisma);
+
+  if (checkoutAvailable) {
+    try {
+      getStripeServerClient();
+      getCheckoutBaseUrl();
+    } catch {
+      checkoutAvailable = false;
+    }
+  }
 
   if (!params) {
     return (
@@ -99,7 +112,32 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
     );
   }
 
-  const prisma = getPrismaClient();
+  if (!checkoutAvailable) {
+    return (
+      <div className="container section-stack">
+        <article className="legal-card">
+          <span className="eyebrow">Checkout</span>
+          <h1>Der Direkt-Checkout ist derzeit nicht verfügbar.</h1>
+          <p>
+            Bitte nutzen Sie aktuell das Angebotsformular. So gehen Ihre Anfrage und
+            Ihre B2B-Bestelldaten sicher bei uns ein.
+          </p>
+          <div className="cta-row">
+            <Link href="/de/angebot-anfordern" className="cta-link">
+              Angebot anfordern
+            </Link>
+            <Link href={`/${["de", pkg.productSlug].join("/")}`} className="secondary-link">
+              Zurück zum Produkt
+            </Link>
+            <Link href="/de/kontakt" className="secondary-link">
+              Kontakt
+            </Link>
+          </div>
+        </article>
+      </div>
+    );
+  }
+
   const settingsRow = prisma
     ? await prisma.pricingSettings.findUnique({
         where: { id: "default" },
