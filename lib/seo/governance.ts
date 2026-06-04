@@ -1,5 +1,5 @@
 export const ROBOTS_ALLOW_PATHS = ["/de", "/de/"] as const;
-export const ROBOTS_DISALLOW_PATHS = ["/account/", "/admin/", "/api/", "/lp/"] as const;
+export const ROBOTS_DISALLOW_PATHS = ["/account/", "/admin/", "/api/", "/lp/", "/teklif/"] as const;
 export const NON_INDEXABLE_PREFIXES = ["/account", "/admin", "/api", "/lp", "/teklif"] as const;
 
 export function buildAbsoluteUrlFromBase(baseUrl: string, path: string) {

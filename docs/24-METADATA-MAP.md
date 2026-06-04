@@ -454,12 +454,12 @@ OG Description: Gleiche Etiketten mit gespeicherten Druckdaten einfacher erneut 
 
 ```txt
 Path: /de/druckdaten
-Title: Druckdaten für Etiketten vorbereiten | Labelpilot.de
-Description: Welche Druckdaten für PP-Rollenetiketten benötigt werden: PDF, AI, EPS, SVG, PNG, JPG oder ZIP. Mit technischer Dateiprüfung.
+Title: Druckdaten-Anforderungen für Etiketten | Labelpilot.de
+Description: Welche Druckdaten für PP-Rollenetiketten benötigt werden: PDF, AI, EPS, SVG, PNG, JPG oder ZIP. Mit technischer Dateiprüfung und klaren Datei-Anforderungen.
 Canonical: https://labelpilot.de/de/druckdaten
 Robots: index,follow
-OG Title: Druckdaten für Etiketten vorbereiten
-OG Description: Anforderungen an Druckdateien für PP-Rollenetiketten und Proof-Freigabe.
+OG Title: Druckdaten-Anforderungen für Etiketten
+OG Description: Dateiformate und Anforderungen für PP-Rollenetiketten, Datencheck und Proof-Freigabe im Überblick.
 ```
 
 ### 12.14 Produktion und Versand

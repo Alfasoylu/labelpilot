@@ -3,43 +3,53 @@ import type { PrismaClient } from "@prisma/client";
 type CustomerAccessContext = {
   id: string;
   uploadToken: string;
+  customerId: string | null;
   customerEmail: string;
   companyName: string | null;
   customerName: string | null;
 };
 
-function buildAccessibleStoredDesignWhere(customerEmail: string) {
+function buildAccessibleStoredDesignWhere(access: CustomerAccessContext) {
+  const ownershipClauses: Array<Record<string, unknown>> = [];
+
+  if (access.customerId) {
+    ownershipClauses.push({
+      customerId: access.customerId,
+    });
+  }
+
+  ownershipClauses.push({
+    lastOrder: {
+      customerEmail: access.customerEmail,
+    },
+  });
+
+  ownershipClauses.push({
+    artworkVersions: {
+      some: {
+        OR: [
+          {
+            originalArtworkFile: {
+              order: {
+                customerEmail: access.customerEmail,
+              },
+            },
+          },
+          {
+            proofFile: {
+              order: {
+                customerEmail: access.customerEmail,
+              },
+            },
+          },
+        ],
+      },
+    },
+  });
+
   return {
     archivedAt: null,
-    OR: [
-      {
-        lastOrder: {
-          customerEmail,
-        },
-      },
-      {
-        artworkVersions: {
-          some: {
-            OR: [
-              {
-                originalArtworkFile: {
-                  order: {
-                    customerEmail,
-                  },
-                },
-              },
-              {
-                proofFile: {
-                  order: {
-                    customerEmail,
-                  },
-                },
-              },
-            ],
-          },
-        },
-      },
-    ],
+    OR: ownershipClauses,
   };
 }
 
@@ -53,6 +63,7 @@ export async function getCustomerAccessContext(
     select: {
       id: true,
       uploadToken: true,
+      customerId: true,
       customerEmail: true,
       companyName: true,
       customerName: true,
@@ -71,7 +82,7 @@ export async function listAccessibleStoredDesigns(
   access: CustomerAccessContext,
 ) {
   return prisma.storedDesign.findMany({
-    where: buildAccessibleStoredDesignWhere(access.customerEmail),
+    where: buildAccessibleStoredDesignWhere(access),
     include: {
       currentArtworkVersion: {
         select: {
@@ -106,13 +117,14 @@ export async function getAccessibleStoredDesignDetail(
   return prisma.storedDesign.findFirst({
     where: {
       id: designId,
-      ...buildAccessibleStoredDesignWhere(access.customerEmail),
+      ...buildAccessibleStoredDesignWhere(access),
     },
     include: {
       currentArtworkVersion: {
         select: {
           id: true,
           versionLabel: true,
+          approvedAt: true,
         },
       },
       lastOrder: {
@@ -124,7 +136,14 @@ export async function getAccessibleStoredDesignDetail(
         },
       },
       artworkVersions: {
-        include: {
+        select: {
+          id: true,
+          versionNumber: true,
+          versionLabel: true,
+          approvedAt: true,
+          sourceType: true,
+          status: true,
+          changeSummary: true,
           originalArtworkFile: {
             select: {
               id: true,

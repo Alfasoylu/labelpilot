@@ -74,17 +74,36 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Gespeichertes Design nicht gefunden." }, { status: 404 });
   }
 
+  const requestedVersion = parsed.data.artworkVersionId
+    ? design.artworkVersions.find(
+        (version: (typeof design.artworkVersions)[number]) =>
+          version.id === parsed.data.artworkVersionId,
+      ) ?? null
+    : null;
+
+  if (parsed.data.artworkVersionId && !requestedVersion) {
+    return NextResponse.json(
+      { error: "Die angeforderte Druckdatenversion gehoert nicht zu dieser Nachbestellung." },
+      { status: 409 },
+    );
+  }
+
   const selectedVersion =
-    design.artworkVersions.find(
-      (version: (typeof design.artworkVersions)[number]) =>
-        version.id === parsed.data.artworkVersionId,
-    ) ??
+    requestedVersion ??
+    design.currentArtworkVersion ??
     design.artworkVersions[0] ??
     null;
 
   if (!selectedVersion) {
     return NextResponse.json(
       { error: "Keine freigegebene Druckdatenversion verfuegbar." },
+      { status: 409 },
+    );
+  }
+
+  if (!selectedVersion.approvedAt) {
+    return NextResponse.json(
+      { error: "Fuer die Nachbestellung ist keine freigegebene Druckdatenversion verfuegbar." },
       { status: 409 },
     );
   }

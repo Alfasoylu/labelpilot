@@ -7,6 +7,18 @@ import { sendTransactionalEmail } from "@/lib/email/resend";
 import { getServerEnv } from "@/lib/env";
 import { computeLeadScore } from "@/lib/leads/scoring";
 
+const optionalIsoDateString = z
+  .string()
+  .trim()
+  .optional()
+  .refine((value) => {
+    if (!value) {
+      return true;
+    }
+
+    return !Number.isNaN(Date.parse(value));
+  }, "Bitte geben Sie einen gueltigen Liefertermin ein.");
+
 const sampleBoxRequestSchema = z.object({
   companyName: z.string().trim().min(1, "Bitte geben Sie den Firmennamen ein."),
   contactName: z.string().trim().optional(),
@@ -18,7 +30,7 @@ const sampleBoxRequestSchema = z.object({
   productType: z.string().trim().min(1, "Bitte waehlen Sie ein Interesse aus."),
   quantity: z.string().trim().min(1, "Bitte waehlen Sie eine Menge aus."),
   recurringNeed: z.string().trim().optional(),
-  targetDeliveryDate: z.string().trim().optional(),
+  targetDeliveryDate: optionalIsoDateString,
   notes: z.string().trim().optional(),
   shippingAddress: z.string().trim().min(1, "Bitte geben Sie Lieferadresse oder PLZ an."),
   utmSource: z.string().trim().optional(),

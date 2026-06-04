@@ -310,6 +310,7 @@ export async function POST(request: Request) {
     const message = error instanceof Error ? error.message : "Unbekannter Webhook-Fehler.";
     console.error("Stripe-Webhook-Verarbeitung fehlgeschlagen:", error);
     await markStripeEventError(event.id, message);
+    return NextResponse.json({ error: "Webhook-Verarbeitung fehlgeschlagen." }, { status: 500 });
   }
 
   return NextResponse.json({ received: true });

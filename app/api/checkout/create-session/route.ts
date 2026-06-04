@@ -170,6 +170,14 @@ export async function POST(request: Request) {
       ],
     });
 
+    if (!session.url) {
+      console.error("Checkout-Session ohne URL erstellt:", session.id);
+      return NextResponse.json(
+        { error: "Checkout ist derzeit nicht verfuegbar. Bitte nutzen Sie das Angebotsformular." },
+        { status: 503 },
+      );
+    }
+
     await prisma.order.update({
       where: { id: order.id },
       data: {

@@ -15,6 +15,18 @@ import {
   QUOTE_SOURCE_WUNSCHFORMAT,
 } from "@/lib/quotes/source";
 
+const optionalIsoDateString = z
+  .string()
+  .trim()
+  .optional()
+  .refine((value) => {
+    if (!value) {
+      return true;
+    }
+
+    return !Number.isNaN(Date.parse(value));
+  }, "Bitte geben Sie einen gueltigen Liefertermin ein.");
+
 const quoteRequestSchema = z.object({
   companyName: z.string().trim().min(1, "Bitte geben Sie den Firmennamen ein."),
   contactName: z.string().trim().optional(),
@@ -29,7 +41,7 @@ const quoteRequestSchema = z.object({
   quantity: z.string().trim().min(1, "Bitte waehlen Sie eine Menge aus."),
   recurringNeed: z.string().trim().optional(),
   hasArtwork: z.enum(["ja", "nein", "teilweise"]),
-  targetDeliveryDate: z.string().trim().optional(),
+  targetDeliveryDate: optionalIsoDateString,
   notes: z.string().trim().optional(),
   source: z.string().trim().optional(),
   utmSource: z.string().trim().optional(),

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { getPublicEnv } from "@/lib/env";
-import { buildAbsoluteUrlFromBase } from "@/lib/seo/governance";
+import { buildAbsoluteUrlFromBase, isNonIndexablePath } from "@/lib/seo/governance";
 import type { FAQ, PublicPageData } from "@/lib/site-content";
 
 type MetadataEntry = {
@@ -82,9 +82,12 @@ export const metadataMap: Record<string, MetadataEntry> = {
       "Bestellen Sie freigegebene Etiketten schneller erneut. Labelpilot.de speichert Druckdaten, Material, Größe und Stückzahl für Nachbestellungen.",
   },
   "/de/druckdaten": {
-    title: "Druckdaten für Etiketten vorbereiten | Labelpilot.de",
+    title: "Druckdaten-Anforderungen für Etiketten | Labelpilot.de",
     description:
-      "Welche Druckdaten für PP-Rollenetiketten benötigt werden: PDF, AI, EPS, SVG, PNG, JPG oder ZIP. Mit technischer Dateiprüfung.",
+      "Welche Druckdaten für PP-Rollenetiketten benötigt werden: PDF, AI, EPS, SVG, PNG, JPG oder ZIP. Mit technischer Dateiprüfung und klaren Datei-Anforderungen.",
+    openGraphTitle: "Druckdaten-Anforderungen für Etiketten",
+    openGraphDescription:
+      "Dateiformate und Anforderungen für PP-Rollenetiketten, Datencheck und Proof-Freigabe im Überblick.",
   },
   "/de/produktion-versand": {
     title: "Produktion und Versand nach Deutschland | Labelpilot.de",
@@ -240,20 +243,29 @@ export function buildCanonicalMetadata(
 
   const title = entry.title;
   const description = entry.description;
+  const isNonIndexable = isNonIndexablePath(path);
 
   return {
     title,
     description,
-    alternates: {
-      canonical: buildAbsoluteUrl(path),
-    },
+    alternates: isNonIndexable
+      ? undefined
+      : {
+          canonical: buildAbsoluteUrl(path),
+        },
+    robots: isNonIndexable
+      ? {
+          index: false,
+          follow: false,
+        }
+      : undefined,
     openGraph: {
       title: entry.openGraphTitle ?? title,
       description: entry.openGraphDescription ?? description,
       siteName: "Labelpilot.de",
       locale: "de_DE",
       type: entry.openGraphType ?? "website",
-      url: buildAbsoluteUrl(path),
+      url: isNonIndexable ? undefined : buildAbsoluteUrl(path),
       images: [
         {
           url: buildAbsoluteUrl("/images/og-default-labelpilot-1200x630.png"),
@@ -279,10 +291,24 @@ export function buildOrganizationSchema() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Labelpilot.de",
-    url: buildAbsoluteUrl("/de"),
+    url: buildAbsoluteUrl("/"),
     logo: buildAbsoluteUrl("/images/logo.png"),
     description:
       "Labelpilot.de ist eine B2B-Plattform für individuell bedruckte PP-Rollenetiketten und Thermoetiketten für Lebensmittel-, Getränke- und Supplement-Marken in Deutschland.",
+    areaServed: {
+      "@type": "Country",
+      name: "Deutschland",
+    },
+    knowsAbout: [
+      "PP-Rollenetiketten",
+      "Produktetiketten",
+      "Lebensmitteletiketten",
+      "Supplement-Etiketten",
+      "Getränkeetiketten",
+      "Thermoetiketten",
+      "Druckdaten",
+      "Etiketten nachbestellen",
+    ],
     inLanguage: "de-DE",
   };
 }
@@ -292,7 +318,7 @@ export function buildWebSiteSchema() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Labelpilot.de",
-    url: buildAbsoluteUrl("/de"),
+    url: buildAbsoluteUrl("/"),
     description:
       "Deutsche B2B-Plattform für PP-Rollenetiketten, Thermoetiketten, Druckdatenprüfung und Etiketten-Nachbestellung.",
     inLanguage: "de-DE",

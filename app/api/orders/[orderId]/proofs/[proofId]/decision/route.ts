@@ -172,12 +172,16 @@ export async function POST(
         orderNumber: order.orderNumber,
       });
 
-      await sendEmail({
-        to: order.customerEmail,
-        subject: template.subject,
-        html: template.html,
-        text: template.text,
-      });
+      try {
+        await sendEmail({
+          to: order.customerEmail,
+          subject: template.subject,
+          html: template.html,
+          text: template.text,
+        });
+      } catch (error) {
+        console.error("Proof-Freigabemail fehlgeschlagen:", error);
+      }
     } else {
       console.debug(`Proof-Freigabemail uebersprungen: keine E-Mail fuer ${order.id}.`);
     }

@@ -87,12 +87,16 @@ export async function POST(
       companyName: updated.companyName,
       adminNote: updated.adminNote,
     });
-    await sendEmail({
-      to: updated.email,
-      subject: template.subject,
-      html: template.html,
-      text: template.text,
-    });
+    try {
+      await sendEmail({
+        to: updated.email,
+        subject: template.subject,
+        html: template.html,
+        text: template.text,
+      });
+    } catch (error) {
+      console.error("Quote-Rueckfragemail fehlgeschlagen:", error);
+    }
   }
 
   if (updated.status === "QUOTE_SENT") {
@@ -100,12 +104,16 @@ export async function POST(
       companyName: updated.companyName,
       adminNote: updated.adminNote,
     });
-    await sendEmail({
-      to: updated.email,
-      subject: template.subject,
-      html: template.html,
-      text: template.text,
-    });
+    try {
+      await sendEmail({
+        to: updated.email,
+        subject: template.subject,
+        html: template.html,
+        text: template.text,
+      });
+    } catch (error) {
+      console.error("Quote-Angebotsmail fehlgeschlagen:", error);
+    }
   }
 
   return NextResponse.redirect(
