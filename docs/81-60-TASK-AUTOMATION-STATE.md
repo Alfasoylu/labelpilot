@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 11
+current_task: 12
 current_status: pending
-completed_at: 2026-06-04T22:16:41+03:00
-last_run_note: Task 10 completed. Audited the reorder API and stored-design access layer across app/api/reorders/route.ts and lib/artwork/saved-designs.ts. The route already enforced token-scoped design access and quote fallback for 20.000+, but candidate selection was still too loose because it accepted versions based only on approvedAt. Reorder now requires the selected artwork version to be both dated and explicitly status=APPROVED, and the saved-design query shape now includes version status so this guard is type-safe. Verification passed: check:lang, typecheck, build. Next unblocked task is 11.
+completed_at: 2026-06-04T22:27:18+03:00
+last_run_note: Task 11 completed. Audited the admin quote detail route across app/(admin)/admin/quotes/[quoteId]/page.tsx, app/api/admin/quotes/[quoteId]/route.ts, and lib/admin/quotes.ts. Loading and update behavior is currently consistent: the detail page reads and renders status/feedback query params, the update route validates status/adminNote server-side, persists quote status changes, and customer email side effects are already isolated behind try/catch so they do not turn a saved update into a false failure. No code change was required. Verification passed: check:lang, typecheck, build. Next unblocked task is 12.
 ```
 
 ---
