@@ -78,7 +78,7 @@ export function CheckoutIntakeForm({
         if (!response.ok || !data?.url) {
           setErrorMessage(
             data?.error ??
-              "Der Checkout ist im Moment nicht verfuegbar. Bitte nutzen Sie das Angebotsformular.",
+              "Der Checkout ist im Moment nicht verfügbar. Bitte nutzen Sie das Angebotsformular.",
           );
           return;
         }
@@ -95,9 +95,9 @@ export function CheckoutIntakeForm({
   return (
     <form action={handleSubmit} className="quote-form">
       <div>
-        <h2>Bestelldaten pruefen und zur Zahlung weiter</h2>
+        <h2>Bestelldaten prüfen und zur Zahlung weiter</h2>
         <p className="field-hint">
-          Ihre Angaben werden vor Stripe serverseitig geprueft, als Bestellung erfasst und erst
+          Ihre Angaben werden vor Stripe serverseitig geprüft, als Bestellung erfasst und erst
           danach zur Zahlung weitergeleitet.
         </p>
       </div>
@@ -107,7 +107,7 @@ export function CheckoutIntakeForm({
         <ul className="simple-list">
           <li>Produkt: {productName}</li>
           <li>Paket: {packageLabel}</li>
-          <li>Menge: {quantity.toLocaleString("de-DE")} Stueck</li>
+          <li>Menge: {quantity.toLocaleString("de-DE")} Stück</li>
           <li>Preis: {priceLabel}</li>
           <li>Land: Deutschland</li>
           <li>
@@ -115,12 +115,12 @@ export function CheckoutIntakeForm({
             {" "}
             {addons.customerUploadsOwnData
               ? "druckfertige Daten werden nach der Zahlung hochgeladen"
-              : "Designservice oder Datenklaerung im Auftrag enthalten"}
+              : "Designservice oder Datenklärung im Auftrag enthalten"}
           </li>
         </ul>
         {addonSummary.length > 0 ? (
           <>
-            <p className="field-hint">Ausgewaehlte Zusatzleistungen</p>
+            <p className="field-hint">Ausgewählte Zusatzleistungen</p>
             <ul className="simple-list">
               {addonSummary.map((item) => (
                 <li key={item}>{item}</li>
@@ -159,7 +159,7 @@ export function CheckoutIntakeForm({
           <span className="form-group-title">Lieferadresse</span>
         </div>
         <div className="field-full">
-          <label htmlFor="streetAddress">Strasse und Hausnummer</label>
+          <label htmlFor="streetAddress">Straße und Hausnummer</label>
           <input id="streetAddress" name="streetAddress" required />
         </div>
         <div className="field-full">
@@ -185,7 +185,7 @@ export function CheckoutIntakeForm({
           <span className="form-group-title">Druckdatenstatus</span>
         </div>
         <div className="field-full">
-          <label htmlFor="artworkStatus">Wie moechten Sie mit den Druckdaten fortfahren?</label>
+          <label htmlFor="artworkStatus">Wie möchten Sie mit den Druckdaten fortfahren?</label>
           <select
             id="artworkStatus"
             name="artworkStatus"
@@ -220,7 +220,7 @@ export function CheckoutIntakeForm({
           {isPending ? "Weiter zu Stripe..." : "Zur Zahlung weiter"}
         </button>
         <Link href={backHref} className="secondary-link">
-          Zurueck zum Produkt
+          Zurück zum Produkt
         </Link>
         <Link href="/de/angebot-anfordern" className="secondary-link">
           Lieber Angebot anfordern

@@ -63,7 +63,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         <article className="legal-card">
           <span className="eyebrow">Checkout</span>
           <h1>Checkout-Daten konnten nicht geladen werden.</h1>
-          <p>Bitte starten Sie den Bestellvorgang erneut ueber die Produktseite.</p>
+          <p>Bitte starten Sie den Bestellvorgang erneut über die Produktseite.</p>
           <div className="cta-row">
             <Link href="/de/opake-pp-etiketten" className="cta-link">
               Zu den Produkten
@@ -84,8 +84,8 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
       <div className="container section-stack">
         <article className="legal-card">
           <span className="eyebrow">Checkout</span>
-          <h1>Dieses Paket ist nicht verfuegbar.</h1>
-          <p>Bitte waehlen Sie ein gueltiges Standardpaket oder nutzen Sie das Angebotsformular.</p>
+          <h1>Dieses Paket ist nicht verfügbar.</h1>
+          <p>Bitte wählen Sie ein gültiges Standardpaket oder nutzen Sie das Angebotsformular.</p>
           <div className="cta-row">
             <Link href="/de/opake-pp-etiketten" className="cta-link">
               Zu den Produkten
@@ -123,7 +123,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
     <div className="container section-stack">
       <article className="legal-card">
         <span className="eyebrow">Checkout</span>
-        <h1>Ihre Bestellung wird vor Stripe geprueft.</h1>
+        <h1>Ihre Bestellung wird vor Stripe geprüft.</h1>
         <p>
           Wir erfassen zuerst Ihre Bestell- und Lieferdaten, legen die Bestellung an und
           leiten Sie danach direkt zu Stripe weiter.

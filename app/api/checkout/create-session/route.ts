@@ -25,14 +25,14 @@ export async function POST(request: Request) {
     const parsed = checkoutIntakeSchema.safeParse(json);
 
     if (!parsed.success) {
-      return NextResponse.json({ error: "Ungueltige Checkout-Anfrage." }, { status: 400 });
+      return NextResponse.json({ error: "Ungültige Checkout-Anfrage." }, { status: 400 });
     }
 
     const prisma = getPrismaClient();
     if (!prisma) {
-      console.error("Checkout nicht verfuegbar: DATABASE_URL fehlt.");
+      console.error("Checkout nicht verfügbar: DATABASE_URL fehlt.");
       return NextResponse.json(
-        { error: "Checkout ist derzeit nicht verfuegbar. Bitte nutzen Sie das Angebotsformular." },
+        { error: "Checkout ist derzeit nicht verfügbar. Bitte nutzen Sie das Angebotsformular." },
         { status: 503 },
       );
     }
@@ -44,9 +44,9 @@ export async function POST(request: Request) {
       stripe = getStripeServerClient();
       baseUrl = getCheckoutBaseUrl();
     } catch (error) {
-      console.error("Checkout nicht verfuegbar:", error);
+      console.error("Checkout nicht verfügbar:", error);
       return NextResponse.json(
-        { error: "Checkout ist derzeit nicht verfuegbar. Bitte nutzen Sie das Angebotsformular." },
+        { error: "Checkout ist derzeit nicht verfügbar. Bitte nutzen Sie das Angebotsformular." },
         { status: 503 },
       );
     }
@@ -145,7 +145,7 @@ export async function POST(request: Request) {
             unit_amount: pkg.grossAmountCents,
             product_data: {
               name: getPackageDisplayName(pkg.productSlug, pkg.material),
-              description: `${pkg.quantity.toLocaleString("de-DE")} Stueck, ${pkg.label}`,
+              description: `${pkg.quantity.toLocaleString("de-DE")} Stück, ${pkg.label}`,
             },
           },
         },
@@ -168,7 +168,7 @@ export async function POST(request: Request) {
     if (!session.url) {
       console.error("Checkout-Session ohne URL erstellt:", session.id);
       return NextResponse.json(
-        { error: "Checkout ist derzeit nicht verfuegbar. Bitte nutzen Sie das Angebotsformular." },
+        { error: "Checkout ist derzeit nicht verfügbar. Bitte nutzen Sie das Angebotsformular." },
         { status: 503 },
       );
     }
@@ -195,7 +195,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Checkout-Session konnte nicht erstellt werden:", error);
     return NextResponse.json(
-      { error: "Checkout ist derzeit nicht verfuegbar. Bitte nutzen Sie das Angebotsformular." },
+      { error: "Checkout ist derzeit nicht verfügbar. Bitte nutzen Sie das Angebotsformular." },
       { status: 500 },
     );
   }

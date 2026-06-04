@@ -63,8 +63,8 @@ export function CheckoutButton({
       {addonsFeatureEnabled ? (
         <div className="checkout-addons__panel">
           <p className="field-hint">
-            Standard-Datenpruefung und ein digitaler Proof bleiben inklusive. Zusatzleistungen
-            werden serverseitig berechnet und im Checkout erst final bestaetigt.
+            Standard-Datenprüfung und ein digitaler Proof bleiben inklusive. Zusatzleistungen
+            werden serverseitig berechnet und im Checkout erst final bestätigt.
           </p>
           <label className="checkbox-field">
             <input
