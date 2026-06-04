@@ -194,6 +194,9 @@ P1 · gap G7 — **Nachhaltigkeit (founder-decided, SoT #18c):** add an honest P
 
 ## Audit Track A - Functional Stability
 
+> **SUPERVISOR NOTE (2026-06-04 UTC) — Schema doc staleness (pre-Track-A prerequisite):**
+> Out-of-queue commit `61ccb54` added 9 nullable columns to `Order` in `prisma/schema.prisma` (checkout-intake fields: `customerPhone`, `vatId`, `streetAddress`, `addressLine2`, `postalCode`, `city`, `customerNote`, `artworkInputStatus`, `selectedAddons`) and applied migration `20260604084500_order_checkout_intake_fields` to production. **`docs/12-DATABASE-SCHEMA-v2.md` is now stale** — 8 of the 9 new fields are absent from that doc (`vatId` was already present). Before any Audit Track A task that reads or audits the `Order` model (especially Tasks 11, 12, 39), **flag this gap in the STATE file** and use `prisma/schema.prisma` as the actual column source. Codex must NOT edit `docs/12-DATABASE-SCHEMA-v2.md` — that update is for the founder/operator. This is a documentation-alignment concern only; the migration itself is additive and non-destructive.
+
 ### Task 1
 Audit all public forms for broken submission paths.
 

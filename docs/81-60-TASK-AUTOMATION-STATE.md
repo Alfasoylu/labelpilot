@@ -52,3 +52,18 @@ Consolidated: across the second through tenth supervisor runs, no Codex task-exe
 - **Issues flagged:** None blocking — no BLOCKED task executed, no flags enabled, no price changes, no schema changes, no German-copy violations. Main concern: STATE file stale (`0.1/pending` despite catch-up addressing 0.1+).
 - **Steering added:** Inserted `SUPERVISOR NOTE (2026-06-04 UTC)` before Task 0.1 in `docs/81-60-TASK-AUTOMATION-PLAN.md` with a full reconciliation map: which tasks are done (mark complete after self-verify), which 6 tasks remain and in what order, exact file paths and source docs for each.
 - **Next expected Codex action:** Reconcile STATE file — mark 0.1/0.3/0.6/0.7/0.9/0.13a/0.13c complete after verifying — then execute remaining Phase 0 tasks (0.2, 0.4, 0.5, 0.8, 0.10, 0.13b) one per commit in that order.
+
+### 2026-06-04 UTC | Four founder-direct commits reviewed; no queue advancement
+
+- **Commits reviewed since last entry:** `eebdb2a` (docs: phase→audit-track rename), `ebc3b4f` (docs(00-SOT): deferred follow-ups), `fd761c8` (fix(test): safety-test assertion), `61ccb54` (feat(checkout): pre-Stripe intake step)
+- **Queue status:** STATE shows `current_task: 0.1 / pending` — none of these commits are queue task executions; all were authored by Alfasoylu directly outside the automation queue
+- **Commit assessments:**
+  - `eebdb2a`: docs-only; renames Phase 0/A–F → Audit Track 0/A–F in plan file and adds canonical P0–P6 build-phase ladder to `74`/`00-SOT`. No code/price/route/German-copy change. Prior supervisor notes in plan file preserved. **PASS**.
+  - `ebc3b4f`: docs(00-SOT) only; records email-sending live status + deferred pre-Stripe cart/account layer (design questions noted). No code change. **PASS**.
+  - `fd761c8`: fixes safety-test assertion — adds `/teklif/` to the expected ROBOTS_DISALLOW_PATHS array (production code already disallowed it; assertion was stale from the earlier SEO-hardening catch-up). **PASS**.
+  - `61ccb54`: adds `/de/checkout` intake page, `CheckoutIntakeForm`, `lib/checkout/intake.ts`, updates `create-session` to use `checkoutIntakeSchema`, adds 9 nullable `Order` columns + migration `20260604084500`. Out-of-queue (Phase 4 / Stripe checkout area; Audit Track 0 queue still pending at `0.1`). **PASS WITH RISKS:**
+    - Migration additive (all nullable) ✓; `/de/checkout` is `noindex` (`robots: {index:false,follow:false}`) ✓; not in sitemap (confirmed) ✓; server-side price revalidation kept ✓; no feature flags enabled ✓; German-only copy ✓; nullable → backward-compatible with existing checkout paths ✓
+    - **Risk (Medium):** `docs/12-DATABASE-SCHEMA-v2.md` is now stale — 8 of 9 new columns (`customerPhone`, `streetAddress`, `addressLine2`, `postalCode`, `city`, `customerNote`, `artworkInputStatus`, `selectedAddons`) are absent. Per SoT §7 domain-precedence, `12-DATABASE-SCHEMA-v2.md` is the authoritative DB schema doc. Founder must update it; Codex must NOT edit it but should flag the gap when reaching Audit Track A DB-touching tasks.
+- **No BLOCKED tasks executed** ✓; no flags enabled ✓; no locked prices changed ✓; no German public copy broken ✓
+- **Steering added:** Inserted `SUPERVISOR NOTE (2026-06-04 UTC)` before Audit Track A / Task 1 in `docs/81-60-TASK-AUTOMATION-PLAN.md` flagging schema doc staleness and instructing Codex to use `prisma/schema.prisma` as column source during DB audits.
+- **Next expected Codex action:** Execute remaining Audit Track 0 tasks (0.2 → 0.4 → 0.5 → 0.8 → 0.10 → 0.13b) per prior steering, one commit each, before advancing to Audit Track A.
