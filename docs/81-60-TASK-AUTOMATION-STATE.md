@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 5
+current_task: 6
 current_status: pending
-completed_at: 2026-06-04T21:09:24+03:00
-last_run_note: Task 4 completed. Audited the custom-size pricing request flow across components/custom-size-price-form.tsx, app/api/custom-size/price/route.ts, and lib/pricing/custom-size-public.ts. Fixed a real client-side fallback problem: when the server returned a meaningful 503/configuration message, the form replaced it with a generic input-blame error. The form now preserves server error messages, gives a clearer network failure fallback, and keeps a visible quote CTA in error state so invalid pricing/config situations still route cleanly into the offer path. Verification passed: check:lang, typecheck, build. Next unblocked task is 5.
+completed_at: 2026-06-04T21:21:17+03:00
+last_run_note: Task 5 completed. Audited the checkout session creation route in app/api/checkout/create-session/route.ts against valid package orders and found a real failure-state gap: if Stripe session creation failed after the draft order was created, the order could remain silently stuck in PENDING_PAYMENT. The route now marks such orders as PAYMENT_FAILED and records a status event when the session has no redirect URL or when checkout creation crashes before redirect. Verification passed: check:lang, typecheck, build. Next unblocked task is 6.
 ```
 
 ---

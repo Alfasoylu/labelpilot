@@ -20,6 +20,9 @@ function getPackageDisplayName(productSlug: ProductSlug, material: PackageMateri
 }
 
 export async function POST(request: Request) {
+  let createdOrderId: string | null = null;
+  let prisma = getPrismaClient();
+
   try {
     const json = await request.json();
     const parsed = checkoutIntakeSchema.safeParse(json);
@@ -28,7 +31,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Ungültige Checkout-Anfrage." }, { status: 400 });
     }
 
-    const prisma = getPrismaClient();
     if (!prisma) {
       console.error("Checkout nicht verfügbar: DATABASE_URL fehlt.");
       return NextResponse.json(
@@ -115,6 +117,7 @@ export async function POST(request: Request) {
         },
       },
     });
+    createdOrderId = order.id;
 
     const metadata = {
       orderId: order.id,
@@ -167,6 +170,18 @@ export async function POST(request: Request) {
 
     if (!session.url) {
       console.error("Checkout-Session ohne URL erstellt:", session.id);
+      await prisma.order.update({
+        where: { id: order.id },
+        data: {
+          status: "PAYMENT_FAILED",
+          statusEvents: {
+            create: {
+              status: "PAYMENT_FAILED",
+              note: "Stripe-Checkout-Session wurde ohne Weiterleitungs-URL erstellt.",
+            },
+          },
+        },
+      });
       return NextResponse.json(
         { error: "Checkout ist derzeit nicht verfügbar. Bitte nutzen Sie das Angebotsformular." },
         { status: 503 },
@@ -194,6 +209,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ url: session.url });
   } catch (error) {
     console.error("Checkout-Session konnte nicht erstellt werden:", error);
+    if (prisma && createdOrderId) {
+      try {
+        await prisma.order.update({
+          where: { id: createdOrderId },
+          data: {
+            status: "PAYMENT_FAILED",
+            statusEvents: {
+              create: {
+                status: "PAYMENT_FAILED",
+                note: "Checkout-Session konnte vor der Weiterleitung nicht sauber erstellt werden.",
+              },
+            },
+          },
+        });
+      } catch (statusError) {
+        console.error("Checkout-Fehlerstatus konnte nicht gespeichert werden:", statusError);
+      }
+    }
     return NextResponse.json(
       { error: "Checkout ist derzeit nicht verfügbar. Bitte nutzen Sie das Angebotsformular." },
       { status: 500 },
