@@ -663,6 +663,33 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
             ))}
           </div>
           <p className="price-note">{pricingValueBundleLine}</p>
+          <div className="surface-card">
+            <h2>Fragen vor dem Standardpaket?</h2>
+            <p>
+              Wenn vor dem sichtbaren Paket noch Material-, Druckdaten- oder
+              Ablauffragen offen sind, ist der direkte Kontakt der saubere nächste
+              Schritt. Sie erreichen uns über das Kontaktformular oder direkt per E-Mail.
+            </p>
+            <div className="inline-actions">
+              <Link href="/de/kontakt" className="cta-link">
+                Kontaktformular nutzen
+              </Link>
+              <a
+                href="mailto:kontakt@labelpilot.de?subject=Angebotsanfrage%20Labelpilot.de"
+                className="secondary-link"
+              >
+                Angebot per E-Mail senden
+              </a>
+              <Link href="/de/angebot-anfordern" className="secondary-link">
+                Angebot anfordern
+              </Link>
+            </div>
+            <p className="field-hint">
+              Für Standardpakete ist der Checkout der schnellste Weg. Sobald vorab
+              Rückfragen zu Material, Weißdruck, Druckdaten oder Maschinenlauf bestehen,
+              hilft der Kontaktweg meist schneller als ein unpassender Direktkauf.
+            </p>
+          </div>
           {hasFixedPriceScope(page.path) ? (
             <div className="surface-card">
               <h2>Lieferzeit nach Ihrer Freigabe</h2>

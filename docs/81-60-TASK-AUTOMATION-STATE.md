@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 0.8
+current_task: 0.10
 current_status: pending
-completed_at: 2026-06-04T20:09:00+03:00
-last_run_note: Task 0.5 completed (27 §11 internal-link audit). Audit result — both product pages (opake + transparente) already link to ALL required targets with descriptive German anchors (no "hier klicken"): Angebot anfordern (commonCommercialLinks), Musterbox/Druckdaten/Nachbestellen (guideCommercialLinks), sibling material page + Etiketten 100x200 + Branchen pages (own relatedLinks). No link was missing. Genuine fix applied: corrected 6 ASCII-umlaut transliterations (fuer→für, spaeter→später) in the product-page relatedLinks descriptions. Verification passed: check:lang, typecheck, build. Next unblocked task is 0.8 (skip BLOCKED 0.6/0.7? — 0.6/0.7 are P1 catch-up-done; next remaining per supervisor list is 0.8).
+completed_at: 2026-06-04T20:12:00+03:00
+last_run_note: Task 0.8 completed (gap G6). Added a dedicated "Kontakt & Support" surface-card in the product/pricing decision area (components/page-renderers.tsx, right after the package grid) with a direct "Angebot per E-Mail senden" mailto (kontakt@labelpilot.de, prefilled subject) plus Angebot-anfordern and Kontakt form links. Proper German umlauts. Verification passed: check:lang, typecheck, build. Next unblocked task is 0.10. (Note: the surrounding f2c2c38 renderer copy still uses ae/ue transliteration — out of 0.8 scope; flagged for a later cleanup pass.)
 ```
 
 ---
