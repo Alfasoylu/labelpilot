@@ -1291,9 +1291,9 @@ const topLevelPages: PublicPageData[] = [
           "Sobald Sie große Mengen, Sondergrößen oder mehrere Varianten planen, ist das Angebotsformular der richtige Startpunkt.",
       },
       {
-        question: "Ist Rechnungskauf mÃ¶glich?",
+        question: "Ist Rechnungskauf möglich?",
         answer:
-          "Rechnungskauf ist fÃ¼r geprÃ¼fte GeschÃ¤ftskunden auf Anfrage mÃ¶glich. Diese Freigabe lÃ¤uft manuell im Angebotsprozess und nicht Ã¼ber den Standard-Checkout.",
+          "Rechnungskauf ist für geprüfte Geschäftskunden auf Anfrage möglich. Diese Freigabe läuft manuell im Angebotsprozess und nicht über den Standard-Checkout.",
       },
       {
         question: "Kann ich zuerst eine Musterbox anfordern?",
