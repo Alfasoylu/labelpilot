@@ -366,7 +366,7 @@ Prepare the next prioritized implementation recommendation based on completed fi
 A task is complete only if:
 
 1. The intended audit or implementation work was actually performed.
-2. The result is recorded in the state/progress file.
+2. The result is recorded in the state/progress file — **only in the `## Codex — Current Task` section** of `81-60-TASK-AUTOMATION-STATE.md` (never the supervisor-owned `## Supervisor Log` section).
 3. Any blocking issue is clearly marked.
 4. The task's changes are build-verified and committed + pushed to `origin/main` as their OWN atomic commit (one task = one commit) — never bundled with other tasks, never left uncommitted in the working tree (Guardrail 7 / `60` §5.1).
 5. The next task does not start until at least 10 minutes after the recorded completion time.

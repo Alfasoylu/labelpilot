@@ -150,8 +150,8 @@ Codex MUST commit and push the changes for **each completed task as its own atom
 For every task:
 
 1. **Build-verify first** (each commit auto-deploys to production, so it must be green): clean `npx prisma generate` + `npm run build` + `npm run check:lang` + any relevant `npm run test:*` script must pass.
-2. `git add` only that task's files, commit with a message naming the task/scope, and `git push origin main`.
-3. Then record completion in the state file and advance to the next task.
+2. `git pull --rebase origin main`, then `git add` only that task's files, commit with a message naming the task/scope, and `git push origin main`.
+3. Record completion **only in the `## Codex — Current Task` section** of `81-60-TASK-AUTOMATION-STATE.md` — never edit the `## Supervisor Log` section (it is supervisor-owned; editing it causes write conflicts). Then advance to the next task.
 
 This keeps every change atomically reviewable under `61-CLAUDE-REVIEWER-PROTOCOL.md` and visible to the supervisor. If a task is blocked, do not commit a half-done change — mark it blocked in the state file and move on.
 
