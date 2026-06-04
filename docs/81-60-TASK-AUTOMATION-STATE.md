@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 15
+current_task: 16
 current_status: pending
-completed_at: 2026-06-05T00:02:00+03:00
-last_run_note: Task 14 completed. Verified the stored-design access routes across app/(account)/de/gespeicherte-druckdaten/page.tsx, app/(account)/de/gespeicherte-druckdaten/[designId]/page.tsx, app/api/stored-designs/[designId]/versions/[versionId]/route.ts, lib/artwork/saved-designs.ts, and lib/artwork/stored-designs.ts. The route-level token checks were already correct, but the stored-design sync logic could merge guest orders from different customers whenever customerId was null and product/material/size matched. Tightened ownership persistence in lib/artwork/stored-designs.ts so guest/null-customerId designs only reuse an existing stored design when the last order email matches the same customer email. Verification passed: check:lang, typecheck, build. Next unblocked task is 15.
+completed_at: 2026-06-05T00:28:00+03:00
+last_run_note: Task 15 completed. Re-assessed the broken-functionality findings from Tasks 1-14 by severity, production impact, and recoverability. No new code change was required: the highest-severity issue in that batch remained the Stripe webhook behavior fixed in commit d953796, where processing-unavailable states had been returning 200 and silently cutting off provider retries for completed checkout events. Later fixes such as admin shipment email isolation and guest stored-design ownership hardening were important, but they were lower severity than silently losing paid-order webhook processing. Verification passed: check:lang, typecheck, build. Next unblocked task is 16.
 ```
 
 ---
