@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 0.4
+current_task: 0.5
 current_status: pending
-completed_at: 2026-06-04T19:59:26.0662097+03:00
-last_run_note: Task 0.2 completed. Added the mandatory reorder / accepted-print-files / legal-responsibility FAQs plus buyer-objection FAQs (Glanz vs. matt, Klebstoff, Weißdruck, Lieferzeit, Spender/Maschine) to /de/opake-pp-etiketten and /de/transparente-pp-etiketten, and expanded /de/pp-rollenetiketten to at least three buyer-facing FAQs. Verification passed: check:lang, typecheck, build. Next unblocked task is 0.4.
+completed_at: 2026-06-04T20:05:14+03:00
+last_run_note: Task 0.4 completed. In fixedPriceIncludedRows (lib/site-content.ts) added an explicit Klebstoff row ("Permanent; ablösbare oder anwendungsspezifische Klebstoffe auf Anfrage (Angebot)") and changed Finish to "Glanz (Standard); matt auf Anfrage" (consistent with SoT #20-ii — gloss standard, matt not freely included; no flag enabled). Weißunterdruck note already explicit in fixedPriceExcludedRows (transparent). Verification passed: check:lang, typecheck, build. Next unblocked task is 0.5.
 ```
 
 ---

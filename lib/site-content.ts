@@ -166,9 +166,10 @@ export const pricingValueBundleLine =
 export const fixedPriceIncludedRows = [
   { label: "Format", value: "100×200 mm (10×20 cm), rechteckig, auf Rolle" },
   { label: "Design", value: "1 Design / 1 Artwork pro Auftrag" },
-  { label: "Material", value: "Genanntes PP-Material mit permanentem Klebstoff" },
+  { label: "Material", value: "Genanntes PP-Material (opak oder transparent)" },
+  { label: "Klebstoff", value: "Permanent; ablösbare oder anwendungsspezifische Klebstoffe auf Anfrage (Angebot)" },
   { label: "Druck", value: "4/0-farbiger CMYK-Digitaldruck ohne Einrichtungs- oder Klischeekosten" },
-  { label: "Finish", value: "Genau ein Finish: glänzend oder matt" },
+  { label: "Finish", value: "Glanz (Standard); matt auf Anfrage" },
   { label: "Prüfung", value: "Kostenlose Standard-Datenprüfung plus 1 Proof-Runde" },
   { label: "Versand", value: "Versand nach Deutschland" },
   { label: "Nachbestellung", value: "Gleiche gespeicherte Spezifikation zum gleichen Paketpreis" },
