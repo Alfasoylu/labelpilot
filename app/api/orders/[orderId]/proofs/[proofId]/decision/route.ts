@@ -143,6 +143,15 @@ export async function POST(
       },
     });
 
+    if (order.artworkFiles[0]?.id) {
+      await tx.artworkFile.update({
+        where: { id: order.artworkFiles[0].id },
+        data: {
+          status: "UNDER_REVIEW",
+        },
+      });
+    }
+
     await tx.order.update({
       where: { id: order.id },
       data: {
