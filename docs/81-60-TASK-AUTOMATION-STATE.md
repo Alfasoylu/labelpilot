@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 2
+current_task: 3
 current_status: pending
-completed_at: 2026-06-04T20:22:48+03:00
-last_run_note: Task 1 completed by verification. Audited all public form submission paths and confirmed there is no broken submit target: QuoteRequestForm uses submitQuoteRequest, SampleBoxRequestForm uses submitSampleBoxRequest, ReorderStartForm posts to /api/reorders, and CustomSizePriceForm posts to /api/custom-size/price with the intended feature-gated fallback. No code change was required. Verification passed: check:lang, typecheck, build. Next unblocked task is 2.
+completed_at: 2026-06-04T20:48:54+03:00
+last_run_note: Task 2 completed. Audited the quote request form server action and validation behavior in lib/actions/quote-request.ts and fixed a real server-side weakness: targetDeliveryDate no longer relies on Date.parse normalization, and now only accepts valid ISO calendar dates in YYYY-MM-DD form. This prevents manipulated invalid dates from slipping into lead/quote records as silently normalized Date values. Verification passed: check:lang, typecheck, build. Next unblocked task is 3.
 ```
 
 ---
