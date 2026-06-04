@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 10
+current_task: 11
 current_status: pending
-completed_at: 2026-06-04T22:05:29+03:00
-last_run_note: Task 9 completed. Audited the proof approval and change-request decision flow across app/api/orders/[orderId]/proofs/[proofId]/decision/route.ts, lib/orders/proof-decision.ts, and the customer proof panel. The route already enforced correct token/order/proof guards, but there was a real state mismatch on request_changes: the order moved back to FILE_REVIEW while the latest artwork file could remain APPROVED. The route now demotes the latest artwork file to UNDER_REVIEW when the customer requests changes, keeping artwork-file status aligned with the order's review state. Verification passed: check:lang, typecheck, build. Next unblocked task is 10.
+completed_at: 2026-06-04T22:16:41+03:00
+last_run_note: Task 10 completed. Audited the reorder API and stored-design access layer across app/api/reorders/route.ts and lib/artwork/saved-designs.ts. The route already enforced token-scoped design access and quote fallback for 20.000+, but candidate selection was still too loose because it accepted versions based only on approvedAt. Reorder now requires the selected artwork version to be both dated and explicitly status=APPROVED, and the saved-design query shape now includes version status so this guard is type-safe. Verification passed: check:lang, typecheck, build. Next unblocked task is 11.
 ```
 
 ---

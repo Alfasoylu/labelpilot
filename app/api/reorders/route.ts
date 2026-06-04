@@ -101,7 +101,7 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!selectedVersion.approvedAt) {
+  if (!selectedVersion.approvedAt || selectedVersion.status !== "APPROVED") {
     return NextResponse.json(
       { error: "Fuer die Nachbestellung ist keine freigegebene Druckdatenversion verfuegbar." },
       { status: 409 },

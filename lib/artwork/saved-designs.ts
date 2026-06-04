@@ -89,6 +89,7 @@ export async function listAccessibleStoredDesigns(
           id: true,
           versionLabel: true,
           approvedAt: true,
+          status: true,
         },
       },
       lastOrder: {
@@ -125,6 +126,7 @@ export async function getAccessibleStoredDesignDetail(
           id: true,
           versionLabel: true,
           approvedAt: true,
+          status: true,
         },
       },
       lastOrder: {
@@ -141,8 +143,8 @@ export async function getAccessibleStoredDesignDetail(
           versionNumber: true,
           versionLabel: true,
           approvedAt: true,
-          sourceType: true,
           status: true,
+          sourceType: true,
           changeSummary: true,
           originalArtworkFile: {
             select: {
