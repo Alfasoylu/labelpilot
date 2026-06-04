@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ProductCard } from "@/components/cards/ProductCard";
 import { PricingCard } from "@/components/cards/PricingCard";
 import { SampleBoxCard } from "@/components/cards/SampleBoxCard";
+import { CustomSizePriceForm } from "@/components/custom-size-price-form";
 import { FaqAccordion } from "@/components/faq/FaqAccordion";
 import { Section } from "@/components/layout/Section";
 import { LegalNoticeBox } from "@/components/legal/LegalNoticeBox";
@@ -643,8 +644,60 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
         </Section>
       ) : null}
 
+      {supportsStandardOrCustomChoice(page.path) ? (
+        <Section
+          eyebrow="Auswahl"
+          title="Standardgröße oder Wunschformat"
+          lead="100×200 mm bleibt der schnellste Weg in den Fixpreis-Checkout. Sondergrößen laufen kontrolliert über den Wunschformat- oder Angebotsweg."
+        >
+          <div className="two-column">
+            <article className="surface-card section-stack">
+              <h3>Standardgröße 100×200 mm</h3>
+              <p>
+                Für Standardaufträge bleibt 100×200 mm der direkte und schnellste Weg:
+                feste Pakete, feste Preislogik und schneller Checkout.
+              </p>
+              <ul className="simple-list">
+                <li>Format: 100×200 mm</li>
+                <li>Mengen: 1.000 / 2.000 / 5.000 / 10.000 Stück</li>
+                <li>Preisweg: fester Paketpreis netto + brutto</li>
+                <li>Ab 20.000 Stück: Angebotsweg statt Direkt-Checkout</li>
+              </ul>
+              <div className="inline-actions">
+                {page.packageTable?.length ? (
+                  <Link href="#pakete" className="cta-link">
+                    Standardpakete ansehen
+                  </Link>
+                ) : (
+                  <>
+                    <Link href="/de/opake-pp-etiketten" className="cta-link">
+                      Opake PP ansehen
+                    </Link>
+                    <Link
+                      href="/de/transparente-pp-etiketten"
+                      className="secondary-link"
+                    >
+                      Transparente PP ansehen
+                    </Link>
+                  </>
+                )}
+              </div>
+              <p className="field-hint">
+                Wenn Material, Größe und Umfang in dieses Raster passen, ist der
+                Standardweg bewusst schneller als jede Sonderkalkulation.
+              </p>
+            </article>
+            <CustomSizePriceForm
+              variant="compact"
+              initialMaterialKey={getInitialCustomSizeMaterial(page.path)}
+            />
+          </div>
+        </Section>
+      ) : null}
+
       {page.packageTable?.length ? (
         <Section
+          id="pakete"
           eyebrow="Pakete & Preise"
           title={page.packageHeading ?? "Mengenpakete und Preise"}
           lead={page.packageLead ?? "Feste Preise inkl. Versand. 5.000 Stück ist das empfohlene Paket."}
@@ -1607,6 +1660,14 @@ function buildSpecRows(page: PublicPageData) {
 
 function hasFixedPriceScope(path: string) {
   return path === "/de/opake-pp-etiketten" || path === "/de/transparente-pp-etiketten";
+}
+
+function supportsStandardOrCustomChoice(path: string) {
+  return hasFixedPriceScope(path) || path === "/de/pp-rollenetiketten";
+}
+
+function getInitialCustomSizeMaterial(path: string) {
+  return path === "/de/transparente-pp-etiketten" ? "TRANSPARENT_PP" : "OPAQUE_PP";
 }
 
 function shouldShowRegulatoryDisclaimer(path: string) {

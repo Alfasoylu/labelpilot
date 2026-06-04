@@ -26,10 +26,25 @@ type PriceErrorResponse = {
   message?: string;
 };
 
+type CustomSizePriceFormProps = {
+  variant?: "page" | "compact";
+  initialMaterialKey?: MaterialOption;
+};
+
 const materialLabels: Record<MaterialOption, string> = {
   OPAQUE_PP: "Opakes PP",
   TRANSPARENT_PP: "Transparentes PP",
 };
+
+const quoteFallbackReasons = [
+  "20.000+ Stück",
+  "Weißunterdruck",
+  "Kontur- oder Freiformschnitt",
+  "Sonderklebstoff",
+  "Laminierung oder Folie",
+  "variable Daten",
+  "mehrere SKUs",
+] as const;
 
 function formatCurrency(value: number) {
   return new Intl.NumberFormat("de-DE", {
@@ -40,12 +55,45 @@ function formatCurrency(value: number) {
   }).format(value);
 }
 
-export function CustomSizePriceForm() {
-  const [materialKey, setMaterialKey] = useState<MaterialOption>("OPAQUE_PP");
+function formatArea(value: number) {
+  return new Intl.NumberFormat("de-DE", {
+    minimumFractionDigits: 3,
+    maximumFractionDigits: 3,
+  }).format(value);
+}
+
+function parsePositiveNumber(value: string) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+}
+
+export function CustomSizePriceForm({
+  variant = "page",
+  initialMaterialKey = "OPAQUE_PP",
+}: CustomSizePriceFormProps) {
+  const [materialKey, setMaterialKey] = useState<MaterialOption>(initialMaterialKey);
   const [widthMm, setWidthMm] = useState("100");
   const [heightMm, setHeightMm] = useState("200");
   const [quantity, setQuantity] = useState("5000");
   const [state, setState] = useState<CalculatorState>({ status: "idle" });
+
+  const widthValue = useMemo(() => parsePositiveNumber(widthMm), [widthMm]);
+  const heightValue = useMemo(() => parsePositiveNumber(heightMm), [heightMm]);
+  const quantityValue = useMemo(() => parsePositiveNumber(quantity), [quantity]);
+  const labelAreaM2 = useMemo(() => {
+    if (!widthValue || !heightValue) {
+      return null;
+    }
+
+    return (widthValue * heightValue) / 1_000_000;
+  }, [heightValue, widthValue]);
+  const totalAreaM2 = useMemo(() => {
+    if (!labelAreaM2 || !quantityValue) {
+      return null;
+    }
+
+    return labelAreaM2 * quantityValue;
+  }, [labelAreaM2, quantityValue]);
 
   const quoteHref = useMemo(() => {
     const params = new URLSearchParams({
@@ -54,7 +102,9 @@ export function CustomSizePriceForm() {
       labelSize: `${widthMm || "0"} x ${heightMm || "0"} mm`,
       material: materialLabels[materialKey],
       quantity,
-      notes: `Wunschformat angefragt: ${widthMm || "0"} x ${heightMm || "0"} mm, ${materialLabels[materialKey]}.`,
+      notes:
+        `Wunschformat angefragt: ${widthMm || "0"} x ${heightMm || "0"} mm, ` +
+        `${materialLabels[materialKey]}, ${quantity || "0"} Stück.`,
     });
 
     return `/de/angebot-anfordern?${params.toString()}`;
@@ -66,7 +116,8 @@ export function CustomSizePriceForm() {
     if (!customSizeFeatureEnabled) {
       setState({
         status: "error",
-        message: "Der Wunschformat-Rechner ist aktuell nicht verfügbar.",
+        message:
+          "Der Wunschformat-Rechner ist aktuell nicht live. Bitte nutzen Sie das Angebotsformular.",
       });
       return;
     }
@@ -93,7 +144,8 @@ export function CustomSizePriceForm() {
       if (response.status === 404) {
         setState({
           status: "error",
-          message: "Der Wunschformat-Rechner ist aktuell nicht verfügbar.",
+          message:
+            "Der Wunschformat-Rechner ist aktuell nicht live. Bitte nutzen Sie das Angebotsformular.",
         });
         return;
       }
@@ -121,110 +173,155 @@ export function CustomSizePriceForm() {
     }
   }
 
-  return (
-    <div className="container section-stack">
-      <article className="legal-card">
-        <h1>Wunschformat für PP-Rollenetiketten</h1>
+  const calculatorIntro =
+    variant === "page"
+      ? "Berechnen Sie einen Richtpreis für Ihr Sonderformat, solange Materialkosten und Preisparameter aktiv gepflegt sind. Größere Formate oder Mengen laufen weiterhin sauber über ein individuelles Angebot."
+      : "Für Sondergrößen berechnen wir einen Richtpreis nur dann direkt, wenn die Funktion aktiv ist und die Kostenparameter sauber gepflegt sind.";
+
+  const calculatorHint =
+    variant === "page"
+      ? "Der Rechner ist eine Orientierungs- und Vorqualifizierungsstufe. Die festen 100x200-Pakete bleiben der Standardweg; Sonderfälle und Grenzwerte führen bewusst in den Angebotsprozess."
+      : "100x200 mm bleibt der schnellste Checkout-Weg. Wunschformat ist bewusst ein kontrollierter Zusatzpfad.";
+
+  const calculatorHeading =
+    variant === "page"
+      ? "Preis für Ihr Wunschformat berechnen"
+      : "Wunschformat kalkulieren";
+
+  const resultHeading = variant === "page" ? "Ergebnis" : "Rückmeldung";
+
+  const fallbackOnlyCard =
+    variant === "compact" && !customSizeFeatureEnabled ? (
+      <article className="surface-card section-stack">
+        <h3>Wunschformat aktuell über Angebot</h3>
         <p>
-          Berechnen Sie einen Richtpreis für Ihr Sonderformat, solange Materialkosten
-          und Preisparameter aktiv gepflegt sind. Größere Formate oder Mengen laufen
-          weiterhin sauber über ein individuelles Angebot.
+          Sondergrößen bleiben verfügbar, laufen aber derzeit kontrolliert über das
+          individuelle Angebot statt über eine öffentliche Sofortberechnung.
         </p>
-        <p className="field-hint">
-          Der Rechner ist eine Orientierungs- und Vorqualifizierungsstufe. Die festen
-          100x200-Pakete bleiben der Standardweg; Sonderfälle und Grenzwerte führen
-          bewusst in den Angebotsprozess.
-        </p>
+        <ul className="simple-list">
+          {quoteFallbackReasons.map((reason) => (
+            <li key={reason}>{reason} laufen immer über Angebot.</li>
+          ))}
+        </ul>
+        <div className="inline-actions">
+          <Link href={quoteHref} className="cta-link">
+            Individuelles Angebot anfordern
+          </Link>
+          <Link href="/de/kontakt" className="secondary-link">
+            Rückfrage klären
+          </Link>
+        </div>
       </article>
+    ) : null;
 
-      <section className="section-stack">
-        <article className="surface-card">
-          <form className="quote-form" onSubmit={onSubmit}>
-            <div>
-              <h2>Preis für Ihr Wunschformat berechnen</h2>
-              <p className="field-hint">
-                Geben Sie Material, Breite, Höhe und Menge ein. Der Rechner zeigt nur
-                einen Kundenpreis zur Orientierung und keine internen Kostenpositionen.
-              </p>
-            </div>
+  const calculatorCard =
+    fallbackOnlyCard ?? (
+      <article className="surface-card section-stack">
+        {variant === "page" ? <h2>{calculatorHeading}</h2> : <h3>{calculatorHeading}</h3>}
+        <p>{calculatorIntro}</p>
+        <p className="field-hint">{calculatorHint}</p>
 
-            <div className="form-grid">
-              <div className="field">
-                <label htmlFor="custom-size-material">Material</label>
-                <select
-                  id="custom-size-material"
-                  name="materialKey"
-                  value={materialKey}
-                  onChange={(event) =>
-                    setMaterialKey(event.target.value as MaterialOption)
-                  }
-                >
-                  <option value="OPAQUE_PP">Opakes PP</option>
-                  <option value="TRANSPARENT_PP">Transparentes PP</option>
-                </select>
-              </div>
-              <div className="field">
-                <label htmlFor="custom-size-width">Breite (mm)</label>
-                <input
-                  id="custom-size-width"
-                  name="widthMm"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  value={widthMm}
-                  onChange={(event) => setWidthMm(event.target.value)}
-                  required
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="custom-size-height">Höhe (mm)</label>
-                <input
-                  id="custom-size-height"
-                  name="heightMm"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  value={heightMm}
-                  onChange={(event) => setHeightMm(event.target.value)}
-                  required
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="custom-size-quantity">Menge</label>
-                <input
-                  id="custom-size-quantity"
-                  name="quantity"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  value={quantity}
-                  onChange={(event) => setQuantity(event.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="inline-actions">
-              <button
-                type="submit"
-                className="cta-button"
-                disabled={state.status === "loading"}
+        <form className="quote-form" onSubmit={onSubmit}>
+          <div className="form-grid">
+            <div className="field">
+              <label htmlFor={`custom-size-material-${variant}`}>Material</label>
+              <select
+                id={`custom-size-material-${variant}`}
+                name="materialKey"
+                value={materialKey}
+                onChange={(event) =>
+                  setMaterialKey(event.target.value as MaterialOption)
+                }
               >
-                {state.status === "loading"
-                  ? "Preis wird berechnet..."
-                  : "Preis berechnen"}
-              </button>
-              <Link href="/de/angebot-anfordern" className="secondary-link">
-                Angebot anfordern
-              </Link>
+                <option value="OPAQUE_PP">Opakes PP</option>
+                <option value="TRANSPARENT_PP">Transparentes PP</option>
+              </select>
             </div>
-          </form>
-        </article>
+            <div className="field">
+              <label htmlFor={`custom-size-width-${variant}`}>Breite (mm)</label>
+              <input
+                id={`custom-size-width-${variant}`}
+                name="widthMm"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={widthMm}
+                onChange={(event) => setWidthMm(event.target.value)}
+                required
+              />
+            </div>
+            <div className="field">
+              <label htmlFor={`custom-size-height-${variant}`}>Höhe (mm)</label>
+              <input
+                id={`custom-size-height-${variant}`}
+                name="heightMm"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={heightMm}
+                onChange={(event) => setHeightMm(event.target.value)}
+                required
+              />
+            </div>
+            <div className="field">
+              <label htmlFor={`custom-size-quantity-${variant}`}>Menge</label>
+              <input
+                id={`custom-size-quantity-${variant}`}
+                name="quantity"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={quantity}
+                onChange={(event) => setQuantity(event.target.value)}
+                required
+              />
+            </div>
+          </div>
 
-        <article className="surface-card">
-          <h2>Ergebnis</h2>
-          {state.status === "idle" ? (
-            <p>
-              Geben Sie Ihre Daten ein und starten Sie die Berechnung. Bei Grenzfällen
-              erhalten Sie direkt den passenden Angebotsweg.
+          <div className="surface-card">
+            <h4>Fläche</h4>
+            <ul className="simple-list">
+              <li>
+                Etikettenfläche:{" "}
+                {labelAreaM2 != null ? `${formatArea(labelAreaM2)} m²` : "—"}
+              </li>
+              <li>
+                Gesamtfläche ohne interne Zuschläge:{" "}
+                {totalAreaM2 != null ? `${formatArea(totalAreaM2)} m²` : "—"}
+              </li>
+            </ul>
+            <p className="field-hint">
+              Die öffentliche Berechnung zeigt nur Kundenpreis und Fläche. Interne
+              Kostenparameter oder Druckmethoden bleiben verborgen.
             </p>
+          </div>
+
+          <div className="inline-actions">
+            <button
+              type="submit"
+              className="cta-button"
+              disabled={state.status === "loading"}
+            >
+              {state.status === "loading" ? "Preis wird berechnet..." : "Preis berechnen"}
+            </button>
+            <Link href={quoteHref} className="secondary-link">
+              Individuelles Angebot anfordern
+            </Link>
+          </div>
+        </form>
+
+        <div className="section-stack">
+          {variant === "page" ? <h2>{resultHeading}</h2> : <h4>{resultHeading}</h4>}
+          {state.status === "idle" ? (
+            <>
+              <p>
+                Geben Sie Material, Breite, Höhe und Menge ein. Wenn Wunschformat,
+                Umfang oder Zusatzwünsche nicht in den Standardweg passen, führen wir
+                Sie direkt in den passenden Angebotsprozess.
+              </p>
+              <ul className="simple-list">
+                {quoteFallbackReasons.map((reason) => (
+                  <li key={reason}>{reason} laufen über Angebot.</li>
+                ))}
+              </ul>
+            </>
           ) : null}
 
           {state.status === "error" ? (
@@ -240,7 +337,10 @@ export function CustomSizePriceForm() {
 
           {state.status === "success" && !state.result.configured ? (
             <div className="section-stack">
-              <p>Aktuell nur auf Anfrage.</p>
+              <p>
+                Ein öffentlicher Richtpreis ist aktuell nicht freigeschaltet. Bitte
+                nutzen Sie das individuelle Angebot für dieses Wunschformat.
+              </p>
               <div className="inline-actions">
                 <Link href={quoteHref} className="cta-link">
                   Angebot für Wunschformat anfordern
@@ -253,7 +353,15 @@ export function CustomSizePriceForm() {
           state.result.configured &&
           state.result.quoteRequired ? (
             <div className="section-stack">
-              <p>Für dieses Format erstellen wir ein individuelles Angebot.</p>
+              <p>
+                Für dieses Wunschformat oder diesen Umfang erstellen wir ein
+                individuelles Angebot statt einer Direktkalkulation.
+              </p>
+              <ul className="simple-list">
+                {quoteFallbackReasons.map((reason) => (
+                  <li key={reason}>{reason} bleiben Angebotsfälle.</li>
+                ))}
+              </ul>
               <div className="inline-actions">
                 <Link href={quoteHref} className="cta-link">
                   Individuelles Angebot anfordern
@@ -271,9 +379,9 @@ export function CustomSizePriceForm() {
                 {formatCurrency(state.result.grossPrice)} inkl. 19% MwSt
               </p>
               <p className="field-hint">
-                Der Richtpreis basiert auf den aktuell gepflegten Parametern für
-                Material und Sonderformat. Er ersetzt noch kein finales B2B-Angebot,
-                falls sich Spezifikation, Datenstand oder Zusatzwünsche ändern.
+                Dieser Richtpreis basiert auf den aktuell gepflegten Parametern für
+                Material, Fläche und Menge. Er ersetzt kein finales Angebot, wenn sich
+                Spezifikation, Datenstand oder Zusatzwünsche ändern.
               </p>
               <div className="inline-actions">
                 <Link href={quoteHref} className="secondary-link">
@@ -281,13 +389,29 @@ export function CustomSizePriceForm() {
                 </Link>
               </div>
               <p className="field-hint">
-                Wenn Sie mehrere Varianten, Zusatzdesigns oder ein größeres Projekt
-                planen, ist der Angebotsweg trotz Richtpreis der sauberere Einstieg.
+                Für Weißunterdruck, Konturschnitt, Sonderklebstoff, Veredelung,
+                variable Daten, Multi-SKU oder Mengen ab 20.000 Stück bleibt der
+                Angebotsweg verbindlich.
               </p>
             </div>
           ) : null}
-        </article>
-      </section>
+        </div>
+      </article>
+    );
+
+  if (variant === "compact") {
+    return calculatorCard;
+  }
+
+  return (
+    <div className="container section-stack">
+      <article className="legal-card">
+        <h1>Wunschformat für PP-Rollenetiketten</h1>
+        <p>{calculatorIntro}</p>
+        <p className="field-hint">{calculatorHint}</p>
+      </article>
+
+      <section className="section-stack">{calculatorCard}</section>
     </div>
   );
 }

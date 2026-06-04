@@ -51,6 +51,18 @@ export function buildPublicCustomSizePriceResponse(input: {
     } as const;
   }
 
+  if (input.request.quantity >= 20_000) {
+    return {
+      status: 200,
+      body: {
+        configured: true,
+        quoteRequired: true,
+        netPrice: 0,
+        grossPrice: 0,
+      } satisfies PublicCustomSizeResponse,
+    } as const;
+  }
+
   const result = computeCustomSizePrice({
     materialKey: input.request.materialKey,
     widthMm: input.request.widthMm,
