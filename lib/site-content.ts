@@ -1783,9 +1783,26 @@ const topLevelPages: PublicPageData[] = [
     sidebarTitle: "",
     sidebarBullets: [],
     sections: [
-      { title: "Anbieterkennzeichnung", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
-      { title: "Kontaktangaben", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
-      { title: "Verantwortlich für den Inhalt", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      {
+        title: "Anbieterkennzeichnung",
+        body: [
+          "Zhenkai Global Trading Limited",
+          "Rechtsform: ⚠️ Angabe ausstehend",
+          "Sitz und registrierte Anschrift: ⚠️ Angabe ausstehend",
+          "HK Business Registration Number: ⚠️ Angabe ausstehend",
+        ],
+      },
+      {
+        title: "Kontaktangaben",
+        body: [
+          "E-Mail: kontakt@labelpilot.de",
+          "Telefon: ⚠️ Angabe ausstehend",
+        ],
+      },
+      {
+        title: "Verantwortlich für den Inhalt",
+        body: ["Vertretungsberechtigte Person: ⚠️ Angabe ausstehend"],
+      },
     ],
   },
   {
@@ -1813,7 +1830,13 @@ const topLevelPages: PublicPageData[] = [
     sidebarTitle: "",
     sidebarBullets: [],
     sections: [
-      { title: "Geltungsbereich", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
+      {
+        title: "Geltungsbereich",
+        body: [
+          "⚠️ Rechtlich zu prüfen - Platzhalter",
+          "Vertragspartnerin für Bestellungen über Labelpilot.de ist Zhenkai Global Trading Limited gemäß den Angaben im Impressum.",
+        ],
+      },
       { title: "Angebot, Vertrag und Freigabe", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
       { title: "Zahlung und Lieferung", body: ["⚠️ Rechtlich zu prüfen - Platzhalter"] },
     ],
