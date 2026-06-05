@@ -80,6 +80,11 @@ export function KontoClient() {
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const client = supabase;
@@ -240,6 +245,18 @@ export function KontoClient() {
     }
 
     window.location.href = result.url;
+  }
+
+  if (!mounted) {
+    return (
+      <AccountShell>
+        <article className="legal-card">
+          <span className="eyebrow">Kundenkonto</span>
+          <h1>Kundenkonto wird geladen …</h1>
+          <p>Einen Moment bitte – Ihr Konto wird vorbereitet.</p>
+        </article>
+      </AccountShell>
+    );
   }
 
   if (!supabase) {
