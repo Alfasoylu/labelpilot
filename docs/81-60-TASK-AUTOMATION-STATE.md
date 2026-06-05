@@ -121,3 +121,14 @@ Consolidated: across the second through tenth supervisor runs, no Codex task-exe
   - One commit for one task ✓; sequential order (Task 16→17→18) ✓; no BLOCKED tasks executed ✓; no feature flags enabled ✓; no price/schema/German-public-copy changes ✓.
 - **No issues; no steering needed.**
 - **Next expected Codex action:** Execute Task 18 ("Verify Ads landing pages are excluded from sitemap output") as a single atomic commit, per Guardrail 7.
+
+### 2026-06-05 UTC | Tasks 18 and 19 reviewed — PASS / PASS WITH RISKS
+
+- **Commits reviewed since last entry:** `62ddf23` (Task 18 — ads-landing sitemap exclusion lock), `d7615cb` (Task 19 — ads-landing canonical exclusion lock).
+- **Task 18 — PASS:** `62ddf23` adds two explicit assertions to `scripts/test-autonomous-safety.ts` confirming `/lp/*` and `/teklif/*` paths never appear in `sitemapPaths`. No production code changes needed — existing governance already excluded these paths. One commit ✓; sequential order (17→18→19) ✓; no BLOCKED tasks ✓; no flags ✓; no prices/schema/German-copy changes ✓.
+- **Task 19 — PASS WITH RISKS:** `d7615cb` adds `buildCanonicalMetadata` assertions to the safety test, verifying that `/lp/*` and `/teklif/*` paths produce `canonical: undefined`, `robots: {index:false,follow:false}`, and `openGraph.url: undefined`. To make the Node-based test runner resolve `lib/seo.ts` without `@/` alias support, the two runtime imports in `lib/seo.ts` were normalized from `@/lib/env` / `@/lib/seo/governance` to relative `./env.ts` / `./seo/governance.ts`. The remaining `import type { FAQ, PublicPageData } from "@/lib/site-content"` was correctly left as `@/` since it is a type-only import, erased at compile time and invisible to the Node runner. Functional behavior of `lib/seo.ts` is unchanged.
+  - **Risk (Low — style only):** `lib/seo.ts` now has mixed import style (two relative + one alias). Functionally correct but inconsistent with the rest of `lib/`. Not a blocking concern.
+  - One commit ✓; no BLOCKED tasks ✓; no flags ✓; no prices/schema/German-copy changes ✓.
+- **No BLOCKED tasks executed** ✓; no flags enabled ✓; no locked prices changed ✓; no schema/migration changes ✓.
+- **No steering needed in PLAN** — the Low-risk import-style note does not require Codex correction; the test assertions are technically sound.
+- **Next expected Codex action:** Execute Task 20 ("Audit metadata generation for homepage and core commercial pages") as a single atomic commit, per Guardrail 7.
