@@ -35,6 +35,8 @@ assert.deepEqual(ROBOTS_DISALLOW_PATHS, [
   "/admin/",
   "/api/",
   "/checkout/",
+  "/konto/",
+  "/mein-konto/",
   "/de/auftrag/",
   "/de/checkout",
   "/de/gespeicherte-druckdaten",
@@ -45,6 +47,9 @@ assert.deepEqual(ROBOTS_DISALLOW_PATHS, [
 assert.equal(isNonIndexablePath("/admin"), true);
 assert.equal(isNonIndexablePath("/admin/orders"), true);
 assert.equal(isNonIndexablePath("/checkout/cancel"), true);
+assert.equal(isNonIndexablePath("/konto"), true);
+assert.equal(isNonIndexablePath("/konto/bestellungen"), true);
+assert.equal(isNonIndexablePath("/mein-konto"), true);
 assert.equal(isNonIndexablePath("/de/checkout"), true);
 assert.equal(isNonIndexablePath("/de/auftrag/order-123/druckdaten"), true);
 assert.equal(isNonIndexablePath("/de/gespeicherte-druckdaten"), true);
@@ -514,6 +519,63 @@ assert.match(
   homepageRendererSource,
   /<h2>Andere Menge\?<\/h2>[\s\S]*3\.000, 7\.500, weniger als 1\.000[\s\S]*Andere Menge anfragen/,
   "The pricing section must keep an honest non-standard quantity path instead of faking intermediate live prices.",
+);
+
+const prismaSchemaSource = readFileSync(
+  new URL("../prisma/schema.prisma", import.meta.url),
+  "utf8",
+);
+const accountPageSource = readFileSync(
+  new URL("../app/(account)/konto/KontoClient.tsx", import.meta.url),
+  "utf8",
+);
+const accountDashboardApiSource = readFileSync(
+  new URL("../app/api/account/dashboard/route.ts", import.meta.url),
+  "utf8",
+);
+const reorderApiSource = readFileSync(
+  new URL("../app/api/reorders/route.ts", import.meta.url),
+  "utf8",
+);
+assert.match(
+  prismaSchemaSource,
+  /model Customer[\s\S]*authUserId\s+String\?\s+@unique[\s\S]*orders\s+Order\[\][\s\S]*storedDesigns\s+StoredDesign\[\]/,
+  "Track S3 requires a Customer model linked to Supabase auth, order history, and saved designs.",
+);
+assert.match(
+  prismaSchemaSource,
+  /customer\s+Customer\?\s+@relation\(fields: \[customerId\], references: \[id\], onDelete: SetNull/,
+  "Order and StoredDesign customer ownership must be represented as nullable, non-destructive relations.",
+);
+assert.match(
+  accountDashboardApiSource,
+  /getSupabaseUserFromRequest\(request\)[\s\S]*ensureCustomerForSupabaseUser/,
+  "Customer account dashboard must verify Supabase auth server-side before linking account data.",
+);
+assert.match(
+  accountDashboardApiSource,
+  /prisma\.order\.findMany\(\{[\s\S]*where: \{ customerId: customer\.id \}/,
+  "Customer account order history must be scoped by verified customerId.",
+);
+assert.match(
+  accountDashboardApiSource,
+  /prisma\.storedDesign\.findMany\(\{[\s\S]*customerId: customer\.id/,
+  "Customer account saved designs must be scoped by verified customerId.",
+);
+assert.match(
+  accountPageSource,
+  /Meine Bestellungen und gespeicherten Druckdaten/,
+  "The customer account page must expose a German order-history and saved-design dashboard.",
+);
+assert.match(
+  accountPageSource,
+  /<ReorderStartForm[\s\S]*accessToken=\{accessToken\}/,
+  "The customer account page must expose authenticated one-click reorder from saved designs.",
+);
+assert.match(
+  reorderApiSource,
+  /authHeader\.startsWith\("Bearer "\)[\s\S]*getCustomerAccountAccessContext/,
+  "The reorder API must accept verified customer-account ownership in addition to the existing token fallback.",
 );
 
 const thermalProductSchema = buildPageSchema(

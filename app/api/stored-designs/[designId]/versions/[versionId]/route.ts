@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 
+import { getSupabaseUserFromRequest } from "@/lib/account/auth";
+import { ensureCustomerForSupabaseUser } from "@/lib/account/customers";
 import { getPrismaClient } from "@/lib/db/prisma";
 import {
+  type CustomerAccessContext,
   getAccessibleStoredDesignDetail,
+  getCustomerAccountAccessContext,
   getCustomerAccessContext,
 } from "@/lib/artwork/saved-designs";
 import { getSignedUrl } from "@/lib/storage/artwork";
@@ -27,15 +31,23 @@ export async function GET(
   const orderId = url.searchParams.get("order");
   const token = url.searchParams.get("token");
   const asset = url.searchParams.get("asset") === "proof" ? "proof" : "artwork";
+  const wantsJson = request.headers.get("accept")?.includes("application/json") ?? false;
+  const authHeader = request.headers.get("authorization") ?? "";
 
-  if (!orderId || !token) {
-    return NextResponse.json(
-      { error: "Sie haben keinen Zugriff auf diese Datei." },
-      { status: 403 },
-    );
+  let access: CustomerAccessContext | null = null;
+
+  if (authHeader.startsWith("Bearer ")) {
+    const auth = await getSupabaseUserFromRequest(request);
+
+    if (!auth.ok) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status });
+    }
+
+    const customer = await ensureCustomerForSupabaseUser(prisma, auth.user);
+    access = await getCustomerAccountAccessContext(prisma, customer.id);
+  } else if (orderId && token) {
+    access = await getCustomerAccessContext(prisma, orderId, token);
   }
-
-  const access = await getCustomerAccessContext(prisma, orderId, token);
 
   if (!access) {
     return NextResponse.json(
@@ -67,6 +79,10 @@ export async function GET(
 
   try {
     const signedUrl = await getSignedUrl(file.storagePath, 60);
+    if (wantsJson) {
+      return NextResponse.json({ url: signedUrl });
+    }
+
     return NextResponse.redirect(signedUrl, { status: 302 });
   } catch (error) {
     console.error("Stored-Design-Download fehlgeschlagen:", error);

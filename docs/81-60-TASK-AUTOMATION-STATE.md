@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: S3
+current_task: S4
 current_status: pending
-completed_at: 2026-06-05T22:34:52.9438652+03:00
-last_run_note: Safety floor stayed green under the founder's Sellability reprioritization. Track S2 is complete: the canonical /de/pp-rollenetiketten configurator now has an explicit quantity selector for the four fixed online tiers 1.000 / 2.000 / 5.000 / 10.000, marks 5.000 as the recommended B2B quantity, keeps 1.000 framed as the paid entry tier, and routes non-standard quantities such as 3.000, 7.500, less than 1.000 or 20.000+ away from fake live prices into Wunschformat when enabled or otherwise the quote fallback. PricingCard now visibly marks the popular tier as the recommended B2B package, and regression coverage was added in scripts/test-autonomous-safety.ts. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Payment-live and VAT/invoicing remain founder-side blockers; revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next active Track S task is S3.
+completed_at: 2026-06-05T22:51:56.5548346+03:00
+last_run_note: Track S3 is complete. Added a real /konto customer account entry with Supabase login/registration, German account dashboard, verified customer-scoped order history, saved-design listing, signed artwork/proof download handoff, and authenticated one-click reorder from saved designs. Added an additive Customer Prisma model and nullable Order/StoredDesign relations; account access links prior guest orders/designs by verified Supabase email without removing the existing secure token fallback. /konto and /mein-konto are noindex/disallowed and excluded from sitemap scope. Verification passed: check:lang, check:encoding, typecheck, test:safety, prisma generate, prisma validate with local defaults, and build. Prisma migrate diff could not run because local PostgreSQL/shadow DB at localhost:5432 was unavailable. Payment-live and VAT/invoicing remain founder-side blockers; revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next active Track S task is S4.
 ```
 
 ---

@@ -378,6 +378,7 @@ export const footerLinks: FooterGroup[] = [
       { label: "Glossar", href: "/de/glossar" },
       { label: "Druckdaten", href: "/de/druckdaten" },
       { label: "Nachbestellen", href: "/de/nachbestellen" },
+      { label: "Kundenkonto", href: "/konto" },
     ],
   },
   {

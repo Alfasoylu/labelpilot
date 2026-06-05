@@ -6,8 +6,9 @@ import { trackLeadEvent } from "@/lib/analytics/browser";
 
 type ReorderStartFormProps = {
   designId: string;
-  orderId: string;
-  token: string;
+  orderId?: string | null;
+  token?: string | null;
+  accessToken?: string | null;
   defaultQuantity?: number | null;
   currentArtworkVersionId?: string | null;
 };
@@ -46,6 +47,7 @@ export function ReorderStartForm({
   designId,
   orderId,
   token,
+  accessToken,
   defaultQuantity,
   currentArtworkVersionId,
 }: ReorderStartFormProps) {
@@ -60,8 +62,8 @@ export function ReorderStartForm({
 
     const payload = {
       designId,
-      orderId,
-      token,
+      orderId: orderId ?? undefined,
+      token: token ?? undefined,
       artworkVersionId: currentArtworkVersionId,
       quantity: String(formData.get("quantity") ?? ""),
       mode: String(formData.get("mode") ?? ""),
@@ -80,6 +82,7 @@ export function ReorderStartForm({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
         },
         body: JSON.stringify(payload),
       });

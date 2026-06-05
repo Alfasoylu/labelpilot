@@ -1,8 +1,8 @@
 import type { PrismaClient } from "@prisma/client";
 
-type CustomerAccessContext = {
-  id: string;
-  uploadToken: string;
+export type CustomerAccessContext = {
+  id?: string;
+  uploadToken?: string;
   customerId: string | null;
   customerEmail: string;
   companyName: string | null;
@@ -75,6 +75,32 @@ export async function getCustomerAccessContext(
   }
 
   return order satisfies CustomerAccessContext;
+}
+
+export async function getCustomerAccountAccessContext(
+  prisma: PrismaClient,
+  customerId: string,
+) {
+  const customer = await prisma.customer.findUnique({
+    where: { id: customerId },
+    select: {
+      id: true,
+      email: true,
+      companyName: true,
+      contactName: true,
+    },
+  });
+
+  if (!customer) {
+    return null;
+  }
+
+  return {
+    customerId: customer.id,
+    customerEmail: customer.email,
+    companyName: customer.companyName,
+    customerName: customer.contactName,
+  } satisfies CustomerAccessContext;
 }
 
 export async function listAccessibleStoredDesigns(

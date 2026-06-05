@@ -3,8 +3,12 @@ import { z } from "zod";
 
 import { createOrderNumber } from "@/lib/commerce/orders";
 import { findPackageByConfig } from "@/lib/commerce/packages";
+import { getSupabaseUserFromRequest } from "@/lib/account/auth";
+import { ensureCustomerForSupabaseUser } from "@/lib/account/customers";
 import {
+  type CustomerAccessContext,
   getAccessibleStoredDesignDetail,
+  getCustomerAccountAccessContext,
   getCustomerAccessContext,
 } from "@/lib/artwork/saved-designs";
 import { getPrismaClient } from "@/lib/db/prisma";
@@ -14,8 +18,8 @@ export const runtime = "nodejs";
 
 const reorderSchema = z.object({
   designId: z.string().min(1),
-  orderId: z.string().min(1),
-  token: z.string().min(1),
+  orderId: z.string().min(1).optional().nullable(),
+  token: z.string().min(1).optional().nullable(),
   artworkVersionId: z.string().min(1).optional().nullable(),
   quantity: z.enum(["1000", "2000", "5000", "10000", "20000+"]),
   mode: z.enum(["SAME_ARTWORK", "MINOR_CHANGE"]),
@@ -51,11 +55,25 @@ export async function POST(request: Request) {
     );
   }
 
-  const access = await getCustomerAccessContext(
-    prisma,
-    parsed.data.orderId,
-    parsed.data.token,
-  );
+  const authHeader = request.headers.get("authorization") ?? "";
+  let access: CustomerAccessContext | null = null;
+
+  if (authHeader.startsWith("Bearer ")) {
+    const auth = await getSupabaseUserFromRequest(request);
+
+    if (!auth.ok) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status });
+    }
+
+    const customer = await ensureCustomerForSupabaseUser(prisma, auth.user);
+    access = await getCustomerAccountAccessContext(prisma, customer.id);
+  } else if (parsed.data.orderId && parsed.data.token) {
+    access = await getCustomerAccessContext(
+      prisma,
+      parsed.data.orderId,
+      parsed.data.token,
+    );
+  }
 
   if (!access) {
     return NextResponse.json(
@@ -175,6 +193,7 @@ export async function POST(request: Request) {
       customerEmail: access.customerEmail,
       customerName: access.customerName,
       companyName: access.companyName,
+      customerId: access.customerId,
       country: "DE",
       reorderSourceDesignId: design.id,
       reorderSourceArtworkVersionId: selectedVersion.id,
