@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 30
+current_task: 31
 current_status: pending
-completed_at: 2026-06-05T11:03:19.1814333+03:00
-last_run_note: Revenue-readiness audit ran before Task 29 and no higher-severity blocker displaced the queue. Task 29 is complete: audited the Wunschformat page for quote-fallback clarity and found the main risk in components/custom-size-price-form.tsx, where publicly calculable results and quote-only exceptions were explained too broadly in the same flow. Tightened the page copy so Wunschformat is explicitly framed as a controlled Zusatzpfad with clear Angebots-Fallback, the idle state now says only freigegebene request shapes are directly priceable, quote-required results now explain that no public Richtpreis is shown for that request, and direct-price results now scope the displayed Richtpreis to directly calculable Wunschformate without additional Sonderanforderungen. Added regression coverage in scripts/test-autonomous-safety.ts to lock the clearer quote-fallback and direct-price messaging. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 30.
+completed_at: 2026-06-05T12:11:16.1768025+03:00
+last_run_note: Revenue-readiness audit ran before Task 30 and no higher-severity blocker displaced the queue. Task 30 is complete: audited trust blocks and proof-process messaging for B2B credibility and found the main weakness in how the site described proof safety too generically across components/page-renderers.tsx and components/orders/ProofApprovalPanel.tsx. Tightened the product-page trust block so the visible B2B process now explicitly names checkout, payment confirmation, order confirmation and proof approval, and added a dedicated proof-guidance block that explains one digital proof is part of the standard process, change requests go into the next proof instead of directly into production, and only the explicitly approved version becomes the basis for production and later reorders. Added regression coverage in scripts/test-autonomous-safety.ts to lock the stronger trust and proof-process wording. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 31.
 ```
 
 ---

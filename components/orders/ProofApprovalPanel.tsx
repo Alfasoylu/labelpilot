@@ -140,6 +140,14 @@ export function ProofApprovalPanel({
     <article className="surface-card">
       <h2>Proof und Freigabe</h2>
       <p className="field-hint">{requirementsText}</p>
+      <div className="surface-card">
+        <h3>So bleibt die Freigabe für B2B-Aufträge klar</h3>
+        <ul className="simple-list">
+          <li>Ein digitaler Proof gehört zum Standardprozess vor der Produktion.</li>
+          <li>Änderungswünsche gehen kontrolliert in den nächsten Proof statt direkt in den Druck.</li>
+          <li>Produziert wird erst nach Ihrer ausdrücklichen Freigabe; die freigegebene Version bleibt die Basis für spätere Nachbestellungen.</li>
+        </ul>
+      </div>
 
       {proofs.length === 0 ? (
         <p className="price-note">Noch kein Proof hochgeladen.</p>

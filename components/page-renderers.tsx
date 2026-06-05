@@ -261,7 +261,7 @@ const productTrustItems = [
   },
   {
     title: "Sichere Zahlung und sauberer Prozess",
-    body: "Checkout, Zahlungsbestätigung und Auftragsbestätigung laufen verifiziert. Kontakt-, Auftrags- und Freigabedaten bleiben für den sichtbaren B2B-Prozess sauber nachvollziehbar.",
+    body: "Checkout, Zahlungsbestätigung, Auftragsbestätigung und Proof-Freigabe bleiben im sichtbaren B2B-Prozess sauber nachvollziehbar.",
   },
 ];
 

@@ -86,6 +86,10 @@ const customSizeFormSource = readFileSync(
   new URL("../components/custom-size-price-form.tsx", import.meta.url),
   "utf8",
 );
+const proofApprovalPanelSource = readFileSync(
+  new URL("../components/orders/ProofApprovalPanel.tsx", import.meta.url),
+  "utf8",
+);
 assert.match(
   homepageRendererSource,
   /<Link href="\/de\/pp-rollenetiketten" className="secondary-link">\s*Alle PP-Rollenetiketten ansehen\s*<\/Link>/,
@@ -146,6 +150,31 @@ assert.match(
   customSizeFormSource,
   /Sobald Weißunterdruck, Konturschnitt, Sonderklebstoff, Veredelung,\s*variable Daten, Multi-SKU oder Mengen ab 20\.000 Stück ins Spiel\s*kommen, bleibt der Angebotsweg verbindlich\./,
   "Custom-size direct-price state must keep the quote-only exceptions clearly separated from the public Richtpreis.",
+);
+assert.match(
+  homepageRendererSource,
+  /Checkout, Zahlungsbestätigung, Auftragsbestätigung und Proof-Freigabe bleiben im sichtbaren B2B-Prozess sauber nachvollziehbar\./,
+  "Product trust block must describe the visible B2B process concretely instead of relying on vague trust wording.",
+);
+assert.match(
+  proofApprovalPanelSource,
+  /So bleibt die Freigabe für B2B-Aufträge klar/,
+  "Proof panel must explain the approval process as a visible B2B trust step.",
+);
+assert.match(
+  proofApprovalPanelSource,
+  /Ein digitaler Proof gehört zum Standardprozess vor der Produktion\./,
+  "Proof panel must keep the included digital proof step explicit.",
+);
+assert.match(
+  proofApprovalPanelSource,
+  /Änderungswünsche gehen kontrolliert in den nächsten Proof statt direkt in den Druck\./,
+  "Proof panel must explain that change requests return to the next proof instead of silently entering production.",
+);
+assert.match(
+  proofApprovalPanelSource,
+  /Produziert wird erst nach Ihrer ausdrücklichen Freigabe; die freigegebene Version bleibt die Basis für spätere Nachbestellungen\./,
+  "Proof panel must connect proof approval to production safety and later reorders.",
 );
 
 const rootPageSource = readFileSync(
