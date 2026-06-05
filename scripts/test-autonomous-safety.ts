@@ -88,6 +88,16 @@ assert.match(
   "Homepage package section must keep a visible direct link to the PP money-page overview.",
 );
 assert.match(
+  homepageRendererSource,
+  /tier: opaquePackages\[1\][\s\S]*quantity: 2000/,
+  "Homepage package ladder must keep the canonical 2.000 tier visible instead of skipping from 1.000 to 5.000.",
+);
+assert.match(
+  homepageRendererSource,
+  /1\.000 Stück ist der bezahlte Einstieg\.\s*5\.000 Stück ist das empfohlene B2B-Standardpaket/,
+  "Homepage package note must keep the commercial role split between the paid 1.000 trial tier and the recommended 5.000 B2B tier.",
+);
+assert.match(
   brandHeroSource,
   /<Link href="\/de\/angebot-anfordern" className="cta-link">\s*Angebot anfordern\s*<\/Link>/,
   "Homepage hero must keep a direct quote CTA for higher-complexity B2B requests.",

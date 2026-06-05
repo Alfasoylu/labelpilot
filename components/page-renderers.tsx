@@ -134,6 +134,15 @@ const homepagePackages: HomepagePackage[] = [
     },
   },
   {
+    tier: opaquePackages[1],
+    checkout: {
+      packageId: "opaque-pp-100x200-2000",
+      productSlug: "opake-pp-etiketten",
+      material: "OPAQUE",
+      quantity: 2000,
+    },
+  },
+  {
     tier: opaquePackages[2],
     checkout: {
       packageId: "opaque-pp-100x200-5000",
@@ -151,7 +160,6 @@ const homepagePackages: HomepagePackage[] = [
       quantity: 10000,
     },
   },
-  { tier: opaquePackages[4] },
 ];
 
 const homepageOrderingSteps = [
@@ -336,6 +344,10 @@ export function HomePage({ page }: HomePageProps) {
           <p className="package-note">
             Standardweg für diese Pakete: 100×200 mm, 1 Design pro Auftrag, Standard-Datenprüfung
             und 1 Proof-Runde. Ab 20.000 Stück oder bei Sonderumfang führt der Weg ins B2B-Angebot.
+          </p>
+          <p className="package-note">
+            1.000 Stück ist der bezahlte Einstieg. 5.000 Stück ist das empfohlene B2B-Standardpaket
+            für wiederkehrende Bestellungen.
           </p>
           <div className="hero-actions">
             <Link href="/de/druckdaten" className="cta-link">

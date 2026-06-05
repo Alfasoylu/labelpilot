@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 28
+current_task: 29
 current_status: pending
-completed_at: 2026-06-05T10:01:04.2934315+03:00
-last_run_note: Revenue-readiness audit ran before Task 27 and no higher-severity blocker displaced the queue. Task 27 is complete: audited fixed-package pricing presentation and found the main clarity issue in PricingCard, where the net figure was repeated and the gross customer price was compressed into a dense mixed summary line. Refined lib/site-content.ts, components/cards/PricingCard.tsx and lib/seo.ts so fixed-price cards now keep the net price as the primary line, show the gross price as a separate labeled customer line, keep shipping separate, and preserve a clear per-piece net line. Added regression coverage in scripts/test-autonomous-safety.ts to lock the labeled gross/net display. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 28.
+completed_at: 2026-06-05T10:30:56.5435540+03:00
+last_run_note: Revenue-readiness audit ran before Task 28 and no higher-severity blocker displaced the queue. Task 28 is complete: audited package-ladder messaging and found the main homepage mismatch in components/page-renderers.tsx, where the visible package section skipped the canonical 2.000 tier and jumped from 1.000 directly to 5.000. Restored the visible homepage ladder to the canonical fixed-package sequence 1.000 / 2.000 / 5.000 / 10.000 and added explicit copy that 1.000 is the paid Einstieg while 5.000 is the recommended B2B standard package. Added regression coverage in scripts/test-autonomous-safety.ts to lock both the 2.000 tier and the 1.000-vs-5.000 role messaging. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 29.
 ```
 
 ---
