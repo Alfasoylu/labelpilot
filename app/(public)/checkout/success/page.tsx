@@ -5,7 +5,7 @@ import { getPrismaClient } from "@/lib/db/prisma";
 import { getStripeServerClient } from "@/lib/stripe/server";
 
 export const metadata: Metadata = {
-  title: "Bestellung eingegangen | Labelpilot.de",
+  title: "Checkout bestätigt | Labelpilot.de",
   robots: {
     index: false,
     follow: false,
@@ -75,6 +75,9 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
   const uploadFlowAvailable = Boolean(successData?.uploadHref) && !isSameArtworkReorder;
   const needsArtworkHelp = successData?.artworkInputStatus === "needs_help";
   const uploadHref = successData?.uploadHref ?? "";
+  const pageHeading = hasResolvedCheckoutState
+    ? "Vielen Dank – Ihre Bestellung ist eingegangen."
+    : "Ihr Checkout wird geprüft.";
 
   const intro = !hasResolvedCheckoutState
     ? "Wir prüfen Ihre Checkout-Daten und bestätigen den nächsten Schritt, sobald die Stripe-Sitzung sauber zugeordnet werden konnte."
@@ -91,7 +94,7 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
         <span className="badge">
           {hasResolvedCheckoutState ? "Bestellung eingegangen" : "Wird bestätigt"}
         </span>
-        <h1>Vielen Dank – Ihre Bestellung ist eingegangen.</h1>
+        <h1>{pageHeading}</h1>
         <p>{intro}</p>
         {successData?.orderNumber ? (
           <p className="price-note">
@@ -134,10 +137,11 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
           <div className="steps-grid">
             <article className="step-card">
               <span className="badge">Schritt 1</span>
-              <h3>Zahlung bestätigt</h3>
+              <h3>{hasResolvedCheckoutState ? "Zahlung bestätigt" : "Checkout wird bestätigt"}</h3>
               <p>
-                Ihre Bestellung ist bei uns eingegangen. Die Zahlung wird über den verifizierten
-                Stripe-Webhook final bestätigt.
+                {hasResolvedCheckoutState
+                  ? "Ihre Bestellung ist bei uns eingegangen. Die Zahlung wird über den verifizierten Stripe-Webhook final bestätigt."
+                  : "Wir gleichen Stripe-Sitzung und Auftrag noch sauber ab. Erst danach bestätigen wir den nächsten operativen Schritt."}
               </p>
             </article>
             {hasResolvedCheckoutState ? (
@@ -155,8 +159,9 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
                   <span className="badge">Schritt 3</span>
                   <h3>Produktion & Versand</h3>
                   <p>
-                    Nach Ihrer Freigabe produzieren wir Ihre PP-Rollenetiketten und versenden sie
-                    innerhalb Deutschlands.
+                    Nach Ihrer Freigabe produzieren wir Ihre PP-Rollenetiketten. Die Lieferzeit
+                    liegt bei ca. 10–14 Werktagen nach Ihrer Freigabe für Produktion und Versand
+                    nach Deutschland.
                   </p>
                 </article>
               </>

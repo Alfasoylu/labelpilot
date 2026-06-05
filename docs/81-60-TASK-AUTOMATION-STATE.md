@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 34
+current_task: 35
 current_status: pending
-completed_at: 2026-06-05T20:16:56.6128016+03:00
-last_run_note: Revenue-readiness audit ran before Task 33 and no higher-severity blocker displaced the queue. Task 33 is complete: audited checkout add-on messaging against the approved commercial rules and found the clearest mismatch in components/checkout/CheckoutIntakeForm.tsx, where the order summary could imply that design service was included by default whenever the customer was not uploading print-ready data. Replaced that summary with rule-accurate wording that keeps design service tied to explicit selection or the approved free-rule, added an explicit "no paid add-ons selected" state, and locked both behaviors with regression coverage in scripts/test-autonomous-safety.ts. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 34.
+completed_at: 2026-06-05T22:15:07.3527385+03:00
+last_run_note: Revenue-readiness audit ran before Task 34 and no higher-severity blocker displaced the queue. Task 34 is complete: audited order-success and post-checkout messaging and found the clearest trust risk in app/(public)/checkout/success/page.tsx, where the unresolved success state still used a confirmed-order heading and confirmation-style step copy before Stripe session reconciliation was fully resolved. Softened the unresolved heading and first-step wording so the page no longer overclaims confirmation, while tightening the production step to the canonical delivery wording of ca. 10–14 Werktage nach Ihrer Freigabe. Added regression coverage in scripts/test-autonomous-safety.ts. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 35.
 ```
 
 ---

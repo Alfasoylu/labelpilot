@@ -103,6 +103,10 @@ const checkoutIntakeFormSource = readFileSync(
   new URL("../components/checkout/CheckoutIntakeForm.tsx", import.meta.url),
   "utf8",
 );
+const checkoutSuccessPageSource = readFileSync(
+  new URL("../app/(public)/checkout/success/page.tsx", import.meta.url),
+  "utf8",
+);
 const proofApprovalPanelSource = readFileSync(
   new URL("../components/orders/ProofApprovalPanel.tsx", import.meta.url),
   "utf8",
@@ -217,6 +221,21 @@ assert.match(
   checkoutIntakeFormSource,
   /Keine kostenpflichtigen Zusatzleistungen ausgewählt\./,
   "Checkout intake summary must explicitly show when no paid add-ons were selected.",
+);
+assert.match(
+  checkoutSuccessPageSource,
+  /const pageHeading = hasResolvedCheckoutState[\s\S]*: "Ihr Checkout wird geprüft\.";/,
+  "Checkout success page must use a softer unresolved heading instead of claiming the order is already confirmed.",
+);
+assert.match(
+  checkoutSuccessPageSource,
+  /hasResolvedCheckoutState \? "Zahlung bestätigt" : "Checkout wird bestätigt"/,
+  "Checkout success page must distinguish resolved payment confirmation from an unresolved checkout review state.",
+);
+assert.match(
+  checkoutSuccessPageSource,
+  /ca\. 10–14 Werktagen nach Ihrer Freigabe/,
+  "Checkout success page must keep the canonical honest delivery range after proof approval.",
 );
 assert.match(
   rootPageSource,
