@@ -738,7 +738,18 @@ textarea {
 
 .quote-form {
   display: grid;
-  gap: 22px;
+  gap: 12px;
+}
+
+.quote-form label {
+  margin-bottom: -6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.quote-form h2 {
+  margin-bottom: 4px;
 }
 
 .form-grid {
