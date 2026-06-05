@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 20
+current_task: 21
 current_status: pending
-completed_at: 2026-06-05T06:00:47.8151357+03:00
-last_run_note: Revenue-readiness audit ran before Task 19 and no higher-severity blocker displaced the queue. Task 19 is complete: verified the canonical metadata builder already prevents non-indexable routes from emitting canonical URLs or Open Graph URLs, which keeps Ads landing page families from becoming canonical winners. Added direct regression coverage in scripts/test-autonomous-safety.ts for /lp/* and /teklif/* so those paths now explicitly assert canonical omission plus robots noindex/follow:false in the shared metadata layer. Also normalized lib/seo.ts imports to relative paths so the Node-based safety test can execute the real production metadata builder instead of relying on indirect checks. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 20.
+completed_at: 2026-06-05T06:33:57.3851543+03:00
+last_run_note: Revenue-readiness audit ran before Task 20 and no higher-severity blocker displaced the queue. Task 20 is complete: audited metadata generation for the homepage and core commercial pages, and found metadata ownership was split between lib/seo.ts and lib/seo/metadata.ts. Removed that drift risk by making lib/seo.ts consume and re-export the single centralized metadata map from lib/seo/metadata.ts, so production metadata helpers and regression checks now evaluate the same source of truth for homepage and commercial-route titles, descriptions and canonicals. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 21.
 ```
 
 ---
