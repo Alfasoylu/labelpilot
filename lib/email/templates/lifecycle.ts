@@ -30,15 +30,15 @@ function renderShell(input: {
 }) {
   const buttonHtml =
     input.actionLabel && input.actionHref
-      ? `<p style="margin:24px 0;"><a href="${escapeHtml(input.actionHref)}" style="display:inline-block;padding:12px 18px;border-radius:10px;background:#2563EB;color:#FFFFFF;text-decoration:none;font-weight:600;">${escapeHtml(input.actionLabel)}</a></p>`
+      ? `<p style="margin:24px 0;"><a href="${escapeHtml(input.actionHref)}" style="display:inline-block;padding:12px 18px;border-radius:10px;background:#11100E;color:#FFFFFF;text-decoration:none;font-weight:600;">${escapeHtml(input.actionLabel)}</a></p>`
       : "";
 
   return `<!doctype html>
 <html lang="de">
-  <body style="margin:0;padding:24px;background:#F8FAFC;color:#0B1220;font-family:Arial,sans-serif;">
-    <div style="max-width:640px;margin:0 auto;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:18px;padding:32px;">
-      <p style="margin:0 0 8px 0;color:#64748B;font-size:14px;">Labelpilot.de</p>
-      <h1 style="margin:0 0 16px 0;font-size:28px;line-height:1.2;">${escapeHtml(input.heading)}</h1>
+  <body style="margin:0;padding:24px;background:#F7F2E8;color:#2A2926;font-family:Arial,sans-serif;">
+    <div style="max-width:640px;margin:0 auto;background:#FFFDF8;border:1px solid #E5DED2;border-radius:18px;padding:32px;">
+      <p style="margin:0 0 8px 0;color:#B08A45;font-size:14px;font-weight:600;letter-spacing:0.04em;">Labelpilot.de</p>
+      <h1 style="margin:0 0 16px 0;font-size:28px;line-height:1.2;color:#11100E;">${escapeHtml(input.heading)}</h1>
       <p style="margin:0 0 16px 0;font-size:16px;line-height:1.6;">${escapeHtml(input.intro)}</p>
       ${buttonHtml}
       <div style="font-size:15px;line-height:1.7;">${input.bodyHtml}</div>
