@@ -139,7 +139,30 @@ Activate the configured-but-unused Supabase auth (`lib/auth/supabase-*`). Add a 
 ### Task S4 — Admin-Auth härten (Security · P1)
 Replace the temporary HTTP Basic Auth (`middleware.ts`, self-described stopgap) with Supabase auth + an admin-role check; keep `/admin` + `/api/admin` disallowed + noindex. Files: `middleware.ts`, `lib/security/admin-basic-auth.ts`, `lib/auth/**`. One commit.
 
-> **Definition of done for Track S:** S1–S4 shipped, Sellability ≥ 90% + UX ≥ 90% in the run report, then resume the numbered Audit queue (Tracks A–F) from `current_task`.
+### Track S — full execution order (next steps S3 → S20)
+
+Execute **strictly in this order**, one task = one commit. Do not jump ahead, do not expand, do not enable flags, do not change canonical prices. Re-score **Sellability %** + **German-UX %** in every run report. (S3 and S4 are detailed above; S5–S20 below.)
+
+1. **S3 — Kundenkonto** *(in progress)* — Customer model + Supabase login + order history + 1-click reorder; additive migration via Supabase MCP; guest/token flow stays fallback; Net-14 manual/gated.
+2. **S4 — Admin-Auth härten** — Basic Auth → Supabase + admin role; `/admin` + `/api/admin` stay noindex + disallow.
+3. **S5 — Configurator completeness** — Material + Größe + Menge all selectable on `/de/pp-rollenetiketten`; every selection shows Netto+Brutto or routes to quote; verify Standard↔Wunschformat switch; exactly ONE buy path.
+4. **S6 — Hub/landing dedup** — `/de/etiketten-100x200` + opake/transparent pages deep-link INTO the configurator (no parallel checkout button); one clear buy surface (resolves the S1 role-spread note).
+5. **S7 — Bestellübersicht vor Zahlung** — checkout intake shows full summary (Material, Größe, Menge, Add-ons, Netto+Brutto, Lieferhinweis) + an „ändern" back-link; no dead-ends.
+6. **S8 — Konto-Sichtbarkeit** — order status + artwork/proof step visible inside the Kundenkonto (not only the token email link).
+7. **S9 — Mobile + Barrierefreiheit** — configurator, product, checkout, account on mobile; tap targets, labels, focus states, German screen-reader text.
+8. **S10 — Canonical/indexing for configurator params** — `/de/pp-rollenetiketten?...` canonicalizes to the clean URL (no param-duplicate indexing); sitemap unchanged; account pages noindex.
+9. **S11 — Schema consistency** — Product/Offer schema price = visible price after S1; no contradiction.
+10. **S12 — Lifecycle email audit** — order-received / artwork-needed / proof-ready / shipped render correct German + working links; ops-mail content correct (deliverability/ENV = founder-side).
+11. **S13 — Edge/error/empty states** — invalid configurator params, expired token, checkout-503 fallback, German 404/500, empty account — all safe + German.
+12. **S14 — Performance** — LCP image + fonts on home/product/configurator; cut CLS; Core Web Vitals.
+13. **S15 — Trust-block consistency** — Lieferzeit „ca. 10–14 Werktage nach Ihrer Freigabe", proof explanation, honest Turkey origin, Musterbox + Kontakt near the decision; no fake claims (SoT #18).
+14. **S16 — Conversion measurement** — lightweight first-party events (configure start, checkout start, quote submit, reorder) to track the 90/90 — no heavy third-party.
+15. **S17 — End-to-end sellability test** — product → configure → intake → (Stripe TEST) → success → artwork → proof → reorder; lock with a test/checklist.
+16. **S18 — Stripe TEST round-trip readiness** — document exact ENV var NAMES + steps for the founder; record blockers, do NOT chase.
+17. **S19 — Rechnung/VAT readiness note** — document the founder VAT/invoicing dependency + a gated invoice stub (no invented tax logic); Rechnungskauf stays manual.
+18. **S20 — Sellability/UX checkpoint** — re-score both; if ≥ 90/90 → Track S DONE, resume the numbered Audit queue (Tracks A–F) from `current_task`; else loop back to the lowest-scoring gap.
+
+> **Definition of done for Track S:** S3–S20 shipped in order, Sellability ≥ 90% + German-UX ≥ 90% confirmed at S20, safety floor green throughout. **Only then** resume the numbered Audit queue (Tracks A–F: conversion/SEO polish). **No SEO/content expansion before S20 passes.**
 
 > ## ✅ RESOLVED — Task UC-1 DONE by supervisor (2026-06-04), do NOT re-run
 >
