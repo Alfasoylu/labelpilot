@@ -42,6 +42,7 @@ assert.equal(isNonIndexablePath("/de/gespeicherte-druckdaten"), true);
 assert.equal(isNonIndexablePath("/lp/test"), true);
 assert.equal(isNonIndexablePath("/teklif/foo"), true);
 assert.equal(isNonIndexablePath("/de"), false);
+assert.equal(isSitemapEligiblePath("/de/wunschformat"), false);
 
 assert.equal(buildAbsoluteUrlFromBase("https://labelpilot.de/", "/de"), "https://labelpilot.de/de");
 assert.equal(buildAbsoluteUrlFromBase("https://labelpilot.de", "/"), "https://labelpilot.de");
@@ -65,6 +66,12 @@ for (const prefix of NON_INDEXABLE_PREFIXES) {
     `Forbidden path leaked into sitemap scope: ${prefix}`,
   );
 }
+
+assert.equal(
+  sitemapPaths.includes("/de/wunschformat"),
+  false,
+  "Feature-gated Wunschformat must not leak into sitemap while the flag is off.",
+);
 
 assert.equal(canTransitionOrderStatus("PENDING_PAYMENT", "PAID"), true);
 assert.equal(canTransitionOrderStatus("FILE_REVIEW", "PROOF_REQUIRED"), true);

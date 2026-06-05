@@ -1,3 +1,5 @@
+import { customSizeFeatureEnabled } from "../pricing/custom-size-feature.ts";
+
 export const ROBOTS_ALLOW_PATHS = ["/de", "/de/"] as const;
 export const ROBOTS_DISALLOW_PATHS = [
   "/account/",
@@ -21,6 +23,9 @@ export const NON_INDEXABLE_PREFIXES = [
   "/lp",
   "/teklif",
 ] as const;
+const FEATURE_GATED_SITEMAP_PATHS = {
+  "/de/wunschformat": customSizeFeatureEnabled,
+} as const;
 
 export function buildAbsoluteUrlFromBase(baseUrl: string, path: string) {
   const normalizedBase = baseUrl.replace(/\/$/, "");
@@ -39,5 +44,13 @@ export function isNonIndexablePath(path: string) {
 }
 
 export function isSitemapEligiblePath(path: string) {
-  return path.startsWith("/de") && !isNonIndexablePath(path);
+  if (!path.startsWith("/de") || isNonIndexablePath(path)) {
+    return false;
+  }
+
+  if (path in FEATURE_GATED_SITEMAP_PATHS) {
+    return FEATURE_GATED_SITEMAP_PATHS[path as keyof typeof FEATURE_GATED_SITEMAP_PATHS];
+  }
+
+  return true;
 }
