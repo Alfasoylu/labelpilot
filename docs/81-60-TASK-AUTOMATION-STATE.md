@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 24
+current_task: 25
 current_status: pending
-completed_at: 2026-06-05T08:04:23.0681855+03:00
-last_run_note: Revenue-readiness audit ran before Task 23 and no higher-severity blocker displaced the queue. Task 23 is complete: audited internal linking from the homepage plus the /de/ratgeber and /de/glossar hubs into the core PP money pages and found that direct commercial links existed, but the homepage package area and both hub hero CTA layers did not consistently push users straight into the main /de/pp-rollenetiketten commercial overview. Strengthened the homepage package section with a visible direct secondary CTA to /de/pp-rollenetiketten and repointed both hub secondary CTAs to the same core money page while leaving the deeper guide/glossary cross-links intact lower on the page. Added regression coverage in scripts/test-autonomous-safety.ts so the two hubs keep their hero-level PP money-page CTA and the homepage package section keeps its visible direct overview link. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 24.
+completed_at: 2026-06-05T08:32:29.7062509+03:00
+last_run_note: Revenue-readiness audit ran before Task 24 and no higher-severity blocker displaced the queue. Task 24 is complete: audited JSON-LD generation against visible page content and found the highest-severity mismatch on product pages, where Product schema existed but did not carry the visible material/category identity or the fixed package prices shown to customers. Strengthened lib/seo.ts so product JSON-LD now derives category, material, SKU and visible fixed-price Offer entries directly from the live page data for the opake and transparente PP product pages, while quote-led thermo product pages remain offerless in schema because no fixed visible price exists there. Also strengthened Service schema with Germany-facing serviceType/areaServed/inLanguage alignment and added regression coverage in scripts/test-autonomous-safety.ts to lock the visible JSON-LD price and quote-only behavior. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 25.
 ```
 
 ---

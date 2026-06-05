@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-import { buildCanonicalMetadata } from "../lib/seo.ts";
+import { buildCanonicalMetadata, buildPageSchema } from "../lib/seo.ts";
 import { calculateRefillReminder } from "../lib/reorders/refill-reminder.ts";
 import { validateProofDecisionRequest } from "../lib/orders/proof-decision.ts";
 import {
@@ -259,6 +259,43 @@ assert.equal(
   sitemapPaths.some((path) => path === "/teklif" || path.startsWith("/teklif/")),
   false,
   "Ads landing pages under /teklif must never appear in sitemap output.",
+);
+
+const opaqueProductSchema = buildPageSchema(
+  publicPagesBySlug["opake-pp-etiketten"],
+  "/de/opake-pp-etiketten",
+) as Record<string, unknown>;
+assert.equal(opaqueProductSchema["@type"], "Product");
+assert.equal(opaqueProductSchema.category, "PP-Rollenetiketten");
+assert.equal(opaqueProductSchema.material, "Opakes PP");
+assert.equal(opaqueProductSchema.sku, "pp-opaque-100x200");
+assert.ok(Array.isArray(opaqueProductSchema.offers), "Visible fixed-price tiers must be reflected in product JSON-LD offers.");
+assert.equal((opaqueProductSchema.offers as Array<unknown>).length, 4);
+assert.deepEqual(
+  (opaqueProductSchema.offers as Array<Record<string, unknown>>).map((offer) => offer.price),
+  [179, 279, 479, 799],
+  "Product JSON-LD must use the same visible fixed package prices as the customer page.",
+);
+
+const transparentProductSchema = buildPageSchema(
+  publicPagesBySlug["transparente-pp-etiketten"],
+  "/de/transparente-pp-etiketten",
+) as Record<string, unknown>;
+assert.equal(transparentProductSchema.material, "Transparentes PP");
+assert.deepEqual(
+  (transparentProductSchema.offers as Array<Record<string, unknown>>).map((offer) => offer.price),
+  [199, 309, 519, 849],
+  "Transparent product JSON-LD must use the same visible fixed package prices as the customer page.",
+);
+
+const thermalProductSchema = buildPageSchema(
+  publicPagesBySlug["thermo-versandetiketten"],
+  "/de/thermo-versandetiketten",
+) as Record<string, unknown>;
+assert.equal(
+  thermalProductSchema.offers,
+  undefined,
+  "Quote-led thermo product pages must not emit fixed-price JSON-LD offers when no visible price exists.",
 );
 
 const nonIndexableCanonicalMetadata = buildCanonicalMetadata("/lp/angebot-a", {

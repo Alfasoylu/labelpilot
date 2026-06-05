@@ -179,9 +179,94 @@ export function buildFaqSchema(faqs: FAQ[]) {
   };
 }
 
+function parseEuroAmount(label: string | undefined) {
+  if (!label) {
+    return null;
+  }
+
+  const numericText = label.replace(/[^0-9,.-]/g, "").replace(/\./g, "").replace(",", ".");
+  const value = Number.parseFloat(numericText);
+
+  return Number.isFinite(value) ? value : null;
+}
+
+function getProductSchemaDetails(path: string) {
+  switch (path) {
+    case "/de/opake-pp-etiketten":
+      return {
+        sku: "pp-opaque-100x200",
+        category: "PP-Rollenetiketten",
+        material: "Opakes PP",
+        format: "100×200 mm",
+      };
+    case "/de/transparente-pp-etiketten":
+      return {
+        sku: "pp-transparent-100x200",
+        category: "PP-Rollenetiketten",
+        material: "Transparentes PP",
+        format: "100×200 mm",
+      };
+    case "/de/thermo-versandetiketten":
+      return {
+        sku: "thermal-shipping-100x150",
+        category: "Thermo-Versandetiketten",
+        material: "Thermo",
+        format: "100×150 mm",
+      };
+    default:
+      return null;
+  }
+}
+
+function buildVisibleProductOffers(page: PublicPageData, path: string) {
+  const schemaDetails = getProductSchemaDetails(path);
+
+  if (!schemaDetails) {
+    return undefined;
+  }
+
+  const fixedPackageOffers =
+    page.packageTable
+      ?.map((tier) => {
+        const netPrice = parseEuroAmount(tier.priceLabel);
+
+        if (!netPrice) {
+          return null;
+        }
+
+        const quantityValue = Number.parseInt(tier.quantity.replace(/\D/g, ""), 10);
+
+        if (!Number.isFinite(quantityValue)) {
+          return null;
+        }
+
+        return {
+          "@type": "Offer",
+          priceCurrency: "EUR",
+          price: netPrice,
+          availability: "https://schema.org/InStock",
+          url: buildAbsoluteUrl(path),
+          sku: `${schemaDetails.sku}-${quantityValue}`,
+          name: `${page.title} - ${tier.quantity}`,
+          description: [tier.priceLabel, tier.grossLabel].filter(Boolean).join(" · "),
+          eligibleQuantity: {
+            "@type": "QuantitativeValue",
+            value: quantityValue,
+            unitText: "Stück",
+          },
+        };
+      })
+      .filter(Boolean) ?? [];
+
+  return fixedPackageOffers.length > 0 ? fixedPackageOffers : undefined;
+}
+
 export function buildPageSchema(page: PublicPageData, path: string) {
   switch (page.kind) {
-    case "product":
+    case "product": {
+      const productSchemaDetails = getProductSchemaDetails(path);
+      const visibleOffers = buildVisibleProductOffers(page, path);
+
       return {
         "@context": "https://schema.org",
         "@type": "Product",
@@ -189,10 +274,28 @@ export function buildPageSchema(page: PublicPageData, path: string) {
         description: page.lead,
         url: buildAbsoluteUrl(path),
         brand: {
-          "@type": "Organization",
+          "@type": "Brand",
           name: "Labelpilot.de",
         },
+        category: productSchemaDetails?.category,
+        material: productSchemaDetails?.material,
+        sku: productSchemaDetails?.sku,
+        inLanguage: "de-DE",
+        additionalProperty: [
+          {
+            "@type": "PropertyValue",
+            name: "Format",
+            value: productSchemaDetails?.format ?? page.sidebarBullets[0],
+          },
+          {
+            "@type": "PropertyValue",
+            name: "Material",
+            value: productSchemaDetails?.material ?? page.sidebarBullets[0],
+          },
+        ],
+        offers: visibleOffers,
       };
+    }
     case "industry":
     case "service":
     case "quote":
@@ -206,6 +309,12 @@ export function buildPageSchema(page: PublicPageData, path: string) {
           name: "Labelpilot.de",
         },
         url: buildAbsoluteUrl(path),
+        areaServed: {
+          "@type": "Country",
+          name: "Deutschland",
+        },
+        serviceType: page.title,
+        inLanguage: "de-DE",
       };
     case "collection":
     case "hub":
