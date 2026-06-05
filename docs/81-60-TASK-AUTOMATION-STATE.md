@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 21
+current_task: 22
 current_status: pending
-completed_at: 2026-06-05T06:33:57.3851543+03:00
-last_run_note: Revenue-readiness audit ran before Task 20 and no higher-severity blocker displaced the queue. Task 20 is complete: audited metadata generation for the homepage and core commercial pages, and found metadata ownership was split between lib/seo.ts and lib/seo/metadata.ts. Removed that drift risk by making lib/seo.ts consume and re-export the single centralized metadata map from lib/seo/metadata.ts, so production metadata helpers and regression checks now evaluate the same source of truth for homepage and commercial-route titles, descriptions and canonicals. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 21.
+completed_at: 2026-06-05T07:02:37.1248855+03:00
+last_run_note: Revenue-readiness audit ran before Task 21 and no higher-severity blocker displaced the queue. Task 21 is complete: audited German slug ownership for /de public routes and confirmed the live route registries only render the intended canonical slug families, but the shared SEO governance layer did not centrally know that several Phase-2 German slugs remain deferred. Hardened lib/seo/governance.ts so deferred /de routes stay ineligible for sitemap ownership even if they are accidentally added later, and added direct regression coverage in scripts/test-autonomous-safety.ts to ensure deferred German slugs remain outside active public route ownership, sitemap output, and metadata reservation until the runtime pages exist. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 22.
 ```
 
 ---

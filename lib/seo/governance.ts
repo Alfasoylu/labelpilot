@@ -1,4 +1,5 @@
 import { customSizeFeatureEnabled } from "../pricing/custom-size-feature.ts";
+import { deferredPhase2Routes } from "../site-content.ts";
 
 export const ROBOTS_ALLOW_PATHS = ["/de", "/de/"] as const;
 export const ROBOTS_DISALLOW_PATHS = [
@@ -26,6 +27,7 @@ export const NON_INDEXABLE_PREFIXES = [
 const FEATURE_GATED_SITEMAP_PATHS = {
   "/de/wunschformat": customSizeFeatureEnabled,
 } as const;
+const DEFERRED_DE_PUBLIC_PATHS = new Set(deferredPhase2Routes);
 
 export function buildAbsoluteUrlFromBase(baseUrl: string, path: string) {
   const normalizedBase = baseUrl.replace(/\/$/, "");
@@ -45,6 +47,10 @@ export function isNonIndexablePath(path: string) {
 
 export function isSitemapEligiblePath(path: string) {
   if (!path.startsWith("/de") || isNonIndexablePath(path)) {
+    return false;
+  }
+
+  if (DEFERRED_DE_PUBLIC_PATHS.has(path)) {
     return false;
   }
 

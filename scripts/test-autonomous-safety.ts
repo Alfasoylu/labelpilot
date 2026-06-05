@@ -19,7 +19,14 @@ import {
   ROBOTS_DISALLOW_PATHS,
 } from "../lib/seo/governance.ts";
 import { metadataMap } from "../lib/seo/metadata.ts";
-import { sitemapEntries } from "../lib/site-content.ts";
+import {
+  deferredPhase2Routes,
+  glossaryPagesBySlug,
+  guidePagesBySlug,
+  hubPagesBySlug,
+  publicPagesBySlug,
+  sitemapEntries,
+} from "../lib/site-content.ts";
 
 assert.deepEqual(ROBOTS_ALLOW_PATHS, ["/de", "/de/"]);
 assert.deepEqual(ROBOTS_DISALLOW_PATHS, [
@@ -51,6 +58,21 @@ assert.equal(buildAbsoluteUrlFromBase("https://labelpilot.de", "/"), "https://la
 const sitemapPaths = sitemapEntries.map((entry) => entry.path);
 assert.equal(new Set(sitemapPaths).size, sitemapPaths.length);
 
+const activePublicPathList = [
+  "/de",
+  ...Object.values(publicPagesBySlug).map((page) => page.path),
+  ...Object.values(guidePagesBySlug).map((page) => page.path),
+  ...Object.values(glossaryPagesBySlug).map((page) => page.path),
+  ...Object.values(hubPagesBySlug).map((page) => page.path),
+];
+const activePublicPaths = new Set(activePublicPathList);
+
+assert.equal(
+  activePublicPaths.size,
+  activePublicPathList.length,
+  "Active /de public route ownership contains a duplicate path.",
+);
+
 for (const path of sitemapPaths) {
   assert.equal(
     isSitemapEligiblePath(path),
@@ -58,6 +80,29 @@ for (const path of sitemapPaths) {
     `Sitemap path must remain eligible: ${path}`,
   );
   assert.ok(metadataMap[path], `Metadata entry missing for sitemap path: ${path}`);
+}
+
+for (const path of deferredPhase2Routes) {
+  assert.equal(
+    activePublicPaths.has(path),
+    false,
+    `Deferred Phase 2 route must not resolve as an active owned /de public path: ${path}`,
+  );
+  assert.equal(
+    sitemapPaths.includes(path),
+    false,
+    `Deferred Phase 2 route must not leak into sitemap output: ${path}`,
+  );
+  assert.equal(
+    isSitemapEligiblePath(path),
+    false,
+    `Deferred Phase 2 route must remain ineligible for sitemap ownership until implemented: ${path}`,
+  );
+  assert.equal(
+    Boolean(metadataMap[path]),
+    false,
+    `Deferred Phase 2 route must not reserve canonical metadata before the runtime page exists: ${path}`,
+  );
 }
 
 for (const prefix of NON_INDEXABLE_PREFIXES) {
