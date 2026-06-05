@@ -4,6 +4,8 @@ Status: **ACTIVE / LOCKED.** Canonical public-website design direction. **Reconc
 
 Scope: public marketing/SEO pages only (`/de` and children). Does not change routes, SEO metadata, Stripe, pricing engine, order/upload/quote flows, admin or account areas.
 
+> **Reference-driven decisions:** concrete design/UX/layout/configurator/menu/typography choices are benchmarked against successful reference sites in `85-DESIGN-REFERENCE-BENCHMARKS.md` (which site to model each dimension after, what to take, what to avoid, with measured evidence). Brand identity (palette/logo/voice) stays locked here / SoT #14 and is never copied from competitors — references inform structure/scale/UX only.
+
 ---
 
 ## 1. Final design direction
