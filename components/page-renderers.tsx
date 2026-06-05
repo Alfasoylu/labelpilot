@@ -737,6 +737,7 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
                           className={
                             selectedMaterial === "OPAQUE" ? "cta-link" : "secondary-link"
                           }
+                          aria-current={selectedMaterial === "OPAQUE" ? "true" : undefined}
                         >
                           Opakes PP
                         </Link>
@@ -751,6 +752,7 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
                               ? "cta-link"
                               : "secondary-link"
                           }
+                          aria-current={selectedMaterial === "TRANSPARENT" ? "true" : undefined}
                         >
                           Transparentes PP
                         </Link>
@@ -771,6 +773,7 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
                           className={
                             selectedSize === "standard" ? "cta-link" : "secondary-link"
                           }
+                          aria-current={selectedSize === "standard" ? "true" : undefined}
                         >
                           100×200 mm
                         </Link>
@@ -783,6 +786,7 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
                             size: "custom",
                           })}
                           className={selectedSize === "custom" ? "cta-link" : "secondary-link"}
+                          aria-current={selectedSize === "custom" ? "true" : undefined}
                         >
                           Wunschformat
                         </Link>
@@ -807,6 +811,11 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
                               selectedQuantity === quantity && selectedSize === "standard"
                                 ? "cta-link"
                                 : "secondary-link"
+                            }
+                            aria-current={
+                              selectedQuantity === quantity && selectedSize === "standard"
+                                ? "true"
+                                : undefined
                             }
                           >
                             {quantity.toLocaleString("de-DE")}
