@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 
 import { buildCanonicalMetadata } from "../lib/seo.ts";
 import { calculateRefillReminder } from "../lib/reorders/refill-reminder.ts";
@@ -57,6 +58,27 @@ assert.equal(buildAbsoluteUrlFromBase("https://labelpilot.de", "/"), "https://la
 
 const sitemapPaths = sitemapEntries.map((entry) => entry.path);
 assert.equal(new Set(sitemapPaths).size, sitemapPaths.length);
+
+assert.equal(
+  hubPagesBySlug.glossar?.secondaryCta?.href,
+  "/de/pp-rollenetiketten",
+  "Glossary hub hero must keep a direct CTA to the core PP money page.",
+);
+assert.equal(
+  hubPagesBySlug.ratgeber?.secondaryCta?.href,
+  "/de/pp-rollenetiketten",
+  "Guide hub hero must keep a direct CTA to the core PP money page.",
+);
+
+const homepageRendererSource = readFileSync(
+  new URL("../components/page-renderers.tsx", import.meta.url),
+  "utf8",
+);
+assert.match(
+  homepageRendererSource,
+  /<Link href="\/de\/pp-rollenetiketten" className="secondary-link">\s*Alle PP-Rollenetiketten ansehen\s*<\/Link>/,
+  "Homepage package section must keep a visible direct link to the PP money-page overview.",
+);
 
 const duplicateIntentRouteGroups = [
   [

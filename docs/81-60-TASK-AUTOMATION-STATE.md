@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 23
+current_task: 24
 current_status: pending
-completed_at: 2026-06-05T08:10:00.0000000+03:00
-last_run_note: Revenue-readiness audit ran before Task 22 and no higher-severity blocker displaced the queue. Task 22 is complete: audited duplicate route intent between active product, guide and glossary pages and found a live metadata collision where /de/druckdaten and /de/ratgeber/druckdaten-vorbereiten used the same title despite owning different query roles. Corrected the commercial service page to own the “Druckdaten einreichen” intent while the guide keeps the “Druckdaten vorbereiten” intent, and added regression coverage in scripts/test-autonomous-safety.ts to enforce distinct title and metadata ownership across the main overlapping clusters (druckdaten, nachbestellen, rollenetiketten, pp-etiketten). Also added the planned but non-live guide route /de/ratgeber/druckdaten-speichern to deferredPhase2Routes so it cannot leak into sitemap or canonical ownership before runtime implementation exists. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 23.
+completed_at: 2026-06-05T08:04:23.0681855+03:00
+last_run_note: Revenue-readiness audit ran before Task 23 and no higher-severity blocker displaced the queue. Task 23 is complete: audited internal linking from the homepage plus the /de/ratgeber and /de/glossar hubs into the core PP money pages and found that direct commercial links existed, but the homepage package area and both hub hero CTA layers did not consistently push users straight into the main /de/pp-rollenetiketten commercial overview. Strengthened the homepage package section with a visible direct secondary CTA to /de/pp-rollenetiketten and repointed both hub secondary CTAs to the same core money page while leaving the deeper guide/glossary cross-links intact lower on the page. Added regression coverage in scripts/test-autonomous-safety.ts so the two hubs keep their hero-level PP money-page CTA and the homepage package section keeps its visible direct overview link. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 24.
 ```
 
 ---

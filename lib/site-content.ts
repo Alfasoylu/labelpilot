@@ -2486,7 +2486,10 @@ const glossaryHubPage: PublicPageData = {
     label: "Ratgeber öffnen",
     href: "/de/ratgeber",
   },
-  secondaryCta: quoteLink,
+  secondaryCta: {
+    label: "PP-Rollenetiketten ansehen",
+    href: "/de/pp-rollenetiketten",
+  },
   sections: [
     {
       title: "Warum ein Glossar im B2B-Etikettenkontext sinnvoll ist",
@@ -2862,8 +2865,8 @@ const ratgeberHubPage: PublicPageData = {
   ],
   primaryCta: quoteLink,
   secondaryCta: {
-    label: "Glossar öffnen",
-    href: "/de/glossar",
+    label: "PP-Rollenetiketten ansehen",
+    href: "/de/pp-rollenetiketten",
   },
   sections: [
     {

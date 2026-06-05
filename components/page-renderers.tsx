@@ -341,6 +341,9 @@ export function HomePage({ page }: HomePageProps) {
             <Link href="/de/druckdaten" className="cta-link">
               Druckdaten prüfen lassen
             </Link>
+            <Link href="/de/pp-rollenetiketten" className="secondary-link">
+              Alle PP-Rollenetiketten ansehen
+            </Link>
           </div>
         </Section>
 
