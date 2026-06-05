@@ -52,6 +52,16 @@ export default async function SavedDesignsPage({ searchParams }: SavedDesignsPag
           Jede Version bleibt getrennt gespeichert und kann für spätere Nachbestellungen
           wiederverwendet werden.
         </p>
+        <p className="field-hint">
+          Diese Ansicht ist der sichere Zugang über Ihren Bestelllink. Die vollständige
+          Konto-Übersicht – Bestellungen, Status, gespeicherte Designs und
+          Nachbestellung an einem Ort – finden Sie im Kundenkonto.
+        </p>
+        <div className="cta-row">
+          <Link href="/konto" className="cta-link">
+            Zum Kundenkonto
+          </Link>
+        </div>
       </article>
 
       <article className="surface-card">
