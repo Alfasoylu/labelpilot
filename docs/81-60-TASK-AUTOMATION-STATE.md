@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 18
+current_task: 19
 current_status: pending
-completed_at: 2026-06-05T05:01:49.4639614+03:00
-last_run_note: Revenue-readiness audit ran before Task 17 and no higher-severity blocker displaced the queue. Task 17 is complete: audited app/sitemap.ts against 26-SITEMAP-ROBOTS-CANONICAL.md and verified the intended indexable German public routes remain centrally sourced from lib/site-content.ts and filtered through shared sitemap governance. Hardened lib/seo/governance.ts so the feature-gated /de/wunschformat path cannot become sitemap-eligible while NEXT_PUBLIC_FEATURE_CUSTOM_SIZE is off, even if a future route registry change accidentally adds it. Updated scripts/test-autonomous-safety.ts to lock both the feature-gated Wunschformat exclusion and the stronger shared sitemap policy. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 18.
+completed_at: 2026-06-05T05:30:04.3565505+03:00
+last_run_note: Revenue-readiness audit ran before Task 18 and no higher-severity blocker displaced the queue. Task 18 is complete: verified app/sitemap.ts still sources entries only from the central German public route registry and that Ads landing page families /lp/* and /teklif/* remain excluded from sitemap output through shared non-indexable governance. Added explicit assertions to scripts/test-autonomous-safety.ts so both landing-page namespaces now have direct regression coverage instead of relying only on the generic prefix loop. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 19.
 ```
 
 ---

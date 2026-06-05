@@ -72,6 +72,16 @@ assert.equal(
   false,
   "Feature-gated Wunschformat must not leak into sitemap while the flag is off.",
 );
+assert.equal(
+  sitemapPaths.some((path) => path === "/lp" || path.startsWith("/lp/")),
+  false,
+  "Ads landing pages under /lp must never appear in sitemap output.",
+);
+assert.equal(
+  sitemapPaths.some((path) => path === "/teklif" || path.startsWith("/teklif/")),
+  false,
+  "Ads landing pages under /teklif must never appear in sitemap output.",
+);
 
 assert.equal(canTransitionOrderStatus("PENDING_PAYMENT", "PAID"), true);
 assert.equal(canTransitionOrderStatus("FILE_REVIEW", "PROOF_REQUIRED"), true);
