@@ -1364,10 +1364,10 @@ const topLevelPages: PublicPageData[] = [
     path: "/de/druckdaten",
     slug: "druckdaten",
     kind: "service",
-    title: "Druckdaten für Etiketten vorbereiten",
+    title: "Druckdaten für Etiketten einreichen",
     eyebrow: "Druckdaten",
     lead:
-      "Welche Druckdaten für PP-Rollenetiketten benötigt werden: PDF, AI, EPS, SVG, PNG, JPG oder ZIP. Mit technischer Dateiprüfung.",
+      "Welche Druckdaten für PP-Rollenetiketten akzeptiert werden: PDF, AI, EPS, SVG, PNG, JPG oder ZIP. Mit technischer Dateiprüfung vor der Freigabe.",
     heroBullets: [
       "Das Angebotsformular funktioniert zunächst ohne Upload.",
       "Wir prüfen die erwarteten Formate technisch, bevor produziert wird.",
@@ -2969,6 +2969,7 @@ export const deferredPhase2Routes = [
   "/de/thermoetiketten-100x100",
   "/de/ratgeber/etiketten-1000-vs-5000-stueck",
   "/de/ratgeber/etiketten-nachbestellen",
+  "/de/ratgeber/druckdaten-speichern",
   "/de/supplement-etiketten/transparente-pp-etiketten",
   "/de/kaffee-etiketten/opake-pp-etiketten",
 ];

@@ -71,9 +71,9 @@ export const metadataMap: Record<string, MetadataEntry> = {
       "Bestellen Sie freigegebene Etiketten schneller erneut. Labelpilot.de speichert Druckdaten, Material, Größe und Stückzahl für Nachbestellungen.",
   },
   "/de/druckdaten": {
-    title: "Druckdaten für Etiketten vorbereiten | Labelpilot.de",
+    title: "Druckdaten für Etiketten einreichen | Labelpilot.de",
     description:
-      "Welche Druckdaten für PP-Rollenetiketten benötigt werden: PDF, AI, EPS, SVG, PNG, JPG oder ZIP. Mit technischer Dateiprüfung.",
+      "Welche Druckdaten für PP-Rollenetiketten akzeptiert werden: PDF, AI, EPS, SVG, PNG, JPG oder ZIP. Mit technischer Dateiprüfung vor der Freigabe.",
   },
   "/de/produktion-versand": {
     title: "Produktion und Versand nach Deutschland | Labelpilot.de",

@@ -58,6 +58,116 @@ assert.equal(buildAbsoluteUrlFromBase("https://labelpilot.de", "/"), "https://la
 const sitemapPaths = sitemapEntries.map((entry) => entry.path);
 assert.equal(new Set(sitemapPaths).size, sitemapPaths.length);
 
+const duplicateIntentRouteGroups = [
+  [
+    {
+      path: "/de/druckdaten",
+      title: publicPagesBySlug.druckdaten?.title,
+      metadataTitle: metadataMap["/de/druckdaten"]?.title,
+      requiredMarker: "einreichen",
+    },
+    {
+      path: "/de/ratgeber/druckdaten-vorbereiten",
+      title: guidePagesBySlug["druckdaten-vorbereiten"]?.title,
+      metadataTitle: metadataMap["/de/ratgeber/druckdaten-vorbereiten"]?.title,
+      requiredMarker: "vorbereiten",
+    },
+    {
+      path: "/de/glossar/druckdaten",
+      title: glossaryPagesBySlug.druckdaten?.title,
+      metadataTitle: metadataMap["/de/glossar/druckdaten"]?.title,
+      requiredMarker: "Was sind",
+    },
+  ],
+  [
+    {
+      path: "/de/nachbestellen",
+      title: publicPagesBySlug.nachbestellen?.title,
+      metadataTitle: metadataMap["/de/nachbestellen"]?.title,
+      requiredMarker: "nachbestellen",
+    },
+    {
+      path: "/de/glossar/nachbestellung",
+      title: glossaryPagesBySlug.nachbestellung?.title,
+      metadataTitle: metadataMap["/de/glossar/nachbestellung"]?.title,
+      requiredMarker: "Was bedeutet",
+    },
+  ],
+  [
+    {
+      path: "/de/pp-rollenetiketten",
+      title: publicPagesBySlug["pp-rollenetiketten"]?.title,
+      metadataTitle: metadataMap["/de/pp-rollenetiketten"]?.title,
+      requiredMarker: "drucken",
+    },
+    {
+      path: "/de/ratgeber/rollenetiketten-vs-bogenetiketten",
+      title: guidePagesBySlug["rollenetiketten-vs-bogenetiketten"]?.title,
+      metadataTitle: metadataMap["/de/ratgeber/rollenetiketten-vs-bogenetiketten"]?.title,
+      requiredMarker: "vs.",
+    },
+    {
+      path: "/de/glossar/rollenetiketten",
+      title: glossaryPagesBySlug.rollenetiketten?.title,
+      metadataTitle: metadataMap["/de/glossar/rollenetiketten"]?.title,
+      requiredMarker: "Was sind",
+    },
+  ],
+  [
+    {
+      path: "/de/opake-pp-etiketten",
+      title: publicPagesBySlug["opake-pp-etiketten"]?.title,
+      metadataTitle: metadataMap["/de/opake-pp-etiketten"]?.title,
+      requiredMarker: "drucken",
+    },
+    {
+      path: "/de/ratgeber/pp-etiketten-vs-papieretiketten",
+      title: guidePagesBySlug["pp-etiketten-vs-papieretiketten"]?.title,
+      metadataTitle: metadataMap["/de/ratgeber/pp-etiketten-vs-papieretiketten"]?.title,
+      requiredMarker: "vs.",
+    },
+    {
+      path: "/de/glossar/pp-etiketten",
+      title: glossaryPagesBySlug["pp-etiketten"]?.title,
+      metadataTitle: metadataMap["/de/glossar/pp-etiketten"]?.title,
+      requiredMarker: "Was sind",
+    },
+  ],
+];
+
+for (const group of duplicateIntentRouteGroups) {
+  const pageTitles = group.map((entry) => entry.title);
+  const metadataTitles = group.map((entry) => entry.metadataTitle);
+
+  assert.equal(
+    new Set(pageTitles).size,
+    pageTitles.length,
+    `Duplicate route intent must keep distinct on-page titles: ${group
+      .map((entry) => entry.path)
+      .join(", ")}`,
+  );
+  assert.equal(
+    new Set(metadataTitles).size,
+    metadataTitles.length,
+    `Duplicate route intent must keep distinct metadata titles: ${group
+      .map((entry) => entry.path)
+      .join(", ")}`,
+  );
+
+  for (const entry of group) {
+    assert.match(
+      entry.title ?? "",
+      new RegExp(entry.requiredMarker, "i"),
+      `Active route title must preserve its intended query role: ${entry.path}`,
+    );
+    assert.match(
+      entry.metadataTitle ?? "",
+      new RegExp(entry.requiredMarker, "i"),
+      `Metadata title must preserve its intended query role: ${entry.path}`,
+    );
+  }
+}
+
 const activePublicPathList = [
   "/de",
   ...Object.values(publicPagesBySlug).map((page) => page.path),

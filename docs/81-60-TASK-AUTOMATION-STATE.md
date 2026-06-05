@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 22
+current_task: 23
 current_status: pending
-completed_at: 2026-06-05T07:02:37.1248855+03:00
-last_run_note: Revenue-readiness audit ran before Task 21 and no higher-severity blocker displaced the queue. Task 21 is complete: audited German slug ownership for /de public routes and confirmed the live route registries only render the intended canonical slug families, but the shared SEO governance layer did not centrally know that several Phase-2 German slugs remain deferred. Hardened lib/seo/governance.ts so deferred /de routes stay ineligible for sitemap ownership even if they are accidentally added later, and added direct regression coverage in scripts/test-autonomous-safety.ts to ensure deferred German slugs remain outside active public route ownership, sitemap output, and metadata reservation until the runtime pages exist. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 22.
+completed_at: 2026-06-05T08:10:00.0000000+03:00
+last_run_note: Revenue-readiness audit ran before Task 22 and no higher-severity blocker displaced the queue. Task 22 is complete: audited duplicate route intent between active product, guide and glossary pages and found a live metadata collision where /de/druckdaten and /de/ratgeber/druckdaten-vorbereiten used the same title despite owning different query roles. Corrected the commercial service page to own the “Druckdaten einreichen” intent while the guide keeps the “Druckdaten vorbereiten” intent, and added regression coverage in scripts/test-autonomous-safety.ts to enforce distinct title and metadata ownership across the main overlapping clusters (druckdaten, nachbestellen, rollenetiketten, pp-etiketten). Also added the planned but non-live guide route /de/ratgeber/druckdaten-speichern to deferredPhase2Routes so it cannot leak into sitemap or canonical ownership before runtime implementation exists. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 23.
 ```
 
 ---
