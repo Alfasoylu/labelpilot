@@ -14,6 +14,9 @@ export function BrandHero({ title, lead }: BrandHeroProps) {
         <h1 className="hero-split__title">{title}</h1>
         <p className="hero-split__lead">{lead}</p>
         <div className="hero-split__actions">
+          <Link href="/de/angebot-anfordern" className="cta-link">
+            Angebot anfordern
+          </Link>
           <Link href="/de/musterbox" className="cta-link">
             Musterbox anfordern
           </Link>
@@ -21,6 +24,20 @@ export function BrandHero({ title, lead }: BrandHeroProps) {
             Preise ansehen
           </Link>
         </div>
+        <ul className="hero-split__trust">
+          <li>
+            <Link href="/de/angebot-anfordern">Angebot:</Link> bei Sonderfällen,
+            großen Mengen oder mehreren Sorten.
+          </li>
+          <li>
+            <Link href="/de/musterbox">Musterbox:</Link> wenn Material, Haptik
+            oder opak vs. transparent noch offen sind.
+          </li>
+          <li>
+            <Link href="/de/nachbestellen">Nachbestellen:</Link> wenn Datei,
+            Material und Spezifikation schon freigegeben wurden.
+          </li>
+        </ul>
         <ul className="hero-split__trust">
           <li>Technische Druckdatenprüfung</li>
           <li>Proof vor Produktion</li>

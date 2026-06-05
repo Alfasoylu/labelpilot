@@ -74,10 +74,29 @@ const homepageRendererSource = readFileSync(
   new URL("../components/page-renderers.tsx", import.meta.url),
   "utf8",
 );
+const brandHeroSource = readFileSync(
+  new URL("../components/sections/BrandHero.tsx", import.meta.url),
+  "utf8",
+);
 assert.match(
   homepageRendererSource,
   /<Link href="\/de\/pp-rollenetiketten" className="secondary-link">\s*Alle PP-Rollenetiketten ansehen\s*<\/Link>/,
   "Homepage package section must keep a visible direct link to the PP money-page overview.",
+);
+assert.match(
+  brandHeroSource,
+  /<Link href="\/de\/angebot-anfordern" className="cta-link">\s*Angebot anfordern\s*<\/Link>/,
+  "Homepage hero must keep a direct quote CTA for higher-complexity B2B requests.",
+);
+assert.match(
+  brandHeroSource,
+  /<Link href="\/de\/musterbox" className="cta-link">\s*Musterbox anfordern\s*<\/Link>/,
+  "Homepage hero must keep a direct sample-box CTA for material clarification.",
+);
+assert.match(
+  brandHeroSource,
+  /<Link href="\/de\/nachbestellen">Nachbestellen:<\/Link>/,
+  "Homepage hero must explain the direct reorder path when artwork and specification are already approved.",
 );
 
 const rootPageSource = readFileSync(
