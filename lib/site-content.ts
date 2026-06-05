@@ -260,7 +260,7 @@ export const transparentPackages: PackageTier[] = [
     note: "Premium-Nachbestellung",
     description:
       "Für kleinere Wiederholungen mit transparenter Produktoptik und gespeicherter Spezifikation.",
-    badge: "Reorder-Ready",
+    badge: "Für Nachbestellungen",
   }),
   buildFixedTier({
     label: "Standard",
@@ -294,7 +294,7 @@ export const transparentPackages: PackageTier[] = [
 
 export const thermalPackageNotes: PackageTier[] = [
   {
-    label: "Cross-Sell",
+    label: "Zusatzprodukt",
     quantity: "ab 1.000 Stück",
     priceLabel: "Angebot",
     note: "Anwendungsabhängig",
@@ -738,7 +738,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Ist 2.000 Stück direkt vorgesehen?",
         answer:
-          "Ja. Die Preisstaffel enthält eine 2.000er-Stufe als Reorder-Ready-Paket für wiederkehrende kleine Chargen.",
+          "Ja. Die Preisstaffel enthält eine 2.000er-Stufe als Paket für Nachbestellungen bei wiederkehrenden kleinen Chargen.",
       },
       {
         question: "Kann ich transparente PP-Etiketten später nachbestellen?",
@@ -847,7 +847,7 @@ const topLevelPages: PublicPageData[] = [
       {
         title: "Warum die 2.000er-Stufe wichtig ist",
         body: [
-          "Die Reorder-Ready-Stufe wurde bewusst eingeführt, damit kleine wiederkehrende Marken nicht direkt von 1.000 auf 5.000 springen müssen.",
+          "Die Stufe für Nachbestellungen wurde bewusst eingeführt, damit kleine wiederkehrende Marken nicht direkt von 1.000 auf 5.000 springen müssen.",
         ],
       },
       {
@@ -1020,7 +1020,7 @@ const topLevelPages: PublicPageData[] = [
         ],
         [
           "Thermo",
-          "Cross-Sell",
+          "Zusatzprodukt",
           "Versand, Lager, interne Logistik als Ergänzung",
         ],
       ],
@@ -1132,11 +1132,11 @@ const topLevelPages: PublicPageData[] = [
     slug: "thermo-versandetiketten",
     kind: "product",
     title: "Thermo-Versandetiketten 100×150 mm",
-    eyebrow: "Cross-Sell",
+    eyebrow: "Zusatzprodukt",
     lead:
       "Thermo-Versandetiketten und Thermoetiketten als B2B-Ergänzung zu Produktetiketten. Für Versand, Lager und Fulfillment-Prozesse.",
     heroBullets: [
-      "Bewusst als Cross-Sell positioniert und nicht als Hauptprodukt.",
+      "Bewusst als Zusatzprodukt positioniert und nicht als Hauptprodukt.",
       "Typisch für Versand, Lager und Fulfillment statt klassische Markenverpackung.",
       "Die Preise sind angebotsbasiert, da Menge und Anwendung stark variieren.",
     ],
@@ -1151,7 +1151,7 @@ const topLevelPages: PublicPageData[] = [
       label: "PP-Rollenetiketten ansehen",
       href: "/de/pp-rollenetiketten",
     },
-    packageHeading: "Cross-Sell statt Hauptprodukt",
+    packageHeading: "Zusatzprodukt statt Hauptprodukt",
     packageLead:
       "Thermoetiketten sind ein ergänzendes Produkt. Deshalb erfolgt die Preisgestaltung bewusst über ein individuelles Angebot.",
     packageTable: thermalPackageNotes,
@@ -2649,7 +2649,7 @@ const glossaryPages: PublicPageData[] = [
     title: "Was sind Thermoetiketten?",
     eyebrow: "Glossar",
     lead:
-      "Thermoetiketten kurz erklärt: Einsatz in Versand, Lager und Fulfillment – und warum sie nur als Cross-Sell auftreten.",
+      "Thermoetiketten kurz erklärt: Einsatz in Versand, Lager und Fulfillment – und warum sie nur als Zusatzprodukt auftreten.",
     sidebarTitle: "Kurz gesagt",
     sidebarBullets: [
       "für Versand und Logistik",
@@ -2664,7 +2664,7 @@ const glossaryPages: PublicPageData[] = [
         "Wenn Versand, Lagerung oder Fulfillment gemeinsam mit Produktetiketten betrachtet werden.",
       exampleUse:
         "Versandetiketten 100×150 mm für Paket- und Lagerprozesse.",
-      relatedProduct: "Thermo-Versandetiketten als ergänzendes Cross-Sell",
+      relatedProduct: "Thermo-Versandetiketten als ergänzendes Zusatzprodukt",
     },
     sections: [
       {

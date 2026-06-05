@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 31
+current_task: 32
 current_status: pending
-completed_at: 2026-06-05T12:11:16.1768025+03:00
-last_run_note: Revenue-readiness audit ran before Task 30 and no higher-severity blocker displaced the queue. Task 30 is complete: audited trust blocks and proof-process messaging for B2B credibility and found the main weakness in how the site described proof safety too generically across components/page-renderers.tsx and components/orders/ProofApprovalPanel.tsx. Tightened the product-page trust block so the visible B2B process now explicitly names checkout, payment confirmation, order confirmation and proof approval, and added a dedicated proof-guidance block that explains one digital proof is part of the standard process, change requests go into the next proof instead of directly into production, and only the explicitly approved version becomes the basis for production and later reorders. Added regression coverage in scripts/test-autonomous-safety.ts to lock the stronger trust and proof-process wording. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 31.
+completed_at: 2026-06-05T12:15:40.0000000+03:00
+last_run_note: Revenue-readiness audit ran before Task 31 and no higher-severity blocker displaced the queue. Task 31 is complete: audited public product-card copy for German-only consistency and commercial accuracy and found the remaining customer-facing drift in lib/site-content.ts, where package-tier labels still leaked English commercial wording ("Reorder-Ready" on the transparent 2.000 tier and "Cross-Sell" on the thermal cross-sell card). Replaced those labels with the German customer-facing equivalents "Für Nachbestellungen" and "Zusatzprodukt" so package cards stay aligned with the German-only MVP rule and the thermal product remains framed as a secondary commercial path instead of a generic English add-on label. Added regression coverage in scripts/test-autonomous-safety.ts so English product-card labels cannot silently re-enter the public package layer. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 32.
 ```
 
 ---

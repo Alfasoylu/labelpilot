@@ -74,6 +74,10 @@ const homepageRendererSource = readFileSync(
   new URL("../components/page-renderers.tsx", import.meta.url),
   "utf8",
 );
+const siteContentSource = readFileSync(
+  new URL("../lib/site-content.ts", import.meta.url),
+  "utf8",
+);
 const brandHeroSource = readFileSync(
   new URL("../components/sections/BrandHero.tsx", import.meta.url),
   "utf8",
@@ -129,6 +133,11 @@ assert.match(
   pricingCardSource,
   /Nettopreis pro Stück: \{tier\.perPieceLabel\}/,
   "Fixed-price cards must keep the per-piece net figure as a separately labeled commercial line.",
+);
+assert.doesNotMatch(
+  siteContentSource,
+  /Reorder-Ready|Cross-Sell/,
+  "Public product-card package copy must stay German-only and must not leak English commercial labels.",
 );
 
 assert.match(
