@@ -108,3 +108,16 @@ Consolidated: across the second through tenth supervisor runs, no Codex task-exe
 - **No BLOCKED tasks executed** ✓; no flags enabled ✓; no locked prices changed ✓; no schema/migration changes ✓.
 - **Steering added:** Inserted `SUPERVISOR NOTE (2026-06-05 UTC)` before Task 17 in `docs/81-60-TASK-AUTOMATION-PLAN.md` — Guardrail 7 one-commit reminder citing the Task 15 violation, legal banner ops note, PA-1 ordering confirmation.
 - **Next expected Codex action:** Execute Task 17 (sitemap audit) as a single atomic commit.
+
+### 2026-06-05 UTC | Task 17 reviewed — PASS
+
+- **Commit reviewed:** `db429b3` ("fix(seo): guard feature-gated sitemap routes")
+- **Task:** 17 — Audit `app/sitemap.ts` to confirm only intended indexable routes are included.
+- **Files changed:** `docs/81-60-TASK-AUTOMATION-STATE.md` (STATE advance 17→18), `lib/seo/governance.ts` (add `FEATURE_GATED_SITEMAP_PATHS` guard), `scripts/test-autonomous-safety.ts` (add two assertions for `/de/wunschformat` exclusion).
+- **Verdict: PASS.**
+  - `customSizeFeatureEnabled` in `lib/pricing/custom-size-feature.ts` is a module-level boolean (`process.env.NEXT_PUBLIC_FEATURE_CUSTOM_SIZE === "true"`), resolved at build time. With flag OFF (current state), evaluates to `false` → `isSitemapEligiblePath("/de/wunschformat")` correctly returns `false`. ✓
+  - Import uses explicit `.ts` extension — valid: project tsconfig has `allowImportingTsExtensions: true` + `moduleResolution: "bundler"`; pattern is consistent with other `lib/` imports. ✓
+  - Two test assertions added: point-check `isSitemapEligiblePath("/de/wunschformat") === false` + cross-check that `sitemapPaths` array does not include `/de/wunschformat`. ✓
+  - One commit for one task ✓; sequential order (Task 16→17→18) ✓; no BLOCKED tasks executed ✓; no feature flags enabled ✓; no price/schema/German-public-copy changes ✓.
+- **No issues; no steering needed.**
+- **Next expected Codex action:** Execute Task 18 ("Verify Ads landing pages are excluded from sitemap output") as a single atomic commit, per Guardrail 7.
