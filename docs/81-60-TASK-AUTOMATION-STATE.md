@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 32
+current_task: 33
 current_status: pending
-completed_at: 2026-06-05T12:15:40.0000000+03:00
-last_run_note: Revenue-readiness audit ran before Task 31 and no higher-severity blocker displaced the queue. Task 31 is complete: audited public product-card copy for German-only consistency and commercial accuracy and found the remaining customer-facing drift in lib/site-content.ts, where package-tier labels still leaked English commercial wording ("Reorder-Ready" on the transparent 2.000 tier and "Cross-Sell" on the thermal cross-sell card). Replaced those labels with the German customer-facing equivalents "Für Nachbestellungen" and "Zusatzprodukt" so package cards stay aligned with the German-only MVP rule and the thermal product remains framed as a secondary commercial path instead of a generic English add-on label. Added regression coverage in scripts/test-autonomous-safety.ts so English product-card labels cannot silently re-enter the public package layer. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 32.
+completed_at: 2026-06-05T12:47:00.0000000+03:00
+last_run_note: Revenue-readiness audit ran before Task 32 and no higher-severity blocker displaced the queue. Task 32 is complete: audited FAQ blocks for duplicate-intent and thin-copy risk and found the clearest commercial gap on /de/etiketten-100x200, which was an indexed format page without any FAQ block at all. Added four format-specific FAQs in lib/site-content.ts covering when 100×200 mm is suitable, how to compare opak vs. transparent within the same format, which fixed package quantities exist, and how Sonderformate cleanly fall back to Wunschformat or the quote path. Added regression coverage in scripts/test-autonomous-safety.ts so the indexed 100×200 format page keeps a real FAQ block and does not collapse back into a thin bridge page. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 33.
 ```
 
 ---

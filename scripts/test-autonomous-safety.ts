@@ -69,6 +69,15 @@ assert.equal(
   "/de/pp-rollenetiketten",
   "Guide hub hero must keep a direct CTA to the core PP money page.",
 );
+assert.ok(
+  (publicPagesBySlug["etiketten-100x200"]?.faqs?.length ?? 0) >= 3,
+  "The indexed 100×200 format page must keep a real FAQ block instead of collapsing into a thin commercial bridge page.",
+);
+assert.match(
+  publicPagesBySlug["etiketten-100x200"]?.faqs?.[0]?.question ?? "",
+  /100×200 mm|Sonderformat|Mengen/i,
+  "The 100×200 format-page FAQ block must stay format-specific rather than duplicating generic product FAQ intent.",
+);
 
 const homepageRendererSource = readFileSync(
   new URL("../components/page-renderers.tsx", import.meta.url),

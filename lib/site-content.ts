@@ -1117,6 +1117,28 @@ const topLevelPages: PublicPageData[] = [
         ],
       },
     ],
+    faqs: [
+      {
+        question: "Für welche Verpackungen ist 100×200 mm sinnvoll?",
+        answer:
+          "Das Format passt vor allem zu Produktverpackungen, auf denen Pflichtangaben, Markenbild und Anwendungshinweise gut lesbar zusammenkommen müssen. Typische Fälle sind größere Dosen, Beutel, Flaschen oder Gläser mit klarer Front- oder Rückseitenfläche.",
+      },
+      {
+        question: "Kann ich 100×200 mm in opak und transparent vergleichen?",
+        answer:
+          "Ja. Genau dafür ist diese Formatseite gedacht: Das Maß bleibt gleich, während Sie sauber zwischen opakem PP für mehr Deckkraft und transparentem PP für sichtbarere Verpackungsoptik unterscheiden können.",
+      },
+      {
+        question: "Welche Mengen gibt es für 100×200-mm-Etiketten?",
+        answer:
+          "Für das Standardformat laufen die festen Pakete über 1.000, 2.000, 5.000 und 10.000 Stück. Ab 20.000 Stück oder bei mehreren Varianten führt der saubere Weg über das Angebotsformular.",
+      },
+      {
+        question: "Was passiert, wenn ich statt 100×200 mm ein Sonderformat brauche?",
+        answer:
+          "Dann bleibt 100×200 mm der Referenzpunkt für Preis- und Materialvergleich, aber die konkrete Anfrage läuft über Wunschformat oder direkt über den Angebotsweg. So wird ein Sondermaß nicht in ein unpassendes Standardpaket gedrückt.",
+      },
+    ],
     relatedLinks: [
       {
         label: "PP vs. Papier",
