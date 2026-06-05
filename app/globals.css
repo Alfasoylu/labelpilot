@@ -69,7 +69,7 @@ h3,
 h4,
 .brand-hero__title {
   font-family: var(--font-heading-stack);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.02em;
 }
 
@@ -298,7 +298,7 @@ textarea {
 .brand-hero__title {
   margin: 0;
   color: #f8fafc;
-  font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
   line-height: 1.08;
   letter-spacing: -0.015em;
 }
@@ -307,7 +307,7 @@ textarea {
   margin: 18px 0 0;
   max-width: 40rem;
   color: rgba(248, 250, 252, 0.84);
-  font-size: clamp(1rem, 1.7vw, 1.18rem);
+  font-size: clamp(0.98rem, 1.1vw, 1.05rem);
   line-height: 1.6;
 }
 
@@ -484,7 +484,7 @@ textarea {
 
 .hero-panel h1,
 .legal-card h1 {
-  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  font-size: clamp(1.7rem, 2.9vw, 2.4rem);
 }
 
 .section-header h2,
@@ -1235,7 +1235,7 @@ th {
 .hero-split__title {
   margin: 16px 0 0;
   color: var(--text-strong);
-  font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
   line-height: 1.04;
   letter-spacing: -0.02em;
 }
