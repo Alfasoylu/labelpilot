@@ -82,6 +82,10 @@ const pricingCardSource = readFileSync(
   new URL("../components/cards/PricingCard.tsx", import.meta.url),
   "utf8",
 );
+const customSizeFormSource = readFileSync(
+  new URL("../components/custom-size-price-form.tsx", import.meta.url),
+  "utf8",
+);
 assert.match(
   homepageRendererSource,
   /<Link href="\/de\/pp-rollenetiketten" className="secondary-link">\s*Alle PP-Rollenetiketten ansehen\s*<\/Link>/,
@@ -121,6 +125,27 @@ assert.match(
   pricingCardSource,
   /Nettopreis pro Stück: \{tier\.perPieceLabel\}/,
   "Fixed-price cards must keep the per-piece net figure as a separately labeled commercial line.",
+);
+
+assert.match(
+  customSizeFormSource,
+  /Wunschformat ist bewusst ein kontrollierter Zusatzpfad mit klarem Angebots-Fallback\./,
+  "Custom-size page must keep the quote fallback explicit instead of presenting the path as a normal fixed-price checkout route.",
+);
+assert.match(
+  customSizeFormSource,
+  /Direkt berechenbar sind\s*nur Wunschformate innerhalb der freigegebenen Preislogik\./,
+  "Custom-size idle state must explain that only approved request shapes are publicly priceable.",
+);
+assert.match(
+  customSizeFormSource,
+  /Er gilt nur für direkt kalkulierbare\s*Wunschformate ohne zusätzliche Sonderanforderungen\./,
+  "Custom-size result state must narrow the displayed Richtpreis to directly calculable request shapes.",
+);
+assert.match(
+  customSizeFormSource,
+  /Sobald Weißunterdruck, Konturschnitt, Sonderklebstoff, Veredelung,\s*variable Daten, Multi-SKU oder Mengen ab 20\.000 Stück ins Spiel\s*kommen, bleibt der Angebotsweg verbindlich\./,
+  "Custom-size direct-price state must keep the quote-only exceptions clearly separated from the public Richtpreis.",
 );
 
 const rootPageSource = readFileSync(

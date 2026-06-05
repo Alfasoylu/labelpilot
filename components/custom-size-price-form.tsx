@@ -180,7 +180,7 @@ export function CustomSizePriceForm({
 
   const calculatorHint =
     variant === "page"
-      ? "Der Rechner ist eine Orientierungs- und Vorqualifizierungsstufe. Die festen 100x200-Pakete bleiben der Standardweg; Sonderfälle und Grenzwerte führen bewusst in den Angebotsprozess."
+      ? "Der Rechner ist eine Orientierungs- und Vorqualifizierungsstufe. Die festen 100x200-Pakete bleiben der Standardweg; Wunschformat ist bewusst ein kontrollierter Zusatzpfad mit klarem Angebots-Fallback."
       : "100x200 mm bleibt der schnellste Checkout-Weg. Wunschformat ist bewusst ein kontrollierter Zusatzpfad.";
 
   const calculatorHeading =
@@ -312,9 +312,9 @@ export function CustomSizePriceForm({
           {state.status === "idle" ? (
             <>
               <p>
-                Geben Sie Material, Breite, Höhe und Menge ein. Wenn Wunschformat,
-                Umfang oder Zusatzwünsche nicht in den Standardweg passen, führen wir
-                Sie direkt in den passenden Angebotsprozess.
+                Geben Sie Material, Breite, Höhe und Menge ein. Direkt berechenbar sind
+                nur Wunschformate innerhalb der freigegebenen Preislogik. Alles, was
+                davon abweicht, geht sauber in den Angebotsprozess.
               </p>
               <ul className="simple-list">
                 {quoteFallbackReasons.map((reason) => (
@@ -354,8 +354,14 @@ export function CustomSizePriceForm({
           state.result.quoteRequired ? (
             <div className="section-stack">
               <p>
-                Für dieses Wunschformat oder diesen Umfang erstellen wir ein
-                individuelles Angebot statt einer Direktkalkulation.
+                Für dieses Wunschformat oder diesen Umfang zeigen wir bewusst keinen
+                öffentlichen Richtpreis. Sie erhalten stattdessen ein individuelles
+                Angebot mit passender Prüfung.
+              </p>
+              <p className="field-hint">
+                Der Wunschformat-Rechner deckt nur direkt freigegebene Standardfälle
+                ab. Größere Umfänge und Sonderanforderungen laufen kontrolliert über
+                den Angebotsweg.
               </p>
               <ul className="simple-list">
                 {quoteFallbackReasons.map((reason) => (
@@ -380,8 +386,8 @@ export function CustomSizePriceForm({
               </p>
               <p className="field-hint">
                 Dieser Richtpreis basiert auf den aktuell gepflegten Parametern für
-                Material, Fläche und Menge. Er ersetzt kein finales Angebot, wenn sich
-                Spezifikation, Datenstand oder Zusatzwünsche ändern.
+                Material, Fläche und Menge. Er gilt nur für direkt kalkulierbare
+                Wunschformate ohne zusätzliche Sonderanforderungen.
               </p>
               <div className="inline-actions">
                 <Link href={quoteHref} className="secondary-link">
@@ -389,9 +395,9 @@ export function CustomSizePriceForm({
                 </Link>
               </div>
               <p className="field-hint">
-                Für Weißunterdruck, Konturschnitt, Sonderklebstoff, Veredelung,
-                variable Daten, Multi-SKU oder Mengen ab 20.000 Stück bleibt der
-                Angebotsweg verbindlich.
+                Sobald Weißunterdruck, Konturschnitt, Sonderklebstoff, Veredelung,
+                variable Daten, Multi-SKU oder Mengen ab 20.000 Stück ins Spiel
+                kommen, bleibt der Angebotsweg verbindlich.
               </p>
             </div>
           ) : null}

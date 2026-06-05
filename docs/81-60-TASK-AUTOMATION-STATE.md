@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 29
+current_task: 30
 current_status: pending
-completed_at: 2026-06-05T10:30:56.5435540+03:00
-last_run_note: Revenue-readiness audit ran before Task 28 and no higher-severity blocker displaced the queue. Task 28 is complete: audited package-ladder messaging and found the main homepage mismatch in components/page-renderers.tsx, where the visible package section skipped the canonical 2.000 tier and jumped from 1.000 directly to 5.000. Restored the visible homepage ladder to the canonical fixed-package sequence 1.000 / 2.000 / 5.000 / 10.000 and added explicit copy that 1.000 is the paid Einstieg while 5.000 is the recommended B2B standard package. Added regression coverage in scripts/test-autonomous-safety.ts to lock both the 2.000 tier and the 1.000-vs-5.000 role messaging. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 29.
+completed_at: 2026-06-05T11:03:19.1814333+03:00
+last_run_note: Revenue-readiness audit ran before Task 29 and no higher-severity blocker displaced the queue. Task 29 is complete: audited the Wunschformat page for quote-fallback clarity and found the main risk in components/custom-size-price-form.tsx, where publicly calculable results and quote-only exceptions were explained too broadly in the same flow. Tightened the page copy so Wunschformat is explicitly framed as a controlled Zusatzpfad with clear Angebots-Fallback, the idle state now says only freigegebene request shapes are directly priceable, quote-required results now explain that no public Richtpreis is shown for that request, and direct-price results now scope the displayed Richtpreis to directly calculable Wunschformate without additional Sonderanforderungen. Added regression coverage in scripts/test-autonomous-safety.ts to lock the clearer quote-fallback and direct-price messaging. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 30.
 ```
 
 ---
