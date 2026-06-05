@@ -134,6 +134,8 @@ Phase 1 may prepare routes for Stripe/upload/admin but does not have to fully im
 
 ## 6. Phase 1 Non-Scope
 
+> **⚠️ SUPERSEDED (2026-06-05) — historical list.** The project has advanced well beyond Phase 1: full Stripe payment + webhook, file upload storage, admin dashboard, proofing workflow, reorder, and the customer account/portal (Track S) are all **built**. Canonical phase authority is `74-CODEX-CLAUDE-BACKLOG-AND-SEO-RELEASE-SCHEDULE.md` (per RECONCILIATION R-007); this list no longer gates implementation and is kept only for history.
+
 Do not build in Phase 1:
 
 ```txt

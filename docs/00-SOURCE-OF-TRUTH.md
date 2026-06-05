@@ -179,21 +179,19 @@ This section records current production blockers without changing source-of-trut
 
 ### Auth
 
-- **Status:** real customer auth is **not implemented live**.
-- **Observed live behavior:** customer login/account is absent; customer access is currently token-based for specific upload/proof/order actions, while admin access is protected by a Basic-Auth stopgap.
-- **Operational consequence:** the documented Supabase Auth account layer is not yet live; current access control is a transitional operational safeguard.
-- **Blocker:** full Supabase Auth implementation, account linking, and production auth rollout have not been completed.
-- **Responsible:** implementation phase owner plus operator for env rollout.
+- **Status (updated 2026-06-05):** **customer Supabase Auth + account layer is now implemented** (Track S · S3) — `/konto` login/registration, a customer dashboard (order history, saved designs, 1-click reorder, artwork/proof step links via S8), a `Customer` model and order/design linking by verified email. The additive prod migration `20260605193000_customer_account_links` is **applied to production** (via Supabase MCP) and `Customer` has RLS enabled.
+- **Admin auth:** still the **Basic-Auth stopgap** — S4 (Supabase admin auth + role) is **deferred** pending a live login test.
+- **Operator to confirm:** Supabase Auth env present in production + a live login/register round-trip tested end-to-end (the supervisor cannot verify a live session blind).
+- **Token fallback retained:** guest token access for upload/proof/order remains as a fallback alongside login.
+- **Responsible:** operator for env + live-login verification.
 
-### ⏸️ Deferred — founder-requested pre-Stripe customer purchase + account layer (REVISIT)
+### ✅ RESOLVED (2026-06-05) — founder-requested customer purchase + account layer (built via Track S)
 
-- **Request (founder, 2026-06-04):** *before* wiring Stripe, build a customer purchase + account layer: (1) **add-to-cart**, (2) **cart view** (`sepet görüntüleme`), (3) **account creation / sign-up** (`hesap oluşturma`), (4) **account-management pages** (`hesap yönetim sayfaları`).
-- **Status:** **DEFERRED / not started** — paused at the user's request ("şimdilik bir şey yapmayalım"); the codebase exploration to scope it was interrupted before any plan or code.
-- **Must reconcile before building (open design questions):**
-  1. **Cart vs locked model:** a multi-item cart may conflict with the locked fixed-package spec (#15: `1 design per order`, single-item) and the current guest-checkout flow. Decide whether the cart is genuinely multi-item or just a configure→review staging step, and whether multi-item orders are in scope.
-  2. **"Account creation" = real auth:** sign-up means real **Supabase Auth** — which is the **P3 Auth** item (today it is the token-only / admin Basic-Auth stopgap, see Auth status above). Building this now pulls P3 forward; confirm that sequencing.
-  3. **Overlap with existing portal:** account-management overlaps the existing `(account)` customer portal (saved designs, reorder, order history) per `19-CUSTOMER-PORTAL-v2.md` — extend, don't duplicate.
-- **Next step when resumed:** map current cart/auth/account state in code → reconcile with #15/guest-checkout + Supabase-Auth decisions → produce a sequenced plan + Codex prompts.
+- **Original request (founder, 2026-06-04):** before wiring Stripe, build (1) add-to-cart, (2) cart view, (3) account creation / sign-up, (4) account-management pages. This was paused ("şimdilik bir şey yapmayalım").
+- **Resolution (founder-directed Track S, 2026-06-05):** the **account layer was un-deferred and built** (S3: `/konto` + Supabase Auth + `Customer` model; prod migration applied; S8 added artwork/proof step links). The three previously-open design questions are now answered:
+  1. **Cart vs locked model →** NO multi-item cart was built. The configurator is a configure→review staging step; orders stay **single-item per #15**. The "add-to-cart / cart view" parts of the 06-04 request were intentionally **NOT** built.
+  2. **Sequencing (pulls P3 forward) →** **confirmed by the founder via Track S**; the P3 Auth+Account item is delivered ahead of the original ladder.
+  3. **Overlap with existing portal →** `/konto` is now the canonical **login** surface; `/de/gespeicherte-druckdaten` (token access) currently **overlaps** it (saved designs + reorder). **Consolidation is a tracked Track S follow-up (Task S8b)** — make the token view a fallback that links into `/konto`, not a parallel surface (SoT 195 "extend, don't duplicate").
 
 ---
 

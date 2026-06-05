@@ -128,7 +128,7 @@ The automation must always respect these rules:
 **REMAINING — execute top to bottom:**
 
 **Phase 1 — Sellability & German UX (Track S) — CURRENT · gate to ≥ 90/90:**
-`S4 → S5 → S6 → S7 → S8 → S9 → S10 → S11 → S12 → S13 → S14 → S15 → S16 → S17 → S18 → S19 → S20`
+`S4 → S5 → S6 → S7 → S8 → S8b → S9 → S10 → S11 → S12 → S13 → S14 → S15 → S16 → S17 → S18 → S19 → S20`
 
 **Phase 2 — Conversion fix (highest-value finding from Track C audits 26–34):**
 `35`
@@ -174,6 +174,7 @@ Execute **strictly in this order**, one task = one commit. Do not jump ahead, do
 4. **S6 — Hub/landing dedup** — `/de/etiketten-100x200` + opake/transparent pages deep-link INTO the configurator (no parallel checkout button); one clear buy surface (resolves the S1 role-spread note).
 5. **S7 — Bestellübersicht vor Zahlung** — checkout intake shows full summary (Material, Größe, Menge, Add-ons, Netto+Brutto, Lieferhinweis) + an „ändern" back-link; no dead-ends.
 6. **S8 — Konto-Sichtbarkeit** — order status + artwork/proof step visible inside the Kundenkonto (not only the token email link).
+6b. **S8b — Portal-Konsolidierung (reconciliation follow-up, RECONCILIATION R-022)** — `/konto` (Supabase login) and `/de/gespeicherte-druckdaten` (token access) currently overlap (saved designs + reorder). Per SoT 195 "extend, don't duplicate": make the token view a fallback that links into `/konto` (or fold it in), so there is one canonical account surface. No duplicate logic forks. Keep the token fallback working for guest/email access.
 7. **S9 — Mobile + Barrierefreiheit** — configurator, product, checkout, account on mobile; tap targets, labels, focus states, German screen-reader text.
 8. **S10 — Canonical/indexing for configurator params** — `/de/pp-rollenetiketten?...` canonicalizes to the clean URL (no param-duplicate indexing); sitemap unchanged; account pages noindex.
 9. **S11 — Schema consistency** — Product/Offer schema price = visible price after S1; no contradiction.
