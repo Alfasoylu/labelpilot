@@ -293,6 +293,19 @@ Fix the highest-severity broken functionality found in Tasks 1-14.
 ### Task 16
 Audit `app/robots.ts` for correct crawl and noindex policy handling.
 
+---
+> **SUPERVISOR NOTE (2026-06-05 UTC) — Post-Track-A batch review; Guardrail 7 reminder for Track B:**
+>
+> **Commits reviewed since last supervisor entry (all post-`7331d61` UC-1):** `a89a53d` (STATE docs update), `b5ccded` (Task 13 — admin-leads fix, PASS), `a25eab2` (Task 14 — stored-designs ownership fix, PASS), `9af4b91`+`6793857`+`abcbcc6` (Task 15 — severity review docs + legal banner removal + checkout gate, PASS WITH RISKS — see below), `3291594` (founder-direct docs: add Task PA-1 + architecture clarification, PASS), `3a006f0` (PA-1 — Standardgröße + Wunschformat flag-gated surface, PASS WITH RISKS — see below), `4daaf81` (Task 16 — robots hardening, PASS).
+>
+> **Issue 1 (Medium) — Guardrail 7 violation on Task 15:** Task 15 was split into 3 commits (`9af4b91` docs, `6793857` fix, `abcbcc6` fix) instead of 1. Guardrail 7 / `60-CODEX-AGENT-PROTOCOL.md §5.1` requires **one task = one atomic commit**. Going forward, all Track B–F tasks (17–60) must be exactly one commit per task. If the audit finds multiple issues, fix them together in a single commit, not sequentially. Do NOT create a separate "docs recording" commit then a "fix" commit — they must be bundled.
+>
+> **Issue 2 (Low — ops concern) — Legal banner removed:** `6793857` removed the global `LegalNoticeBox "Rechtlich zu prüfen"` banner from the `LegalPage` renderer. The AGB section text now has substantive (not placeholder) content. Verified: no `⚠️ Rechtlich zu prüfen\|Platzhalter` markers remain in `lib/site-content.ts`. The AGB content has NOT been confirmed as legally reviewed by counsel — this is a founder/ops responsibility, outside Codex scope. Codex must NOT modify AGB content.
+>
+> **Issue 3 (Note — ordering) — PA-1 done after Track A, not before:** PA-1 appears before Audit Track A in the file order, but Codex executed it after Tasks 13–15. This deviation is **acceptable**: PA-1 carries its own note "Do NOT pull it ahead of active revenue-readiness blockers," which Track A tasks were. The PA-1 implementation is correctly flag-gated: `components/custom-size-price-form.tsx` compact variant returns a quote-CTA card (not a calculator) when `NEXT_PUBLIC_FEATURE_CUSTOM_SIZE` is OFF. Canonical `100×200` prices unchanged. No BLOCKED tasks (0.11/0.12/0.12a/0.11b) executed. No flags enabled.
+>
+> **Next action:** Execute Task 17 as a **single atomic commit** — one audit + any fix, bundled together. Guardrail 7 applies strictly from here.
+
 ### Task 17
 Audit `app/sitemap.ts` to confirm only intended indexable routes are included.
 
