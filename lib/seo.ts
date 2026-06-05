@@ -192,6 +192,13 @@ function parseEuroAmount(label: string | undefined) {
 
 function getProductSchemaDetails(path: string) {
   switch (path) {
+    case "/de/pp-rollenetiketten":
+      return {
+        sku: "pp-roll-labels-configurator",
+        category: "PP-Rollenetiketten",
+        material: "Opakes oder transparentes PP",
+        format: "100×200 mm oder Wunschformat",
+      };
     case "/de/opake-pp-etiketten":
       return {
         sku: "pp-opaque-100x200",

@@ -39,6 +39,7 @@ import {
   fixedPriceIncludedRows,
   opaquePackages,
   pricingValueBundleLine,
+  transparentPackages,
 } from "@/lib/site-content";
 
 type HomePageProps = {
@@ -49,6 +50,11 @@ type HomePageProps = {
 type DynamicPageProps = {
   page: PublicPageData;
   canonicalPath: string;
+  searchParams?: {
+    material?: string;
+    size?: string;
+    quantity?: string;
+  };
 };
 
 const trustItems = [
@@ -571,7 +577,7 @@ export function HomePage({ page }: HomePageProps) {
   );
 }
 
-export function DynamicPage({ page, canonicalPath }: DynamicPageProps) {
+export function DynamicPage({ page, canonicalPath, searchParams }: DynamicPageProps) {
   if (page.kind === "quote") {
     return <QuotePage page={page} canonicalPath={canonicalPath} />;
   }
@@ -597,13 +603,36 @@ export function DynamicPage({ page, canonicalPath }: DynamicPageProps) {
   }
 
   if (page.kind === "product" || page.kind === "collection") {
-    return <ProductLikePage page={page} canonicalPath={canonicalPath} />;
+    return (
+      <ProductLikePage
+        page={page}
+        canonicalPath={canonicalPath}
+        searchParams={searchParams}
+      />
+    );
   }
 
   return <ServicePage page={page} canonicalPath={canonicalPath} />;
 }
 
-function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
+function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps) {
+  const isCanonicalConfiguratorPage = page.path === "/de/pp-rollenetiketten";
+  const selectedMaterial = normalizeConfiguratorMaterial(
+    searchParams?.material,
+    page.path,
+  );
+  const selectedSize = normalizeConfiguratorSize(searchParams?.size);
+  const selectedQuantity = normalizeConfiguratorQuantity(searchParams?.quantity);
+  const selectedPackageTable = isCanonicalConfiguratorPage
+    ? selectedMaterial === "TRANSPARENT"
+      ? transparentPackages
+      : opaquePackages
+    : page.packageTable;
+  const selectedMaterialLabel =
+    selectedMaterial === "TRANSPARENT" ? "Transparentes PP" : "Opakes PP";
+  const selectedSizeLabel =
+    selectedSize === "custom" ? "Wunschformat / Sondermaß" : "Standardgröße 100×200 mm";
+
   return (
     <div className="container section-stack">
       <Breadcrumbs currentLabel={page.title} currentPath={canonicalPath} />
@@ -667,7 +696,89 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
         >
           <div className="two-column">
             <article className="surface-card section-stack">
-              <h3>Standardgröße 100×200 mm</h3>
+              <h3>
+                {isCanonicalConfiguratorPage
+                  ? "Konfigurator für Material, Größe und Menge"
+                  : "Standardgröße 100×200 mm"}
+              </h3>
+              {isCanonicalConfiguratorPage ? (
+                <>
+                  <p>
+                    Wählen Sie zuerst Material und Größenpfad. Danach sehen Sie die passende
+                    Preislogik für Standardpakete oder den sauberen Angebotsweg für
+                    Wunschformate.
+                  </p>
+                  <div className="card-grid">
+                    <article className="feature-card">
+                      <h4>Material</h4>
+                      <div className="inline-actions">
+                        <Link
+                          href={buildConfiguratorHref({
+                            material: "opaque",
+                            size: selectedSize,
+                            quantity: selectedQuantity,
+                          })}
+                          className={
+                            selectedMaterial === "OPAQUE" ? "cta-link" : "secondary-link"
+                          }
+                        >
+                          Opakes PP
+                        </Link>
+                        <Link
+                          href={buildConfiguratorHref({
+                            material: "transparent",
+                            size: selectedSize,
+                            quantity: selectedQuantity,
+                          })}
+                          className={
+                            selectedMaterial === "TRANSPARENT"
+                              ? "cta-link"
+                              : "secondary-link"
+                          }
+                        >
+                          Transparentes PP
+                        </Link>
+                      </div>
+                    </article>
+                    <article className="feature-card">
+                      <h4>Größe</h4>
+                      <div className="inline-actions">
+                        <Link
+                          href={buildConfiguratorHref({
+                            material:
+                              selectedMaterial === "TRANSPARENT"
+                                ? "transparent"
+                                : "opaque",
+                            size: "standard",
+                            quantity: selectedQuantity,
+                          })}
+                          className={
+                            selectedSize === "standard" ? "cta-link" : "secondary-link"
+                          }
+                        >
+                          100×200 mm
+                        </Link>
+                        <Link
+                          href={buildConfiguratorHref({
+                            material:
+                              selectedMaterial === "TRANSPARENT"
+                                ? "transparent"
+                                : "opaque",
+                            size: "custom",
+                          })}
+                          className={selectedSize === "custom" ? "cta-link" : "secondary-link"}
+                        >
+                          Wunschformat
+                        </Link>
+                      </div>
+                    </article>
+                  </div>
+                  <p className="field-hint">
+                    Ausgewählt: {selectedMaterialLabel} · {selectedSizeLabel}
+                    {selectedSize === "standard" ? ` · ${selectedQuantity.toLocaleString("de-DE")} Stück als Startpunkt` : ""}
+                  </p>
+                </>
+              ) : null}
               <p>
                 Für Standardaufträge bleibt 100×200 mm der direkte und schnellste Weg:
                 feste Pakete, feste Preislogik und schneller Checkout.
@@ -679,20 +790,17 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
                 <li>Ab 20.000 Stück: Angebotsweg statt Direkt-Checkout</li>
               </ul>
               <div className="inline-actions">
-                {page.packageTable?.length ? (
+                {selectedSize === "standard" && selectedPackageTable?.length ? (
                   <Link href="#pakete" className="cta-link">
                     Standardpakete ansehen
                   </Link>
                 ) : (
                   <>
-                    <Link href="/de/opake-pp-etiketten" className="cta-link">
-                      Opake PP ansehen
+                    <Link href="/de/angebot-anfordern" className="cta-link">
+                      Angebot anfordern
                     </Link>
-                    <Link
-                      href="/de/transparente-pp-etiketten"
-                      className="secondary-link"
-                    >
-                      Transparente PP ansehen
+                    <Link href="/de/kontakt" className="secondary-link">
+                      Rückfrage klären
                     </Link>
                   </>
                 )}
@@ -704,28 +812,53 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
             </article>
             <CustomSizePriceForm
               variant="compact"
-              initialMaterialKey={getInitialCustomSizeMaterial(page.path)}
+              initialMaterialKey={
+                selectedMaterial === "TRANSPARENT" ? "TRANSPARENT_PP" : "OPAQUE_PP"
+              }
             />
           </div>
         </Section>
       ) : null}
 
-      {page.packageTable?.length ? (
+      {selectedSize === "standard" && selectedPackageTable?.length ? (
         <Section
           id="pakete"
           eyebrow="Pakete & Preise"
-          title={page.packageHeading ?? "Mengenpakete und Preise"}
-          lead={page.packageLead ?? "Feste Preise inkl. Versand. 5.000 Stück ist das empfohlene Paket."}
+          title={
+            isCanonicalConfiguratorPage
+              ? `Preise für ${selectedMaterialLabel}`
+              : page.packageHeading ?? "Mengenpakete und Preise"
+          }
+          lead={
+            isCanonicalConfiguratorPage
+              ? `${selectedSizeLabel} mit fester Paketlogik: netto + brutto sichtbar, 5.000 Stück als empfohlene B2B-Menge, 20.000+ sauber im Angebotsweg.`
+              : page.packageLead ?? "Feste Preise inkl. Versand. 5.000 Stück ist das empfohlene Paket."
+          }
         >
           <div className="pricing-grid">
-            {page.packageTable.map((tier) => (
+            {selectedPackageTable.map((tier) => (
               <PricingCard
                 key={`${page.slug}-${tier.quantity}`}
                 tier={tier}
                 checkoutPackage={
-                  tier.priceLabel === "Angebot"
-                    ? undefined
-                    : getCheckoutPackageForTier(page.slug, tier.quantity)
+                  isCanonicalConfiguratorPage && tier.priceLabel !== "Angebot"
+                    ? getCheckoutPackageForMaterial(selectedMaterial, tier.quantity)
+                    : undefined
+                }
+                ctaLink={
+                  !isCanonicalConfiguratorPage && tier.priceLabel !== "Angebot"
+                    ? {
+                        label: "Im Konfigurator öffnen",
+                        href: buildConfiguratorHref({
+                          material:
+                            page.path === "/de/transparente-pp-etiketten"
+                              ? "transparent"
+                              : "opaque",
+                          size: "standard",
+                          quantity: Number.parseInt(tier.quantity.replace(/\D/g, ""), 10),
+                        }),
+                      }
+                    : undefined
                 }
               />
             ))}
@@ -1681,6 +1814,47 @@ function supportsStandardOrCustomChoice(path: string) {
   return hasFixedPriceScope(path) || path === "/de/pp-rollenetiketten";
 }
 
+function normalizeConfiguratorMaterial(
+  material: string | undefined,
+  path: string,
+) {
+  if (material === "transparent") {
+    return "TRANSPARENT" as const;
+  }
+
+  if (path === "/de/transparente-pp-etiketten") {
+    return "TRANSPARENT" as const;
+  }
+
+  return "OPAQUE" as const;
+}
+
+function normalizeConfiguratorSize(size: string | undefined) {
+  return size === "custom" ? "custom" : "standard";
+}
+
+function normalizeConfiguratorQuantity(quantity: string | undefined) {
+  const parsed = Number.parseInt(quantity ?? "", 10);
+  return [1000, 2000, 5000, 10000].includes(parsed) ? parsed : 5000;
+}
+
+function buildConfiguratorHref(input: {
+  material: "opaque" | "transparent";
+  size: "standard" | "custom";
+  quantity?: number;
+}) {
+  const params = new URLSearchParams({
+    material: input.material,
+    size: input.size,
+  });
+
+  if (input.quantity) {
+    params.set("quantity", String(input.quantity));
+  }
+
+  return `/de/pp-rollenetiketten?${params.toString()}`;
+}
+
 function getInitialCustomSizeMaterial(path: string) {
   return path === "/de/transparente-pp-etiketten" ? "TRANSPARENT_PP" : "OPAQUE_PP";
 }
@@ -1745,6 +1919,31 @@ function getCheckoutPackageForTier(slug: string, quantityLabel: string) {
   }
 
   return undefined;
+}
+
+function getCheckoutPackageForMaterial(
+  material: "OPAQUE" | "TRANSPARENT",
+  quantityLabel: string,
+) {
+  const normalizedQuantity = Number.parseInt(quantityLabel.replace(/\D/g, ""), 10);
+
+  if (!Number.isFinite(normalizedQuantity)) {
+    return undefined;
+  }
+
+  return material === "TRANSPARENT"
+    ? {
+        packageId: `transparent-pp-100x200-${normalizedQuantity}`,
+        productSlug: "transparente-pp-etiketten" as const,
+        material: "TRANSPARENT" as const,
+        quantity: normalizedQuantity,
+      }
+    : {
+        packageId: `opaque-pp-100x200-${normalizedQuantity}`,
+        productSlug: "opake-pp-etiketten" as const,
+        material: "OPAQUE" as const,
+        quantity: normalizedQuantity,
+      };
 }
 
 function getProductPageImage(path: string) {

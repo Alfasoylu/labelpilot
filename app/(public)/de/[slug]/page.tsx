@@ -18,6 +18,11 @@ type PageProps = {
   params: Promise<{
     slug: string;
   }>;
+  searchParams: Promise<{
+    material?: string;
+    size?: string;
+    quantity?: string;
+  }>;
 };
 
 export function generateStaticParams() {
@@ -37,8 +42,9 @@ export async function generateMetadata({
   return buildCanonicalMetadata(page.path, metadataMap[page.path]);
 }
 
-export default async function GermanPublicPage({ params }: PageProps) {
+export default async function GermanPublicPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
+  const resolvedSearchParams = await searchParams;
   const page = publicPagesBySlug[slug];
 
   if (!page) {
@@ -57,7 +63,11 @@ export default async function GermanPublicPage({ params }: PageProps) {
       {pageSchema ? <JsonLd data={pageSchema} /> : null}
       {faqSchema ? <JsonLd data={faqSchema} /> : null}
       {howToSchema ? <JsonLd data={howToSchema} /> : null}
-      <DynamicPage page={page} canonicalPath={page.path} />
+      <DynamicPage
+        page={page}
+        canonicalPath={page.path}
+        searchParams={resolvedSearchParams}
+      />
     </>
   );
 }

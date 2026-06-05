@@ -697,7 +697,10 @@ const topLevelPages: PublicPageData[] = [
       "Transparentes PP",
       "Geeignet für Premium-Verpackungen und Glasoptiken",
     ],
-    primaryCta: quoteLink,
+    primaryCta: {
+      label: "Im Konfigurator öffnen",
+      href: "/de/pp-rollenetiketten?material=transparent&size=standard&quantity=5000",
+    },
     secondaryCta: sampleLink,
     packageHeading: "Preise für transparente PP-Etiketten",
     packageLead:
@@ -831,7 +834,10 @@ const topLevelPages: PublicPageData[] = [
       "Opakes PP",
       "Geeignet für Lebensmittel, Supplemente und klassische Produktverpackungen",
     ],
-    primaryCta: quoteLink,
+    primaryCta: {
+      label: "Im Konfigurator öffnen",
+      href: "/de/pp-rollenetiketten?material=opaque&size=standard&quantity=5000",
+    },
     secondaryCta: fileLink,
     packageHeading: "Preise für opake PP-Etiketten",
     packageLead:
@@ -958,7 +964,7 @@ const topLevelPages: PublicPageData[] = [
   {
     path: "/de/pp-rollenetiketten",
     slug: "pp-rollenetiketten",
-    kind: "collection",
+    kind: "product",
     title: "PP-Rollenetiketten drucken",
     eyebrow: "Produktübersicht",
     lead:
@@ -975,12 +981,12 @@ const topLevelPages: PublicPageData[] = [
       "Weiterleitung zu Angebot, Musterbox und Druckdaten",
     ],
     primaryCta: {
-      label: "Opake PP ansehen",
-      href: "/de/opake-pp-etiketten",
+      label: "Opakes PP konfigurieren",
+      href: "/de/pp-rollenetiketten?material=opaque&size=standard&quantity=5000",
     },
     secondaryCta: {
-      label: "Transparente PP ansehen",
-      href: "/de/transparente-pp-etiketten",
+      label: "Transparentes PP konfigurieren",
+      href: "/de/pp-rollenetiketten?material=transparent&size=standard&quantity=5000",
     },
     sections: [
       {
@@ -1081,7 +1087,7 @@ const topLevelPages: PublicPageData[] = [
   {
     path: "/de/etiketten-100x200",
     slug: "etiketten-100x200",
-    kind: "collection",
+    kind: "product",
     title: "Etiketten 100×200 mm drucken",
     eyebrow: "Format",
     lead:
@@ -1098,10 +1104,13 @@ const topLevelPages: PublicPageData[] = [
       "Klarer Ausgangspunkt für spätere Angebotsfälle",
     ],
     primaryCta: {
-      label: "Opake PP ansehen",
-      href: "/de/opake-pp-etiketten",
+      label: "100×200 im Konfigurator öffnen",
+      href: "/de/pp-rollenetiketten?material=opaque&size=standard&quantity=5000",
     },
-    secondaryCta: quoteLink,
+    secondaryCta: {
+      label: "Transparentes 100×200 konfigurieren",
+      href: "/de/pp-rollenetiketten?material=transparent&size=standard&quantity=5000",
+    },
     sections: [
       {
         title: "Standardisierung vor Variantenexplosion",

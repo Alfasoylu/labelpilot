@@ -451,6 +451,46 @@ assert.deepEqual(
   "Transparent product JSON-LD must use the same visible fixed package prices as the customer page.",
 );
 
+const ppConfiguratorSchema = buildPageSchema(
+  publicPagesBySlug["pp-rollenetiketten"],
+  "/de/pp-rollenetiketten",
+) as Record<string, unknown>;
+assert.equal(
+  publicPagesBySlug["pp-rollenetiketten"]?.kind,
+  "product",
+  "The canonical /de/pp-rollenetiketten page must be treated as the product/configurator page rather than a passive collection hub.",
+);
+assert.equal(
+  ppConfiguratorSchema["@type"],
+  "Product",
+  "The canonical /de/pp-rollenetiketten page must emit product-level schema once it becomes the unified configurator page.",
+);
+assert.equal(
+  publicPagesBySlug["opake-pp-etiketten"]?.primaryCta?.href,
+  "/de/pp-rollenetiketten?material=opaque&size=standard&quantity=5000",
+  "Opaque landing page must deep-link into the canonical configurator with the opak preset.",
+);
+assert.equal(
+  publicPagesBySlug["transparente-pp-etiketten"]?.primaryCta?.href,
+  "/de/pp-rollenetiketten?material=transparent&size=standard&quantity=5000",
+  "Transparent landing page must deep-link into the canonical configurator with the transparent preset.",
+);
+assert.equal(
+  publicPagesBySlug["etiketten-100x200"]?.primaryCta?.href,
+  "/de/pp-rollenetiketten?material=opaque&size=standard&quantity=5000",
+  "The 100×200 format landing page must feed the canonical configurator instead of behaving like a separate product destination.",
+);
+assert.match(
+  homepageRendererSource,
+  /selectedMaterialLabel[\s\S]*selectedSizeLabel/,
+  "The product renderer must expose a unified material-and-size configurator state for the canonical PP page.",
+);
+assert.match(
+  homepageRendererSource,
+  /label: "Im Konfigurator öffnen"[\s\S]*href: buildConfiguratorHref\(/,
+  "SEO landing package cards must route buyers into the shared configurator instead of keeping separate product-specific checkout entry points.",
+);
+
 const thermalProductSchema = buildPageSchema(
   publicPagesBySlug["thermo-versandetiketten"],
   "/de/thermo-versandetiketten",

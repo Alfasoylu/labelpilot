@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 35
+current_task: S2
 current_status: pending
-completed_at: 2026-06-05T22:15:07.3527385+03:00
-last_run_note: Revenue-readiness audit ran before Task 34 and no higher-severity blocker displaced the queue. Task 34 is complete: audited order-success and post-checkout messaging and found the clearest trust risk in app/(public)/checkout/success/page.tsx, where the unresolved success state still used a confirmed-order heading and confirmation-style step copy before Stripe session reconciliation was fully resolved. Softened the unresolved heading and first-step wording so the page no longer overclaims confirmation, while tightening the production step to the canonical delivery wording of ca. 10–14 Werktage nach Ihrer Freigabe. Added regression coverage in scripts/test-autonomous-safety.ts. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 35.
+completed_at: 2026-06-05T22:27:50.6934540+03:00
+last_run_note: Revenue-readiness audit ran under the founder's 2026-06-05 Sellability reprioritization and the safety floor remained green. Track S1 is complete: /de/pp-rollenetiketten now acts as the canonical product/configurator page with one shared material-and-size entry path, while /de/opake-pp-etiketten, /de/transparente-pp-etiketten and /de/etiketten-100x200 now deep-link into that configurator with preset material/size state instead of behaving like separate commercial endpoints. Product rendering was extended to read configurator search params, the canonical PP page now exposes dynamic standard-package selection for opak vs. transparent with live net/brutto package cards or controlled Wunschformat fallback, and regression coverage was added in scripts/test-autonomous-safety.ts. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Payment-live and VAT/invoicing remain founder-side blockers; revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next active Track S task is S2.
 ```
 
 ---
