@@ -119,6 +119,31 @@ The automation must always respect these rules:
 >
 > **⛳ SELLABILITY RE-PRIORITIZATION (founder, 2026-06-05) — Track S is now the current focus.** The founder's top objective changed from "make payment live / VAT" to **Sellability ≥ 90% + German-B2B-UX ≥ 90%**. The order *engine* (checkout → order → artwork → proof → admin → reorder) is already real and verified (commerce audit). The remaining gaps are front-of-house UX. Therefore **Track S — Sellability & German UX (defined immediately below) runs FIRST**, ahead of the remaining numbered Audit Tracks A–F (which are conversion/SEO polish). Execute S1→S4 in order until both scores reach ≥ 90%, then resume the numbered queue. **Payment-live + VAT/invoicing are founder-side blockers — record them in the run report, do not chase them.** The **safety floor** (German-only, `check:encoding`, canonical prices, SEO/robots/noindex/canonical, checkout-fails-safe) must stay green every run; if any regresses, fix it before Track S work. NOTE: the routine follows `current_task` sequentially and historically ignores injected PLAN notes — so the **executor prompt** now carries the Track-S priority, and the founder should set `current_task: S1` in STATE to begin.
 
+## ✅ CANONICAL EXECUTION ORDER (2026-06-05) — process tasks in EXACTLY this order
+
+> **This is the single source of truth for sequence.** All task definitions below stay in place (none deleted) — this list only fixes the ORDER. After finishing a task, set `current_task` to the next ID in this list. Do not jump ahead, do not skip to later phases, do not run BLOCKED tasks. The **safety floor** (German-only, `check:encoding`, canonical prices, SEO/robots/noindex/canonical, checkout-fails-safe) must stay green on every run.
+
+**DONE — do NOT re-run:** S1 · S2 · S3 · Track 0 (0.1 → 0.13c) · Tasks 1 → 34 · UC-1 · PA-1 (superseded by S1).
+
+**REMAINING — execute top to bottom:**
+
+**Phase 1 — Sellability & German UX (Track S) — CURRENT · gate to ≥ 90/90:**
+`S4 → S5 → S6 → S7 → S8 → S9 → S10 → S11 → S12 → S13 → S14 → S15 → S16 → S17 → S18 → S19 → S20`
+
+**Phase 2 — Conversion fix (highest-value finding from Track C audits 26–34):**
+`35`
+
+**Phase 3 — Operations & Admin readiness (order-fulfilment critical) [Track D]:**
+`36 → 37 → 38 → 39 → 40 → 41 → 42 → 43 → 44 → 45`
+
+**Phase 4 — Release discipline & founder-blocker summary [Track F]:**
+`56 → 57 → 58 → 59 → 60`
+
+**Phase 5 — Content & architecture hygiene (tech-debt · LAST) [Track E]:**
+`46 → 47 → 48 → 49 → 50 → 51 → 52 → 53 → 54 → 55`
+
+> **What changed vs the old "A → F numeric" order:** Track E (architecture/content hygiene, Tasks 46–55) is moved to **LAST**, behind Track D (ops/admin, Tasks 36–45) and Track F (release, Tasks 56–60) — because order-fulfilment readiness and release readiness matter more for a sellable launch than internal hygiene. **No task was deleted; only the sequence changed.** Phase 1 (Track S) must reach **Sellability ≥ 90% + German-UX ≥ 90% at S20** before any Phase 2+ task runs. No SEO/content expansion before S20 passes. BLOCKED tasks (e.g. flag-gated 0.11/0.12/0.11b) stay skipped until their founder/operator gate clears.
+
 ## Track S — Sellability & German UX (TOP PRIORITY · current focus, 2026-06-05)
 
 > **Objective:** raise **Sellability to ≥ 90%** and **German-B2B-UX to ≥ 90%**. Track S closes exactly the audited front-of-house gaps (no unified configurator, rigid quantity, no customer account, blurred hub/product roles) — nothing else.
