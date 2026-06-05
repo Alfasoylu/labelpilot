@@ -298,8 +298,8 @@ textarea {
 .brand-hero__title {
   margin: 0;
   color: #f8fafc;
-  font-size: clamp(2.6rem, 5.2vw, 4.2rem);
-  line-height: 1.02;
+  font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+  line-height: 1.08;
   letter-spacing: -0.015em;
 }
 
@@ -484,12 +484,12 @@ textarea {
 
 .hero-panel h1,
 .legal-card h1 {
-  font-size: clamp(2.8rem, 5.9vw, 4.7rem);
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
 }
 
 .section-header h2,
 .cta-shell h2 {
-  font-size: clamp(1.9rem, 3vw, 2.6rem);
+  font-size: clamp(1.4rem, 2.1vw, 1.8rem);
 }
 
 .lead {
@@ -625,7 +625,7 @@ textarea {
 .price {
   margin: 0;
   font-family: var(--font-mono-stack);
-  font-size: 1.9rem;
+  font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--text-strong);
@@ -1196,7 +1196,7 @@ th {
 
   .hero-panel h1,
   .legal-card h1 {
-    font-size: clamp(2.2rem, 11vw, 3.35rem);
+    font-size: clamp(1.7rem, 6vw, 2.4rem);
   }
 
   .hero-kpi-grid {
@@ -1224,7 +1224,7 @@ th {
 .hero-split__title {
   margin: 16px 0 0;
   color: var(--text-strong);
-  font-size: clamp(2.4rem, 4.6vw, 3.8rem);
+  font-size: clamp(1.9rem, 3.4vw, 2.9rem);
   line-height: 1.04;
   letter-spacing: -0.02em;
 }
@@ -1524,7 +1524,7 @@ th {
   color: var(--text-strong);
   line-height: 1.08;
   letter-spacing: -0.015em;
-  font-size: clamp(1.9rem, 3vw, 2.6rem);
+  font-size: clamp(1.4rem, 2.1vw, 1.8rem);
 }
 
 .cta-editorial__content p {
@@ -1774,7 +1774,7 @@ th {
 }
 
 .lj-caption__title {
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
   line-height: 1.12;
   color: var(--text-strong);
   margin: 0;
