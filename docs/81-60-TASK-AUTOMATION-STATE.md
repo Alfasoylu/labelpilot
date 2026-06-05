@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 25
+current_task: 26
 current_status: pending
-completed_at: 2026-06-05T08:32:29.7062509+03:00
-last_run_note: Revenue-readiness audit ran before Task 24 and no higher-severity blocker displaced the queue. Task 24 is complete: audited JSON-LD generation against visible page content and found the highest-severity mismatch on product pages, where Product schema existed but did not carry the visible material/category identity or the fixed package prices shown to customers. Strengthened lib/seo.ts so product JSON-LD now derives category, material, SKU and visible fixed-price Offer entries directly from the live page data for the opake and transparente PP product pages, while quote-led thermo product pages remain offerless in schema because no fixed visible price exists there. Also strengthened Service schema with Germany-facing serviceType/areaServed/inLanguage alignment and added regression coverage in scripts/test-autonomous-safety.ts to lock the visible JSON-LD price and quote-only behavior. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 25.
+completed_at: 2026-06-05T09:03:13.4930889+03:00
+last_run_note: Revenue-readiness audit ran before Task 25 and no higher-severity blocker displaced the queue. Task 25 is complete: audited the remaining technical SEO debt across Tasks 16-24 and found the highest-severity live issue at the root homepage entry, where app/page.tsx used a temporary redirect to /de even though 24-METADATA-MAP and 26-SITEMAP-ROBOTS-CANONICAL define /de as the canonical homepage. Replaced redirect("/de") with permanentRedirect("/de") so the root consolidates permanently into the German canonical homepage, and added a regression assertion in scripts/test-autonomous-safety.ts to lock that redirect behavior. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 26.
 ```
 
 ---

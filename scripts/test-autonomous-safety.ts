@@ -80,6 +80,16 @@ assert.match(
   "Homepage package section must keep a visible direct link to the PP money-page overview.",
 );
 
+const rootPageSource = readFileSync(
+  new URL("../app/page.tsx", import.meta.url),
+  "utf8",
+);
+assert.match(
+  rootPageSource,
+  /permanentRedirect\("\/de"\)/,
+  "Root homepage entry must permanently redirect to the canonical German homepage /de.",
+);
+
 const duplicateIntentRouteGroups = [
   [
     {
