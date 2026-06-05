@@ -35,6 +35,11 @@ export function CheckoutIntakeForm({
 }: CheckoutIntakeFormProps) {
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState("");
+  const artworkSummary = addons.customerUploadsOwnData
+    ? "druckfertige Daten werden nach der Zahlung hochgeladen"
+    : addons.designService
+      ? "Designservice ist für diesen Auftrag ausgewählt und wird serverseitig nach den Freiregeln geprüft"
+      : "Druckdaten folgen nach der Bestellung; Designservice nur bei Auswahl oder wenn die Freiregel greift";
 
   const handleSubmit = (formData: FormData) => {
     setErrorMessage("");
@@ -113,9 +118,7 @@ export function CheckoutIntakeForm({
           <li>
             Druckdaten:
             {" "}
-            {addons.customerUploadsOwnData
-              ? "druckfertige Daten werden nach der Zahlung hochgeladen"
-              : "Designservice oder Datenklärung im Auftrag enthalten"}
+            {artworkSummary}
           </li>
         </ul>
         {addonSummary.length > 0 ? (
@@ -127,7 +130,12 @@ export function CheckoutIntakeForm({
               ))}
             </ul>
           </>
-        ) : null}
+        ) : (
+          <p className="field-hint">
+            Keine kostenpflichtigen Zusatzleistungen ausgewählt. Standard-Datenprüfung und ein
+            digitaler Proof bleiben inklusive.
+          </p>
+        )}
       </article>
 
       <div className="form-grid">

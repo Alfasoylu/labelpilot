@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 33
+current_task: 34
 current_status: pending
-completed_at: 2026-06-05T12:47:00.0000000+03:00
-last_run_note: Revenue-readiness audit ran before Task 32 and no higher-severity blocker displaced the queue. Task 32 is complete: audited FAQ blocks for duplicate-intent and thin-copy risk and found the clearest commercial gap on /de/etiketten-100x200, which was an indexed format page without any FAQ block at all. Added four format-specific FAQs in lib/site-content.ts covering when 100×200 mm is suitable, how to compare opak vs. transparent within the same format, which fixed package quantities exist, and how Sonderformate cleanly fall back to Wunschformat or the quote path. Added regression coverage in scripts/test-autonomous-safety.ts so the indexed 100×200 format page keeps a real FAQ block and does not collapse back into a thin bridge page. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 33.
+completed_at: 2026-06-05T20:16:56.6128016+03:00
+last_run_note: Revenue-readiness audit ran before Task 33 and no higher-severity blocker displaced the queue. Task 33 is complete: audited checkout add-on messaging against the approved commercial rules and found the clearest mismatch in components/checkout/CheckoutIntakeForm.tsx, where the order summary could imply that design service was included by default whenever the customer was not uploading print-ready data. Replaced that summary with rule-accurate wording that keeps design service tied to explicit selection or the approved free-rule, added an explicit "no paid add-ons selected" state, and locked both behaviors with regression coverage in scripts/test-autonomous-safety.ts. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 34.
 ```
 
 ---

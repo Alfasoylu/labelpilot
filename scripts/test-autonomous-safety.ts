@@ -99,6 +99,10 @@ const customSizeFormSource = readFileSync(
   new URL("../components/custom-size-price-form.tsx", import.meta.url),
   "utf8",
 );
+const checkoutIntakeFormSource = readFileSync(
+  new URL("../components/checkout/CheckoutIntakeForm.tsx", import.meta.url),
+  "utf8",
+);
 const proofApprovalPanelSource = readFileSync(
   new URL("../components/orders/ProofApprovalPanel.tsx", import.meta.url),
   "utf8",
@@ -198,6 +202,21 @@ assert.match(
 const rootPageSource = readFileSync(
   new URL("../app/page.tsx", import.meta.url),
   "utf8",
+);
+assert.doesNotMatch(
+  checkoutIntakeFormSource,
+  /Designservice oder Datenklärung im Auftrag enthalten/,
+  "Checkout intake summary must not imply that design service is always included when the customer has not selected it.",
+);
+assert.match(
+  checkoutIntakeFormSource,
+  /Designservice nur bei Auswahl oder wenn die Freiregel greift/,
+  "Checkout intake summary must keep the design-service eligibility rule explicit instead of treating it as a default inclusion.",
+);
+assert.match(
+  checkoutIntakeFormSource,
+  /Keine kostenpflichtigen Zusatzleistungen ausgewählt\./,
+  "Checkout intake summary must explicitly show when no paid add-ons were selected.",
 );
 assert.match(
   rootPageSource,
