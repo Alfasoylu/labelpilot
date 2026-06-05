@@ -38,6 +38,13 @@ function formatPrice(amountCents: number) {
   })} EUR brutto`;
 }
 
+function formatPriceNet(amountCents: number) {
+  return `${(amountCents / 100).toLocaleString("de-DE", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })} EUR netto`;
+}
+
 function buildAddonSummary(input: {
   addons: CheckoutAddonInput;
   lineItems: Array<{ name: string; grossAmountCents: number }>;
@@ -152,6 +159,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
     settings: pricingSettings,
   });
   const totalAmountCents = pkg.grossAmountCents + addonPricing.addonsTotalCents;
+  const totalNetAmountCents = Math.round(totalAmountCents / 1.19);
   const addonSummary = buildAddonSummary({
     addons: params.addons,
     lineItems: addonPricing.lineItems,
@@ -177,6 +185,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         productName={getProductName(pkg.productSlug)}
         packageLabel={pkg.label}
         priceLabel={formatPrice(totalAmountCents)}
+        netPriceLabel={formatPriceNet(totalNetAmountCents)}
         addonSummary={addonSummary}
         backHref={`/${["de", pkg.productSlug].join("/")}`}
       />

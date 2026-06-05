@@ -17,6 +17,7 @@ type CheckoutIntakeFormProps = {
   productName: string;
   packageLabel: string;
   priceLabel: string;
+  netPriceLabel: string;
   addonSummary: string[];
   backHref: string;
 };
@@ -30,9 +31,13 @@ export function CheckoutIntakeForm({
   productName,
   packageLabel,
   priceLabel,
+  netPriceLabel,
   addonSummary,
   backHref,
 }: CheckoutIntakeFormProps) {
+  const configuratorChangeHref = `/de/pp-rollenetiketten?material=${
+    material === "TRANSPARENT" ? "transparent" : "opaque"
+  }&size=standard&quantity=${quantity}`;
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState("");
   const artworkSummary = addons.customerUploadsOwnData
@@ -111,9 +116,11 @@ export function CheckoutIntakeForm({
         <h3>Bestellzusammenfassung</h3>
         <ul className="simple-list">
           <li>Produkt: {productName}</li>
+          <li>Material: {material === "TRANSPARENT" ? "Transparentes PP" : "Opakes PP"}</li>
+          <li>Größe: 100 × 200 mm (Standardformat)</li>
           <li>Paket: {packageLabel}</li>
           <li>Menge: {quantity.toLocaleString("de-DE")} Stück</li>
-          <li>Preis: {priceLabel}</li>
+          <li>Preis: {netPriceLabel} · {priceLabel} (inkl. 19% MwSt)</li>
           <li>Land: Deutschland</li>
           <li>
             Druckdaten:
@@ -121,6 +128,15 @@ export function CheckoutIntakeForm({
             {artworkSummary}
           </li>
         </ul>
+        <p className="field-hint">
+          Lieferzeit: ca. 10–14 Werktage nach Ihrer Freigabe (Produktion + Versand nach
+          Deutschland). Voraussichtlicher Zeitraum, keine bindende Garantie.
+        </p>
+        <p className="field-hint">
+          <Link href={configuratorChangeHref} className="secondary-link">
+            Auswahl im Konfigurator ändern
+          </Link>
+        </p>
         {addonSummary.length > 0 ? (
           <>
             <p className="field-hint">Ausgewählte Zusatzleistungen</p>
