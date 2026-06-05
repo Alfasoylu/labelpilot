@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 19
+current_task: 20
 current_status: pending
-completed_at: 2026-06-05T05:30:04.3565505+03:00
-last_run_note: Revenue-readiness audit ran before Task 18 and no higher-severity blocker displaced the queue. Task 18 is complete: verified app/sitemap.ts still sources entries only from the central German public route registry and that Ads landing page families /lp/* and /teklif/* remain excluded from sitemap output through shared non-indexable governance. Added explicit assertions to scripts/test-autonomous-safety.ts so both landing-page namespaces now have direct regression coverage instead of relying only on the generic prefix loop. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 19.
+completed_at: 2026-06-05T06:00:47.8151357+03:00
+last_run_note: Revenue-readiness audit ran before Task 19 and no higher-severity blocker displaced the queue. Task 19 is complete: verified the canonical metadata builder already prevents non-indexable routes from emitting canonical URLs or Open Graph URLs, which keeps Ads landing page families from becoming canonical winners. Added direct regression coverage in scripts/test-autonomous-safety.ts for /lp/* and /teklif/* so those paths now explicitly assert canonical omission plus robots noindex/follow:false in the shared metadata layer. Also normalized lib/seo.ts imports to relative paths so the Node-based safety test can execute the real production metadata builder instead of relying on indirect checks. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 20.
 ```
 
 ---

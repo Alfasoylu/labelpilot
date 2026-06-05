@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 
+import { buildCanonicalMetadata } from "../lib/seo.ts";
 import { calculateRefillReminder } from "../lib/reorders/refill-reminder.ts";
 import { validateProofDecisionRequest } from "../lib/orders/proof-decision.ts";
 import {
@@ -82,6 +83,36 @@ assert.equal(
   false,
   "Ads landing pages under /teklif must never appear in sitemap output.",
 );
+
+const nonIndexableCanonicalMetadata = buildCanonicalMetadata("/lp/angebot-a", {
+  title: "Landingpage",
+  description: "Test",
+});
+assert.equal(
+  nonIndexableCanonicalMetadata.alternates?.canonical,
+  undefined,
+  "Ads landing pages must not publish a canonical URL.",
+);
+assert.deepEqual(nonIndexableCanonicalMetadata.robots, {
+  index: false,
+  follow: false,
+});
+assert.equal(nonIndexableCanonicalMetadata.openGraph?.url, undefined);
+
+const teklifCanonicalMetadata = buildCanonicalMetadata("/teklif/pp-rollenetiketten", {
+  title: "Landingpage",
+  description: "Test",
+});
+assert.equal(
+  teklifCanonicalMetadata.alternates?.canonical,
+  undefined,
+  "Equivalent ads landing pages under /teklif must not publish a canonical URL.",
+);
+assert.deepEqual(teklifCanonicalMetadata.robots, {
+  index: false,
+  follow: false,
+});
+assert.equal(teklifCanonicalMetadata.openGraph?.url, undefined);
 
 assert.equal(canTransitionOrderStatus("PENDING_PAYMENT", "PAID"), true);
 assert.equal(canTransitionOrderStatus("FILE_REVIEW", "PROOF_REQUIRED"), true);

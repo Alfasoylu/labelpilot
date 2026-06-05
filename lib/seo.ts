@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-import { getPublicEnv } from "@/lib/env";
-import { buildAbsoluteUrlFromBase, isNonIndexablePath } from "@/lib/seo/governance";
+import { getPublicEnv } from "./env.ts";
+import { buildAbsoluteUrlFromBase, isNonIndexablePath } from "./seo/governance.ts";
 import type { FAQ, PublicPageData } from "@/lib/site-content";
 
 type MetadataEntry = {
