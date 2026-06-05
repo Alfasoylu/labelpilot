@@ -248,7 +248,12 @@ function buildVisibleProductOffers(page: PublicPageData, path: string) {
           url: buildAbsoluteUrl(path),
           sku: `${schemaDetails.sku}-${quantityValue}`,
           name: `${page.title} - ${tier.quantity}`,
-          description: [tier.priceLabel, tier.grossLabel].filter(Boolean).join(" · "),
+          description: [
+            tier.priceLabel,
+            tier.grossLabel ? `${tier.grossLabel} brutto` : null,
+          ]
+            .filter(Boolean)
+            .join(" · "),
           eligibleQuantity: {
             "@type": "QuantitativeValue",
             value: quantityValue,

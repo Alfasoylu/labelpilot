@@ -147,7 +147,7 @@ function buildFixedTier(input: {
     label: input.label,
     quantity: `${input.quantity.toLocaleString("de-DE")} Stück`,
     priceLabel: `${formatEuro(input.net)} netto`,
-    grossLabel: `${formatEuro(input.net * 1.19)} brutto`,
+    grossLabel: formatEuro(input.net * 1.19),
     perPieceLabel: `${perPiece} €/Stück netto`,
     shippingLabel: "inkl. Versand nach Deutschland",
     format: "100 × 200 mm",

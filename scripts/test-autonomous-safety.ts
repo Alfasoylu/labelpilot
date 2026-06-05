@@ -78,6 +78,10 @@ const brandHeroSource = readFileSync(
   new URL("../components/sections/BrandHero.tsx", import.meta.url),
   "utf8",
 );
+const pricingCardSource = readFileSync(
+  new URL("../components/cards/PricingCard.tsx", import.meta.url),
+  "utf8",
+);
 assert.match(
   homepageRendererSource,
   /<Link href="\/de\/pp-rollenetiketten" className="secondary-link">\s*Alle PP-Rollenetiketten ansehen\s*<\/Link>/,
@@ -97,6 +101,16 @@ assert.match(
   brandHeroSource,
   /<Link href="\/de\/nachbestellen">Nachbestellen:<\/Link>/,
   "Homepage hero must explain the direct reorder path when artwork and specification are already approved.",
+);
+assert.match(
+  pricingCardSource,
+  /Bruttopreis inkl\. 19% MwSt\.: \{tier\.grossLabel\}/,
+  "Fixed-price cards must show the gross customer price as a separate labeled line.",
+);
+assert.match(
+  pricingCardSource,
+  /Nettopreis pro Stück: \{tier\.perPieceLabel\}/,
+  "Fixed-price cards must keep the per-piece net figure as a separately labeled commercial line.",
 );
 
 const rootPageSource = readFileSync(

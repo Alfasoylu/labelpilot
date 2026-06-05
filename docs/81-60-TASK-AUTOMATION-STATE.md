@@ -14,10 +14,10 @@
 *(Codex-owned. The supervisor must NOT edit this section.)*
 
 ```
-current_task: 27
+current_task: 28
 current_status: pending
-completed_at: 2026-06-05T09:31:33.9924261+03:00
-last_run_note: Revenue-readiness audit ran before Task 26 and no higher-severity blocker displaced the queue. Task 26 is complete: audited homepage CTA clarity for quote, Musterbox and Nachbestellen and found the highest-value gap in the hero, where Musterbox was visible but the quote path and reorder path were not made equally explicit at the first decision moment. Strengthened components/sections/BrandHero.tsx so the homepage hero now exposes Angebot anfordern directly, keeps Musterbox visible, and explains when to use Angebot, Musterbox, or Nachbestellen in plain German. Added regression coverage in scripts/test-autonomous-safety.ts so the hero cannot silently lose those three conversion paths again. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 27.
+completed_at: 2026-06-05T10:01:04.2934315+03:00
+last_run_note: Revenue-readiness audit ran before Task 27 and no higher-severity blocker displaced the queue. Task 27 is complete: audited fixed-package pricing presentation and found the main clarity issue in PricingCard, where the net figure was repeated and the gross customer price was compressed into a dense mixed summary line. Refined lib/site-content.ts, components/cards/PricingCard.tsx and lib/seo.ts so fixed-price cards now keep the net price as the primary line, show the gross price as a separate labeled customer line, keep shipping separate, and preserve a clear per-piece net line. Added regression coverage in scripts/test-autonomous-safety.ts to lock the labeled gross/net display. Verification passed: check:lang, check:encoding, typecheck, test:safety, build. Revenue still cannot safely take money live without STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL, DATABASE_URL and DIRECT_URL runtime availability, and ADMIN_NOTIFY_EMAIL forwarding remains unverified per 00-SOURCE-OF-TRUTH. Next queue task is 28.
 ```
 
 ---
