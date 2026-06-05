@@ -8,6 +8,39 @@
 
 ---
 
+## 0. 🔒 LOCKED references (founder-approved 2026-06-06)
+
+**Overriding principle:** Labelpilot must read as **narrow & specialist** — a focused PP roll-label expert — **NOT** a broad print-shop or packaging marketplace.
+
+| Dimension | 🔒 Locked reference | What we take |
+|---|---|---|
+| Look & feel (warm premium) | **noissue** (primary) + Moo (discipline) | warm ivory-adjacent premium, soft refined |
+| Typography | **Moo** | light heading weight (we use 500) — applied |
+| Label models / sizes / variants | **labelprint24** (primary) + OnlineLabels (size/material taxonomy) | roll-label sizes/materials/variants |
+| Configurator / instant price | **Sticker Mule** (UX) + labelprint24 (roll-label specifics) | step-by-step, live net+gross, sample/proof, quote fallback |
+| Menu / navigation | **noissue / Moo lean** | few focused top-level items; specialist |
+| Layout / page order | **Moo** + labelprint24 (product-page depth) | hero→config→trust→specs→FAQ |
+| Account / reorder / saved designs | **OnlineLabels + Vistaprint (account/reorder ONLY)** | orders, reorder, saved designs |
+| Colour / brand | **OURS — locked SoT #14** | never copied from any competitor |
+
+**Negative constraints (BINDING):**
+- ❌ **Packhelp is NOT a primary reference.** Well executed, but reads as a broad packaging *marketplace*. Labelpilot stays narrow/specialist. May be consulted only for an isolated premium-B2B detail — never for breadth, nav, or catalog.
+- ❌ **Vistaprint is NOT a public-site reference.** Too generic print-shop. Reference it **only** for the account/reorder area (Bestellungen / saved designs / reorder), never for public marketing, look, or menu.
+
+## 0.1 Control mechanism (ACTIVE from 2026-06-06)
+
+Every design/UX/layout/typography/menu/configurator/account change MUST:
+1. **Cite the locked reference row** (§0) it follows — no taste-only design decisions.
+2. **Pass the Design-Reference Compliance Checklist:**
+   - [ ] **Narrow/specialist** — no marketplace/broad-print-shop breadth (no Packhelp-style mega-catalog; no Vistaprint-style generic public styling).
+   - [ ] **Lean nav** — few focused top-level items (Produkte, Branchen, Ratgeber, Musterbox, Konto); no broad product-type mega-menu.
+   - [ ] **Heading weight ≤ 500**, Moo-balance scale (h1 ≤ ~40px, lead ≤ ~17px); Instrument Sans / IBM Plex kept.
+   - [ ] **Brand palette = SoT #14 only** (ivory/deep-ink/brass); no competitor colours/fonts as brand.
+   - [ ] Configurator follows the **Sticker Mule** pattern; account/reorder follows **OnlineLabels/Vistaprint**.
+   - [ ] German-only; honest claims; no fake reviews/eco/Made-in-Germany.
+3. **Reviewer (61 §7)** adds a line: `Design-reference compliance: PASS/FAIL` citing the row(s).
+4. **Re-audit cadence:** a periodic compliance pass checks live pages against §0; deviations are logged in §6 and fixed.
+
 ## 1. Methodology (how a design decision is made)
 
 1. Identify the dimension (e.g. "product configurator", "menu", "h1 size").
@@ -74,3 +107,23 @@
 4. **Size/template library:** if we ever expand sizes, validate Avery WePrint / OnlineLabels for size/template-picker UX.
 
 > When a reference is confirmed, move its row to ✅ and record the measured evidence. This doc is the single place that answers "neredeki gibi olsun?" for any dimension.
+
+> **§5 status:** references are now LOCKED in §0 (founder-approved 2026-06-06). The earlier open questions are resolved: warmth north-star = **noissue**; menu = **lean noissue/Moo** (NOT Packhelp); Vistaprint = account/reorder only.
+
+## 6. Compliance baseline & log
+
+**Baseline audit (2026-06-06, control mechanism start):**
+| Check | Result |
+|---|---|
+| Lean/specialist nav (no marketplace breadth) | ✅ PASS — 5 top-level items (Produkte, Branchen, Ratgeber, Glossar, Musterbox) |
+| Heading weight ≤ 500 (Moo balance) | ✅ PASS — base headings weight 500; h1 ≤ ~40px; lead ≤ ~17px |
+| Brand palette = SoT #14 only | ✅ PASS — ivory/deep-ink/brass; no competitor colours |
+| No Packhelp-style breadth / no Vistaprint-style generic public styling | ✅ PASS — catalog lean (PP + thermal cross-sell), no marketplace surfaces |
+| Configurator = Sticker Mule pattern | ✅ PASS — step-by-step material/size/quantity, live net+gross, quote fallback |
+| Account/reorder = OnlineLabels/Vistaprint structure | ✅ PASS — /konto with orders, saved designs, 1-click reorder |
+| German-only / honest claims | ✅ PASS (check:lang + content audits) |
+
+**Open gap (not a regression — aspirational):**
+- 🟡 **Warm-premium "look" toward noissue** — typography/weight now aligned; the warmer imagery/feel polish (noissue-grade) is future design work, tracked as a Track-S/design follow-up.
+
+**Log:** future compliance passes append dated rows here (deviation found → fixed → commit).
