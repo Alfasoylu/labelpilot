@@ -26,6 +26,7 @@ import { ComparisonTable } from "@/components/tables/ComparisonTable";
 import { SpecTable } from "@/components/tables/SpecTable";
 import { QuoteRequestForm } from "@/components/quote-request-form";
 import { SampleBoxRequestForm } from "@/components/sample-box-request-form";
+import { customSizeFeatureEnabled } from "@/lib/pricing/custom-size-feature";
 import type {
   FAQ,
   HomePageData,
@@ -628,10 +629,18 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
       ? transparentPackages
       : opaquePackages
     : page.packageTable;
+  const selectedMaterialParam =
+    selectedMaterial === "TRANSPARENT" ? "transparent" : "opaque";
   const selectedMaterialLabel =
     selectedMaterial === "TRANSPARENT" ? "Transparentes PP" : "Opakes PP";
   const selectedSizeLabel =
     selectedSize === "custom" ? "Wunschformat / Sondermaß" : "Standardgröße 100×200 mm";
+  const otherQuantityHref = customSizeFeatureEnabled
+    ? buildConfiguratorHref({
+        material: selectedMaterialParam,
+        size: "custom",
+      })
+    : buildOtherQuantityQuoteHref(selectedMaterial);
 
   return (
     <div className="container section-stack">
@@ -772,6 +781,36 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
                         </Link>
                       </div>
                     </article>
+                    <article className="feature-card">
+                      <h4>Menge</h4>
+                      <p className="field-hint">
+                        5.000 Stück ist die empfohlene B2B-Menge. 1.000 Stück bleibt der
+                        bezahlte Einstieg.
+                      </p>
+                      <div className="inline-actions">
+                        {[1000, 2000, 5000, 10000].map((quantity) => (
+                          <Link
+                            key={quantity}
+                            href={buildConfiguratorHref({
+                              material: selectedMaterialParam,
+                              size: "standard",
+                              quantity,
+                            })}
+                            className={
+                              selectedQuantity === quantity && selectedSize === "standard"
+                                ? "cta-link"
+                                : "secondary-link"
+                            }
+                          >
+                            {quantity.toLocaleString("de-DE")}
+                            {quantity === 5000 ? " · empfohlen" : ""}
+                          </Link>
+                        ))}
+                        <Link href={otherQuantityHref} className="secondary-link">
+                          Andere Menge?
+                        </Link>
+                      </div>
+                    </article>
                   </div>
                   <p className="field-hint">
                     Ausgewählt: {selectedMaterialLabel} · {selectedSizeLabel}
@@ -864,6 +903,22 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
             ))}
           </div>
           <p className="price-note">{pricingValueBundleLine}</p>
+          {(isCanonicalConfiguratorPage || hasFixedPriceScope(page.path)) ? (
+            <div className="surface-card">
+              <h2>Andere Menge?</h2>
+              <p>
+                Die festen Online-Pakete bleiben bewusst auf 1.000, 2.000, 5.000
+                und 10.000 Stück begrenzt. 5.000 Stück ist die empfohlene
+                B2B-Menge. Wenn Sie genau 3.000, 7.500, weniger als 1.000 oder
+                20.000+ Etiketten benötigen, prüfen wir das sauber im Angebotsweg.
+              </p>
+              <div className="inline-actions">
+                <Link href={otherQuantityHref} className="secondary-link">
+                  Andere Menge anfragen
+                </Link>
+              </div>
+            </div>
+          ) : null}
           <div className="surface-card">
             <h2>Fragen vor dem Standardpaket?</h2>
             <p>
@@ -903,21 +958,6 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
                 Das ist eine ehrliche Orientierung für die Planung, keine garantierte SLA.
                 Den konkreten Termin bestätigen wir mit Auftrag oder Angebot.
               </p>
-            </div>
-          ) : null}
-          {hasFixedPriceScope(page.path) ? (
-            <div className="surface-card">
-              <h2>Andere Menge als Standardpaket?</h2>
-              <p>
-                Wenn Sie genau 3.000, 7.500 oder weniger als 1.000 Etiketten benötigen,
-                sind die sichtbaren Pakete nicht der einzige Weg. Solche Mengen laufen sauber
-                über das B2B-Angebot statt in einen unpassenden Standard-Checkout.
-              </p>
-              <div className="inline-actions">
-                <Link href="/de/angebot-anfordern" className="secondary-link">
-                  Andere Menge anfragen
-                </Link>
-              </div>
             </div>
           ) : null}
           {hasFixedPriceScope(page.path) ? (
@@ -1853,6 +1893,17 @@ function buildConfiguratorHref(input: {
   }
 
   return `/de/pp-rollenetiketten?${params.toString()}`;
+}
+
+function buildOtherQuantityQuoteHref(material: "OPAQUE" | "TRANSPARENT") {
+  const params = new URLSearchParams({
+    sourceType: "product",
+    productType: "PP-Rollenetiketten",
+    material: material === "TRANSPARENT" ? "Transparentes PP" : "Opakes PP",
+    quantity: "Andere Menge",
+  });
+
+  return `/de/angebot-anfordern?${params.toString()}`;
 }
 
 function getInitialCustomSizeMaterial(path: string) {

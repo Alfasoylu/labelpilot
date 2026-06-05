@@ -151,6 +151,16 @@ assert.match(
   /Nettopreis pro Stück: \{tier\.perPieceLabel\}/,
   "Fixed-price cards must keep the per-piece net figure as a separately labeled commercial line.",
 );
+assert.match(
+  pricingCardSource,
+  /Empfohlenes B2B-Paket für wiederkehrende Bestellungen\./,
+  "Fixed-price cards must visibly mark the 5.000 tier as the recommended B2B package when the tier is popular.",
+);
+assert.match(
+  siteContentSource,
+  /badge: "Empfohlenes B2B-Paket"[\s\S]*popular: true/,
+  "The 5.000 package tier must stay marked as the recommended B2B package in the product content source.",
+);
 assert.doesNotMatch(
   siteContentSource,
   /Reorder-Ready|Cross-Sell/,
@@ -489,6 +499,21 @@ assert.match(
   homepageRendererSource,
   /label: "Im Konfigurator öffnen"[\s\S]*href: buildConfiguratorHref\(/,
   "SEO landing package cards must route buyers into the shared configurator instead of keeping separate product-specific checkout entry points.",
+);
+assert.match(
+  homepageRendererSource,
+  /\[1000, 2000, 5000, 10000\]\.map\(\(quantity\)[\s\S]*quantity === 5000 \? " · empfohlen" : ""/,
+  "The canonical configurator must expose only canonical fixed quantities and visibly recommend 5.000.",
+);
+assert.match(
+  homepageRendererSource,
+  /customSizeFeatureEnabled[\s\S]*size: "custom"[\s\S]*buildOtherQuantityQuoteHref/,
+  "The non-standard quantity path must go to Wunschformat when enabled or otherwise to the quote fallback.",
+);
+assert.match(
+  homepageRendererSource,
+  /<h2>Andere Menge\?<\/h2>[\s\S]*3\.000, 7\.500, weniger als 1\.000[\s\S]*Andere Menge anfragen/,
+  "The pricing section must keep an honest non-standard quantity path instead of faking intermediate live prices.",
 );
 
 const thermalProductSchema = buildPageSchema(

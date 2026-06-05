@@ -60,6 +60,11 @@ export async function PricingCard({ tier, checkoutPackage, ctaLink }: PricingCar
       {tier.shippingLabel ? (
         <p className="price-subline">{tier.shippingLabel}</p>
       ) : null}
+      {tier.popular ? (
+        <p className="price-note pricing-card__recommendation">
+          Empfohlenes B2B-Paket für wiederkehrende Bestellungen.
+        </p>
+      ) : null}
       <p className="price-note">{tier.description}</p>
       {tier.format || tier.material || tier.inclusions?.length ? (
         <ul className="pricing-card__specs">

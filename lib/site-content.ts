@@ -222,7 +222,7 @@ export const opaquePackages: PackageTier[] = [
     note: "Wiederbestellung",
     description:
       "Der Kernpreis für wiederkehrende B2B-Bestellungen im großen 100×200-mm-Format.",
-    badge: "Empfohlen für Wiederbestellungen",
+    badge: "Empfohlenes B2B-Paket",
     popular: true,
   }),
   buildFixedTier({
@@ -269,7 +269,7 @@ export const transparentPackages: PackageTier[] = [
     note: "Wiederbestellung",
     description:
       "Die bevorzugte Menge für transparente Premium-Verpackungen mit sichtbarer Materialwirkung.",
-    badge: "Empfohlen für Wiederbestellungen",
+    badge: "Empfohlenes B2B-Paket",
     popular: true,
   }),
   buildFixedTier({
