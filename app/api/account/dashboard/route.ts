@@ -50,6 +50,7 @@ export async function GET(request: Request) {
           createdAt: true,
           updatedAt: true,
           reorderSourceDesignId: true,
+          uploadToken: true,
         },
         orderBy: { createdAt: "desc" },
         take: 25,
@@ -127,12 +128,22 @@ export async function GET(request: Request) {
         companyName: customer.companyName,
         contactName: customer.contactName,
       },
-      orders: orders.map((order) => ({
-        ...order,
-        createdAt: order.createdAt.toISOString(),
-        updatedAt: order.updatedAt.toISOString(),
-        amountLabel: formatOrderAmount(order.amountCents),
-      })),
+      orders: orders.map((order) => {
+        const { uploadToken, ...rest } = order;
+        const canOpenArtworkStep = !["PENDING_PAYMENT", "PAYMENT_FAILED", "CANCELLED"].includes(
+          order.status,
+        );
+        return {
+          ...rest,
+          createdAt: order.createdAt.toISOString(),
+          updatedAt: order.updatedAt.toISOString(),
+          amountLabel: formatOrderAmount(order.amountCents),
+          uploadHref:
+            uploadToken && canOpenArtworkStep
+              ? `/de/auftrag/${order.id}/druckdaten?token=${encodeURIComponent(uploadToken)}`
+              : null,
+        };
+      }),
       storedDesigns: storedDesigns.map((design) => ({
         ...design,
         lastOrderedAt: design.lastOrderedAt?.toISOString() ?? null,

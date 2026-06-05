@@ -20,6 +20,7 @@ type AccountOrder = {
   quantity: number;
   amountLabel: string;
   createdAt: string;
+  uploadHref: string | null;
 };
 
 type AccountArtworkVersion = {
@@ -365,6 +366,17 @@ export function KontoClient() {
                       <li>Druckdaten: {getArtworkStatusLabel(order.artworkStatus)}</li>
                       <li>Bestelldatum: {formatDate(order.createdAt)}</li>
                     </ul>
+                    {order.uploadHref ? (
+                      <div className="cta-row">
+                        <a href={order.uploadHref} className="cta-link">
+                          {order.artworkStatus === "AWAITING_ARTWORK"
+                            ? "Druckdaten hochladen"
+                            : order.status === "WAITING_CUSTOMER_APPROVAL"
+                              ? "Proof ansehen und freigeben"
+                              : "Auftrag & Druckdaten öffnen"}
+                        </a>
+                      </div>
+                    ) : null}
                   </div>
                 ))}
               </div>
