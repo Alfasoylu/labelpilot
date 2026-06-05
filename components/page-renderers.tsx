@@ -641,6 +641,13 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
         size: "custom",
       })
     : buildOtherQuantityQuoteHref(selectedMaterial);
+  const selectedStandardTier =
+    isCanonicalConfiguratorPage && selectedSize === "standard"
+      ? selectedPackageTable?.find(
+          (tier) =>
+            Number.parseInt(tier.quantity.replace(/\D/g, ""), 10) === selectedQuantity,
+        )
+      : undefined;
 
   return (
     <div className="container section-stack">
@@ -814,8 +821,21 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
                   </div>
                   <p className="field-hint">
                     Ausgewählt: {selectedMaterialLabel} · {selectedSizeLabel}
-                    {selectedSize === "standard" ? ` · ${selectedQuantity.toLocaleString("de-DE")} Stück als Startpunkt` : ""}
+                    {selectedSize === "standard" ? ` · ${selectedQuantity.toLocaleString("de-DE")} Stück` : ""}
                   </p>
+                  {selectedStandardTier ? (
+                    <p className="price-note">
+                      Preis für {selectedStandardTier.quantity}:{" "}
+                      <strong>{selectedStandardTier.priceLabel}</strong> ·{" "}
+                      {selectedStandardTier.grossLabel} brutto (inkl. 19% MwSt) ·{" "}
+                      {selectedStandardTier.perPieceLabel}
+                    </p>
+                  ) : selectedSize === "custom" ? (
+                    <p className="price-note">
+                      Wunschformat: Preis nach Fläche, Material und Stückzahl – nutzen Sie
+                      die Berechnung bzw. den Angebotsweg rechts.
+                    </p>
+                  ) : null}
                 </>
               ) : null}
               <p>
