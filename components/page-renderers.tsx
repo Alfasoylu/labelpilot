@@ -5,6 +5,7 @@ import { ProductCard } from "@/components/cards/ProductCard";
 import { PricingCard } from "@/components/cards/PricingCard";
 import { SampleBoxCard } from "@/components/cards/SampleBoxCard";
 import { CustomSizePriceForm } from "@/components/custom-size-price-form";
+import { ProductConfigurator } from "@/components/product-configurator";
 import { FaqAccordion } from "@/components/faq/FaqAccordion";
 import { Section } from "@/components/layout/Section";
 import { LegalNoticeBox } from "@/components/legal/LegalNoticeBox";
@@ -704,7 +705,21 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
         </Section>
       ) : null}
 
-      {supportsStandardOrCustomChoice(page.path) ? (
+      {isCanonicalConfiguratorPage ? (
+        <Section
+          eyebrow="Konfigurator"
+          title="Konfigurieren Sie Ihre PP-Rollenetiketten"
+          lead="Material, Größe und Menge wählen – Netto- und Bruttopreis erscheinen sofort, ohne Seitenwechsel."
+        >
+          <ProductConfigurator
+            opaquePackages={opaquePackages}
+            transparentPackages={transparentPackages}
+            initialMaterial={selectedMaterial}
+            initialSize={selectedSize}
+            initialQuantity={selectedQuantity}
+          />
+        </Section>
+      ) : supportsStandardOrCustomChoice(page.path) ? (
         <Section
           eyebrow="Auswahl"
           title="Standardgröße oder Wunschformat"
@@ -888,7 +903,7 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
         </Section>
       ) : null}
 
-      {selectedSize === "standard" && selectedPackageTable?.length ? (
+      {!isCanonicalConfiguratorPage && selectedSize === "standard" && selectedPackageTable?.length ? (
         <Section
           id="pakete"
           eyebrow="Pakete & Preise"
