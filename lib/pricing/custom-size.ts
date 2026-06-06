@@ -37,6 +37,7 @@ export type PricingSettingsInput = {
   shippingTier2MaxKg: number;
   shippingTier2RateEur: number;
   shippingTier3RateEur: number;
+  shippingMinCostEur: number;
   shippingHeavyThresholdKg: number;
 };
 
@@ -104,7 +105,7 @@ function computeShippingCost(kg: number, settings: PricingSettingsInput): number
   if (kg > settings.shippingTier2MaxKg) {
     cost += (kg - settings.shippingTier2MaxKg) * settings.shippingTier3RateEur;
   }
-  return cost;
+  return Math.max(cost, settings.shippingMinCostEur);
 }
 
 function computeMarkupMultiplier(quantity: number, settings: PricingSettingsInput): number {

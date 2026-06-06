@@ -124,7 +124,8 @@ const DEFAULT_SETTINGS: PricingSettingsInput & AddonSettingsInput = {
   shippingTier2MaxKg: 100,
   shippingTier2RateEur: 9,
   shippingTier3RateEur: 7,
-  shippingHeavyThresholdKg: 100,
+  shippingMinCostEur: 5,
+  shippingHeavyThresholdKg: 10,
 };
 
 function decimalToNumber(value: { toString(): string } | number | null | undefined) {
@@ -204,7 +205,8 @@ export function mapPricingSettingsRecord(record: PricingSettingsRecord | null | 
     shippingTier2MaxKg: decimalToNumber(record.shippingTier2MaxKg) ?? 100,
     shippingTier2RateEur: decimalToNumber(record.shippingTier2RateEur) ?? 9,
     shippingTier3RateEur: decimalToNumber(record.shippingTier3RateEur) ?? 7,
-    shippingHeavyThresholdKg: decimalToNumber(record.shippingHeavyThresholdKg) ?? 100,
+    shippingMinCostEur: decimalToNumber(record.shippingMinCostEur) ?? 5,
+    shippingHeavyThresholdKg: decimalToNumber(record.shippingHeavyThresholdKg) ?? 10,
     updatedAt: record.updatedAt,
     updatedBy: record.updatedBy ?? null,
   };

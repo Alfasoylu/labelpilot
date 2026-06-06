@@ -611,7 +611,8 @@ model PricingSettings {
   shippingTier2MaxKg            Decimal  @default(100)  @db.Decimal(10, 2)
   shippingTier2RateEur          Decimal  @default(9)    @db.Decimal(10, 2)
   shippingTier3RateEur          Decimal  @default(7)    @db.Decimal(10, 2)
-  shippingHeavyThresholdKg      Decimal  @default(100)  @db.Decimal(10, 2)
+  shippingMinCostEur            Decimal  @default(5)    @db.Decimal(10, 2)
+  shippingHeavyThresholdKg      Decimal  @default(10)   @db.Decimal(10, 2)
   updatedAt                     DateTime @updatedAt
   updatedBy                     String?
 

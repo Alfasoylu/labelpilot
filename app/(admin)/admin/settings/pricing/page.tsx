@@ -543,7 +543,7 @@ export default async function PricingSettingsPage({
                     step="1"
                     defaultValue={formatPricingNumber(settings.shippingHeavyThresholdKg)}
                   />
-                  <p className="field-hint">Ab diesem Gewicht gilt Lieferzeit 21–28 Werktage. Standard: 100 kg.</p>
+                  <p className="field-hint">Ab diesem Gewicht gilt Lieferzeit 21–28 Werktage. Standard: 10 kg.</p>
                 </div>
                 <div>
                   <label htmlFor="settings-shippingTier1MaxKg">Versand Stufe 1 — bis (kg)</label>
@@ -604,6 +604,18 @@ export default async function PricingSettingsPage({
                     defaultValue={formatPricingNumber(settings.shippingTier3RateEur)}
                   />
                   <p className="field-hint">Standard: 7 €/kg.</p>
+                </div>
+                <div>
+                  <label htmlFor="settings-shippingMinCostEur">Mindest-Versandkosten (€)</label>
+                  <input
+                    id="settings-shippingMinCostEur"
+                    name="settings.shippingMinCostEur"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    defaultValue={formatPricingNumber(settings.shippingMinCostEur)}
+                  />
+                  <p className="field-hint">Versandkosten werden auf diesen Mindestwert aufgerundet. Standard: 5 €.</p>
                 </div>
               </div>
 

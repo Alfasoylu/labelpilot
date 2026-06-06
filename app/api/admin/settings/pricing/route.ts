@@ -46,6 +46,7 @@ const settingsSchema = z.object({
   shippingTier2MaxKg: z.coerce.number().positive(),
   shippingTier2RateEur: z.coerce.number().min(0),
   shippingTier3RateEur: z.coerce.number().min(0),
+  shippingMinCostEur: z.coerce.number().min(0),
   shippingHeavyThresholdKg: z.coerce.number().positive(),
 });
 
@@ -111,6 +112,7 @@ export async function POST(request: Request) {
     shippingTier2MaxKg: formData.get("settings.shippingTier2MaxKg"),
     shippingTier2RateEur: formData.get("settings.shippingTier2RateEur"),
     shippingTier3RateEur: formData.get("settings.shippingTier3RateEur"),
+    shippingMinCostEur: formData.get("settings.shippingMinCostEur"),
     shippingHeavyThresholdKg: formData.get("settings.shippingHeavyThresholdKg"),
   });
 
@@ -177,6 +179,7 @@ export async function POST(request: Request) {
       shippingTier2MaxKg?: { toString(): string } | null;
       shippingTier2RateEur?: { toString(): string } | null;
       shippingTier3RateEur?: { toString(): string } | null;
+      shippingMinCostEur?: { toString(): string } | null;
       shippingHeavyThresholdKg?: { toString(): string } | null;
       updatedBy?: string | null;
     } | null,
@@ -222,6 +225,7 @@ export async function POST(request: Request) {
       shippingTier2MaxKg: previousSettings?.shippingTier2MaxKg?.toString() ?? null,
       shippingTier2RateEur: previousSettings?.shippingTier2RateEur?.toString() ?? null,
       shippingTier3RateEur: previousSettings?.shippingTier3RateEur?.toString() ?? null,
+      shippingMinCostEur: previousSettings?.shippingMinCostEur?.toString() ?? null,
       shippingHeavyThresholdKg: previousSettings?.shippingHeavyThresholdKg?.toString() ?? null,
       updatedBy: previousSettings?.updatedBy ?? null,
     },
@@ -255,6 +259,7 @@ export async function POST(request: Request) {
       shippingTier2MaxKg: settingsData.shippingTier2MaxKg.toString(),
       shippingTier2RateEur: settingsData.shippingTier2RateEur.toString(),
       shippingTier3RateEur: settingsData.shippingTier3RateEur.toString(),
+      shippingMinCostEur: settingsData.shippingMinCostEur.toString(),
       shippingHeavyThresholdKg: settingsData.shippingHeavyThresholdKg.toString(),
       updatedBy: actor,
     },
