@@ -40,6 +40,13 @@ const settingsSchema = z.object({
   markupTier2Multiplier: z.coerce.number().min(1),
   markupTier2MaxQty: z.coerce.number().int().positive(),
   markupTier3Multiplier: z.coerce.number().min(1),
+  labelWeightPerM2Grams: z.coerce.number().positive(),
+  shippingTier1MaxKg: z.coerce.number().positive(),
+  shippingTier1RateEur: z.coerce.number().min(0),
+  shippingTier2MaxKg: z.coerce.number().positive(),
+  shippingTier2RateEur: z.coerce.number().min(0),
+  shippingTier3RateEur: z.coerce.number().min(0),
+  shippingHeavyThresholdKg: z.coerce.number().positive(),
 });
 
 function buildRedirectUrl(request: Request, search: Record<string, string>) {
@@ -98,6 +105,13 @@ export async function POST(request: Request) {
     markupTier2Multiplier: formData.get("settings.markupTier2Multiplier"),
     markupTier2MaxQty: formData.get("settings.markupTier2MaxQty"),
     markupTier3Multiplier: formData.get("settings.markupTier3Multiplier"),
+    labelWeightPerM2Grams: formData.get("settings.labelWeightPerM2Grams"),
+    shippingTier1MaxKg: formData.get("settings.shippingTier1MaxKg"),
+    shippingTier1RateEur: formData.get("settings.shippingTier1RateEur"),
+    shippingTier2MaxKg: formData.get("settings.shippingTier2MaxKg"),
+    shippingTier2RateEur: formData.get("settings.shippingTier2RateEur"),
+    shippingTier3RateEur: formData.get("settings.shippingTier3RateEur"),
+    shippingHeavyThresholdKg: formData.get("settings.shippingHeavyThresholdKg"),
   });
 
   const materialResults = PRICING_MATERIAL_KEYS.map((materialKey) =>
@@ -157,6 +171,13 @@ export async function POST(request: Request) {
       markupTier2Multiplier?: { toString(): string } | null;
       markupTier2MaxQty?: number | null;
       markupTier3Multiplier?: { toString(): string } | null;
+      labelWeightPerM2Grams?: { toString(): string } | null;
+      shippingTier1MaxKg?: { toString(): string } | null;
+      shippingTier1RateEur?: { toString(): string } | null;
+      shippingTier2MaxKg?: { toString(): string } | null;
+      shippingTier2RateEur?: { toString(): string } | null;
+      shippingTier3RateEur?: { toString(): string } | null;
+      shippingHeavyThresholdKg?: { toString(): string } | null;
       updatedBy?: string | null;
     } | null,
     Array<{
@@ -195,6 +216,13 @@ export async function POST(request: Request) {
       markupTier2Multiplier: previousSettings?.markupTier2Multiplier?.toString() ?? null,
       markupTier2MaxQty: previousSettings?.markupTier2MaxQty?.toString() ?? null,
       markupTier3Multiplier: previousSettings?.markupTier3Multiplier?.toString() ?? null,
+      labelWeightPerM2Grams: previousSettings?.labelWeightPerM2Grams?.toString() ?? null,
+      shippingTier1MaxKg: previousSettings?.shippingTier1MaxKg?.toString() ?? null,
+      shippingTier1RateEur: previousSettings?.shippingTier1RateEur?.toString() ?? null,
+      shippingTier2MaxKg: previousSettings?.shippingTier2MaxKg?.toString() ?? null,
+      shippingTier2RateEur: previousSettings?.shippingTier2RateEur?.toString() ?? null,
+      shippingTier3RateEur: previousSettings?.shippingTier3RateEur?.toString() ?? null,
+      shippingHeavyThresholdKg: previousSettings?.shippingHeavyThresholdKg?.toString() ?? null,
       updatedBy: previousSettings?.updatedBy ?? null,
     },
     next: {
@@ -221,6 +249,13 @@ export async function POST(request: Request) {
       markupTier2Multiplier: settingsData.markupTier2Multiplier.toString(),
       markupTier2MaxQty: settingsData.markupTier2MaxQty.toString(),
       markupTier3Multiplier: settingsData.markupTier3Multiplier.toString(),
+      labelWeightPerM2Grams: settingsData.labelWeightPerM2Grams.toString(),
+      shippingTier1MaxKg: settingsData.shippingTier1MaxKg.toString(),
+      shippingTier1RateEur: settingsData.shippingTier1RateEur.toString(),
+      shippingTier2MaxKg: settingsData.shippingTier2MaxKg.toString(),
+      shippingTier2RateEur: settingsData.shippingTier2RateEur.toString(),
+      shippingTier3RateEur: settingsData.shippingTier3RateEur.toString(),
+      shippingHeavyThresholdKg: settingsData.shippingHeavyThresholdKg.toString(),
       updatedBy: actor,
     },
   });

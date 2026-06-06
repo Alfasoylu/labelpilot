@@ -28,6 +28,13 @@ const settings = {
   markupTier2Multiplier: 1.6,
   markupTier2MaxQty: 10000,
   markupTier3Multiplier: 1.5,
+  labelWeightPerM2Grams: 150,
+  shippingTier1MaxKg: 50,
+  shippingTier1RateEur: 10,
+  shippingTier2MaxKg: 100,
+  shippingTier2RateEur: 9,
+  shippingTier3RateEur: 7,
+  shippingHeavyThresholdKg: 100,
 };
 
 const featureDisabled = buildPublicCustomSizePriceResponse({

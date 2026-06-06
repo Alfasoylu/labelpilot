@@ -118,6 +118,13 @@ const DEFAULT_SETTINGS: PricingSettingsInput & AddonSettingsInput = {
   markupTier2Multiplier: 1.6,
   markupTier2MaxQty: 10000,
   markupTier3Multiplier: 1.5,
+  labelWeightPerM2Grams: 150,
+  shippingTier1MaxKg: 50,
+  shippingTier1RateEur: 10,
+  shippingTier2MaxKg: 100,
+  shippingTier2RateEur: 9,
+  shippingTier3RateEur: 7,
+  shippingHeavyThresholdKg: 100,
 };
 
 function decimalToNumber(value: { toString(): string } | number | null | undefined) {
@@ -191,6 +198,13 @@ export function mapPricingSettingsRecord(record: PricingSettingsRecord | null | 
     markupTier2Multiplier: decimalToNumber(record.markupTier2Multiplier) ?? 1.6,
     markupTier2MaxQty: record.markupTier2MaxQty ?? 10000,
     markupTier3Multiplier: decimalToNumber(record.markupTier3Multiplier) ?? 1.5,
+    labelWeightPerM2Grams: decimalToNumber(record.labelWeightPerM2Grams) ?? 150,
+    shippingTier1MaxKg: decimalToNumber(record.shippingTier1MaxKg) ?? 50,
+    shippingTier1RateEur: decimalToNumber(record.shippingTier1RateEur) ?? 10,
+    shippingTier2MaxKg: decimalToNumber(record.shippingTier2MaxKg) ?? 100,
+    shippingTier2RateEur: decimalToNumber(record.shippingTier2RateEur) ?? 9,
+    shippingTier3RateEur: decimalToNumber(record.shippingTier3RateEur) ?? 7,
+    shippingHeavyThresholdKg: decimalToNumber(record.shippingHeavyThresholdKg) ?? 100,
     updatedAt: record.updatedAt,
     updatedBy: record.updatedBy ?? null,
   };

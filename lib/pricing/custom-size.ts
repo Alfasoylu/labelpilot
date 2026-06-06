@@ -30,6 +30,14 @@ export type PricingSettingsInput = {
   markupTier2Multiplier: number;
   markupTier2MaxQty: number;
   markupTier3Multiplier: number;
+  // Shipping — embedded in net price (progressive tiers)
+  labelWeightPerM2Grams: number;
+  shippingTier1MaxKg: number;
+  shippingTier1RateEur: number;
+  shippingTier2MaxKg: number;
+  shippingTier2RateEur: number;
+  shippingTier3RateEur: number;
+  shippingHeavyThresholdKg: number;
 };
 
 export type CustomSizePriceInput = {
@@ -45,6 +53,7 @@ export type CustomSizePriceInput = {
 
 export type CustomSizePriceResult = {
   quoteRequired: boolean;
+  isHeavyShipment: boolean;
   method: "DIGITAL" | "FLEXO";
   netPrice: number;
   grossPrice: number;
@@ -55,6 +64,8 @@ export type CustomSizePriceResult = {
     inkCost: number;
     plateCost: number;
     digitalPrintingCost: number;
+    shippingWeightKg: number;
+    shippingCost: number;
     productionCost: number;
     multiplier: number;
   };
@@ -82,6 +93,20 @@ function computeInkCost(quantity: number, settings: PricingSettingsInput): numbe
   return settings.inkCostTier2Net + additionalBatches * settings.inkCostAdditionalPer10kNet;
 }
 
+function computeShippingCost(kg: number, settings: PricingSettingsInput): number {
+  // Progressive tiers: each portion billed at its own rate
+  const tier1Kg = Math.min(kg, settings.shippingTier1MaxKg);
+  let cost = tier1Kg * settings.shippingTier1RateEur;
+  if (kg > settings.shippingTier1MaxKg) {
+    const tier2Kg = Math.min(kg - settings.shippingTier1MaxKg, settings.shippingTier2MaxKg - settings.shippingTier1MaxKg);
+    cost += tier2Kg * settings.shippingTier2RateEur;
+  }
+  if (kg > settings.shippingTier2MaxKg) {
+    cost += (kg - settings.shippingTier2MaxKg) * settings.shippingTier3RateEur;
+  }
+  return cost;
+}
+
 function computeMarkupMultiplier(quantity: number, settings: PricingSettingsInput): number {
   if (quantity <= settings.markupTier1MaxQty) return settings.markupTier1Multiplier;
   if (quantity <= settings.markupTier2MaxQty) return settings.markupTier2Multiplier;
@@ -104,6 +129,7 @@ export function computeCustomSizePrice(
   ) {
     return {
       quoteRequired: true,
+      isHeavyShipment: false,
       method: "DIGITAL",
       netPrice: 0,
       grossPrice: 0,
@@ -114,6 +140,8 @@ export function computeCustomSizePrice(
         inkCost: 0,
         plateCost: 0,
         digitalPrintingCost: 0,
+        shippingWeightKg: 0,
+        shippingCost: 0,
         productionCost: 0,
         multiplier: 0,
       },
@@ -124,14 +152,19 @@ export function computeCustomSizePrice(
   const totalAreaM2 = labelAreaM2 * quantity * (1 + params.wasteFactorPct / 100);
   const materialCost = params.materialCostPerM2 * totalAreaM2;
 
+  // Shipping — computed on actual label area (no waste factor), embedded in price
+  const shippingWeightKg = labelAreaM2 * quantity * settings.labelWeightPerM2Grams / 1000;
+  const shippingCost = computeShippingCost(shippingWeightKg, settings);
+  const isHeavyShipment = shippingWeightKg > settings.shippingHeavyThresholdKg;
+
   // Flexo path
   const inkCost = computeInkCost(quantity, settings);
   const plateCost = colorCount * settings.platePerColorCostNet * anzahlSorten;
-  const flexoProductionCost = materialCost + inkCost + plateCost;
+  const flexoProductionCost = materialCost + inkCost + plateCost + shippingCost;
 
   // Digital path
   const digitalPrintingCost = settings.digitalCostPerUnitNet * quantity + settings.digitalSetupCostNet;
-  const digitalProductionCost = materialCost + digitalPrintingCost;
+  const digitalProductionCost = materialCost + digitalPrintingCost + shippingCost;
 
   // Auto-select cheaper method
   const method = digitalProductionCost <= flexoProductionCost ? "DIGITAL" : "FLEXO";
@@ -145,6 +178,7 @@ export function computeCustomSizePrice(
 
   return {
     quoteRequired: false,
+    isHeavyShipment,
     method,
     netPrice,
     grossPrice,
@@ -155,6 +189,8 @@ export function computeCustomSizePrice(
       inkCost: method === "FLEXO" ? roundMoney(inkCost) : 0,
       plateCost: method === "FLEXO" ? roundMoney(plateCost) : 0,
       digitalPrintingCost: method === "DIGITAL" ? roundMoney(digitalPrintingCost) : 0,
+      shippingWeightKg: roundMoney(shippingWeightKg),
+      shippingCost: roundMoney(shippingCost),
       productionCost: roundMoney(productionCost),
       multiplier,
     },

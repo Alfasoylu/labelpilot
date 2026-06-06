@@ -42,7 +42,7 @@ type KalkulatorConfig = {
 type PriceState =
   | { status: "idle" }
   | { status: "loading" }
-  | { status: "configured"; quoteRequired: false; method: "DIGITAL" | "FLEXO"; netPrice: number; grossPrice: number; inkCostNet: number; plateCostNet: number; digitalPrintingCostNet: number }
+  | { status: "configured"; quoteRequired: false; method: "DIGITAL" | "FLEXO"; netPrice: number; grossPrice: number; inkCostNet: number; plateCostNet: number; digitalPrintingCostNet: number; isHeavyShipment: boolean }
   | { status: "quote" }
   | { status: "unconfigured" }
   | { status: "error" };
@@ -125,6 +125,7 @@ export function KalkulatorClient({
         inkCostNet: data.breakdown?.inkCostNet ?? 0,
         plateCostNet: data.breakdown?.plateCostNet ?? 0,
         digitalPrintingCostNet: data.breakdown?.digitalPrintingCostNet ?? 0,
+        isHeavyShipment: data.isHeavyShipment ?? false,
       });
     } catch {
       setPriceState({ status: "error" });
@@ -154,6 +155,7 @@ export function KalkulatorClient({
   const plateCostNet = priceState.status === "configured" ? priceState.plateCostNet : 0;
   const digitalPrintingCostNet = priceState.status === "configured" ? priceState.digitalPrintingCostNet : 0;
   const printMethod = priceState.status === "configured" ? priceState.method : null;
+  const isHeavyShipment = priceState.status === "configured" ? priceState.isHeavyShipment : false;
   const colorCount = config.farbigkeit + (config.weissunterdruck ? 1 : 0);
   const totalQuantity = typeof config.mengeProMotiv === "number" ? config.mengeProMotiv * config.anzahlSorten : 0;
 
@@ -435,6 +437,9 @@ export function KalkulatorClient({
                   <li className="kalkulator-price-shipping">
                     <span>✓ Inklusive Versand nach Deutschland</span>
                   </li>
+                  <li className="kalkulator-price-shipping">
+                    <span>Lieferzeit: ca. {isHeavyShipment ? "21–28" : "7–14"} Werktage nach Druckdaten-Freigabe</span>
+                  </li>
                 </ul>
                 <div className="inline-actions">
                   <button type="button" className="cta-button" onClick={handleOrder}>
@@ -555,6 +560,7 @@ export function KalkulatorClient({
             printMethod={printMethod ?? "DIGITAL"}
             netPrice={finalNetPrice}
             grossPrice={finalGrossPrice}
+            isHeavyShipment={isHeavyShipment}
             onBack={handleBack}
           />
           {/* plateCostNet passed for order summary display; already included in netPrice */}

@@ -27,6 +27,7 @@ export type PublicCustomSizeResponse =
   | {
       configured: true;
       quoteRequired: boolean;
+      isHeavyShipment: boolean;
       method: "DIGITAL" | "FLEXO";
       netPrice: number;
       grossPrice: number;
@@ -35,6 +36,7 @@ export type PublicCustomSizeResponse =
         plateCostNet: number;
         digitalPrintingCostNet: number;
         materialCostNet: number;
+        shippingCostNet: number;
         multiplier: number;
       };
     };
@@ -77,6 +79,7 @@ export function buildPublicCustomSizePriceResponse(input: {
     body: {
       configured: true,
       quoteRequired: result.quoteRequired,
+      isHeavyShipment: result.isHeavyShipment,
       method: result.method,
       netPrice: result.netPrice,
       grossPrice: result.grossPrice,
@@ -85,6 +88,7 @@ export function buildPublicCustomSizePriceResponse(input: {
         plateCostNet: result.breakdown.plateCost,
         digitalPrintingCostNet: result.breakdown.digitalPrintingCost,
         materialCostNet: result.breakdown.materialCost,
+        shippingCostNet: result.breakdown.shippingCost,
         multiplier: result.breakdown.multiplier,
       },
     } satisfies PublicCustomSizeResponse,

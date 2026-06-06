@@ -605,6 +605,13 @@ model PricingSettings {
   markupTier2Multiplier         Decimal  @default(1.60) @db.Decimal(5, 2)
   markupTier2MaxQty             Int      @default(10000)
   markupTier3Multiplier         Decimal  @default(1.50) @db.Decimal(5, 2)
+  labelWeightPerM2Grams         Decimal  @default(150)  @db.Decimal(10, 2)
+  shippingTier1MaxKg            Decimal  @default(50)   @db.Decimal(10, 2)
+  shippingTier1RateEur          Decimal  @default(10)   @db.Decimal(10, 2)
+  shippingTier2MaxKg            Decimal  @default(100)  @db.Decimal(10, 2)
+  shippingTier2RateEur          Decimal  @default(9)    @db.Decimal(10, 2)
+  shippingTier3RateEur          Decimal  @default(7)    @db.Decimal(10, 2)
+  shippingHeavyThresholdKg      Decimal  @default(100)  @db.Decimal(10, 2)
   updatedAt                     DateTime @updatedAt
   updatedBy                     String?
 

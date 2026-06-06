@@ -519,6 +519,94 @@ export default async function PricingSettingsPage({
                 </div>
               </div>
 
+              <h4 style={{ marginTop: "1.5rem" }}>Versandkosten (in Preis eingebettet)</h4>
+              <div className="form-grid">
+                <div>
+                  <label htmlFor="settings-labelWeightPerM2Grams">Etikettengewicht g/m²</label>
+                  <input
+                    id="settings-labelWeightPerM2Grams"
+                    name="settings.labelWeightPerM2Grams"
+                    type="number"
+                    min="1"
+                    step="1"
+                    defaultValue={formatPricingNumber(settings.labelWeightPerM2Grams)}
+                  />
+                  <p className="field-hint">PP-Folie inkl. Liner. Standard: 150 g/m².</p>
+                </div>
+                <div>
+                  <label htmlFor="settings-shippingHeavyThresholdKg">Schwersendung ab (kg)</label>
+                  <input
+                    id="settings-shippingHeavyThresholdKg"
+                    name="settings.shippingHeavyThresholdKg"
+                    type="number"
+                    min="1"
+                    step="1"
+                    defaultValue={formatPricingNumber(settings.shippingHeavyThresholdKg)}
+                  />
+                  <p className="field-hint">Ab diesem Gewicht gilt Lieferzeit 21–28 Werktage. Standard: 100 kg.</p>
+                </div>
+                <div>
+                  <label htmlFor="settings-shippingTier1MaxKg">Versand Stufe 1 — bis (kg)</label>
+                  <input
+                    id="settings-shippingTier1MaxKg"
+                    name="settings.shippingTier1MaxKg"
+                    type="number"
+                    min="1"
+                    step="1"
+                    defaultValue={formatPricingNumber(settings.shippingTier1MaxKg)}
+                  />
+                  <p className="field-hint">Standard: 50 kg.</p>
+                </div>
+                <div>
+                  <label htmlFor="settings-shippingTier1RateEur">Versand Stufe 1 — Rate (€/kg)</label>
+                  <input
+                    id="settings-shippingTier1RateEur"
+                    name="settings.shippingTier1RateEur"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    defaultValue={formatPricingNumber(settings.shippingTier1RateEur)}
+                  />
+                  <p className="field-hint">Standard: 10 €/kg.</p>
+                </div>
+                <div>
+                  <label htmlFor="settings-shippingTier2MaxKg">Versand Stufe 2 — bis (kg)</label>
+                  <input
+                    id="settings-shippingTier2MaxKg"
+                    name="settings.shippingTier2MaxKg"
+                    type="number"
+                    min="1"
+                    step="1"
+                    defaultValue={formatPricingNumber(settings.shippingTier2MaxKg)}
+                  />
+                  <p className="field-hint">Standard: 100 kg.</p>
+                </div>
+                <div>
+                  <label htmlFor="settings-shippingTier2RateEur">Versand Stufe 2 — Rate (€/kg)</label>
+                  <input
+                    id="settings-shippingTier2RateEur"
+                    name="settings.shippingTier2RateEur"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    defaultValue={formatPricingNumber(settings.shippingTier2RateEur)}
+                  />
+                  <p className="field-hint">Standard: 9 €/kg.</p>
+                </div>
+                <div>
+                  <label htmlFor="settings-shippingTier3RateEur">Versand Stufe 3 — Rate (€/kg, ab Stufe-2-Grenze)</label>
+                  <input
+                    id="settings-shippingTier3RateEur"
+                    name="settings.shippingTier3RateEur"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    defaultValue={formatPricingNumber(settings.shippingTier3RateEur)}
+                  />
+                  <p className="field-hint">Standard: 7 €/kg.</p>
+                </div>
+              </div>
+
               <h4 style={{ marginTop: "1.5rem" }}>Zusatzleistungen</h4>
               <div className="form-grid">
                 <div>

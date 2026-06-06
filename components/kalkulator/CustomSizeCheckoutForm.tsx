@@ -24,6 +24,7 @@ type CustomSizeCheckoutFormProps = {
   printMethod?: "DIGITAL" | "FLEXO";
   netPrice: number;
   grossPrice: number;
+  isHeavyShipment?: boolean;
   onBack: () => void;
 };
 
@@ -52,6 +53,7 @@ export function CustomSizeCheckoutForm({
   printMethod = "DIGITAL",
   netPrice,
   grossPrice,
+  isHeavyShipment = false,
   onBack,
 }: CustomSizeCheckoutFormProps) {
   const [isPending, startTransition] = useTransition();
@@ -153,8 +155,8 @@ export function CustomSizeCheckoutForm({
           <li>Versand nach Deutschland: inklusive</li>
         </ul>
         <p className="field-hint">
-          Lieferzeit: ca. 10–14 Werktage nach Ihrer Druckdaten-Freigabe (Produktion + Versand nach
-          Deutschland). Voraussichtlicher Zeitraum, keine bindende Garantie.
+          Lieferzeit: ca. {isHeavyShipment ? "21–28" : "7–14"} Werktage nach Ihrer Druckdaten-Freigabe
+          (Produktion + Versand nach Deutschland). Voraussichtlicher Zeitraum, keine bindende Garantie.
         </p>
       </article>
 
