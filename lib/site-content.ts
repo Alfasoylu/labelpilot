@@ -350,10 +350,10 @@ export const homePageData: HomePageData = {
 
 export const siteNavigation: SiteNavigationItem[] = [
   { label: "Kalkulator", href: "/de/kalkulator" },
-  { label: "Produkte", href: "/de/pp-rollenetiketten" },
+  { label: "Materialien", href: "/de/pp-rollenetiketten" },
   { label: "Branchen", href: "/de/lebensmittel-etiketten" },
-  { label: "Ratgeber", href: "/de/ratgeber" },
-  { label: "Glossar", href: "/de/glossar" },
+  { label: "Druckdaten", href: "/de/druckdaten" },
+  { label: "Kontakt", href: "/de/kontakt" },
 ];
 
 export const footerLinks: FooterGroup[] = [

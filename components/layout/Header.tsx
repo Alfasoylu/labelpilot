@@ -16,7 +16,7 @@ export function Header({ navigation }: HeaderProps) {
           </span>
           <span className="brand-copy">
             <strong>Labelpilot.de</strong>
-            <span>Etiketten-Infrastruktur für kleine Produktmarken</span>
+            <span>PP-Rollenetiketten für Produktmarken</span>
           </span>
         </Link>
         <nav className="header-nav" aria-label="Hauptnavigation">

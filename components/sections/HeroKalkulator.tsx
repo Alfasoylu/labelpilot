@@ -4,11 +4,9 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-type MaterialSlug = "pp-white" | "pp-transparent" | "paper-white";
-type PrintOption = "cmyk" | "unbedruckt";
+type MaterialSlug = "pp-white" | "pp-transparent";
 
 type PriceState =
-  | { status: "idle" }
   | { status: "loading" }
   | { status: "ok"; netPrice: number; grossPrice: number }
   | { status: "quote" }
@@ -18,7 +16,6 @@ type PriceState =
 const MATERIAL_API_KEY: Record<MaterialSlug, string> = {
   "pp-white": "OPAQUE_PP",
   "pp-transparent": "TRANSPARENT_PP",
-  "paper-white": "PAPER_WHITE",
 };
 
 function formatEur(amount: number) {
@@ -32,9 +29,8 @@ export function HeroKalkulator() {
   const [widthMm, setWidthMm] = useState<number | "">(60);
   const [heightMm, setHeightMm] = useState<number | "">(40);
   const [materialSlug, setMaterialSlug] = useState<MaterialSlug>("pp-white");
-  const [printOption, setPrintOption] = useState<PrintOption>("cmyk");
   const [widthError, setWidthError] = useState("");
-  const [priceState, setPriceState] = useState<PriceState>({ status: "idle" });
+  const [priceState, setPriceState] = useState<PriceState>({ status: "loading" });
 
   const isNumeric = (v: number | "") => typeof v === "number" && v > 0;
   const isValid =
@@ -49,14 +45,8 @@ export function HeroKalkulator() {
       ? ((quantity as number) * (widthMm as number) * (heightMm as number)) / 1_000_000
       : null;
 
-  const needsQuote =
-    printOption === "unbedruckt" || materialSlug === "paper-white";
-
   const fetchPrice = useCallback(async () => {
-    if (!isValid || needsQuote) {
-      if (needsQuote) setPriceState({ status: "quote" });
-      return;
-    }
+    if (!isValid) return;
     setPriceState({ status: "loading" });
     try {
       const res = await fetch("/api/kalkulator/price", {
@@ -79,7 +69,7 @@ export function HeroKalkulator() {
     } catch {
       setPriceState({ status: "error" });
     }
-  }, [isValid, needsQuote, materialSlug, widthMm, heightMm, quantity]);
+  }, [isValid, materialSlug, widthMm, heightMm, quantity]);
 
   useEffect(() => {
     const t = setTimeout(() => { void fetchPrice(); }, 400);
@@ -102,7 +92,7 @@ export function HeroKalkulator() {
     if (widthMm) p.set("width", String(widthMm));
     if (heightMm) p.set("height", String(heightMm));
     p.set("material", materialSlug);
-    p.set("print", printOption);
+    p.set("print", "cmyk");
     if (extra) {
       for (const [k, v] of Object.entries(extra)) p.set(k, v);
     }
@@ -128,6 +118,9 @@ export function HeroKalkulator() {
           <p className="hero-kalk__sub">
             Sofortpreis für Produktetiketten auf Flaschen, Gläsern, Dosen, Beuteln und
             Supplement-Verpackungen.
+          </p>
+          <p className="hero-kalk__usecases">
+            Flaschen&nbsp;·&nbsp;Gläser&nbsp;·&nbsp;Dosen&nbsp;·&nbsp;Beutel&nbsp;·&nbsp;Kosmetik&nbsp;·&nbsp;Supplements&nbsp;·&nbsp;Honig&nbsp;·&nbsp;Kaffee&nbsp;·&nbsp;Saucen&nbsp;·&nbsp;Private&nbsp;Label
           </p>
 
           <div className="hero-kalk__card">
@@ -181,8 +174,8 @@ export function HeroKalkulator() {
                 />
               </div>
 
-              {/* Row 2: Material (span 2) · Druck (span 1) */}
-              <div className="hero-kalk__field hero-kalk__field--span2">
+              {/* Row 2: Material (full width) */}
+              <div className="hero-kalk__field hero-kalk__field--full">
                 <label htmlFor="hk-mat">Material</label>
                 <select
                   id="hk-mat"
@@ -191,18 +184,6 @@ export function HeroKalkulator() {
                 >
                   <option value="pp-white">PP-Folie weiß (opak)</option>
                   <option value="pp-transparent">PP-Folie transparent</option>
-                  <option value="paper-white">Etikettenpapier weiß</option>
-                </select>
-              </div>
-              <div className="hero-kalk__field">
-                <label htmlFor="hk-print">Druck</label>
-                <select
-                  id="hk-print"
-                  value={printOption}
-                  onChange={(e) => setPrintOption(e.target.value as PrintOption)}
-                >
-                  <option value="cmyk">4-farbig CMYK</option>
-                  <option value="unbedruckt">Unbedruckt</option>
                 </select>
               </div>
             </div>
@@ -210,7 +191,7 @@ export function HeroKalkulator() {
             {/* Live result */}
             <div className="hero-kalk__result">
               {priceState.status === "loading" && (
-                <span className="hero-kalk__result-dim">Preis wird berechnet …</span>
+                <span className="hero-kalk__result-dim">Preis wird sofort berechnet …</span>
               )}
               {priceState.status === "ok" && (
                 <div className="hero-kalk__result-price">
@@ -234,11 +215,7 @@ export function HeroKalkulator() {
               )}
               {priceState.status === "quote" && (
                 <span className="hero-kalk__result-dim">
-                  {printOption === "unbedruckt"
-                    ? "Unbedruckt: Angebot erforderlich."
-                    : materialSlug === "paper-white"
-                      ? "Etikettenpapier: Angebot erforderlich."
-                      : "Für diese Konfiguration bitte Angebot anfordern."}
+                  Für diese Konfiguration bitte Angebot anfordern.
                 </span>
               )}
               {priceState.status === "unconfigured" && (
@@ -250,9 +227,6 @@ export function HeroKalkulator() {
                 <span className="hero-kalk__result-dim">
                   Preisberechnung derzeit nicht verfügbar.
                 </span>
-              )}
-              {priceState.status === "idle" && (
-                <span className="hero-kalk__result-dim">Format und Menge eingeben.</span>
               )}
             </div>
 
@@ -297,11 +271,8 @@ export function HeroKalkulator() {
         </div>
       </section>
 
-      {/* ── Below hero: application row + trust ── */}
+      {/* ── Below hero: trust strip ── */}
       <div className="hero-kalk__below container">
-        <p className="hero-kalk__applications">
-          Für Flaschen · Gläser · Dosen · Beutel · Kosmetik · Supplements · Honig · Kaffee · Saucen · Private Label
-        </p>
         <ul className="hero-kalk__trust-row">
           <li>Maßanfertigung bis 320 mm Breite</li>
           <li>Druckdatenprüfung &amp; Proof möglich</li>
