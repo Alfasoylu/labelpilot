@@ -55,6 +55,7 @@ export async function POST(request: Request) {
     }
 
     const { materialKey, widthMm, heightMm, quantity } = parsed.data;
+    const farbigkeit = parsed.data.farbigkeit ?? 4;
 
     const [materialRow, settingsRow] = await Promise.all([
       prisma.pricingMaterialCost.findUnique({ where: { materialKey } }),
@@ -82,7 +83,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const grossAmountCents = Math.round(priceResult.body.grossPrice * 100);
+    // Druckplatten: N Farben × 50 € netto × 1,19 MwSt.
+    const plateCostGrossCents = farbigkeit * 5950; // farbigkeit * 50 * 1.19 * 100
+    const basePriceGrossCents = Math.round(priceResult.body.grossPrice * 100);
+    const grossAmountCents = basePriceGrossCents + plateCostGrossCents;
     const orderNumber = createOrderNumber();
     const normalizedCountry =
       parsed.data.country.toUpperCase() === "DE" ||
@@ -123,7 +127,7 @@ export async function POST(request: Request) {
         statusEvents: {
           create: {
             status: "PENDING_PAYMENT",
-            note: `Wunschformat-Checkout: ${widthMm}×${heightMm} mm, ${quantity} Stück (${parsed.data.artworkStatus}).`,
+            note: `Wunschformat-Checkout: ${widthMm}×${heightMm} mm, ${quantity} Stück, ${farbigkeit}-farbig (${parsed.data.artworkStatus}).`,
           },
         },
       },
@@ -154,10 +158,21 @@ export async function POST(request: Request) {
           quantity: 1,
           price_data: {
             currency: "eur",
-            unit_amount: grossAmountCents,
+            unit_amount: basePriceGrossCents,
             product_data: {
               name: getProductDisplayName(materialKey, widthMm, heightMm),
               description: `${quantity.toLocaleString("de-DE")} Stück, Wunschformat, inkl. Versand`,
+            },
+          },
+        },
+        {
+          quantity: 1,
+          price_data: {
+            currency: "eur",
+            unit_amount: plateCostGrossCents,
+            product_data: {
+              name: `Druckplatten (${farbigkeit}-farbig)`,
+              description: `${farbigkeit} Druckplatte(n) à 50,00 € netto – Flexodruck`,
             },
           },
         },

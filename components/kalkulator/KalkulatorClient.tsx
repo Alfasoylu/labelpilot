@@ -16,6 +16,7 @@ type KalkulatorInitialProps = {
   initialHeightMm?: number;
   initialMaterial?: string;
   initialPrint?: string;
+  initialFarbigkeit?: number;
 };
 
 function mapInitialMaterial(slug?: string): MaterialKey {
@@ -68,7 +69,12 @@ export function KalkulatorClient({
   initialHeightMm,
   initialMaterial,
   initialPrint,
+  initialFarbigkeit,
 }: KalkulatorInitialProps = {}) {
+  const validFarbigkeit = (initialFarbigkeit && [1,2,3,4].includes(initialFarbigkeit))
+    ? initialFarbigkeit as Farbigkeit
+    : 4 as Farbigkeit;
+
   const [config, setConfig] = useState<KalkulatorConfig>({
     materialKey: mapInitialMaterial(initialMaterial),
     widthMm: initialWidthMm ?? 100,
@@ -79,7 +85,7 @@ export function KalkulatorClient({
     weissunterdruck: false,
     klebertyp: "PERMANENT",
     tiefkuehlgeeignet: false,
-    farbigkeit: 4,
+    farbigkeit: validFarbigkeit,
     anzahlSorten: 1,
     uvLack: "KEIN",
   });
@@ -127,6 +133,12 @@ export function KalkulatorClient({
     setMode("configure");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+
+  const plateCostNet = config.farbigkeit * 50;
+  const finalNetPrice = priceState.status === "configured"
+    ? priceState.netPrice + plateCostNet
+    : 0;
+  const finalGrossPrice = finalNetPrice * 1.19;
 
   const valid = configIsValid(config);
   const canOrder = valid && priceState.status === "configured";
@@ -372,16 +384,24 @@ export function KalkulatorClient({
               <>
                 <ul className="kalkulator-price-list">
                   <li>
-                    <span>Basispreis Netto</span>
+                    <span>Etiketten Netto</span>
                     <span>{formatEur(priceState.netPrice)}</span>
                   </li>
                   <li>
+                    <span>Druckplatten ({config.farbigkeit}×50 €)</span>
+                    <span>{formatEur(plateCostNet)}</span>
+                  </li>
+                  <li>
+                    <span>Gesamt Netto</span>
+                    <span>{formatEur(finalNetPrice)}</span>
+                  </li>
+                  <li>
                     <span>MwSt. 19 %</span>
-                    <span>{formatEur(priceState.grossPrice - priceState.netPrice)}</span>
+                    <span>{formatEur(finalNetPrice * 0.19)}</span>
                   </li>
                   <li className="kalkulator-price-total">
                     <span>Gesamt inkl. MwSt.</span>
-                    <span>{formatEur(priceState.grossPrice)}</span>
+                    <span>{formatEur(finalGrossPrice)}</span>
                   </li>
                   <li className="kalkulator-price-shipping">
                     <span>✓ Inklusive Versand nach Deutschland</span>
@@ -489,8 +509,9 @@ export function KalkulatorClient({
             farbigkeit={config.farbigkeit}
             anzahlSorten={config.anzahlSorten}
             uvLack={config.uvLack}
-            netPrice={priceState.netPrice}
-            grossPrice={priceState.grossPrice}
+            netPrice={finalNetPrice}
+            grossPrice={finalGrossPrice}
+            plateCostNet={plateCostNet}
             onBack={handleBack}
           />
         </div>

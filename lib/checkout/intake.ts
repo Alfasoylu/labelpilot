@@ -73,6 +73,7 @@ export const customSizeCheckoutIntakeSchema = z.object({
   heightMm: z.number().int().min(10).max(1000),
   quantity: z.number().int().positive(),
   finishing: z.enum(["MATT", "GLAENZEND"]).optional(),
+  farbigkeit: z.number().int().min(1).max(4).optional(),
   ...contactAddressFields,
 });
 

@@ -29,6 +29,7 @@ export function HeroKalkulator() {
   const [widthMm, setWidthMm] = useState<number | "">(60);
   const [heightMm, setHeightMm] = useState<number | "">(40);
   const [materialSlug, setMaterialSlug] = useState<MaterialSlug>("pp-white");
+  const [colorCount, setColorCount] = useState<number>(4);
   const [widthError, setWidthError] = useState("");
   const [priceState, setPriceState] = useState<PriceState>({ status: "loading" });
 
@@ -86,6 +87,8 @@ export function HeroKalkulator() {
     }
   }
 
+  const plateCostNet = colorCount * 50;
+
   function buildParams(extra?: Record<string, string>) {
     const p = new URLSearchParams();
     if (quantity) p.set("quantity", String(quantity));
@@ -93,6 +96,7 @@ export function HeroKalkulator() {
     if (heightMm) p.set("height", String(heightMm));
     p.set("material", materialSlug);
     p.set("print", "cmyk");
+    p.set("colors", String(colorCount));
     if (extra) {
       for (const [k, v] of Object.entries(extra)) p.set(k, v);
     }
@@ -186,7 +190,7 @@ export function HeroKalkulator() {
                 />
               </div>
 
-              {/* Row 2: Material (full width) */}
+              {/* Row 2: Material + Farbigkeit */}
               <div className="hero-kalk__field hero-kalk__field--full">
                 <label htmlFor="hk-mat">Material</label>
                 <select
@@ -196,6 +200,19 @@ export function HeroKalkulator() {
                 >
                   <option value="pp-white">PP-Folie weiß (opak)</option>
                   <option value="pp-transparent">PP-Folie transparent</option>
+                </select>
+              </div>
+              <div className="hero-kalk__field hero-kalk__field--full">
+                <label htmlFor="hk-colors">Farbigkeit</label>
+                <select
+                  id="hk-colors"
+                  value={colorCount}
+                  onChange={(e) => setColorCount(Number(e.target.value))}
+                >
+                  <option value={1}>1-farbig – Sonderfarbe</option>
+                  <option value={2}>2-farbig</option>
+                  <option value={3}>3-farbig</option>
+                  <option value={4}>4-farbig – CMYK (Standard)</option>
                 </select>
               </div>
             </div>
@@ -208,11 +225,14 @@ export function HeroKalkulator() {
               {priceState.status === "ok" && (
                 <div className="hero-kalk__result-price">
                   <span className="hero-kalk__result-net">
-                    {formatEur(priceState.netPrice)}
+                    {formatEur(priceState.netPrice + plateCostNet)}
                     <span className="hero-kalk__result-label"> Netto</span>
                   </span>
                   <span className="hero-kalk__result-meta">
-                    {formatEur(priceState.grossPrice)} brutto inkl. 19 % MwSt. · inkl. Versand nach Deutschland
+                    {formatEur((priceState.netPrice + plateCostNet) * 1.19)} brutto inkl. 19 % MwSt. · inkl. Versand nach Deutschland
+                  </span>
+                  <span className="hero-kalk__result-meta">
+                    inkl. Druckplatten ({colorCount}×50 €): {formatEur(plateCostNet)}
                   </span>
                   {totalM2 !== null && (
                     <span className="hero-kalk__result-m2">

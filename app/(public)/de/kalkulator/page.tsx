@@ -18,6 +18,7 @@ export default async function KalkulatorPage({
     height?: string;
     material?: string;
     print?: string;
+    colors?: string;
   }>;
 }) {
   const sp = await searchParams;
@@ -30,6 +31,9 @@ export default async function KalkulatorPage({
     : undefined;
   const initialHeightMm = sp.height
     ? Math.max(10, Number.parseInt(sp.height, 10))
+    : undefined;
+  const initialFarbigkeit = sp.colors
+    ? Math.min(4, Math.max(1, Number.parseInt(sp.colors, 10)))
     : undefined;
 
   return (
@@ -52,6 +56,7 @@ export default async function KalkulatorPage({
         initialHeightMm={initialHeightMm}
         initialMaterial={sp.material}
         initialPrint={sp.print}
+        initialFarbigkeit={initialFarbigkeit}
       />
 
       <article className="surface-card">

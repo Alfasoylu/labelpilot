@@ -20,6 +20,7 @@ type CustomSizeCheckoutFormProps = {
   farbigkeit?: number;
   anzahlSorten?: number;
   uvLack?: string;
+  plateCostNet?: number;
   netPrice: number;
   grossPrice: number;
   onBack: () => void;
@@ -46,6 +47,7 @@ export function CustomSizeCheckoutForm({
   farbigkeit = 4,
   anzahlSorten = 1,
   uvLack = "KEIN",
+  plateCostNet = 0,
   netPrice,
   grossPrice,
   onBack,
@@ -133,7 +135,9 @@ export function CustomSizeCheckoutForm({
           {tiefkuehlgeeignet && <li>Tiefkühlgeeignet: Ja</li>}
           {anzahlSorten > 1 && <li>Anzahl der Sorten: {anzahlSorten}</li>}
           <li>Menge: {quantity.toLocaleString("de-DE")} Stück</li>
-          <li>Preis netto: {formatEur(netPrice)}</li>
+          <li>Etiketten Netto: {formatEur(netPrice - plateCostNet)}</li>
+          <li>Druckplatten: {formatEur(plateCostNet)}</li>
+          <li>Gesamt Netto: {formatEur(netPrice)}</li>
           <li>MwSt. 19 %: {formatEur(vatAmount)}</li>
           <li>
             <strong>Gesamt brutto: {formatEur(grossPrice)} inkl. 19 % MwSt.</strong>
