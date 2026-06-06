@@ -9,6 +9,7 @@ type ArtworkStatus = "artwork_ready" | "upload_after_order" | "needs_help";
 
 type CustomSizeCheckoutFormProps = {
   materialKey: MaterialKey;
+  form?: string;
   widthMm: number;
   heightMm: number;
   quantity: number;
@@ -21,12 +22,24 @@ type CustomSizeCheckoutFormProps = {
   farbigkeit?: number;
   anzahlSorten?: number;
   uvLack?: string;
+  kerndurchmesser?: string;
+  wickelrichtung?: string;
   printMethod?: "DIGITAL" | "FLEXO";
   netPrice: number;
   grossPrice: number;
   isHeavyShipment?: boolean;
   onBack: () => void;
 };
+
+function formatWickelrichtung(w: string): string {
+  const map: Record<string, string> = {
+    ABROLLUNG_1: "Abrollung 1 – von außen, Etikett oben",
+    ABROLLUNG_2: "Abrollung 2 – von außen, Etikett unten",
+    ABROLLUNG_3: "Abrollung 3 – von innen, Etikett oben",
+    ABROLLUNG_4: "Abrollung 4 – von innen, Etikett unten",
+  };
+  return map[w] ?? "";
+}
 
 function formatEur(amount: number) {
   return amount.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
@@ -38,6 +51,7 @@ function getMaterialLabel(key: MaterialKey) {
 
 export function CustomSizeCheckoutForm({
   materialKey,
+  form = "RECHTECKIG",
   widthMm,
   heightMm,
   quantity,
@@ -50,6 +64,8 @@ export function CustomSizeCheckoutForm({
   farbigkeit = 4,
   anzahlSorten = 1,
   uvLack = "KEIN",
+  kerndurchmesser = "76",
+  wickelrichtung = "BELIEBIG",
   printMethod = "DIGITAL",
   netPrice,
   grossPrice,
@@ -65,6 +81,7 @@ export function CustomSizeCheckoutForm({
     startTransition(async () => {
       const payload = {
         materialKey,
+        form,
         widthMm,
         heightMm,
         quantity,
@@ -87,8 +104,8 @@ export function CustomSizeCheckoutForm({
         postalCode: String(formData.get("postalCode") ?? ""),
         city: String(formData.get("city") ?? ""),
         country: "DE",
-        rollKern: String(formData.get("rollKern") ?? ""),
-        abrollrichtung: String(formData.get("abrollrichtung") ?? ""),
+        rollKern: kerndurchmesser ? `${kerndurchmesser} mm` : "",
+        abrollrichtung: wickelrichtung !== "BELIEBIG" ? formatWickelrichtung(wickelrichtung) : "",
         maxRollendurchmesser: String(formData.get("maxRollendurchmesser") ?? ""),
         maschineName: String(formData.get("maschineName") ?? ""),
         artworkStatus: String(formData.get("artworkStatus") ?? "upload_after_order") as ArtworkStatus,
@@ -131,10 +148,13 @@ export function CustomSizeCheckoutForm({
         <h3>Bestellzusammenfassung</h3>
         <ul className="simple-list">
           <li>Format: {widthMm} × {heightMm} mm (Wunschformat)</li>
+          {form === "OVAL" && <li>Form: Oval / Rund</li>}
           <li>Material: {getMaterialLabel(materialKey)}</li>
           <li>Kleber: {klebertyp === "PERMANENT" ? "Permanent haftend" : "Wiederablösbar"}</li>
           <li>Oberfläche: {finishing === "GLAENZEND" ? "Glänzend" : "Matt"}</li>
           <li>Farbigkeit: {farbigkeit}-farbig{farbigkeit === 4 ? " (CMYK)" : ""}{weissunterdruck ? " + Weißunterdruck" : ""}</li>
+          <li>Kerndurchmesser: {kerndurchmesser} mm</li>
+          {wickelrichtung !== "BELIEBIG" && <li>Wickelrichtung: {formatWickelrichtung(wickelrichtung)}</li>}
           {uvLack !== "KEIN" && <li>UV-Schutzlack: Glänzend</li>}
           {tiefkuehlgeeignet && <li>Tiefkühlgeeignet: Ja</li>}
           <li>Druckmethode: {printMethod === "DIGITAL" ? "Digitaldruck" : "Flexodruck"}</li>
@@ -207,26 +227,6 @@ export function CustomSizeCheckoutForm({
 
         <div className="form-group">
           <span className="form-group-title">Rollenspezifikationen</span>
-        </div>
-        <div className="field">
-          <label htmlFor="cs-rollKern">Rollenkern (Innendurchmesser)</label>
-          <select id="cs-rollKern" name="rollKern" defaultValue="">
-            <option value="">Keine Angabe</option>
-            <option value="76 mm">76 mm (Standard)</option>
-            <option value="40 mm">40 mm (Kleinspule)</option>
-            <option value="Nicht sicher / Bitte beraten">Nicht sicher / Bitte beraten</option>
-          </select>
-        </div>
-        <div className="field">
-          <label htmlFor="cs-abrollrichtung">Abrollrichtung</label>
-          <select id="cs-abrollrichtung" name="abrollrichtung" defaultValue="">
-            <option value="">Keine Angabe (Standard)</option>
-            <option value="Abrollung 1 – von außen, Etikett oben">Abrollung 1 – von außen, Etikett oben</option>
-            <option value="Abrollung 2 – von außen, Etikett unten">Abrollung 2 – von außen, Etikett unten</option>
-            <option value="Abrollung 3 – von innen, Etikett oben">Abrollung 3 – von innen, Etikett oben</option>
-            <option value="Abrollung 4 – von innen, Etikett unten">Abrollung 4 – von innen, Etikett unten</option>
-            <option value="Nicht sicher / Bitte beraten">Nicht sicher / Bitte beraten</option>
-          </select>
         </div>
         <div className="field">
           <label htmlFor="cs-maxRollendurchmesser">Max. Rollendurchmesser (optional)</label>

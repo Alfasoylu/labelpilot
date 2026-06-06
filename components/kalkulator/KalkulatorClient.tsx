@@ -9,6 +9,11 @@ type CornerRadius = 0 | 2 | 3;
 type Klebertyp = "PERMANENT" | "WIEDERABLOESBAR";
 type Farbigkeit = 1 | 2 | 3 | 4;
 type UVLack = "KEIN" | "GLAENZEND";
+type Form = "RECHTECKIG" | "OVAL";
+type Kerndurchmesser = "26" | "40" | "50" | "76";
+type Wickelrichtung = "BELIEBIG" | "ABROLLUNG_1" | "ABROLLUNG_2" | "ABROLLUNG_3" | "ABROLLUNG_4";
+
+const OVAL_SURCHARGE_NET = 0.03;
 
 type KalkulatorInitialProps = {
   initialQuantity?: number;
@@ -26,6 +31,7 @@ function mapInitialMaterial(slug?: string): MaterialKey {
 
 type KalkulatorConfig = {
   materialKey: MaterialKey;
+  form: Form;
   widthMm: number | "";
   heightMm: number | "";
   mengeProMotiv: number | "";
@@ -37,6 +43,8 @@ type KalkulatorConfig = {
   tiefkuehlgeeignet: boolean;
   farbigkeit: Farbigkeit;
   uvLack: UVLack;
+  kerndurchmesser: Kerndurchmesser;
+  wickelrichtung: Wickelrichtung;
 };
 
 type PriceState =
@@ -79,6 +87,7 @@ export function KalkulatorClient({
   const initialMaterialKey = mapInitialMaterial(initialMaterial);
   const [config, setConfig] = useState<KalkulatorConfig>({
     materialKey: initialMaterialKey,
+    form: "RECHTECKIG",
     widthMm: initialWidthMm ?? 100,
     heightMm: initialHeightMm ?? 200,
     mengeProMotiv: initialQuantity ?? 1000,
@@ -90,6 +99,8 @@ export function KalkulatorClient({
     tiefkuehlgeeignet: false,
     farbigkeit: validFarbigkeit,
     uvLack: "KEIN",
+    kerndurchmesser: "76",
+    wickelrichtung: "BELIEBIG",
   });
   const [priceState, setPriceState] = useState<PriceState>({ status: "idle" });
   const [mode, setMode] = useState<"configure" | "checkout">("configure");
@@ -159,6 +170,10 @@ export function KalkulatorClient({
   const isHeavyShipment = priceState.status === "configured" ? priceState.isHeavyShipment : false;
   const colorCount = config.farbigkeit + (config.weissunterdruck ? 1 : 0);
   const totalQuantity = typeof config.mengeProMotiv === "number" ? config.mengeProMotiv * config.anzahlSorten : 0;
+  const ovalSurchargeNet = config.form === "OVAL" ? OVAL_SURCHARGE_NET * totalQuantity : 0;
+  const ovalSurchargeGross = Math.round(ovalSurchargeNet * 1.19 * 100) / 100;
+  const displayNetPrice = finalNetPrice + ovalSurchargeNet;
+  const displayGrossPrice = finalGrossPrice + ovalSurchargeGross;
 
   const valid = configIsValid(config);
   const canOrder = valid && priceState.status === "configured";
@@ -222,7 +237,7 @@ export function KalkulatorClient({
               )}
             </div>
 
-            {/* Row 2: Material + Klebertyp */}
+            {/* Row 2: Material + Form */}
             <div className="field">
               <label htmlFor="kalk-material">Material</label>
               <select
@@ -243,6 +258,22 @@ export function KalkulatorClient({
               </select>
             </div>
             <div className="field">
+              <label htmlFor="kalk-form">Form</label>
+              <select
+                id="kalk-form"
+                value={config.form}
+                onChange={(e) => setConfig((c) => ({ ...c, form: e.target.value as Form }))}
+              >
+                <option value="RECHTECKIG">Rechteckig (Standard)</option>
+                <option value="OVAL">Oval / Rund (+0,03 € / Stück)</option>
+              </select>
+              {config.form === "OVAL" && (
+                <p className="field-hint">Motiv muss oval gestaltet sein. Rechteckige Druckdaten werden automatisch oval ausgestanzt.</p>
+              )}
+            </div>
+
+            {/* Row 3: Klebertyp + Kerndurchmesser */}
+            <div className="field">
               <label htmlFor="kalk-kleber">Klebertyp</label>
               <select
                 id="kalk-kleber"
@@ -251,6 +282,19 @@ export function KalkulatorClient({
               >
                 <option value="PERMANENT">Permanent haftend</option>
                 <option value="WIEDERABLOESBAR">Wiederablösbar</option>
+              </select>
+            </div>
+            <div className="field">
+              <label htmlFor="kalk-kern">Kerndurchmesser</label>
+              <select
+                id="kalk-kern"
+                value={config.kerndurchmesser}
+                onChange={(e) => setConfig((c) => ({ ...c, kerndurchmesser: e.target.value as Kerndurchmesser }))}
+              >
+                <option value="76">76 mm – Standard</option>
+                <option value="40">40 mm</option>
+                <option value="50">50 mm</option>
+                <option value="26">26 mm</option>
               </select>
             </div>
 
@@ -286,8 +330,8 @@ export function KalkulatorClient({
               />
             </div>
 
-            {/* Row 3: Oberfläche + Eckenradius */}
-            <div className="field">
+            {/* Oberfläche + Eckenradius (Eckenradius nur bei Rechteckig) */}
+            <div className={config.form === "OVAL" ? "field-full" : "field"}>
               <label htmlFor="kalk-finishing">Oberfläche</label>
               <select
                 id="kalk-finishing"
@@ -303,20 +347,22 @@ export function KalkulatorClient({
               )}
             </div>
 
-            <div className="field">
-              <label htmlFor="kalk-corner">Eckenradius</label>
-              <select
-                id="kalk-corner"
-                value={config.cornerRadius}
-                onChange={(e) => setConfig((c) => ({ ...c, cornerRadius: Number(e.target.value) as CornerRadius }))}
-              >
-                <option value={0}>0 mm – scharfe Ecken</option>
-                <option value={2}>2 mm – gerundet (Standard)</option>
-                <option value={3}>3 mm – stark gerundet</option>
-              </select>
-            </div>
+            {config.form === "RECHTECKIG" && (
+              <div className="field">
+                <label htmlFor="kalk-corner">Eckenradius</label>
+                <select
+                  id="kalk-corner"
+                  value={config.cornerRadius}
+                  onChange={(e) => setConfig((c) => ({ ...c, cornerRadius: Number(e.target.value) as CornerRadius }))}
+                >
+                  <option value={0}>0 mm – scharfe Ecken</option>
+                  <option value={2}>2 mm – gerundet (Standard)</option>
+                  <option value={3}>3 mm – stark gerundet</option>
+                </select>
+              </div>
+            )}
 
-            {/* Row 4: Farbigkeit + UV-Schutzlack */}
+            {/* Farbigkeit + UV-Schutzlack */}
             <div className="field">
               <label htmlFor="kalk-farbe">Farbigkeit</label>
               <select
@@ -324,10 +370,10 @@ export function KalkulatorClient({
                 value={config.farbigkeit}
                 onChange={(e) => setConfig((c) => ({ ...c, farbigkeit: Number(e.target.value) as Farbigkeit }))}
               >
-                <option value={1}>1-farbig</option>
-                <option value={2}>2-farbig</option>
-                <option value={3}>3-farbig</option>
-                <option value={4}>4-farbig – CMYK (Standard)</option>
+                <option value={1}>1-farbig, Sonderfarbe</option>
+                <option value={2}>2-farbig, Sonderfarben</option>
+                <option value={3}>3-farbig, Sonderfarben</option>
+                <option value={4}>4-farbig, Euroskala (CMYK)</option>
               </select>
             </div>
 
@@ -341,6 +387,23 @@ export function KalkulatorClient({
                 <option value="KEIN">Kein Lack</option>
                 <option value="GLAENZEND">Glänzender Schutzlack</option>
               </select>
+            </div>
+
+            {/* Wickelrichtung */}
+            <div className="field-full">
+              <label htmlFor="kalk-wickel">Wickelrichtung</label>
+              <select
+                id="kalk-wickel"
+                value={config.wickelrichtung}
+                onChange={(e) => setConfig((c) => ({ ...c, wickelrichtung: e.target.value as Wickelrichtung }))}
+              >
+                <option value="BELIEBIG">Wickelrichtung beliebig (Standard)</option>
+                <option value="ABROLLUNG_1">Abrollung 1 – von außen, Etikett oben</option>
+                <option value="ABROLLUNG_2">Abrollung 2 – von außen, Etikett unten</option>
+                <option value="ABROLLUNG_3">Abrollung 3 – von innen, Etikett oben</option>
+                <option value="ABROLLUNG_4">Abrollung 4 – von innen, Etikett unten</option>
+              </select>
+              <p className="field-hint">Passend zu Ihrer Etikettiermaschine. Im Zweifel: Wickelrichtung beliebig lassen.</p>
             </div>
 
             {/* Tiefkühlgeeignet checkbox */}
@@ -437,17 +500,23 @@ export function KalkulatorClient({
                       </li>
                     </>
                   )}
+                  {config.form === "OVAL" && ovalSurchargeNet > 0 && (
+                    <li>
+                      <span>Ovale Stanzform ({totalQuantity.toLocaleString("de-DE")} × 0,03 €)</span>
+                      <span>{formatEur(ovalSurchargeNet)}</span>
+                    </li>
+                  )}
                   <li>
                     <span>Gesamt Netto</span>
-                    <span>{formatEur(finalNetPrice)}</span>
+                    <span>{formatEur(displayNetPrice)}</span>
                   </li>
                   <li>
                     <span>MwSt. 19 %</span>
-                    <span>{formatEur(finalNetPrice * 0.19)}</span>
+                    <span>{formatEur(displayGrossPrice - displayNetPrice)}</span>
                   </li>
                   <li className="kalkulator-price-total">
                     <span>Gesamt inkl. MwSt.</span>
-                    <span>{formatEur(finalGrossPrice)}</span>
+                    <span>{formatEur(displayGrossPrice)}</span>
                   </li>
                   <li className="kalkulator-price-shipping">
                     <span>✓ Inklusive Versand nach Deutschland</span>
@@ -482,6 +551,10 @@ export function KalkulatorClient({
                 <span>{config.widthMm || "–"} × {config.heightMm || "–"} mm</span>
               </li>
               <li>
+                <span>Form</span>
+                <span>{config.form === "OVAL" ? "Oval / Rund" : "Rechteckig"}</span>
+              </li>
+              <li>
                 <span>Material</span>
                 <span>{config.materialKey === "OPAQUE_PP" ? "Opak PP" : "Transparent PP"}</span>
               </li>
@@ -493,13 +566,20 @@ export function KalkulatorClient({
                 <span>Oberfläche</span>
                 <span>{config.finishing === "MATT" ? "Matt" : "Glänzend"}</span>
               </li>
-              <li>
-                <span>Eckenradius</span>
-                <span>{config.cornerRadius} mm</span>
-              </li>
+              {config.form === "RECHTECKIG" && (
+                <li>
+                  <span>Eckenradius</span>
+                  <span>{config.cornerRadius} mm</span>
+                </li>
+              )}
               <li>
                 <span>Farbigkeit</span>
-                <span>{config.farbigkeit}-farbig{config.farbigkeit === 4 ? " (CMYK)" : ""}</span>
+                <span>
+                  {config.farbigkeit === 1 ? "1-farbig, Sonderfarbe" :
+                   config.farbigkeit === 2 ? "2-farbig, Sonderfarben" :
+                   config.farbigkeit === 3 ? "3-farbig, Sonderfarben" :
+                   "4-farbig, CMYK"}
+                </span>
               </li>
               {config.uvLack !== "KEIN" && (
                 <li>
@@ -517,6 +597,16 @@ export function KalkulatorClient({
                 <span>Weißunterdruck</span>
                 <span>{config.weissunterdruck ? "Ja" : "Nein"}</span>
               </li>
+              <li>
+                <span>Kerndurchmesser</span>
+                <span>{config.kerndurchmesser} mm</span>
+              </li>
+              {config.wickelrichtung !== "BELIEBIG" && (
+                <li>
+                  <span>Wickelrichtung</span>
+                  <span>Abrollung {config.wickelrichtung.split("_")[1]}</span>
+                </li>
+              )}
               {config.anzahlSorten > 1 ? (
                 <>
                   <li>
@@ -558,6 +648,7 @@ export function KalkulatorClient({
         <div ref={checkoutRef}>
           <CustomSizeCheckoutForm
             materialKey={config.materialKey}
+            form={config.form}
             widthMm={config.widthMm as number}
             heightMm={config.heightMm as number}
             quantity={totalQuantity}
@@ -570,9 +661,11 @@ export function KalkulatorClient({
             farbigkeit={config.farbigkeit}
             anzahlSorten={config.anzahlSorten}
             uvLack={config.uvLack}
+            kerndurchmesser={config.kerndurchmesser}
+            wickelrichtung={config.wickelrichtung}
             printMethod={printMethod ?? "DIGITAL"}
-            netPrice={finalNetPrice}
-            grossPrice={finalGrossPrice}
+            netPrice={displayNetPrice}
+            grossPrice={displayGrossPrice}
             isHeavyShipment={isHeavyShipment}
             onBack={handleBack}
           />

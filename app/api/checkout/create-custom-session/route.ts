@@ -55,10 +55,13 @@ export async function POST(request: Request) {
     }
 
     const { materialKey, widthMm, heightMm, quantity } = parsed.data;
+    const form = parsed.data.form ?? "RECHTECKIG";
     const farbigkeit = parsed.data.farbigkeit ?? 4;
     const weissunterdruck = parsed.data.weissunterdruck === true;
     const anzahlSorten = parsed.data.anzahlSorten ?? 1;
     const colorCount = farbigkeit + (weissunterdruck ? 1 : 0);
+    const ovalSurchargeNet = form === "OVAL" ? 0.03 * quantity : 0;
+    const ovalSurchargeCents = Math.round(ovalSurchargeNet * 1.19 * 100);
 
     const [materialRow, settingsRow] = await Promise.all([
       prisma.pricingMaterialCost.findUnique({ where: { materialKey } }),
@@ -86,8 +89,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // grossPrice already includes material + printing + plates via multiplier formula
-    const grossAmountCents = Math.round(priceResult.body.grossPrice * 100);
+    // grossPrice includes material + printing + plates; ovalSurchargeCents added for oval/round form
+    const grossAmountCents = Math.round(priceResult.body.grossPrice * 100) + ovalSurchargeCents;
     const method = priceResult.body.method;
     const orderNumber = createOrderNumber();
     const normalizedCountry =
@@ -98,6 +101,7 @@ export async function POST(request: Request) {
 
     const sortenLabel = anzahlSorten > 1 ? `, ${anzahlSorten} Sorten` : "";
     const weissLabel = weissunterdruck ? "+Weiß" : "";
+    const formLabel = form === "OVAL" ? ", Oval" : "";
     const printLabel = method === "DIGITAL"
       ? `Digitaldruck ${farbigkeit}-farbig${weissLabel}`
       : `Flexodruck ${farbigkeit}-farbig${weissLabel}, inkl. Druckplatten`;
@@ -135,7 +139,7 @@ export async function POST(request: Request) {
         statusEvents: {
           create: {
             status: "PENDING_PAYMENT",
-            note: `Wunschformat-Checkout: ${widthMm}×${heightMm} mm, ${quantity} Stück${sortenLabel}, ${printLabel} (${parsed.data.artworkStatus}).`,
+            note: `Wunschformat-Checkout: ${widthMm}×${heightMm} mm${formLabel}, ${quantity} Stück${sortenLabel}, ${printLabel} (${parsed.data.artworkStatus}).`,
           },
         },
       },
@@ -169,7 +173,7 @@ export async function POST(request: Request) {
             unit_amount: grossAmountCents,
             product_data: {
               name: getProductDisplayName(materialKey, widthMm, heightMm),
-              description: `${quantity.toLocaleString("de-DE")} Stück${sortenLabel}, ${printLabel}, inkl. Versand`,
+              description: `${quantity.toLocaleString("de-DE")} Stück${sortenLabel}${formLabel}, ${printLabel}, inkl. Versand`,
             },
           },
         },

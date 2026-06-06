@@ -69,6 +69,7 @@ const contactAddressFields = {
 
 export const customSizeCheckoutIntakeSchema = z.object({
   materialKey: z.enum(["OPAQUE_PP", "TRANSPARENT_PP"]),
+  form: z.enum(["RECHTECKIG", "OVAL"]).optional(),
   widthMm: z.number().int().min(10).max(500),
   heightMm: z.number().int().min(10).max(1000),
   quantity: z.number().int().positive(),
