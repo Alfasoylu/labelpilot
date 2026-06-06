@@ -2474,25 +2474,105 @@ th {
   }
 }
 
+/* ── Kalkulator page layout ── */
+.kalkulator-page {
+  display: grid;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.kalkulator-page-intro {
+  padding: 0 0 4px;
+}
+
+.kalkulator-page-intro h1 {
+  margin: 8px 0 6px;
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  color: var(--text-strong);
+  letter-spacing: -0.02em;
+}
+
+.kalkulator-page-intro p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+/* Compact form inputs on kalkulator page */
+.kalkulator-page .field input,
+.kalkulator-page .field select,
+.kalkulator-page .field-full select,
+.kalkulator-page .field-full input {
+  min-height: 44px;
+  padding: 10px 12px;
+}
+
+.kalkulator-page .surface-card {
+  padding: 22px;
+}
+
+.kalkulator-page .surface-card h2 {
+  margin: 0 0 16px;
+  font-size: 1rem;
+}
+
 .kalkulator-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-4);
+  gap: 16px;
   align-items: start;
 }
 
 @media (min-width: 768px) {
   .kalkulator-grid {
-    grid-template-columns: 1fr 340px;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
   }
 }
 
 .kalkulator-price-box {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 12px;
   position: sticky;
-  top: var(--space-6);
+  top: 72px;
+}
+
+/* Config summary list in sidebar */
+.kalkulator-config-summary h4 {
+  margin: 0 0 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.kalkulator-summary-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kalkulator-summary-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.84rem;
+  gap: 8px;
+}
+
+.kalkulator-summary-list li span:first-child {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.kalkulator-summary-list li span:last-child {
+  font-weight: 600;
+  color: var(--text-strong);
+  text-align: right;
 }
 
 .kalkulator-price-list {

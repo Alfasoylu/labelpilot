@@ -5,6 +5,7 @@ import { CustomSizeCheckoutForm } from "./CustomSizeCheckoutForm";
 
 type MaterialKey = "OPAQUE_PP" | "TRANSPARENT_PP";
 type Finishing = "MATT" | "GLAENZEND";
+type CornerRadius = 0 | 2 | 3;
 
 type KalkulatorInitialProps = {
   initialQuantity?: number;
@@ -25,6 +26,8 @@ type KalkulatorConfig = {
   heightMm: number | "";
   quantity: number | "";
   finishing: Finishing;
+  cornerRadius: CornerRadius;
+  weissunterdruck: boolean;
 };
 
 type PriceState =
@@ -64,6 +67,8 @@ export function KalkulatorClient({
     heightMm: initialHeightMm ?? 200,
     quantity: initialQuantity ?? 1000,
     finishing: "MATT",
+    cornerRadius: 2,
+    weissunterdruck: false,
   });
   const [priceState, setPriceState] = useState<PriceState>({ status: "idle" });
   const [mode, setMode] = useState<"configure" | "checkout">("configure");
@@ -134,6 +139,7 @@ export function KalkulatorClient({
           <h2>Format & Konfiguration</h2>
 
           <div className="form-grid">
+            {/* Row 1: Menge + Material */}
             <div className="field">
               <label htmlFor="kalk-quantity">Menge (Stück)</label>
               <input
@@ -154,16 +160,18 @@ export function KalkulatorClient({
               <select
                 id="kalk-material"
                 value={config.materialKey}
-                onChange={(e) => setConfig((c) => ({ ...c, materialKey: e.target.value as MaterialKey }))}
+                onChange={(e) => setConfig((c) => ({
+                  ...c,
+                  materialKey: e.target.value as MaterialKey,
+                  weissunterdruck: false,
+                }))}
               >
                 <option value="OPAQUE_PP">Opak PP-Folie (weiß)</option>
                 <option value="TRANSPARENT_PP">Transparent PP-Folie</option>
               </select>
             </div>
 
-            <div className="form-group">
-              <span className="form-group-title">Format (mm)</span>
-            </div>
+            {/* Row 2: Breite + Höhe */}
             <div className="field">
               <label htmlFor="kalk-width">Breite (10–320 mm)</label>
               <input
@@ -195,7 +203,8 @@ export function KalkulatorClient({
               />
             </div>
 
-            <div className="field-full">
+            {/* Row 3: Oberfläche */}
+            <div className="field">
               <label htmlFor="kalk-finishing">Oberfläche</label>
               <select
                 id="kalk-finishing"
@@ -205,8 +214,40 @@ export function KalkulatorClient({
                 <option value="MATT">Matt</option>
                 <option value="GLAENZEND">Glänzend</option>
               </select>
-              <p className="field-hint">Kein Preisunterschied zwischen Matt und Glänzend.</p>
+              <p className="field-hint">Kein Preisaufschlag.</p>
             </div>
+
+            {/* Row 3: Eckenradius */}
+            <div className="field">
+              <label htmlFor="kalk-corner">Eckenradius</label>
+              <select
+                id="kalk-corner"
+                value={config.cornerRadius}
+                onChange={(e) => setConfig((c) => ({ ...c, cornerRadius: Number(e.target.value) as CornerRadius }))}
+              >
+                <option value={0}>0 mm – scharfe Ecken</option>
+                <option value={2}>2 mm – gerundet (Standard)</option>
+                <option value={3}>3 mm – stark gerundet</option>
+              </select>
+            </div>
+
+            {/* Weißunterdruck — nur für Transparent PP */}
+            {config.materialKey === "TRANSPARENT_PP" && (
+              <div className="field-full">
+                <label className="checkbox-field">
+                  <input
+                    type="checkbox"
+                    checked={config.weissunterdruck}
+                    onChange={(e) => setConfig((c) => ({ ...c, weissunterdruck: e.target.checked }))}
+                  />
+                  <span>Weißunterdruck (opake Basis unter dem Motiv)</span>
+                </label>
+                <p className="field-hint">
+                  Druckt eine opake weiße Schicht unter Ihr Design – empfohlen für leuchtende Farben
+                  auf dunklen oder farbigen Behältern (Glas, PET, dunkle Dosen).
+                </p>
+              </div>
+            )}
           </div>
         </article>
 
@@ -282,13 +323,45 @@ export function KalkulatorClient({
             )}
           </article>
 
+          <article className="surface-card kalkulator-config-summary">
+            <h4>Konfiguration</h4>
+            <ul className="kalkulator-summary-list">
+              <li>
+                <span>Format</span>
+                <span>{config.widthMm || "–"} × {config.heightMm || "–"} mm</span>
+              </li>
+              <li>
+                <span>Material</span>
+                <span>{config.materialKey === "OPAQUE_PP" ? "Opak PP" : "Transparent PP"}</span>
+              </li>
+              <li>
+                <span>Oberfläche</span>
+                <span>{config.finishing === "MATT" ? "Matt" : "Glänzend"}</span>
+              </li>
+              <li>
+                <span>Eckenradius</span>
+                <span>{config.cornerRadius} mm</span>
+              </li>
+              {config.materialKey === "TRANSPARENT_PP" && (
+                <li>
+                  <span>Weißunterdruck</span>
+                  <span>{config.weissunterdruck ? "Ja" : "Nein"}</span>
+                </li>
+              )}
+              <li>
+                <span>Menge</span>
+                <span>{typeof config.quantity === "number" ? config.quantity.toLocaleString("de-DE") : "–"} Stück</span>
+              </li>
+            </ul>
+          </article>
+
           <article className="surface-card">
-            <h4>Inklusive in jedem Auftrag</h4>
+            <h4>Inklusive</h4>
             <ul className="simple-list">
-              <li>Technische Druckdatenprüfung</li>
-              <li>Digitaler Proof vor Produktion</li>
+              <li>Druckdatenprüfung</li>
+              <li>Digitaler Proof</li>
               <li>Versand nach Deutschland</li>
-              <li>Freigegebene Version gespeichert</li>
+              <li>Druckdaten gespeichert</li>
             </ul>
           </article>
         </aside>
@@ -303,6 +376,8 @@ export function KalkulatorClient({
             heightMm={config.heightMm as number}
             quantity={config.quantity as number}
             finishing={config.finishing}
+            cornerRadius={config.cornerRadius}
+            weissunterdruck={config.weissunterdruck}
             netPrice={priceState.netPrice}
             grossPrice={priceState.grossPrice}
             onBack={handleBack}

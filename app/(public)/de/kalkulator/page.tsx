@@ -33,28 +33,18 @@ export default async function KalkulatorPage({
     : undefined;
 
   return (
-    <div className="container section-stack">
+    <div className="container kalkulator-page">
       <nav className="breadcrumb" aria-label="Breadcrumb">
         <Link href="/de">Startseite</Link>
         <span aria-hidden="true"> › </span>
         <span aria-current="page">Kalkulator</span>
       </nav>
 
-      <article className="legal-card">
-        <span className="eyebrow">Wunschformat</span>
-        <h1>Etiketten Kalkulator</h1>
-        <p>
-          Geben Sie Ihr Format, Material und Menge ein – wir berechnen den Preis sofort.
-          Fertigung nach Maß, Versand nach Deutschland inklusive.
-        </p>
-        <ul className="simple-list">
-          <li>Breite bis 320 mm, Höhe frei wählbar</li>
-          <li>Opak PP oder Transparent PP</li>
-          <li>Matt oder Glänzend – kein Preisaufschlag</li>
-          <li>Ab 1 Stück bis 19.999 Stück direkt bestellbar</li>
-          <li>Ab 20.000 Stück: individuelles B2B-Angebot</li>
-        </ul>
-      </article>
+      <div className="kalkulator-page-intro">
+        <span className="eyebrow">PP-Rollenetiketten nach Maß</span>
+        <h1>Etikettenpreis berechnen</h1>
+        <p>Format, Material und Menge eingeben – Preis erscheint sofort. Ab 1 bis 19.999 Stück direkt bestellbar.</p>
+      </div>
 
       <KalkulatorClient
         initialQuantity={initialQuantity}

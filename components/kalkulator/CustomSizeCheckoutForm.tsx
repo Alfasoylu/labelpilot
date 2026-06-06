@@ -13,6 +13,8 @@ type CustomSizeCheckoutFormProps = {
   heightMm: number;
   quantity: number;
   finishing: Finishing;
+  cornerRadius?: number;
+  weissunterdruck?: boolean;
   netPrice: number;
   grossPrice: number;
   onBack: () => void;
@@ -32,6 +34,8 @@ export function CustomSizeCheckoutForm({
   heightMm,
   quantity,
   finishing,
+  cornerRadius = 2,
+  weissunterdruck = false,
   netPrice,
   grossPrice,
   onBack,
@@ -49,6 +53,8 @@ export function CustomSizeCheckoutForm({
         heightMm,
         quantity,
         finishing,
+        cornerRadius,
+        weissunterdruck,
         companyName: String(formData.get("companyName") ?? ""),
         contactName: String(formData.get("contactName") ?? ""),
         email: String(formData.get("email") ?? ""),
