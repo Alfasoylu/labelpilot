@@ -41,6 +41,14 @@ type PricingSettingsRecord = {
   markupTier2Multiplier?: DecimalLike | number | null;
   markupTier2MaxQty?: number | null;
   markupTier3Multiplier?: DecimalLike | number | null;
+  labelWeightPerM2Grams?: DecimalLike | number | null;
+  shippingTier1MaxKg?: DecimalLike | number | null;
+  shippingTier1RateEur?: DecimalLike | number | null;
+  shippingTier2MaxKg?: DecimalLike | number | null;
+  shippingTier2RateEur?: DecimalLike | number | null;
+  shippingTier3RateEur?: DecimalLike | number | null;
+  shippingMinCostEur?: DecimalLike | number | null;
+  shippingHeavyThresholdKg?: DecimalLike | number | null;
   updatedAt: Date;
   updatedBy: string | null;
 };

@@ -482,6 +482,47 @@ export function quoteNeedsMoreInfoCustomer(input: {
   };
 }
 
+export function reorderReminder(input: {
+  orderNumber: string;
+  orderId: string;
+  companyName?: string | null;
+  quantity: number;
+  material: string;
+  clickToken: string;
+}): TemplateResult {
+  const baseUrl = getPublicEnv().NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
+  const reorderLink = `${baseUrl}/de/kalkulator?reorder=${encodeURIComponent(input.orderId)}&ct=${encodeURIComponent(input.clickToken)}`;
+  const subject = `Ihr Etiketten-Vorrat geht zur Neige – ${input.orderNumber}`;
+
+  const text = [
+    input.companyName ? `Guten Tag, ${input.companyName},` : "Guten Tag,",
+    "",
+    `Laut unserer Schätzung geht Ihr Vorrat aus der Bestellung ${input.orderNumber} bald zur Neige.`,
+    `Material: ${formatMaterialLabel(input.material)} | Menge: ${input.quantity.toLocaleString("de-DE")} Stück`,
+    "",
+    "Jetzt nachbestellen:",
+    reorderLink,
+    "",
+    "Sie können dieselbe Konfiguration wiederverwenden oder anpassen.",
+  ].join("\n");
+
+  return {
+    subject,
+    text,
+    html: renderShell({
+      heading: "Ihr Etiketten-Vorrat geht zur Neige.",
+      intro: `Die Etiketten aus der Bestellung ${input.orderNumber} werden voraussichtlich bald aufgebraucht sein.`,
+      actionLabel: "Jetzt nachbestellen",
+      actionHref: reorderLink,
+      bodyHtml: `
+        <p style="margin:0 0 8px 0;"><strong>Material:</strong> ${escapeHtml(formatMaterialLabel(input.material))}</p>
+        <p style="margin:0 0 16px 0;"><strong>Menge damals:</strong> ${escapeHtml(input.quantity.toLocaleString("de-DE"))} Stück</p>
+        <p style="margin:0;color:#6B6560;font-size:14px;">Sie können dieselbe Konfiguration direkt wiederverwenden oder die Menge anpassen.</p>
+      `,
+    }),
+  };
+}
+
 export function quoteSentCustomer(input: {
   companyName: string;
   adminNote?: string | null;

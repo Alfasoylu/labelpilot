@@ -76,15 +76,16 @@ export function KalkulatorClient({
     ? initialFarbigkeit as Farbigkeit
     : 4 as Farbigkeit;
 
+  const initialMaterialKey = mapInitialMaterial(initialMaterial);
   const [config, setConfig] = useState<KalkulatorConfig>({
-    materialKey: mapInitialMaterial(initialMaterial),
+    materialKey: initialMaterialKey,
     widthMm: initialWidthMm ?? 100,
     heightMm: initialHeightMm ?? 200,
     mengeProMotiv: initialQuantity ?? 1000,
     anzahlSorten: 1,
-    finishing: "MATT",
+    finishing: initialMaterialKey === "TRANSPARENT_PP" ? "GLAENZEND" : "MATT",
     cornerRadius: 2,
-    weissunterdruck: false,
+    weissunterdruck: initialMaterialKey === "TRANSPARENT_PP",
     klebertyp: "PERMANENT",
     tiefkuehlgeeignet: false,
     farbigkeit: validFarbigkeit,
@@ -357,11 +358,25 @@ export function KalkulatorClient({
               </p>
             </div>
 
-            {/* Weißunterdruck — bei Transparent PP immer aktiv */}
-            {config.materialKey === "TRANSPARENT_PP" && (
+            {/* Weißunterdruck */}
+            {config.materialKey === "OPAQUE_PP" ? (
+              <div className="field-full">
+                <label className="checkbox-field">
+                  <input
+                    type="checkbox"
+                    checked={config.weissunterdruck}
+                    onChange={(e) => setConfig((c) => ({ ...c, weissunterdruck: e.target.checked }))}
+                  />
+                  <span>Weißunterdruck (weiße Grundschicht)</span>
+                </label>
+                <p className="field-hint">
+                  Opake Basisschicht unter dem Motiv für maximale Farbdeckkraft – zählt als +1 Druckfarbe im Preis.
+                </p>
+              </div>
+            ) : (
               <div className="field-full">
                 <p className="field-hint">
-                  <strong>Weißunterdruck inklusive:</strong> Bei Transparent PP wird automatisch eine opake weiße Schicht unter das Motiv gedruckt, damit Farben leuchtend wirken.
+                  <strong>Weißunterdruck inklusive:</strong> Bei Transparent PP wird automatisch eine opake weiße Schicht unter das Motiv gedruckt, damit Farben leuchtend wirken und nicht durchscheinen.
                 </p>
               </div>
             )}
@@ -498,12 +513,10 @@ export function KalkulatorClient({
                   <span>Ja</span>
                 </li>
               )}
-              {config.materialKey === "TRANSPARENT_PP" && (
-                <li>
-                  <span>Weißunterdruck</span>
-                  <span>{config.weissunterdruck ? "Ja" : "Nein"}</span>
-                </li>
-              )}
+              <li>
+                <span>Weißunterdruck</span>
+                <span>{config.weissunterdruck ? "Ja" : "Nein"}</span>
+              </li>
               {config.anzahlSorten > 1 ? (
                 <>
                   <li>

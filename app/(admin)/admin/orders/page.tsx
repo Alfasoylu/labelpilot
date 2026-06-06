@@ -131,7 +131,16 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
       </article>
 
       <article className="surface-card">
-        <h2>Offene Bestellungen</h2>
+        <div className="cta-row">
+          <h2>Offene Bestellungen</h2>
+          <a
+            href="/api/admin/orders/export"
+            className="secondary-link"
+            download
+          >
+            Produktionsliste exportieren (CSV)
+          </a>
+        </div>
         {orders.length === 0 ? (
           <p className="price-note">Keine Bestellungen gefunden.</p>
         ) : (

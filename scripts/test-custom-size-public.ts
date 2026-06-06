@@ -34,6 +34,7 @@ const settings = {
   shippingTier2MaxKg: 100,
   shippingTier2RateEur: 9,
   shippingTier3RateEur: 7,
+  shippingMinCostEur: 5,
   shippingHeavyThresholdKg: 100,
 };
 
