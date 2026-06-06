@@ -10,14 +10,10 @@ import { computeCustomSizePrice } from "../lib/pricing/custom-size.ts";
 
 const params = {
   materialKey: "OPAQUE_PP" as const,
-  materialCostPerM2: 12,
-  digitalPrintCostPerM2: 16,
-  flexoPrintCostPerM2: 5,
-  flexoPlateCost: 80,
-  wasteFactorPct: 8,
-  targetMarginPct: 50,
+  materialCostPerM2: 70,
+  wasteFactorPct: 15,
+  targetMarginPct: 55,
   minOrderValueNet: 75,
-  setupFeeNet: null,
 };
 
 const settings = {
@@ -26,72 +22,89 @@ const settings = {
   customMaxWidthMm: 312,
   customMaxHeightMm: 700,
   customMaxQuantity: 300000,
+  platePerColorCostNet: 40,
+  inkCostTier1Net: 100,
+  inkCostTier1MaxQty: 10000,
+  inkCostTier2Net: 170,
+  inkCostTier2MaxQty: 20000,
+  inkCostAdditionalPer10kNet: 70,
 };
 
-const lowQuantity = computeCustomSizePrice({
+// 1000 adet, 4 renk CMYK
+const result1000 = computeCustomSizePrice({
   materialKey: "OPAQUE_PP",
   widthMm: 100,
   heightMm: 200,
   quantity: 1000,
+  colorCount: 4,
   params,
   settings,
 });
 
-assert.equal(
-  lowQuantity.method,
-  lowQuantity.breakdown.digitalCost <= lowQuantity.breakdown.flexoCost
-    ? "DIGITAL"
-    : "FLEXO",
-);
+assert.equal(result1000.quoteRequired, false);
+// inkCost should be tier 1 (100 EUR)
+assert.equal(result1000.breakdown.inkCost, 100);
+// plateCost = 4 * 40 = 160 EUR
+assert.equal(result1000.breakdown.plateCost, 160);
 
-const highQuantity = computeCustomSizePrice({
+// 15000 adet → tier 2 ink cost (170 EUR)
+const result15k = computeCustomSizePrice({
   materialKey: "OPAQUE_PP",
   widthMm: 100,
   heightMm: 200,
-  quantity: 100000,
+  quantity: 15000,
+  colorCount: 4,
   params,
   settings,
 });
+assert.equal(result15k.breakdown.inkCost, 170);
 
-assert.equal(highQuantity.method, "FLEXO");
+// 25000 adet → tier 2 + 1 additional batch (170 + 70 = 240 EUR)
+const result25k = computeCustomSizePrice({
+  materialKey: "OPAQUE_PP",
+  widthMm: 100,
+  heightMm: 200,
+  quantity: 25000,
+  colorCount: 4,
+  params,
+  settings,
+});
+assert.equal(result25k.breakdown.inkCost, 240);
 
+// Min order value floor
 const minOrder = computeCustomSizePrice({
   materialKey: "OPAQUE_PP",
   widthMm: 20,
   heightMm: 20,
   quantity: 10,
+  colorCount: 1,
   params,
   settings,
 });
+assert.equal(minOrder.netPrice >= 75, true);
 
-assert.equal(minOrder.netPrice, 75);
-
+// Rounding step
 const rounded = computeCustomSizePrice({
   materialKey: "OPAQUE_PP",
   widthMm: 80,
   heightMm: 120,
   quantity: 1000,
-  params: {
-    ...params,
-    targetMarginPct: 37,
-  },
-  settings: {
-    ...settings,
-    roundingStepNet: 5,
-  },
+  colorCount: 4,
+  params: { ...params, targetMarginPct: 37 },
+  settings: { ...settings, roundingStepNet: 5 },
 });
-
 assert.equal(rounded.netPrice % 5, 0);
 
+// Quote required when dimensions exceed max
 const quoteRequired = computeCustomSizePrice({
   materialKey: "OPAQUE_PP",
   widthMm: 400,
   heightMm: 200,
   quantity: 1000,
+  colorCount: 4,
   params,
   settings,
 });
-
 assert.equal(quoteRequired.quoteRequired, true);
 
 const addonSettings = {

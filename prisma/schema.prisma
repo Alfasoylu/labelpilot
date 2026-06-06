@@ -569,36 +569,38 @@ model ProofFile {
 }
 
 model PricingMaterialCost {
-  id                    String   @id @default(cuid())
-  materialKey           String   @unique
-  materialCostPerM2     Decimal  @db.Decimal(10, 4)
-  digitalPrintCostPerM2 Decimal  @db.Decimal(10, 4)
-  flexoPrintCostPerM2   Decimal  @db.Decimal(10, 4)
-  flexoPlateCost        Decimal  @db.Decimal(10, 2)
-  wasteFactorPct        Decimal  @db.Decimal(5, 2)
-  targetMarginPct       Decimal  @db.Decimal(5, 2)
-  minOrderValueNet      Decimal  @db.Decimal(10, 2)
-  setupFeeNet           Decimal? @db.Decimal(10, 2)
-  updatedAt             DateTime @updatedAt
-  updatedBy             String?
+  id               String   @id @default(cuid())
+  materialKey      String   @unique
+  materialCostPerM2 Decimal  @db.Decimal(10, 4)
+  wasteFactorPct   Decimal  @db.Decimal(5, 2)
+  targetMarginPct  Decimal  @db.Decimal(5, 2)
+  minOrderValueNet Decimal  @db.Decimal(10, 2)
+  updatedAt        DateTime @updatedAt
+  updatedBy        String?
 
   @@index([updatedAt])
 }
 
 model PricingSettings {
-  id                         String   @id @default("default")
-  vatPct                     Decimal  @default(19) @db.Decimal(5, 2)
-  roundingStepNet            Decimal  @default(1) @db.Decimal(10, 2)
-  customMaxWidthMm           Int
-  customMaxHeightMm          Int
-  customMaxQuantity          Int
-  designServiceNet           Decimal  @default(40) @db.Decimal(10, 2)
-  designServiceFreeThresholdNet Decimal @default(2000) @db.Decimal(10, 2)
-  physicalProofNet           Decimal  @default(10) @db.Decimal(10, 2)
-  expressNet                 Decimal  @default(9.9) @db.Decimal(10, 2)
-  extraDesignNet             Decimal  @default(19) @db.Decimal(10, 2)
-  updatedAt                  DateTime @updatedAt
-  updatedBy                  String?
+  id                            String   @id @default("default")
+  vatPct                        Decimal  @default(19)   @db.Decimal(5, 2)
+  roundingStepNet               Decimal  @default(1)    @db.Decimal(10, 2)
+  customMaxWidthMm              Int
+  customMaxHeightMm             Int
+  customMaxQuantity             Int
+  designServiceNet              Decimal  @default(40)   @db.Decimal(10, 2)
+  designServiceFreeThresholdNet Decimal  @default(2000) @db.Decimal(10, 2)
+  physicalProofNet              Decimal  @default(10)   @db.Decimal(10, 2)
+  expressNet                    Decimal  @default(9.9)  @db.Decimal(10, 2)
+  extraDesignNet                Decimal  @default(19)   @db.Decimal(10, 2)
+  platePerColorCostNet          Decimal  @default(40)   @db.Decimal(10, 2)
+  inkCostTier1Net               Decimal  @default(100)  @db.Decimal(10, 2)
+  inkCostTier1MaxQty            Int      @default(10000)
+  inkCostTier2Net               Decimal  @default(170)  @db.Decimal(10, 2)
+  inkCostTier2MaxQty            Int      @default(20000)
+  inkCostAdditionalPer10kNet    Decimal  @default(70)   @db.Decimal(10, 2)
+  updatedAt                     DateTime @updatedAt
+  updatedBy                     String?
 
   @@index([updatedAt])
 }

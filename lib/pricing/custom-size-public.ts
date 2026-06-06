@@ -16,6 +16,7 @@ export type PublicCustomSizeRequest = {
   widthMm: number;
   heightMm: number;
   quantity: number;
+  colorCount: number;
 };
 
 export type PublicCustomSizeResponse =
@@ -27,6 +28,11 @@ export type PublicCustomSizeResponse =
       quoteRequired: boolean;
       netPrice: number;
       grossPrice: number;
+      breakdown: {
+        inkCostNet: number;
+        plateCostNet: number;
+        materialCostNet: number;
+      };
     };
 
 export function buildPublicCustomSizePriceResponse(input: {
@@ -51,23 +57,12 @@ export function buildPublicCustomSizePriceResponse(input: {
     } as const;
   }
 
-  if (input.request.quantity >= 20_000) {
-    return {
-      status: 200,
-      body: {
-        configured: true,
-        quoteRequired: true,
-        netPrice: 0,
-        grossPrice: 0,
-      } satisfies PublicCustomSizeResponse,
-    } as const;
-  }
-
   const result = computeCustomSizePrice({
     materialKey: input.request.materialKey,
     widthMm: input.request.widthMm,
     heightMm: input.request.heightMm,
     quantity: input.request.quantity,
+    colorCount: input.request.colorCount,
     params: input.params,
     settings: input.settings,
   } satisfies CustomSizePriceInput);
@@ -79,6 +74,11 @@ export function buildPublicCustomSizePriceResponse(input: {
       quoteRequired: result.quoteRequired,
       netPrice: result.netPrice,
       grossPrice: result.grossPrice,
+      breakdown: {
+        inkCostNet: result.breakdown.inkCost,
+        plateCostNet: result.breakdown.plateCost,
+        materialCostNet: result.breakdown.materialCost,
+      },
     } satisfies PublicCustomSizeResponse,
   } as const;
 }

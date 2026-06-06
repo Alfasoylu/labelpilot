@@ -11,13 +11,9 @@ type DecimalLike = { toString(): string };
 type PricingMaterialCostRecord = {
   materialKey: string;
   materialCostPerM2: DecimalLike | number;
-  digitalPrintCostPerM2: DecimalLike | number;
-  flexoPrintCostPerM2: DecimalLike | number;
-  flexoPlateCost: DecimalLike | number;
   wasteFactorPct: DecimalLike | number;
   targetMarginPct: DecimalLike | number;
   minOrderValueNet: DecimalLike | number;
-  setupFeeNet: DecimalLike | number | null;
   updatedAt: Date;
   updatedBy: string | null;
 };
@@ -33,6 +29,13 @@ type PricingSettingsRecord = {
   physicalProofNet: DecimalLike | number;
   expressNet: DecimalLike | number;
   extraDesignNet: DecimalLike | number;
+  // New fields — optional until Prisma client is regenerated after migration
+  platePerColorCostNet?: DecimalLike | number | null;
+  inkCostTier1Net?: DecimalLike | number | null;
+  inkCostTier1MaxQty?: number | null;
+  inkCostTier2Net?: DecimalLike | number | null;
+  inkCostTier2MaxQty?: number | null;
+  inkCostAdditionalPer10kNet?: DecimalLike | number | null;
   updatedAt: Date;
   updatedBy: string | null;
 };
@@ -74,25 +77,17 @@ export const PRICING_MATERIAL_KEYS = [
 const DEFAULT_MATERIALS: Record<PricingMaterialKey, PricingMaterialParams> = {
   OPAQUE_PP: {
     materialKey: "OPAQUE_PP",
-    materialCostPerM2: 12,
-    digitalPrintCostPerM2: 14,
-    flexoPrintCostPerM2: 9,
-    flexoPlateCost: 55,
-    wasteFactorPct: 8,
+    materialCostPerM2: 70,
+    wasteFactorPct: 15,
     targetMarginPct: 55,
     minOrderValueNet: 75,
-    setupFeeNet: null,
   },
   TRANSPARENT_PP: {
     materialKey: "TRANSPARENT_PP",
-    materialCostPerM2: 14,
-    digitalPrintCostPerM2: 16,
-    flexoPrintCostPerM2: 10.5,
-    flexoPlateCost: 60,
-    wasteFactorPct: 9,
+    materialCostPerM2: 80,
+    wasteFactorPct: 15,
     targetMarginPct: 55,
     minOrderValueNet: 85,
-    setupFeeNet: null,
   },
 };
 
@@ -107,6 +102,12 @@ const DEFAULT_SETTINGS: PricingSettingsInput & AddonSettingsInput = {
   physicalProofNet: 10,
   expressNet: 9.9,
   extraDesignNet: 19,
+  platePerColorCostNet: 40,
+  inkCostTier1Net: 100,
+  inkCostTier1MaxQty: 10000,
+  inkCostTier2Net: 170,
+  inkCostTier2MaxQty: 20000,
+  inkCostAdditionalPer10kNet: 70,
 };
 
 function decimalToNumber(value: { toString(): string } | number | null | undefined) {
@@ -143,13 +144,9 @@ export function mapMaterialCostRecord(record: PricingMaterialCostRecord | null |
   return {
     materialKey: record.materialKey as PricingMaterialKey,
     materialCostPerM2: decimalToNumber(record.materialCostPerM2) ?? 0,
-    digitalPrintCostPerM2: decimalToNumber(record.digitalPrintCostPerM2) ?? 0,
-    flexoPrintCostPerM2: decimalToNumber(record.flexoPrintCostPerM2) ?? 0,
-    flexoPlateCost: decimalToNumber(record.flexoPlateCost) ?? 0,
     wasteFactorPct: decimalToNumber(record.wasteFactorPct) ?? 0,
     targetMarginPct: decimalToNumber(record.targetMarginPct) ?? 0,
     minOrderValueNet: decimalToNumber(record.minOrderValueNet) ?? 0,
-    setupFeeNet: decimalToNumber(record.setupFeeNet),
     updatedAt: record.updatedAt,
     updatedBy: record.updatedBy ?? null,
   };
@@ -172,6 +169,12 @@ export function mapPricingSettingsRecord(record: PricingSettingsRecord | null | 
     physicalProofNet: decimalToNumber(record.physicalProofNet) ?? 10,
     expressNet: decimalToNumber(record.expressNet) ?? 9.9,
     extraDesignNet: decimalToNumber(record.extraDesignNet) ?? 19,
+    platePerColorCostNet: decimalToNumber(record.platePerColorCostNet) ?? 40,
+    inkCostTier1Net: decimalToNumber(record.inkCostTier1Net) ?? 100,
+    inkCostTier1MaxQty: record.inkCostTier1MaxQty ?? 10000,
+    inkCostTier2Net: decimalToNumber(record.inkCostTier2Net) ?? 170,
+    inkCostTier2MaxQty: record.inkCostTier2MaxQty ?? 20000,
+    inkCostAdditionalPer10kNet: decimalToNumber(record.inkCostAdditionalPer10kNet) ?? 70,
     updatedAt: record.updatedAt,
     updatedBy: record.updatedBy ?? null,
   };

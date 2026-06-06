@@ -12,6 +12,7 @@ const requestSchema = z.object({
   widthMm: z.coerce.number().int().positive(),
   heightMm: z.coerce.number().int().positive(),
   quantity: z.coerce.number().int().positive(),
+  colorCount: z.coerce.number().int().min(1).max(12),
 });
 
 export async function POST(request: Request) {

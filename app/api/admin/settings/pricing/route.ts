@@ -12,15 +12,9 @@ import { getAdminActorFromRequest } from "@/lib/security/admin-basic-auth";
 const materialSchema = z.object({
   materialKey: z.enum(["OPAQUE_PP", "TRANSPARENT_PP"]),
   materialCostPerM2: z.coerce.number().positive(),
-  digitalPrintCostPerM2: z.coerce.number().positive(),
-  flexoPrintCostPerM2: z.coerce.number().positive(),
-  flexoPlateCost: z.coerce.number().positive(),
   wasteFactorPct: z.coerce.number().min(0).max(95),
   targetMarginPct: z.coerce.number().gt(0).lt(95),
   minOrderValueNet: z.coerce.number().positive(),
-  setupFeeNet: z
-    .union([z.literal(""), z.coerce.number().nonnegative()])
-    .transform((value) => (value === "" ? null : value)),
 });
 
 const settingsSchema = z.object({
@@ -34,6 +28,12 @@ const settingsSchema = z.object({
   physicalProofNet: z.coerce.number().positive(),
   expressNet: z.coerce.number().positive(),
   extraDesignNet: z.coerce.number().positive(),
+  platePerColorCostNet: z.coerce.number().positive(),
+  inkCostTier1Net: z.coerce.number().positive(),
+  inkCostTier1MaxQty: z.coerce.number().int().positive(),
+  inkCostTier2Net: z.coerce.number().positive(),
+  inkCostTier2MaxQty: z.coerce.number().int().positive(),
+  inkCostAdditionalPer10kNet: z.coerce.number().positive(),
 });
 
 function buildRedirectUrl(request: Request, search: Record<string, string>) {
@@ -48,13 +48,9 @@ function getMaterialPayload(formData: FormData, materialKey: "OPAQUE_PP" | "TRAN
   return {
     materialKey,
     materialCostPerM2: formData.get(`${materialKey}.materialCostPerM2`),
-    digitalPrintCostPerM2: formData.get(`${materialKey}.digitalPrintCostPerM2`),
-    flexoPrintCostPerM2: formData.get(`${materialKey}.flexoPrintCostPerM2`),
-    flexoPlateCost: formData.get(`${materialKey}.flexoPlateCost`),
     wasteFactorPct: formData.get(`${materialKey}.wasteFactorPct`),
     targetMarginPct: formData.get(`${materialKey}.targetMarginPct`),
     minOrderValueNet: formData.get(`${materialKey}.minOrderValueNet`),
-    setupFeeNet: formData.get(`${materialKey}.setupFeeNet`),
   };
 }
 
@@ -80,12 +76,16 @@ export async function POST(request: Request) {
     customMaxHeightMm: formData.get("settings.customMaxHeightMm"),
     customMaxQuantity: formData.get("settings.customMaxQuantity"),
     designServiceNet: formData.get("settings.designServiceNet"),
-    designServiceFreeThresholdNet: formData.get(
-      "settings.designServiceFreeThresholdNet",
-    ),
+    designServiceFreeThresholdNet: formData.get("settings.designServiceFreeThresholdNet"),
     physicalProofNet: formData.get("settings.physicalProofNet"),
     expressNet: formData.get("settings.expressNet"),
     extraDesignNet: formData.get("settings.extraDesignNet"),
+    platePerColorCostNet: formData.get("settings.platePerColorCostNet"),
+    inkCostTier1Net: formData.get("settings.inkCostTier1Net"),
+    inkCostTier1MaxQty: formData.get("settings.inkCostTier1MaxQty"),
+    inkCostTier2Net: formData.get("settings.inkCostTier2Net"),
+    inkCostTier2MaxQty: formData.get("settings.inkCostTier2MaxQty"),
+    inkCostAdditionalPer10kNet: formData.get("settings.inkCostAdditionalPer10kNet"),
   });
 
   const materialResults = PRICING_MATERIAL_KEYS.map((materialKey) =>
@@ -116,15 +116,9 @@ export async function POST(request: Request) {
   });
 
   const [previousSettings, previousMaterials] = (await Promise.all([
-    prisma.pricingSettings.findUnique({
-      where: { id: "default" },
-    }),
+    prisma.pricingSettings.findUnique({ where: { id: "default" } }),
     prisma.pricingMaterialCost.findMany({
-      where: {
-        materialKey: {
-          in: [...PRICING_MATERIAL_KEYS],
-        },
-      },
+      where: { materialKey: { in: [...PRICING_MATERIAL_KEYS] } },
     }),
   ])) as [
     {
@@ -138,18 +132,20 @@ export async function POST(request: Request) {
       physicalProofNet?: { toString(): string } | null;
       expressNet?: { toString(): string } | null;
       extraDesignNet?: { toString(): string } | null;
+      platePerColorCostNet?: { toString(): string } | null;
+      inkCostTier1Net?: { toString(): string } | null;
+      inkCostTier1MaxQty?: number | null;
+      inkCostTier2Net?: { toString(): string } | null;
+      inkCostTier2MaxQty?: number | null;
+      inkCostAdditionalPer10kNet?: { toString(): string } | null;
       updatedBy?: string | null;
     } | null,
     Array<{
       materialKey: string;
       materialCostPerM2?: { toString(): string } | null;
-      digitalPrintCostPerM2?: { toString(): string } | null;
-      flexoPrintCostPerM2?: { toString(): string } | null;
-      flexoPlateCost?: { toString(): string } | null;
       wasteFactorPct?: { toString(): string } | null;
       targetMarginPct?: { toString(): string } | null;
       minOrderValueNet?: { toString(): string } | null;
-      setupFeeNet?: { toString(): string } | null;
       updatedBy?: string | null;
     }>,
   ];
@@ -164,11 +160,16 @@ export async function POST(request: Request) {
       customMaxHeightMm: previousSettings?.customMaxHeightMm?.toString() ?? null,
       customMaxQuantity: previousSettings?.customMaxQuantity?.toString() ?? null,
       designServiceNet: previousSettings?.designServiceNet?.toString() ?? null,
-      designServiceFreeThresholdNet:
-        previousSettings?.designServiceFreeThresholdNet?.toString() ?? null,
+      designServiceFreeThresholdNet: previousSettings?.designServiceFreeThresholdNet?.toString() ?? null,
       physicalProofNet: previousSettings?.physicalProofNet?.toString() ?? null,
       expressNet: previousSettings?.expressNet?.toString() ?? null,
       extraDesignNet: previousSettings?.extraDesignNet?.toString() ?? null,
+      platePerColorCostNet: previousSettings?.platePerColorCostNet?.toString() ?? null,
+      inkCostTier1Net: previousSettings?.inkCostTier1Net?.toString() ?? null,
+      inkCostTier1MaxQty: previousSettings?.inkCostTier1MaxQty?.toString() ?? null,
+      inkCostTier2Net: previousSettings?.inkCostTier2Net?.toString() ?? null,
+      inkCostTier2MaxQty: previousSettings?.inkCostTier2MaxQty?.toString() ?? null,
+      inkCostAdditionalPer10kNet: previousSettings?.inkCostAdditionalPer10kNet?.toString() ?? null,
       updatedBy: previousSettings?.updatedBy ?? null,
     },
     next: {
@@ -178,11 +179,16 @@ export async function POST(request: Request) {
       customMaxHeightMm: settingsData.customMaxHeightMm.toString(),
       customMaxQuantity: settingsData.customMaxQuantity.toString(),
       designServiceNet: settingsData.designServiceNet.toString(),
-      designServiceFreeThresholdNet:
-        settingsData.designServiceFreeThresholdNet.toString(),
+      designServiceFreeThresholdNet: settingsData.designServiceFreeThresholdNet.toString(),
       physicalProofNet: settingsData.physicalProofNet.toString(),
       expressNet: settingsData.expressNet.toString(),
       extraDesignNet: settingsData.extraDesignNet.toString(),
+      platePerColorCostNet: settingsData.platePerColorCostNet.toString(),
+      inkCostTier1Net: settingsData.inkCostTier1Net.toString(),
+      inkCostTier1MaxQty: settingsData.inkCostTier1MaxQty.toString(),
+      inkCostTier2Net: settingsData.inkCostTier2Net.toString(),
+      inkCostTier2MaxQty: settingsData.inkCostTier2MaxQty.toString(),
+      inkCostAdditionalPer10kNet: settingsData.inkCostAdditionalPer10kNet.toString(),
       updatedBy: actor,
     },
   });
@@ -197,24 +203,16 @@ export async function POST(request: Request) {
       tableName: `PricingMaterialCost:${row.materialKey}`,
       previous: {
         materialCostPerM2: previous?.materialCostPerM2?.toString() ?? null,
-        digitalPrintCostPerM2: previous?.digitalPrintCostPerM2?.toString() ?? null,
-        flexoPrintCostPerM2: previous?.flexoPrintCostPerM2?.toString() ?? null,
-        flexoPlateCost: previous?.flexoPlateCost?.toString() ?? null,
         wasteFactorPct: previous?.wasteFactorPct?.toString() ?? null,
         targetMarginPct: previous?.targetMarginPct?.toString() ?? null,
         minOrderValueNet: previous?.minOrderValueNet?.toString() ?? null,
-        setupFeeNet: previous?.setupFeeNet?.toString() ?? null,
         updatedBy: previous?.updatedBy ?? null,
       },
       next: {
         materialCostPerM2: row.materialCostPerM2.toString(),
-        digitalPrintCostPerM2: row.digitalPrintCostPerM2.toString(),
-        flexoPrintCostPerM2: row.flexoPrintCostPerM2.toString(),
-        flexoPlateCost: row.flexoPlateCost.toString(),
         wasteFactorPct: row.wasteFactorPct.toString(),
         targetMarginPct: row.targetMarginPct.toString(),
         minOrderValueNet: row.minOrderValueNet.toString(),
-        setupFeeNet: row.setupFeeNet?.toString() ?? null,
         updatedBy: actor,
       },
     });
@@ -235,7 +233,8 @@ export async function POST(request: Request) {
     });
 
     for (const row of materialData) {
-      await tx.pricingMaterialCost.upsert({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (tx.pricingMaterialCost.upsert as any)({
         where: { materialKey: row.materialKey },
         update: {
           ...row,

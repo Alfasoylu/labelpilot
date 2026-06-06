@@ -42,7 +42,7 @@ type KalkulatorConfig = {
 type PriceState =
   | { status: "idle" }
   | { status: "loading" }
-  | { status: "configured"; quoteRequired: false; netPrice: number; grossPrice: number }
+  | { status: "configured"; quoteRequired: false; netPrice: number; grossPrice: number; inkCostNet: number; plateCostNet: number }
   | { status: "quote" }
   | { status: "unconfigured" }
   | { status: "error" };
@@ -96,6 +96,7 @@ export function KalkulatorClient({
   const fetchPrice = useCallback(async (cfg: KalkulatorConfig) => {
     if (!configIsValid(cfg)) return;
     setPriceState({ status: "loading" });
+    const colorCount = cfg.farbigkeit + (cfg.weissunterdruck ? 1 : 0);
     try {
       const res = await fetch("/api/kalkulator/price", {
         method: "POST",
@@ -105,13 +106,21 @@ export function KalkulatorClient({
           widthMm: cfg.widthMm,
           heightMm: cfg.heightMm,
           quantity: cfg.quantity,
+          colorCount,
         }),
       });
       const data = await res.json().catch(() => null);
       if (!res.ok || !data) { setPriceState({ status: "error" }); return; }
       if (!data.configured) { setPriceState({ status: "unconfigured" }); return; }
       if (data.quoteRequired) { setPriceState({ status: "quote" }); return; }
-      setPriceState({ status: "configured", quoteRequired: false, netPrice: data.netPrice, grossPrice: data.grossPrice });
+      setPriceState({
+        status: "configured",
+        quoteRequired: false,
+        netPrice: data.netPrice,
+        grossPrice: data.grossPrice,
+        inkCostNet: data.breakdown?.inkCostNet ?? 0,
+        plateCostNet: data.breakdown?.plateCostNet ?? 0,
+      });
     } catch {
       setPriceState({ status: "error" });
     }
@@ -134,11 +143,11 @@ export function KalkulatorClient({
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  const plateCostNet = config.farbigkeit * 50;
-  const finalNetPrice = priceState.status === "configured"
-    ? priceState.netPrice + plateCostNet
-    : 0;
-  const finalGrossPrice = finalNetPrice * 1.19;
+  const finalNetPrice = priceState.status === "configured" ? priceState.netPrice : 0;
+  const finalGrossPrice = priceState.status === "configured" ? priceState.grossPrice : 0;
+  const inkCostNet = priceState.status === "configured" ? priceState.inkCostNet : 0;
+  const plateCostNet = priceState.status === "configured" ? priceState.plateCostNet : 0;
+  const colorCount = config.farbigkeit + (config.weissunterdruck ? 1 : 0);
 
   const valid = configIsValid(config);
   const canOrder = valid && priceState.status === "configured";
@@ -172,7 +181,6 @@ export function KalkulatorClient({
                 name="quantity"
                 type="number"
                 min={1}
-                max={19999}
                 value={config.quantity}
                 onChange={(e) => {
                   const v = e.target.value === "" ? "" : Number.parseInt(e.target.value, 10);
@@ -370,8 +378,7 @@ export function KalkulatorClient({
             {priceState.status === "quote" && (
               <>
                 <p className="price-note">
-                  Für diese Konfiguration (Menge ≥ 20.000 oder Sonderformat) erstellen wir ein
-                  individuelles Angebot.
+                  Für dieses Sonderformat erstellen wir ein individuelles Angebot.
                 </p>
                 <div className="inline-actions">
                   <a href="/de/angebot-anfordern" className="cta-button">
@@ -384,11 +391,11 @@ export function KalkulatorClient({
               <>
                 <ul className="kalkulator-price-list">
                   <li>
-                    <span>Etiketten Netto</span>
-                    <span>{formatEur(priceState.netPrice)}</span>
+                    <span>Boya + Druck (Druckfarben)</span>
+                    <span>{formatEur(inkCostNet)}</span>
                   </li>
                   <li>
-                    <span>Druckplatten ({config.farbigkeit}×50 €)</span>
+                    <span>Druckplatten ({colorCount} Farben)</span>
                     <span>{formatEur(plateCostNet)}</span>
                   </li>
                   <li>
@@ -514,6 +521,7 @@ export function KalkulatorClient({
             plateCostNet={plateCostNet}
             onBack={handleBack}
           />
+          {/* plateCostNet passed for order summary display; already included in netPrice */}
         </div>
       )}
     </div>

@@ -56,6 +56,8 @@ export async function POST(request: Request) {
 
     const { materialKey, widthMm, heightMm, quantity } = parsed.data;
     const farbigkeit = parsed.data.farbigkeit ?? 4;
+    const weissunterdruck = (parsed.data as Record<string, unknown>).weissunterdruck === true;
+    const colorCount = farbigkeit + (weissunterdruck ? 1 : 0);
 
     const [materialRow, settingsRow] = await Promise.all([
       prisma.pricingMaterialCost.findUnique({ where: { materialKey } }),
@@ -64,7 +66,7 @@ export async function POST(request: Request) {
 
     const priceResult = buildPublicCustomSizePriceResponse({
       featureEnabled: true,
-      request: { materialKey, widthMm, heightMm, quantity },
+      request: { materialKey, widthMm, heightMm, quantity, colorCount },
       params: mapMaterialCostRecord(materialRow),
       settings: mapPricingSettingsRecord(settingsRow),
     });

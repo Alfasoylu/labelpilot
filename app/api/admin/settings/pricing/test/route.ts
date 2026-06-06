@@ -15,6 +15,7 @@ const testSchema = z.object({
   widthMm: z.coerce.number().int().positive(),
   heightMm: z.coerce.number().int().positive(),
   quantity: z.coerce.number().int().positive(),
+  colorCount: z.coerce.number().int().min(1).max(12).default(4),
 });
 
 function buildRedirectUrl(request: Request, search: Record<string, string>) {
@@ -32,6 +33,7 @@ export async function POST(request: Request) {
     widthMm: formData.get("widthMm"),
     heightMm: formData.get("heightMm"),
     quantity: formData.get("quantity"),
+    colorCount: formData.get("colorCount"),
   });
 
   if (!parsed.success) {
@@ -46,14 +48,10 @@ export async function POST(request: Request) {
   const prisma = getPrismaClient();
   const materialKey = parsed.data.materialKey;
   const materialRow = prisma
-    ? await prisma.pricingMaterialCost.findUnique({
-        where: { materialKey },
-      })
+    ? await prisma.pricingMaterialCost.findUnique({ where: { materialKey } })
     : null;
   const settingsRow = prisma
-    ? await prisma.pricingSettings.findUnique({
-        where: { id: "default" },
-      })
+    ? await prisma.pricingSettings.findUnique({ where: { id: "default" } })
     : null;
 
   const params = mapMaterialCostRecord(materialRow) ?? getDefaultPricingMaterial(materialKey);
@@ -64,22 +62,24 @@ export async function POST(request: Request) {
     widthMm: parsed.data.widthMm,
     heightMm: parsed.data.heightMm,
     quantity: parsed.data.quantity,
+    colorCount: parsed.data.colorCount,
     params,
     settings,
   });
 
   return NextResponse.redirect(
     buildRedirectUrl(request, {
-      calcMaterial: materialKey,
+      calcMatKey: materialKey,
       calcWidthMm: parsed.data.widthMm.toString(),
       calcHeightMm: parsed.data.heightMm.toString(),
       calcQuantity: parsed.data.quantity.toString(),
+      calcColorCount: parsed.data.colorCount.toString(),
       calcQuoteRequired: String(result.quoteRequired),
-      calcMethod: result.method,
       calcNet: result.netPrice.toFixed(2),
       calcGross: result.grossPrice.toFixed(2),
-      calcDigital: result.breakdown.digitalCost.toFixed(2),
-      calcFlexo: result.breakdown.flexoCost.toFixed(2),
+      calcMaterialCost: result.breakdown.materialCost.toFixed(2),
+      calcInk: result.breakdown.inkCost.toFixed(2),
+      calcPlate: result.breakdown.plateCost.toFixed(2),
       calcProduction: result.breakdown.productionCost.toFixed(2),
       calcLabelArea: result.breakdown.labelAreaM2.toFixed(4),
       calcTotalArea: result.breakdown.totalAreaM2.toFixed(4),
