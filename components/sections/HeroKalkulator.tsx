@@ -120,7 +120,7 @@ export function HeroKalkulator() {
             Supplement-Verpackungen.
           </p>
           <p className="hero-kalk__usecases">
-            Flaschen&nbsp;·&nbsp;Gläser&nbsp;·&nbsp;Dosen&nbsp;·&nbsp;Beutel&nbsp;·&nbsp;Kosmetik&nbsp;·&nbsp;Supplements&nbsp;·&nbsp;Honig&nbsp;·&nbsp;Kaffee&nbsp;·&nbsp;Saucen&nbsp;·&nbsp;Private&nbsp;Label
+            Flaschen · Gläser · Dosen · Beutel · Kosmetik · Supplements · Honig · Kaffee · Saucen · Private&nbsp;Label
           </p>
 
           <div className="hero-kalk__mobile-banner">
