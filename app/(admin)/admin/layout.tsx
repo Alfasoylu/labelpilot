@@ -29,6 +29,9 @@ export default function AdminLayout({
           <Link href="/admin/orders" className="secondary-link">
             Bestellungen
           </Link>
+          <Link href="/admin/customers" className="secondary-link">
+            Kunden
+          </Link>
           <Link href="/admin/designs" className="secondary-link">
             Designs
           </Link>

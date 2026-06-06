@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { ProofApprovalForm } from "@/components/account/ProofApprovalForm";
 import { ReorderStartForm } from "@/components/reorder-start-form";
 import { getSupabaseBrowserClient } from "@/lib/auth/supabase-browser";
 import {
@@ -21,6 +22,13 @@ type AccountOrder = {
   amountLabel: string;
   createdAt: string;
   uploadHref: string | null;
+  trackingUrl: string | null;
+  latestProof: {
+    id: string;
+    fileName: string;
+    status: string;
+    adminNote: string | null;
+  } | null;
 };
 
 type AccountArtworkVersion = {
@@ -57,6 +65,7 @@ type AccountDashboard = {
     email: string;
     companyName: string | null;
     contactName: string | null;
+    phone: string | null;
   };
   orders: AccountOrder[];
   storedDesigns: AccountStoredDesign[];
@@ -81,6 +90,15 @@ export function KontoClient() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [mounted, setMounted] = useState(false);
+
+  const [editMode, setEditMode] = useState(false);
+  const [profileFields, setProfileFields] = useState({
+    contactName: "",
+    companyName: "",
+    phone: "",
+  });
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileMsg, setProfileMsg] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -224,6 +242,62 @@ export function KontoClient() {
     setMessage("Sie sind abgemeldet.");
   }
 
+  function handleEditStart() {
+    if (!dashboard) return;
+    setProfileFields({
+      contactName: dashboard.customer.contactName ?? "",
+      companyName: dashboard.customer.companyName ?? "",
+      phone: dashboard.customer.phone ?? "",
+    });
+    setProfileMsg("");
+    setEditMode(true);
+  }
+
+  async function handleProfileSave() {
+    if (!accessToken) return;
+    setProfileSaving(true);
+    setProfileMsg("");
+    try {
+      const res = await fetch("/api/account/profile", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(profileFields),
+      });
+      const data = (await res.json()) as {
+        contactName?: string | null;
+        companyName?: string | null;
+        phone?: string | null;
+        error?: string;
+      };
+      if (!res.ok) {
+        setProfileMsg(data.error ?? "Speichern fehlgeschlagen.");
+        return;
+      }
+      setDashboard((prev) =>
+        prev
+          ? {
+              ...prev,
+              customer: {
+                ...prev.customer,
+                contactName: data.contactName ?? null,
+                companyName: data.companyName ?? null,
+                phone: data.phone ?? null,
+              },
+            }
+          : prev,
+      );
+      setEditMode(false);
+      setProfileMsg("Profil gespeichert.");
+    } catch {
+      setProfileMsg("Speichern fehlgeschlagen.");
+    } finally {
+      setProfileSaving(false);
+    }
+  }
+
   async function handleDownload(designId: string, versionId: string, asset: "artwork" | "proof") {
     if (!accessToken) return;
     setError("");
@@ -352,14 +426,81 @@ export function KontoClient() {
         <>
           <article className="surface-card">
             <h2>Kontodaten</h2>
-            <ul className="simple-list">
-              <li>E-Mail: {dashboard.customer.email}</li>
-              <li>Firma: {dashboard.customer.companyName ?? "Nicht hinterlegt"}</li>
-              <li>Ansprechpartner: {dashboard.customer.contactName ?? "Nicht hinterlegt"}</li>
-            </ul>
+            {editMode ? (
+              <div className="section-stack">
+                <div className="form-grid">
+                  <div className="field">
+                    <label htmlFor="konto-firma">Firma</label>
+                    <input
+                      id="konto-firma"
+                      value={profileFields.companyName}
+                      onChange={(e) =>
+                        setProfileFields((p) => ({ ...p, companyName: e.target.value }))
+                      }
+                    />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="konto-kontakt">Ansprechpartner</label>
+                    <input
+                      id="konto-kontakt"
+                      value={profileFields.contactName}
+                      onChange={(e) =>
+                        setProfileFields((p) => ({ ...p, contactName: e.target.value }))
+                      }
+                    />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="konto-phone">Telefon</label>
+                    <input
+                      id="konto-phone"
+                      type="tel"
+                      value={profileFields.phone}
+                      onChange={(e) =>
+                        setProfileFields((p) => ({ ...p, phone: e.target.value }))
+                      }
+                    />
+                  </div>
+                </div>
+                {profileMsg ? <p className="form-status error">{profileMsg}</p> : null}
+                <div className="inline-actions">
+                  <button
+                    type="button"
+                    className="cta-button"
+                    disabled={profileSaving}
+                    onClick={handleProfileSave}
+                  >
+                    {profileSaving ? "Wird gespeichert ..." : "Speichern"}
+                  </button>
+                  <button
+                    type="button"
+                    className="secondary-link"
+                    disabled={profileSaving}
+                    onClick={() => { setEditMode(false); setProfileMsg(""); }}
+                  >
+                    Abbrechen
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <ul className="simple-list">
+                  <li>E-Mail: {dashboard.customer.email}</li>
+                  <li>Firma: {dashboard.customer.companyName ?? "Nicht hinterlegt"}</li>
+                  <li>Ansprechpartner: {dashboard.customer.contactName ?? "Nicht hinterlegt"}</li>
+                  {dashboard.customer.phone ? <li>Telefon: {dashboard.customer.phone}</li> : null}
+                </ul>
+                {profileMsg ? <p className="form-status success">{profileMsg}</p> : null}
+                <div className="cta-row">
+                  <button type="button" className="secondary-link" onClick={handleEditStart}>
+                    Profil bearbeiten
+                  </button>
+                </div>
+              </>
+            )}
             <p className="field-hint">
-              Rechnungskauf / Net-14 ist nur nach manueller Freigabe über Angebot oder Account-Betreuung möglich.
-              Im Self-Serve-Checkout wird kein automatischer Rechnungskauf angeboten.
+              Rechnungskauf / Net-14 ist nur nach manueller Freigabe über Angebot oder
+              Account-Betreuung möglich. Im Self-Serve-Checkout wird kein automatischer
+              Rechnungskauf angeboten.
             </p>
           </article>
 
@@ -376,21 +517,67 @@ export function KontoClient() {
                   <div key={order.id} className="section-card">
                     <h3>{order.orderNumber}</h3>
                     <p className="price-note">
-                      {order.quantity.toLocaleString("de-DE")} Stück - {getMaterialLabel(order.material)} - {order.amountLabel}
+                      {order.quantity.toLocaleString("de-DE")} Stück – {getMaterialLabel(order.material)} – {order.amountLabel}
                     </p>
                     <ul className="simple-list">
                       <li>Status: {getOrderStatusLabel(order.status)}</li>
                       <li>Druckdaten: {getArtworkStatusLabel(order.artworkStatus)}</li>
                       <li>Bestelldatum: {formatDate(order.createdAt)}</li>
                     </ul>
+                    {order.latestProof ? (
+                      <div className="proof-banner">
+                        <p>
+                          <strong>Korrekturabzug wartet auf Ihre Freigabe.</strong>
+                        </p>
+                        {order.latestProof.adminNote ? (
+                          <p className="field-hint">{order.latestProof.adminNote}</p>
+                        ) : null}
+                        <ProofApprovalForm
+                          orderId={order.id}
+                          proofFileId={order.latestProof.id}
+                          accessToken={accessToken!}
+                          onSuccess={() => {
+                            setDashboard((prev) =>
+                              prev
+                                ? {
+                                    ...prev,
+                                    orders: prev.orders.map((o) =>
+                                      o.id === order.id
+                                        ? { ...o, latestProof: null, status: "APPROVED_FOR_PRODUCTION" }
+                                        : o,
+                                    ),
+                                  }
+                                : prev,
+                            );
+                          }}
+                        />
+                        <a
+                          href={`/api/account/orders/${order.id}/proof-file/${order.latestProof.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="secondary-link"
+                        >
+                          Korrekturabzug öffnen →
+                        </a>
+                      </div>
+                    ) : null}
                     <div className="cta-row">
-                      {order.uploadHref ? (
+                      {order.uploadHref && !order.latestProof ? (
                         <a href={order.uploadHref} className="cta-link">
                           {order.artworkStatus === "AWAITING_ARTWORK"
                             ? "Druckdaten hochladen"
-                            : order.status === "WAITING_CUSTOMER_APPROVAL"
-                              ? "Proof ansehen und freigeben"
-                              : "Auftrag & Druckdaten öffnen"}
+                            : "Auftrag & Druckdaten öffnen"}
+                        </a>
+                      ) : null}
+                      {order.trackingUrl &&
+                      (order.status === "SHIPPED" || order.status === "DELIVERED") ? (
+                        <a
+                          href={order.trackingUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="cta-link"
+                        >
+                          Sendung verfolgen →
                         </a>
                       ) : null}
                       <a href={`/konto/bestellungen/${order.id}`} className="secondary-link">

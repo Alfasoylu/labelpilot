@@ -53,6 +53,24 @@ export async function GET(
         createdAt: true,
         uploadToken: true,
         reorderSourceDesignId: true,
+        trackingNumber: true,
+        trackingUrl: true,
+        estimatedDeliveryAt: true,
+        shippedAt: true,
+        deliveredAt: true,
+        shipmentNote: true,
+        proofFiles: {
+          where: { status: { not: "SUPERSEDED" } },
+          select: {
+            id: true,
+            fileName: true,
+            status: true,
+            adminNote: true,
+            customerApprovedAt: true,
+            createdAt: true,
+          },
+          orderBy: { createdAt: "desc" },
+        },
       },
     });
 
@@ -69,11 +87,14 @@ export async function GET(
       "CANCELLED",
     ].includes(order.status);
 
-    const { uploadToken, ...orderData } = order;
+    const { uploadToken, proofFiles, ...orderData } = order;
 
     return NextResponse.json({
       ...orderData,
       createdAt: order.createdAt.toISOString(),
+      estimatedDeliveryAt: order.estimatedDeliveryAt?.toISOString() ?? null,
+      shippedAt: order.shippedAt?.toISOString() ?? null,
+      deliveredAt: order.deliveredAt?.toISOString() ?? null,
       amountLabel: new Intl.NumberFormat("de-DE", {
         style: "currency",
         currency: "EUR",
@@ -82,6 +103,14 @@ export async function GET(
         uploadToken && canOpenArtworkStep
           ? `/de/auftrag/${order.id}/druckdaten?token=${encodeURIComponent(uploadToken)}`
           : null,
+      proofFiles: proofFiles.map((p) => ({
+        id: p.id,
+        fileName: p.fileName,
+        status: p.status,
+        adminNote: p.adminNote ?? null,
+        customerApprovedAt: p.customerApprovedAt?.toISOString() ?? null,
+        createdAt: p.createdAt.toISOString(),
+      })),
     });
   } catch (error) {
     console.error("Bestelldetail-API fehlgeschlagen:", error);

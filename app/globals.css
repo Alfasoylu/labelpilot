@@ -906,6 +906,20 @@ textarea {
   color: var(--danger);
 }
 
+.proof-banner {
+  border: 1px solid rgba(176, 138, 69, 0.35);
+  background: rgba(176, 138, 69, 0.06);
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.proof-banner strong {
+  color: var(--accent);
+}
+
 .cta-button,
 .ghost-button {
   min-height: 48px;

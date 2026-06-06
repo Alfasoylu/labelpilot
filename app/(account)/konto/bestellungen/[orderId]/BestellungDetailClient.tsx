@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { ProofApprovalForm } from "@/components/account/ProofApprovalForm";
 import { getSupabaseBrowserClient } from "@/lib/auth/supabase-browser";
 import {
   formatFinishing,
@@ -10,6 +11,15 @@ import {
   getMaterialLabel,
   getOrderStatusLabel,
 } from "@/lib/orders/artwork";
+
+type ProofFileDetail = {
+  id: string;
+  fileName: string;
+  status: string;
+  adminNote: string | null;
+  customerApprovedAt: string | null;
+  createdAt: string;
+};
 
 type OrderDetail = {
   id: string;
@@ -30,6 +40,13 @@ type OrderDetail = {
   createdAt: string;
   uploadHref: string | null;
   reorderSourceDesignId: string | null;
+  trackingNumber: string | null;
+  trackingUrl: string | null;
+  estimatedDeliveryAt: string | null;
+  shippedAt: string | null;
+  deliveredAt: string | null;
+  shipmentNote: string | null;
+  proofFiles: ProofFileDetail[];
 };
 
 function buildReorderUrl(order: OrderDetail): string {
@@ -205,6 +222,83 @@ export function BestellungDetailClient({ orderId }: { orderId: string }) {
           ) : null}
         </article>
       </div>
+
+      {order.proofFiles.filter((p) => p.status === "WAITING_CUSTOMER_APPROVAL").map((proof) => (
+        <article key={proof.id} className="surface-card">
+          <h2>Korrekturabzug wartet auf Freigabe</h2>
+          {proof.adminNote ? <p className="field-hint">{proof.adminNote}</p> : null}
+          <div className="cta-row">
+            <a
+              href={`/api/account/orders/${order.id}/proof-file/${proof.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="secondary-link"
+            >
+              Korrekturabzug öffnen →
+            </a>
+          </div>
+          <ProofApprovalForm
+            orderId={order.id}
+            proofFileId={proof.id}
+            accessToken={accessToken!}
+            onSuccess={() =>
+              setOrder((prev) =>
+                prev
+                  ? {
+                      ...prev,
+                      status: "APPROVED_FOR_PRODUCTION",
+                      proofFiles: prev.proofFiles.map((p) =>
+                        p.id === proof.id ? { ...p, status: "APPROVED" } : p,
+                      ),
+                    }
+                  : prev,
+              )
+            }
+          />
+        </article>
+      ))}
+
+      {(order.status === "SHIPPED" || order.status === "DELIVERED") && (
+        <article className="surface-card">
+          <h2>Versandinformationen</h2>
+          <ul className="simple-list">
+            {order.shippedAt ? (
+              <li>Versanddatum: {formatDate(order.shippedAt)}</li>
+            ) : null}
+            {order.estimatedDeliveryAt ? (
+              <li>Voraussichtliche Lieferung: {formatDate(order.estimatedDeliveryAt)}</li>
+            ) : null}
+            {order.deliveredAt ? (
+              <li>Zugestellt am: {formatDate(order.deliveredAt)}</li>
+            ) : null}
+            {order.trackingNumber ? (
+              <li>
+                Sendungsnummer:{" "}
+                {order.trackingUrl ? (
+                  <a href={order.trackingUrl} target="_blank" rel="noopener noreferrer">
+                    {order.trackingNumber}
+                  </a>
+                ) : (
+                  order.trackingNumber
+                )}
+              </li>
+            ) : null}
+            {order.shipmentNote ? <li>Hinweis: {order.shipmentNote}</li> : null}
+          </ul>
+          {order.trackingUrl ? (
+            <div className="cta-row">
+              <a
+                href={order.trackingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cta-link"
+              >
+                Sendung verfolgen →
+              </a>
+            </div>
+          ) : null}
+        </article>
+      )}
 
       <article className="surface-card">
         <h2>Nachbestellen</h2>

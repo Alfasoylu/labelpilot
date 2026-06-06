@@ -51,6 +51,18 @@ export async function GET(request: Request) {
           updatedAt: true,
           reorderSourceDesignId: true,
           uploadToken: true,
+          trackingUrl: true,
+          proofFiles: {
+            where: { status: "WAITING_CUSTOMER_APPROVAL" },
+            select: {
+              id: true,
+              fileName: true,
+              status: true,
+              adminNote: true,
+            },
+            orderBy: { createdAt: "desc" },
+            take: 1,
+          },
         },
         orderBy: { createdAt: "desc" },
         take: 25,
@@ -127,9 +139,10 @@ export async function GET(request: Request) {
         email: customer.email,
         companyName: customer.companyName,
         contactName: customer.contactName,
+        phone: customer.phone ?? null,
       },
       orders: orders.map((order) => {
-        const { uploadToken, ...rest } = order;
+        const { uploadToken, proofFiles, ...rest } = order;
         const canOpenArtworkStep = !["PENDING_PAYMENT", "PAYMENT_FAILED", "CANCELLED"].includes(
           order.status,
         );
@@ -142,6 +155,8 @@ export async function GET(request: Request) {
             uploadToken && canOpenArtworkStep
               ? `/de/auftrag/${order.id}/druckdaten?token=${encodeURIComponent(uploadToken)}`
               : null,
+          trackingUrl: order.trackingUrl ?? null,
+          latestProof: proofFiles[0] ?? null,
         };
       }),
       storedDesigns: storedDesigns.map((design) => ({
