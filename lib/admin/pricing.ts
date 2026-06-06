@@ -77,14 +77,14 @@ export const PRICING_MATERIAL_KEYS = [
 const DEFAULT_MATERIALS: Record<PricingMaterialKey, PricingMaterialParams> = {
   OPAQUE_PP: {
     materialKey: "OPAQUE_PP",
-    materialCostPerM2: 70,
+    materialCostPerM2: 0.8,
     wasteFactorPct: 15,
     targetMarginPct: 55,
     minOrderValueNet: 75,
   },
   TRANSPARENT_PP: {
     materialKey: "TRANSPARENT_PP",
-    materialCostPerM2: 80,
+    materialCostPerM2: 1.0,
     wasteFactorPct: 15,
     targetMarginPct: 55,
     minOrderValueNet: 85,
