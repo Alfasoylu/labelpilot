@@ -1852,6 +1852,10 @@ th {
   display: none;
 }
 
+.hero-kalk__mobile-banner img {
+  max-width: 100%;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .hero-kalk-split {
@@ -1865,16 +1869,25 @@ th {
     display: none;
   }
 
+  /* Left column: prevent flex child from overflowing container */
+  .hero-kalk__left {
+    min-width: 0;
+    width: 100%;
+  }
+
   .hero-kalk__mobile-banner {
     display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
     margin-top: 10px;
     border-radius: 10px;
-    overflow: hidden;
   }
 
   .hero-kalk__mobile-banner img {
-    width: 100%;
-    height: auto;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
     display: block;
   }
 }

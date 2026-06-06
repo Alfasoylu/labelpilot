@@ -131,6 +131,7 @@ export function HeroKalkulator() {
               height={440}
               priority
               sizes="100vw"
+              style={{ width: "100%", height: "auto", display: "block" }}
             />
           </div>
 
