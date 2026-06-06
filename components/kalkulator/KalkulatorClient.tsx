@@ -225,11 +225,15 @@ export function KalkulatorClient({
               <select
                 id="kalk-material"
                 value={config.materialKey}
-                onChange={(e) => setConfig((c) => ({
-                  ...c,
-                  materialKey: e.target.value as MaterialKey,
-                  weissunterdruck: false,
-                }))}
+                onChange={(e) => {
+                  const mat = e.target.value as MaterialKey;
+                  setConfig((c) => ({
+                    ...c,
+                    materialKey: mat,
+                    weissunterdruck: mat === "TRANSPARENT_PP" ? true : c.weissunterdruck,
+                    finishing: mat === "TRANSPARENT_PP" ? "GLAENZEND" : c.finishing,
+                  }));
+                }}
               >
                 <option value="OPAQUE_PP">Opak PP-Folie (weiß)</option>
                 <option value="TRANSPARENT_PP">Transparent PP-Folie</option>
@@ -285,11 +289,15 @@ export function KalkulatorClient({
               <select
                 id="kalk-finishing"
                 value={config.finishing}
+                disabled={config.materialKey === "TRANSPARENT_PP"}
                 onChange={(e) => setConfig((c) => ({ ...c, finishing: e.target.value as Finishing }))}
               >
-                <option value="MATT">Matt</option>
+                <option value="MATT" disabled={config.materialKey === "TRANSPARENT_PP"}>Matt</option>
                 <option value="GLAENZEND">Glänzend</option>
               </select>
+              {config.materialKey === "TRANSPARENT_PP" && (
+                <p className="field-hint">Transparent PP ist immer glänzend.</p>
+              )}
             </div>
 
             <div className="field">
@@ -347,20 +355,11 @@ export function KalkulatorClient({
               </p>
             </div>
 
-            {/* Weißunterdruck — nur für Transparent PP */}
+            {/* Weißunterdruck — bei Transparent PP immer aktiv */}
             {config.materialKey === "TRANSPARENT_PP" && (
               <div className="field-full">
-                <label className="checkbox-field">
-                  <input
-                    type="checkbox"
-                    checked={config.weissunterdruck}
-                    onChange={(e) => setConfig((c) => ({ ...c, weissunterdruck: e.target.checked }))}
-                  />
-                  <span>Weißunterdruck (opake Basis unter dem Motiv)</span>
-                </label>
                 <p className="field-hint">
-                  Druckt eine opake weiße Schicht unter Ihr Design – empfohlen für leuchtende Farben
-                  auf dunklen oder farbigen Behältern (Glas, PET, dunkle Dosen).
+                  <strong>Weißunterdruck inklusive:</strong> Bei Transparent PP wird automatisch eine opake weiße Schicht unter das Motiv gedruckt, damit Farben leuchtend wirken.
                 </p>
               </div>
             )}
