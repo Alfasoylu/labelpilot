@@ -34,16 +34,16 @@ type OrderDetail = {
 
 function buildReorderUrl(order: OrderDetail): string {
   const params = new URLSearchParams();
-  params.set("q", String(order.quantity));
+  params.set("quantity", String(order.quantity));
 
   if (order.widthMm && order.heightMm) {
-    params.set("w", String(order.widthMm));
-    params.set("h", String(order.heightMm));
+    params.set("width", String(order.widthMm));
+    params.set("height", String(order.heightMm));
   }
 
-  if (order.material === "OPAQUE") params.set("m", "pp-white");
-  else if (order.material === "TRANSPARENT") params.set("m", "pp-transparent");
-  else if (order.material === "PAPER_WHITE") params.set("m", "paper-white");
+  if (order.material === "OPAQUE") params.set("material", "pp-white");
+  else if (order.material === "TRANSPARENT") params.set("material", "pp-transparent");
+  else if (order.material === "PAPER_WHITE") params.set("material", "paper-white");
 
   return `/de/kalkulator?${params.toString()}`;
 }

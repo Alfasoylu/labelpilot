@@ -200,7 +200,11 @@ export default async function AdminOrderDetailPage({
           <ul className="simple-list">
             <li>Bestellnummer: {order.orderNumber}</li>
             <li>Erstellt: {formatAdminDate(order.createdAt)}</li>
-            <li>Paket: {pkg ? pkg.label : order.packageId}</li>
+            {order.widthMm && order.heightMm ? (
+              <li>Format: {order.widthMm} × {order.heightMm} mm (Wunschformat)</li>
+            ) : (
+              <li>Paket: {pkg ? pkg.label : (order.packageId ?? "Standardpaket")}</li>
+            )}
             <li>Produkt: {order.productSlug}</li>
             <li>Material: {getMaterialLabel(order.material)}</li>
             <li>Menge: {order.quantity.toLocaleString("de-DE")} Stück</li>

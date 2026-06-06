@@ -61,6 +61,7 @@ export default async function KalkulatorPage({
         initialWidthMm={initialWidthMm}
         initialHeightMm={initialHeightMm}
         initialMaterial={sp.material}
+        initialPrint={sp.print}
       />
 
       <article className="surface-card">

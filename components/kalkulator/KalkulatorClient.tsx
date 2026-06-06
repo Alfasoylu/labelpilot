@@ -11,6 +11,7 @@ type KalkulatorInitialProps = {
   initialWidthMm?: number;
   initialHeightMm?: number;
   initialMaterial?: string;
+  initialPrint?: string;
 };
 
 function mapInitialMaterial(slug?: string): MaterialKey {
@@ -55,6 +56,7 @@ export function KalkulatorClient({
   initialWidthMm,
   initialHeightMm,
   initialMaterial,
+  initialPrint,
 }: KalkulatorInitialProps = {}) {
   const [config, setConfig] = useState<KalkulatorConfig>({
     materialKey: mapInitialMaterial(initialMaterial),
@@ -113,6 +115,19 @@ export function KalkulatorClient({
 
   return (
     <div className="section-stack">
+      {initialPrint === "unbedruckt" && (
+        <p className="field-hint">
+          Unbedruckte Etiketten sind über diesen Kalkulator nicht bestellbar.{" "}
+          <a href="/de/angebot-anfordern" className="secondary-link">Angebot anfordern</a>
+        </p>
+      )}
+      {initialMaterial === "paper-white" && (
+        <p className="field-hint">
+          Etikettenpapier ist über diesen Kalkulator nicht verfügbar. Format und Menge wurden übernommen;
+          als Material wurde PP-Folie weiß vorgewählt.{" "}
+          <a href="/de/angebot-anfordern" className="secondary-link">Für Etikettenpapier Angebot anfordern</a>
+        </p>
+      )}
       <div className="kalkulator-grid">
         {/* Left: Configuration */}
         <article className="surface-card">

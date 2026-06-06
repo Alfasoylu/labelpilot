@@ -164,6 +164,8 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
     material: order.material,
     quantity: order.quantity,
     finishing: order.finishing,
+    widthMm: order.widthMm,
+    heightMm: order.heightMm,
     amountCents: order.amountCents,
     currency: order.currency,
     physicalProofCents: order.physicalProofCents,

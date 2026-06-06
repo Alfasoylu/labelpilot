@@ -145,6 +145,9 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
                       <Badge variant={orderStatusVariant(order.status)}>
                         {getOrderStatusLabel(order.status)}
                       </Badge>
+                      {order.widthMm ? (
+                        <Badge variant="outline">Wunschformat</Badge>
+                      ) : null}
                       {hasOrderAddons(order) ? (
                         <Badge variant="secondary">Zusatzleistungen</Badge>
                       ) : null}

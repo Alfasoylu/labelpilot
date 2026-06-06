@@ -71,6 +71,8 @@ export function orderConfirmation(input: {
   material: string;
   quantity: number;
   finishing?: string | null;
+  widthMm?: number | null;
+  heightMm?: number | null;
   amountCents: number;
   currency: string;
   physicalProofCents?: number | null;
@@ -108,7 +110,7 @@ export function orderConfirmation(input: {
     `Material: ${formatMaterialLabel(input.material)}`,
     `Menge: ${input.quantity.toLocaleString("de-DE")} Stück`,
     `Oberfläche: ${formatFinishingLabel(input.finishing)}`,
-    `Format: 100 × 200 mm (Standardformat)`,
+    `Format: ${input.widthMm && input.heightMm ? `${input.widthMm} × ${input.heightMm} mm (Wunschformat)` : "Standardformat"}`,
   ];
 
   const priceLines: string[] = [];
@@ -147,7 +149,7 @@ export function orderConfirmation(input: {
     `<p style="margin:2px 0;"><strong>Material:</strong> ${escapeHtml(formatMaterialLabel(input.material))}</p>`,
     `<p style="margin:2px 0;"><strong>Menge:</strong> ${escapeHtml(input.quantity.toLocaleString("de-DE"))} Stück</p>`,
     `<p style="margin:2px 0;"><strong>Oberfläche:</strong> ${escapeHtml(formatFinishingLabel(input.finishing))}</p>`,
-    `<p style="margin:2px 0;"><strong>Format:</strong> 100 × 200 mm (Standardformat)</p>`,
+    `<p style="margin:2px 0;"><strong>Format:</strong> ${escapeHtml(input.widthMm && input.heightMm ? `${input.widthMm} × ${input.heightMm} mm (Wunschformat)` : "Standardformat")}</p>`,
   ].join("");
 
   const priceHtmlParts: string[] = [];
