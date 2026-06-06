@@ -2,10 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ProductCard } from "@/components/cards/ProductCard";
-import { PricingCard } from "@/components/cards/PricingCard";
 import { SampleBoxCard } from "@/components/cards/SampleBoxCard";
-import { CustomSizePriceForm } from "@/components/custom-size-price-form";
-import { ProductConfigurator } from "@/components/product-configurator";
 import { FaqAccordion } from "@/components/faq/FaqAccordion";
 import { Section } from "@/components/layout/Section";
 import { LegalNoticeBox } from "@/components/legal/LegalNoticeBox";
@@ -27,21 +24,12 @@ import { ComparisonTable } from "@/components/tables/ComparisonTable";
 import { SpecTable } from "@/components/tables/SpecTable";
 import { QuoteRequestForm } from "@/components/quote-request-form";
 import { SampleBoxRequestForm } from "@/components/sample-box-request-form";
-import { customSizeFeatureEnabled } from "@/lib/pricing/custom-size-feature";
 import type {
   FAQ,
   HomePageData,
-  PackageTier,
   PublicPageData,
   RelatedLink,
   SiteNavigationItem,
-} from "@/lib/site-content";
-import {
-  fixedPriceExcludedRows,
-  fixedPriceIncludedRows,
-  opaquePackages,
-  pricingValueBundleLine,
-  transparentPackages,
 } from "@/lib/site-content";
 
 type HomePageProps = {
@@ -121,54 +109,6 @@ const productImageAssets = {
   },
 } as const;
 
-type HomepagePackage = {
-  tier: PackageTier;
-  checkout?: {
-    packageId: string;
-    productSlug: "opake-pp-etiketten" | "transparente-pp-etiketten";
-    material: "OPAQUE" | "TRANSPARENT";
-    quantity: number;
-  };
-};
-
-const homepagePackages: HomepagePackage[] = [
-  {
-    tier: opaquePackages[0],
-    checkout: {
-      packageId: "opaque-pp-100x200-1000",
-      productSlug: "opake-pp-etiketten",
-      material: "OPAQUE",
-      quantity: 1000,
-    },
-  },
-  {
-    tier: opaquePackages[1],
-    checkout: {
-      packageId: "opaque-pp-100x200-2000",
-      productSlug: "opake-pp-etiketten",
-      material: "OPAQUE",
-      quantity: 2000,
-    },
-  },
-  {
-    tier: opaquePackages[2],
-    checkout: {
-      packageId: "opaque-pp-100x200-5000",
-      productSlug: "opake-pp-etiketten",
-      material: "OPAQUE",
-      quantity: 5000,
-    },
-  },
-  {
-    tier: opaquePackages[3],
-    checkout: {
-      packageId: "opaque-pp-100x200-10000",
-      productSlug: "opake-pp-etiketten",
-      material: "OPAQUE",
-      quantity: 10000,
-    },
-  },
-];
 
 const homepageOrderingSteps = [
   { title: "Format & Menge eingeben", body: "Breite, Höhe und Menge frei wählen – Sofortpreis erscheint direkt im Kalkulator." },
@@ -638,39 +578,7 @@ export function DynamicPage({ page, canonicalPath, searchParams }: DynamicPagePr
   return <ServicePage page={page} canonicalPath={canonicalPath} />;
 }
 
-function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps) {
-  const isCanonicalConfiguratorPage = page.path === "/de/pp-rollenetiketten";
-  const selectedMaterial = normalizeConfiguratorMaterial(
-    searchParams?.material,
-    page.path,
-  );
-  const selectedSize = normalizeConfiguratorSize(searchParams?.size);
-  const selectedQuantity = normalizeConfiguratorQuantity(searchParams?.quantity);
-  const selectedPackageTable = isCanonicalConfiguratorPage
-    ? selectedMaterial === "TRANSPARENT"
-      ? transparentPackages
-      : opaquePackages
-    : page.packageTable;
-  const selectedMaterialParam =
-    selectedMaterial === "TRANSPARENT" ? "transparent" : "opaque";
-  const selectedMaterialLabel =
-    selectedMaterial === "TRANSPARENT" ? "Transparentes PP" : "Opakes PP";
-  const selectedSizeLabel =
-    selectedSize === "custom" ? "Wunschformat / Sondermaß" : "Standardgröße 100×200 mm";
-  const otherQuantityHref = customSizeFeatureEnabled
-    ? buildConfiguratorHref({
-        material: selectedMaterialParam,
-        size: "custom",
-      })
-    : buildOtherQuantityQuoteHref(selectedMaterial);
-  const selectedStandardTier =
-    isCanonicalConfiguratorPage && selectedSize === "standard"
-      ? selectedPackageTable?.find(
-          (tier) =>
-            Number.parseInt(tier.quantity.replace(/\D/g, ""), 10) === selectedQuantity,
-        )
-      : undefined;
-
+function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
   return (
     <div className="container section-stack">
       <Breadcrumbs currentLabel={page.title} currentPath={canonicalPath} />
@@ -726,378 +634,85 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
         </Section>
       ) : null}
 
-      {isCanonicalConfiguratorPage ? (
-        <Section
-          eyebrow="Konfigurator"
-          title="Konfigurieren Sie Ihre PP-Rollenetiketten"
-          lead="Material, Größe und Menge wählen – Netto- und Bruttopreis erscheinen sofort, ohne Seitenwechsel."
-        >
-          <ProductConfigurator
-            opaquePackages={opaquePackages}
-            transparentPackages={transparentPackages}
-            initialMaterial={selectedMaterial}
-            initialSize={selectedSize}
-            initialQuantity={selectedQuantity}
-          />
-        </Section>
-      ) : supportsStandardOrCustomChoice(page.path) ? (
-        <Section
-          eyebrow="Auswahl"
-          title="Standardgröße oder Wunschformat"
-          lead="100×200 mm bleibt der schnellste Weg in den Fixpreis-Checkout. Sondergrößen laufen kontrolliert über den Wunschformat- oder Angebotsweg."
-        >
-          <div className="two-column">
-            <article className="surface-card section-stack">
-              <h3>
-                {isCanonicalConfiguratorPage
-                  ? "Konfigurator für Material, Größe und Menge"
-                  : "Standardgröße 100×200 mm"}
-              </h3>
-              {isCanonicalConfiguratorPage ? (
-                <>
-                  <p>
-                    Wählen Sie zuerst Material und Größenpfad. Danach sehen Sie die passende
-                    Preislogik für Standardpakete oder den sauberen Angebotsweg für
-                    Wunschformate.
-                  </p>
-                  <div className="card-grid">
-                    <article className="feature-card">
-                      <h4>Material</h4>
-                      <div className="inline-actions">
-                        <Link
-                          href={buildConfiguratorHref({
-                            material: "opaque",
-                            size: selectedSize,
-                            quantity: selectedQuantity,
-                          })}
-                          className={
-                            selectedMaterial === "OPAQUE" ? "cta-link" : "secondary-link"
-                          }
-                          aria-current={selectedMaterial === "OPAQUE" ? "true" : undefined}
-                        >
-                          Opakes PP
-                        </Link>
-                        <Link
-                          href={buildConfiguratorHref({
-                            material: "transparent",
-                            size: selectedSize,
-                            quantity: selectedQuantity,
-                          })}
-                          className={
-                            selectedMaterial === "TRANSPARENT"
-                              ? "cta-link"
-                              : "secondary-link"
-                          }
-                          aria-current={selectedMaterial === "TRANSPARENT" ? "true" : undefined}
-                        >
-                          Transparentes PP
-                        </Link>
-                      </div>
-                    </article>
-                    <article className="feature-card">
-                      <h4>Größe</h4>
-                      <div className="inline-actions">
-                        <Link
-                          href={buildConfiguratorHref({
-                            material:
-                              selectedMaterial === "TRANSPARENT"
-                                ? "transparent"
-                                : "opaque",
-                            size: "standard",
-                            quantity: selectedQuantity,
-                          })}
-                          className={
-                            selectedSize === "standard" ? "cta-link" : "secondary-link"
-                          }
-                          aria-current={selectedSize === "standard" ? "true" : undefined}
-                        >
-                          100×200 mm
-                        </Link>
-                        <Link
-                          href={buildConfiguratorHref({
-                            material:
-                              selectedMaterial === "TRANSPARENT"
-                                ? "transparent"
-                                : "opaque",
-                            size: "custom",
-                          })}
-                          className={selectedSize === "custom" ? "cta-link" : "secondary-link"}
-                          aria-current={selectedSize === "custom" ? "true" : undefined}
-                        >
-                          Wunschformat
-                        </Link>
-                      </div>
-                    </article>
-                    <article className="feature-card">
-                      <h4>Menge</h4>
-                      <p className="field-hint">
-                        5.000 Stück ist die empfohlene B2B-Menge. 1.000 Stück bleibt der
-                        bezahlte Einstieg.
-                      </p>
-                      <div className="inline-actions">
-                        {[1000, 2000, 5000, 10000].map((quantity) => (
-                          <Link
-                            key={quantity}
-                            href={buildConfiguratorHref({
-                              material: selectedMaterialParam,
-                              size: "standard",
-                              quantity,
-                            })}
-                            className={
-                              selectedQuantity === quantity && selectedSize === "standard"
-                                ? "cta-link"
-                                : "secondary-link"
-                            }
-                            aria-current={
-                              selectedQuantity === quantity && selectedSize === "standard"
-                                ? "true"
-                                : undefined
-                            }
-                          >
-                            {quantity.toLocaleString("de-DE")}
-                            {quantity === 5000 ? " · empfohlen" : ""}
-                          </Link>
-                        ))}
-                        <Link href={otherQuantityHref} className="secondary-link">
-                          Andere Menge?
-                        </Link>
-                      </div>
-                    </article>
-                  </div>
-                  <p className="field-hint">
-                    Ausgewählt: {selectedMaterialLabel} · {selectedSizeLabel}
-                    {selectedSize === "standard" ? ` · ${selectedQuantity.toLocaleString("de-DE")} Stück` : ""}
-                  </p>
-                  {selectedStandardTier ? (
-                    <p className="price-note">
-                      Preis für {selectedStandardTier.quantity}:{" "}
-                      <strong>{selectedStandardTier.priceLabel}</strong> ·{" "}
-                      {selectedStandardTier.grossLabel} brutto (inkl. 19% MwSt) ·{" "}
-                      {selectedStandardTier.perPieceLabel}
-                    </p>
-                  ) : selectedSize === "custom" ? (
-                    <p className="price-note">
-                      Wunschformat: Preis nach Fläche, Material und Stückzahl – nutzen Sie
-                      die Berechnung bzw. den Angebotsweg rechts.
-                    </p>
-                  ) : null}
-                </>
-              ) : null}
-              <p>
-                Für Standardaufträge bleibt 100×200 mm der direkte und schnellste Weg:
-                feste Pakete, feste Preislogik und schneller Checkout.
-              </p>
-              <ul className="simple-list">
-                <li>Format: 100×200 mm</li>
-                <li>Mengen: 1.000 / 2.000 / 5.000 / 10.000 Stück</li>
-                <li>Preisweg: fester Paketpreis netto + brutto</li>
-                <li>Ab 20.000 Stück: Angebotsweg statt Direkt-Checkout</li>
-              </ul>
-              <div className="inline-actions">
-                {selectedSize === "standard" && selectedPackageTable?.length ? (
-                  <Link href="#pakete" className="cta-link">
-                    Standardpakete ansehen
-                  </Link>
-                ) : (
-                  <>
-                    <Link href="/de/angebot-anfordern" className="cta-link">
-                      Angebot anfordern
-                    </Link>
-                    <Link href="/de/kontakt" className="secondary-link">
-                      Rückfrage klären
-                    </Link>
-                  </>
-                )}
-              </div>
-              <p className="field-hint">
-                Wenn Material, Größe und Umfang in dieses Raster passen, ist der
-                Standardweg bewusst schneller als jede Sonderkalkulation.
-              </p>
-            </article>
-            <CustomSizePriceForm
-              variant="compact"
-              initialMaterialKey={
-                selectedMaterial === "TRANSPARENT" ? "TRANSPARENT_PP" : "OPAQUE_PP"
-              }
-            />
-          </div>
-        </Section>
-      ) : null}
+      <Section
+        eyebrow="Kalkulator"
+        title="Preis für Ihr Wunschformat berechnen"
+        lead="Breite, Höhe, Material und Menge eingeben – der Kalkulator zeigt den Preis sofort."
+      >
+        <div className="hero-actions">
+          <Link href="/de/kalkulator" className="cta-button">
+            Preis berechnen
+          </Link>
+          <Link href="/de/angebot-anfordern" className="secondary-link">
+            B2B-Angebot anfordern
+          </Link>
+        </div>
+      </Section>
 
-      {!isCanonicalConfiguratorPage && selectedSize === "standard" && selectedPackageTable?.length ? (
-        <Section
-          id="pakete"
-          eyebrow="Pakete & Preise"
-          title={
-            isCanonicalConfiguratorPage
-              ? `Preise für ${selectedMaterialLabel}`
-              : page.packageHeading ?? "Mengenpakete und Preise"
-          }
-          lead={
-            isCanonicalConfiguratorPage
-              ? `${selectedSizeLabel} mit fester Paketlogik: netto + brutto sichtbar, 5.000 Stück als empfohlene B2B-Menge, 20.000+ sauber im Angebotsweg.`
-              : page.packageLead ?? "Feste Preise inkl. Versand. 5.000 Stück ist das empfohlene Paket."
-          }
-        >
-          <div className="pricing-grid">
-            {selectedPackageTable.map((tier) => (
-              <PricingCard
-                key={`${page.slug}-${tier.quantity}`}
-                tier={tier}
-                checkoutPackage={
-                  isCanonicalConfiguratorPage && tier.priceLabel !== "Angebot"
-                    ? getCheckoutPackageForMaterial(selectedMaterial, tier.quantity)
-                    : undefined
-                }
-                ctaLink={
-                  !isCanonicalConfiguratorPage && tier.priceLabel !== "Angebot"
-                    ? {
-                        label: "Im Konfigurator öffnen",
-                        href: buildConfiguratorHref({
-                          material:
-                            page.path === "/de/transparente-pp-etiketten"
-                              ? "transparent"
-                              : "opaque",
-                          size: "standard",
-                          quantity: Number.parseInt(tier.quantity.replace(/\D/g, ""), 10),
-                        }),
-                      }
-                    : undefined
-                }
-              />
-            ))}
-          </div>
-          <p className="price-note">{pricingValueBundleLine}</p>
-          {(isCanonicalConfiguratorPage || hasFixedPriceScope(page.path)) ? (
-            <div className="surface-card">
-              <h2>Andere Menge?</h2>
-              <p>
-                Die festen Online-Pakete bleiben bewusst auf 1.000, 2.000, 5.000
-                und 10.000 Stück begrenzt. 5.000 Stück ist die empfohlene
-                B2B-Menge. Wenn Sie genau 3.000, 7.500, weniger als 1.000 oder
-                20.000+ Etiketten benötigen, prüfen wir das sauber im Angebotsweg.
-              </p>
-              <div className="inline-actions">
-                <Link href={otherQuantityHref} className="secondary-link">
-                  Andere Menge anfragen
-                </Link>
-              </div>
-            </div>
-          ) : null}
+      <Section
+        eyebrow="Sicherheit"
+        title="Warum der Ablauf für B2B-Etiketten berechenbar bleibt"
+        lead="Vertrauen entsteht hier nicht über Bewertungen, sondern über einen klar sichtbaren Produktions- und Prüfprozess."
+      >
+        <TrustBar items={productTrustItems} />
+        <div className="surface-card">
+          <h2>Materialhinweis zu PP</h2>
+          <p>
+            Unsere Standardprodukte laufen auf PP-Material, weil es für viele
+            wiederkehrende Produktetiketten robust und prozesssicher ist.
+          </p>
+          <p className="field-hint">
+            Nach Freigabe bleiben Spezifikation und Druckdaten als klare Basis für
+            spätere Auftragsbestätigung und schnellere Nachbestellung erhalten.
+          </p>
+          <p className="field-hint">
+            Daraus leiten wir keine pauschalen Nachhaltigkeits- oder Recyclingversprechen
+            ab. Wenn Sie Varianten mit anderem Materialfokus prüfen möchten, klären wir
+            das sauber über Angebot oder Musterbox.
+          </p>
+        </div>
+      </Section>
+
+      <Section
+        eyebrow="Leistungsumfang"
+        title="Inklusive in jedem Auftrag"
+        lead="Was im Auftragsumfang steckt – und wann ein Angebot sinnvoll ist."
+      >
+        <div className="two-column">
           <div className="surface-card">
-            <h2>Fragen vor dem Standardpaket?</h2>
-            <p>
-              Wenn vor dem sichtbaren Paket noch Material-, Druckdaten- oder
-              Ablauffragen offen sind, ist der direkte Kontakt der saubere nächste
-              Schritt. Sie erreichen uns über das Kontaktformular oder direkt per E-Mail.
-            </p>
-            <div className="inline-actions">
-              <Link href="/de/kontakt" className="cta-link">
-                Kontaktformular nutzen
-              </Link>
-              <a
-                href="mailto:kontakt@labelpilot.de?subject=Angebotsanfrage%20Labelpilot.de"
-                className="secondary-link"
-              >
-                Angebot per E-Mail senden
-              </a>
-              <Link href="/de/angebot-anfordern" className="secondary-link">
-                Angebot anfordern
-              </Link>
-            </div>
-            <p className="field-hint">
-              Für Standardpakete ist der Checkout der schnellste Weg. Sobald vorab
-              Rückfragen zu Material, Weißdruck, Druckdaten oder Maschinenlauf bestehen,
-              hilft der Kontaktweg meist schneller als ein unpassender Direktkauf.
-            </p>
+            <h3>Im Preis enthalten</h3>
+            <ul className="simple-list">
+              <li>1 Design / 1 Artwork pro Auftrag</li>
+              <li>PP-Material nach Wahl (opak oder transparent)</li>
+              <li>Permanenter Klebstoff</li>
+              <li>4/0-farbiger CMYK-Digitaldruck</li>
+              <li>Matt oder Glänzend – kein Preisaufschlag</li>
+              <li>Kostenlose Druckdatenprüfung + 1 Proof</li>
+              <li>Versand nach Deutschland</li>
+              <li>Freigegebene Version gespeichert für Nachbestellungen</li>
+            </ul>
           </div>
-          {hasFixedPriceScope(page.path) ? (
-            <div className="surface-card">
-              <h2>Lieferzeit nach Ihrer Freigabe</h2>
-              <p>
-                Für diese Standardpakete planen wir in der Regel mit ca. 10-14 Werktagen
-                nach Ihrer Proof-Freigabe. Darin enthalten sind Produktion und Versand nach
-                Deutschland.
-              </p>
-              <p className="field-hint">
-                Das ist eine ehrliche Orientierung für die Planung, keine garantierte SLA.
-                Den konkreten Termin bestätigen wir mit Auftrag oder Angebot.
-              </p>
-            </div>
-          ) : null}
-          {hasFixedPriceScope(page.path) ? (
-            <div className="surface-card">
-              <h2>Druckdaten und Proof kurz erklärt</h2>
-              <ul className="simple-list">
-                <li>Bevorzugte Dateien: PDF, AI oder EPS. SVG ist möglich, wenn Größe und finale Version sauber vorbereitet sind.</li>
-                <li>Druckdaten sollten mit Beschnitt, CMYK-Farben und möglichst vektorbasierter Anlage geliefert werden.</li>
-                <li>Der kostenlose Datencheck fängt typische Fehler bei Format, Beschnitt und Datei-Stand vor dem Druck ab.</li>
-                <li>Der digitale Proof dient der Freigabe vor der Produktion. Farbverbindlich wird es erst mit einem physischen Andruck.</li>
-              </ul>
-              <div className="inline-actions">
-                <Link href="/de/druckdaten" className="secondary-link">
-                  Druckdaten-Anforderungen ansehen
-                </Link>
-                <Link href="/de/kontakt" className="secondary-link">
-                  Frage vorab klären
-                </Link>
-              </div>
-              <p className="field-hint">
-                Wenn Material, Datei-Stand oder Ablauf noch nicht ganz klar sind,
-                ist der Kontaktweg vor der eigentlichen Anfrage oft der schnellere Schritt.
-              </p>
-            </div>
-          ) : null}
-        </Section>
-      ) : null}
-
-      {hasFixedPriceScope(page.path) ? (
-        <Section
-          eyebrow="Sicherheit"
-          title="Warum der Ablauf für B2B-Etiketten berechenbar bleibt"
-          lead="Vertrauen entsteht hier nicht über Bewertungen, sondern über einen klar sichtbaren Produktions- und Prüfprozess."
-        >
-          <TrustBar items={productTrustItems} />
           <div className="surface-card">
-            <h2>Materialhinweis zu PP</h2>
+            <h3>Nicht enthalten</h3>
+            <ul className="simple-list">
+              <li>Weißunterdruck (bei transparentem Material – über Angebot)</li>
+              <li>Laminierung, Lack, Metallic oder Folie</li>
+              <li>Variable Daten (Lot-/SKT-Nummerierung)</li>
+              <li>Kontur- und Sonderformen</li>
+              <li>Weitere Designs oder mehrere SKUs in einem Auftrag</li>
+              <li>Express-Produktion oder Express-Versand</li>
+            </ul>
+          </div>
+        </div>
+        {page.path === "/de/transparente-pp-etiketten" ? (
+          <div className="surface-card">
+            <h2>Wichtiger Hinweis zu transparentem Material</h2>
             <p>
-              Unsere Standardprodukte laufen auf PP-Material, weil es für viele
-              wiederkehrende Produktetiketten robust und prozesssicher ist.
-            </p>
-            <p className="field-hint">
-              Nach Freigabe bleiben Spezifikation und Druckdaten als klare Basis für
-              spätere Auftragsbestätigung und schnellere Nachbestellung erhalten.
-            </p>
-            <p className="field-hint">
-              Daraus leiten wir keine pauschalen Nachhaltigkeits- oder Recyclingversprechen
-              ab. Wenn Sie Varianten mit anderem Materialfokus prüfen möchten, klären wir
-              das sauber über Angebot oder Musterbox.
+              Weißunterdruck auf transparentem Material läuft als kostenpflichtiger Zusatz über das individuelle B2B-Angebot.
             </p>
           </div>
-        </Section>
-      ) : null}
-
-      {hasFixedPriceScope(page.path) ? (
-        <Section
-          eyebrow="Leistungsumfang"
-          title="Im Preis enthalten und nicht enthalten"
-          lead="Klar, was im Festpreis steckt – und wann ein Angebot sinnvoll ist."
-        >
-          <div className="two-column">
-            <SpecTable title="Im Preis enthalten" rows={fixedPriceIncludedRows} />
-            <SpecTable title="Nicht enthalten" rows={fixedPriceExcludedRows} />
-          </div>
-          {page.path === "/de/transparente-pp-etiketten" ? (
-            <div className="surface-card">
-              <h2>Wichtiger Hinweis zu transparentem Material</h2>
-              <p>
-                Weißunterdruck auf transparentem Material ist nicht im Fixpreis enthalten
-                und läuft als kostenpflichtiger Zusatz über das individuelle B2B-Angebot.
-              </p>
-            </div>
-          ) : null}
-        </Section>
-      ) : null}
+        ) : null}
+      </Section>
 
       <Section
         eyebrow="Material & Einsatz"
@@ -1163,12 +778,12 @@ function ProductLikePage({ page, canonicalPath, searchParams }: DynamicPageProps
       ) : null}
 
       <ContentCta
-        title="Sondergröße, mehrere Varianten oder Großmenge?"
-        body="Für Sonderfälle und größere Abrufe erstellen wir ein klares B2B-Angebot."
-        primaryLabel="Angebot anfordern"
-        primaryHref="/de/angebot-anfordern"
-        secondaryLabel="Musterbox anfordern"
-        secondaryHref="/de/musterbox"
+        title="Preis berechnen oder Angebot anfordern"
+        body="Wunschformat im Kalkulator sofort berechnen – oder B2B-Angebot für Sonderfälle anfordern."
+        primaryLabel="Preis berechnen"
+        primaryHref="/de/kalkulator"
+        secondaryLabel="B2B-Angebot anfordern"
+        secondaryHref="/de/angebot-anfordern"
       />
     </div>
   );
@@ -1251,12 +866,12 @@ function IndustryPage({ page, canonicalPath }: DynamicPageProps) {
       ) : null}
 
       <ContentCta
-        title="Verpackung und Menge stehen fest?"
-        body="Dann erstellen wir Ihnen ein passendes B2B-Angebot – oder Sie prüfen vorab die Musterbox."
-        primaryLabel="Angebot anfordern"
-        primaryHref="/de/angebot-anfordern"
-        secondaryLabel="Musterbox anfordern"
-        secondaryHref="/de/musterbox"
+        title="Preis berechnen oder Angebot anfordern"
+        body="Wunschformat im Kalkulator sofort berechnen – oder B2B-Angebot für Sonderfälle anfordern."
+        primaryLabel="Preis berechnen"
+        primaryHref="/de/kalkulator"
+        secondaryLabel="B2B-Angebot anfordern"
+        secondaryHref="/de/angebot-anfordern"
       />
     </div>
   );
@@ -1858,42 +1473,35 @@ function buildSpecRows(page: PublicPageData) {
 
   if (page.path === "/de/opake-pp-etiketten") {
     rows.push(
-      { label: "Format", value: "100×200 mm (10×20 cm), rechteckig, auf Rolle" },
+      { label: "Format", value: "Wunschformat – Breite bis 320 mm, Höhe frei wählbar, auf Rolle" },
       { label: "Material", value: "Opakes PP" },
       { label: "Klebstoff", value: "Permanent" },
-      { label: "Finish", value: "Glanz (Standard) enthalten; matt auf Anfrage" },
+      { label: "Finish", value: "Matt oder Glänzend – kein Preisaufschlag" },
       { label: "Anwendung", value: "Dosen, Beutel, Gläser und kontraststarke Produktverpackungen" },
       { label: "Temperaturbereich", value: "Für übliche Raum- und Lagerbedingungen; besondere Tiefkühl-, Nässe- oder Hitzeanforderungen bitte über Angebot prüfen" },
       { label: "Geeignet für", value: "Klare Pflichtangaben, dichte Farbflächen und robuste Regaloptik" },
       { label: "Hinweis", value: "Für Spender oder Maschine gilt standardmäßig 76-mm-Kern und Wickelrichtung Standard. Abweichungen laufen über Angebot." },
-      { label: "Preisbild", value: "netto + brutto sichtbar, inkl. Versand nach Deutschland" },
-      { label: "Standardumfang", value: "1 Design, CMYK-Digitaldruck, 1 Finish, Datenprüfung + 1 Proof" },
+      { label: "Standardumfang", value: "1 Design, CMYK-Digitaldruck, Datenprüfung + 1 Proof, Versand nach Deutschland" },
+      { label: "Angebotsfall", value: "ab 20.000 Stück oder bei Sonderumfang" },
     );
   } else if (page.path === "/de/transparente-pp-etiketten") {
     rows.push(
-      { label: "Format", value: "100×200 mm (10×20 cm), rechteckig, auf Rolle" },
+      { label: "Format", value: "Wunschformat – Breite bis 320 mm, Höhe frei wählbar, auf Rolle" },
       { label: "Material", value: "Transparentes PP" },
       { label: "Klebstoff", value: "Permanent" },
-      { label: "Finish", value: "Glanz (Standard) enthalten; matt auf Anfrage" },
+      { label: "Finish", value: "Matt oder Glänzend – kein Preisaufschlag" },
       { label: "Anwendung", value: "Flaschen, Gläser und Verpackungen mit sichtbarer Material- oder Fülloptik" },
       { label: "Temperaturbereich", value: "Für übliche Raum- und Lagerbedingungen; besondere Tiefkühl-, Nässe- oder Hitzeanforderungen bitte über Angebot prüfen" },
       { label: "Geeignet für", value: "Premium-Optik, reduzierte Gestaltung und klare Glas- oder Flaschenwirkung" },
       { label: "Hinweis", value: "Für Spender oder Maschine gilt standardmäßig 76-mm-Kern und Wickelrichtung Standard. Abweichungen laufen über Angebot." },
-      { label: "Preisbild", value: "netto + brutto sichtbar, inkl. Versand nach Deutschland" },
-      { label: "Weißunterdruck", value: "Nicht im Fixpreis enthalten, läuft über Angebot" },
+      { label: "Weißunterdruck", value: "Nicht enthalten, läuft über Angebot" },
+      { label: "Angebotsfall", value: "ab 20.000 Stück oder bei Sonderumfang" },
     );
   } else {
     rows.push(
       { label: "Seitentyp", value: page.kind },
       { label: "Pfad", value: page.path },
     );
-  }
-
-  if (page.packageTable?.length) {
-    rows.push({
-      label: "Paketlogik",
-      value: page.packageTable.map((tier) => tier.quantity).join(" / "),
-    });
   }
 
   if (page.sidebarBullets[0]) {
@@ -1904,76 +1512,9 @@ function buildSpecRows(page: PublicPageData) {
     rows.push({ label: "Einsatz", value: page.sidebarBullets[1] });
   }
 
-  if (hasFixedPriceScope(page.path)) {
-    rows.push({ label: "Angebotsfall", value: "ab 20.000 Stück oder bei Sonderumfang" });
-  }
-
   return rows;
 }
 
-function hasFixedPriceScope(path: string) {
-  return path === "/de/opake-pp-etiketten" || path === "/de/transparente-pp-etiketten";
-}
-
-function supportsStandardOrCustomChoice(path: string) {
-  return hasFixedPriceScope(path) || path === "/de/pp-rollenetiketten";
-}
-
-function normalizeConfiguratorMaterial(
-  material: string | undefined,
-  path: string,
-) {
-  if (material === "transparent") {
-    return "TRANSPARENT" as const;
-  }
-
-  if (path === "/de/transparente-pp-etiketten") {
-    return "TRANSPARENT" as const;
-  }
-
-  return "OPAQUE" as const;
-}
-
-function normalizeConfiguratorSize(size: string | undefined) {
-  return size === "custom" ? "custom" : "standard";
-}
-
-function normalizeConfiguratorQuantity(quantity: string | undefined) {
-  const parsed = Number.parseInt(quantity ?? "", 10);
-  return [1000, 2000, 5000, 10000].includes(parsed) ? parsed : 5000;
-}
-
-function buildConfiguratorHref(input: {
-  material: "opaque" | "transparent";
-  size: "standard" | "custom";
-  quantity?: number;
-}) {
-  const params = new URLSearchParams({
-    material: input.material,
-    size: input.size,
-  });
-
-  if (input.quantity) {
-    params.set("quantity", String(input.quantity));
-  }
-
-  return `/de/pp-rollenetiketten?${params.toString()}`;
-}
-
-function buildOtherQuantityQuoteHref(material: "OPAQUE" | "TRANSPARENT") {
-  const params = new URLSearchParams({
-    sourceType: "product",
-    productType: "PP-Rollenetiketten",
-    material: material === "TRANSPARENT" ? "Transparentes PP" : "Opakes PP",
-    quantity: "Andere Menge",
-  });
-
-  return `/de/angebot-anfordern?${params.toString()}`;
-}
-
-function getInitialCustomSizeMaterial(path: string) {
-  return path === "/de/transparente-pp-etiketten" ? "TRANSPARENT_PP" : "OPAQUE_PP";
-}
 
 function shouldShowRegulatoryDisclaimer(path: string) {
   return [
@@ -2009,58 +1550,6 @@ function buildIndustryComparisonRows(page: PublicPageData) {
   ];
 }
 
-function getCheckoutPackageForTier(slug: string, quantityLabel: string) {
-  const normalizedQuantity = Number.parseInt(quantityLabel.replace(/\D/g, ""), 10);
-
-  if (!Number.isFinite(normalizedQuantity)) {
-    return undefined;
-  }
-
-  if (slug === "opake-pp-etiketten") {
-    return {
-      packageId: `opaque-pp-100x200-${normalizedQuantity}`,
-      productSlug: "opake-pp-etiketten" as const,
-      material: "OPAQUE" as const,
-      quantity: normalizedQuantity,
-    };
-  }
-
-  if (slug === "transparente-pp-etiketten") {
-    return {
-      packageId: `transparent-pp-100x200-${normalizedQuantity}`,
-      productSlug: "transparente-pp-etiketten" as const,
-      material: "TRANSPARENT" as const,
-      quantity: normalizedQuantity,
-    };
-  }
-
-  return undefined;
-}
-
-function getCheckoutPackageForMaterial(
-  material: "OPAQUE" | "TRANSPARENT",
-  quantityLabel: string,
-) {
-  const normalizedQuantity = Number.parseInt(quantityLabel.replace(/\D/g, ""), 10);
-
-  if (!Number.isFinite(normalizedQuantity)) {
-    return undefined;
-  }
-
-  return material === "TRANSPARENT"
-    ? {
-        packageId: `transparent-pp-100x200-${normalizedQuantity}`,
-        productSlug: "transparente-pp-etiketten" as const,
-        material: "TRANSPARENT" as const,
-        quantity: normalizedQuantity,
-      }
-    : {
-        packageId: `opaque-pp-100x200-${normalizedQuantity}`,
-        productSlug: "opake-pp-etiketten" as const,
-        material: "OPAQUE" as const,
-        quantity: normalizedQuantity,
-      };
-}
 
 function getProductPageImage(path: string) {
   switch (path) {

@@ -678,22 +678,22 @@ const topLevelPages: PublicPageData[] = [
     title: "Transparente PP-Etiketten drucken",
     eyebrow: "Produkt",
     lead:
-      "Transparente PP-Rollenetiketten 100×200 mm für Flaschen, Gläser und Premium-Verpackungen. Druckdaten hochladen, prüfen und später leichter nachbestellen.",
+      "Transparente PP-Rollenetiketten im Wunschformat für Flaschen, Gläser und Premium-Verpackungen. Druckdaten hochladen, prüfen und später leichter nachbestellen.",
     heroBullets: [
-      "Klare Preisstaffel mit 1.000, 2.000, 5.000, 10.000 und 20.000+.",
-      "5.000 Stück bleiben das zentrale Kernpaket für skalierbare B2B-Bestellungen.",
-      "Alle Fixpreise werden netto und brutto gezeigt und enthalten den Versand nach Deutschland.",
-      "20.000+ läuft nicht in einen Standard-Checkout, sondern in den Angebotsprozess.",
+      "Wunschformat – Breite bis 320 mm, Höhe frei wählbar.",
+      "Preisberechnung sofort im Kalkulator – ohne Anfrage oder Wartezeit.",
+      "Netto und Brutto sichtbar, Versand nach Deutschland inklusive.",
+      "Ab 20.000 Stück oder für Sonderanforderungen: individuelles B2B-Angebot.",
     ],
     sidebarTitle: "Produktfokus",
     sidebarBullets: [
-      "100×200 mm",
       "Transparentes PP",
       "Geeignet für Premium-Verpackungen und Glasoptiken",
+      "Wunschformat nach Maß",
     ],
     primaryCta: {
-      label: "Im Konfigurator öffnen",
-      href: "/de/pp-rollenetiketten?material=transparent&size=standard&quantity=5000",
+      label: "Preis berechnen",
+      href: "/de/kalkulator",
     },
     secondaryCta: sampleLink,
     packageHeading: "Preise für transparente PP-Etiketten",
@@ -760,12 +760,12 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Welcher Klebstoff ist im Standard vorgesehen?",
         answer:
-          "Im Fixpreis ist permanenter Klebstoff vorgesehen. Wenn Sie ablösbare oder anwendungsspezifische Klebstoffe brauchen, läuft das nicht über das Standardpaket, sondern über den Angebotsprozess.",
+          "Im Standard ist permanenter Klebstoff vorgesehen. Wenn Sie ablösbare oder anwendungsspezifische Klebstoffe brauchen, läuft das nicht über das Standardpaket, sondern über den Angebotsprozess.",
       },
       {
         question: "Brauche ich Weißunterdruck bei transparenten Etiketten immer?",
         answer:
-          "Nein. Weißunterdruck ist nur dann relevant, wenn Farben, Typografie oder Pflichtangaben auf transparentem Material ohne zusätzliche Deckung nicht sauber wirken würden. Deshalb ist Weißunterdruck nicht pauschal im Fixpreis enthalten, sondern wird bei Bedarf separat geklärt.",
+          "Nein. Weißunterdruck ist nur dann relevant, wenn Farben, Typografie oder Pflichtangaben auf transparentem Material ohne zusätzliche Deckung nicht sauber wirken würden. Weißunterdruck ist nicht pauschal enthalten und wird bei Bedarf separat über den Angebotsprozess geklärt.",
       },
       {
         question: "Wie lange dauert die Lieferung nach der Freigabe?",
@@ -815,22 +815,22 @@ const topLevelPages: PublicPageData[] = [
     title: "Opake PP-Etiketten drucken",
     eyebrow: "Produkt",
     lead:
-      "Opake PP-Rollenetiketten 100×200 mm für Lebensmittel-, Supplement- und Produktverpackungen. Ideal für wiederkehrende B2B-Bestellungen.",
+      "Opake PP-Rollenetiketten im Wunschformat für Lebensmittel-, Supplement- und Produktverpackungen. Ideal für wiederkehrende B2B-Bestellungen.",
     heroBullets: [
       "Das Standardprodukt für kontrastreiche Druckmotive und klare Deckkraft.",
-      "Klare Preisstaffel mit 2.000er-Reorder-Stufe statt Lücke zwischen 1.000 und 5.000.",
-      "Alle Fixpreise werden netto und brutto gezeigt und enthalten den Versand nach Deutschland.",
-      "Das 5.000er-Paket ist die wirtschaftliche Hauptmenge.",
+      "Wunschformat – Breite bis 320 mm, Höhe frei wählbar.",
+      "Preis sofort im Kalkulator – netto und brutto, Versand nach Deutschland inklusive.",
+      "Ab 20.000 Stück oder für Sonderanforderungen: individuelles B2B-Angebot.",
     ],
     sidebarTitle: "Produktfokus",
     sidebarBullets: [
-      "100×200 mm",
       "Opakes PP",
       "Geeignet für Lebensmittel, Supplemente und klassische Produktverpackungen",
+      "Wunschformat nach Maß",
     ],
     primaryCta: {
-      label: "Im Konfigurator öffnen",
-      href: "/de/pp-rollenetiketten?material=opaque&size=standard&quantity=5000",
+      label: "Preis berechnen",
+      href: "/de/kalkulator",
     },
     secondaryCta: fileLink,
     packageHeading: "Preise für opake PP-Etiketten",
@@ -864,9 +864,9 @@ const topLevelPages: PublicPageData[] = [
           "Ja. Opake und transparente PP-Rollenetiketten bilden gemeinsam den Kern, wobei opak die Standardlösung für viele wiederkehrende Produktetiketten ist.",
       },
       {
-        question: "Was ist im Fixpreis bereits enthalten?",
+        question: "Was ist im Auftrag bereits enthalten?",
         answer:
-          "Enthalten sind das 100×200-mm-Rollenetikett, 1 Design, das gewählte PP-Material, permanenter Klebstoff, CMYK-Digitaldruck, ein Finish, Standard-Datenprüfung, 1 Proof-Runde und Versand nach Deutschland.",
+          "Enthalten sind das Rollenetikett im Wunschformat, 1 Design, das gewählte PP-Material, permanenter Klebstoff, CMYK-Digitaldruck, matt oder glänzend (kein Aufpreis), Standard-Datenprüfung, 1 Proof-Runde und Versand nach Deutschland.",
       },
       {
         question: "Kann ich damit auch Getränkeflaschen etikettieren?",
@@ -891,7 +891,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Was passiert bei mehreren Sorten oder mehr als einem Design?",
         answer:
-          "Der Fixpreis deckt ein Design pro Auftrag ab. Mehrere Sorten, Zusatzdesigns oder Sonderkonstellationen laufen sauber über den Angebotsprozess oder später über freigeschaltete Zusatzleistungen.",
+          "Ein Auftrag deckt ein Design ab. Mehrere Sorten, Zusatzdesigns oder Sonderkonstellationen laufen sauber über den Angebotsprozess.",
       },
       {
         question: "Kann ich zwischen Glanz und matt wählen?",
@@ -901,7 +901,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Welcher Klebstoff ist im Standard enthalten?",
         answer:
-          "Der Fixpreis ist auf permanenten Klebstoff ausgelegt. Sobald ablösbare, tiefkühlgeeignete oder sonstige Sonderanforderungen im Raum stehen, ist das ein sauberer Angebotsfall statt eines stillen Standardversprechens.",
+          "Der Standard ist auf permanenten Klebstoff ausgelegt. Sobald ablösbare, tiefkühlgeeignete oder sonstige Sonderanforderungen im Raum stehen, ist das ein sauberer Angebotsfall statt eines stillen Standardversprechens.",
       },
       {
         question: "Brauche ich Weißunterdruck auch bei opaken Etiketten?",
@@ -962,7 +962,7 @@ const topLevelPages: PublicPageData[] = [
     title: "PP-Rollenetiketten drucken",
     eyebrow: "Produktübersicht",
     lead:
-      "Individuell bedruckte PP-Rollenetiketten für deutsche B2B-Marken. Opak oder transparent, 100×200 mm, mit gespeicherten Druckdaten.",
+      "Individuell bedruckte PP-Rollenetiketten für deutsche B2B-Marken. Opak oder transparent, Wunschformat nach Maß, mit gespeicherten Druckdaten.",
     heroBullets: [
       "Zentrale Produktübersicht für opake und transparente PP-Etiketten.",
       "Verbindet Materialwahl, Preise, Druckdaten und Nachbestellung.",
@@ -975,12 +975,12 @@ const topLevelPages: PublicPageData[] = [
       "Weiterleitung zu Angebot, Musterbox und Druckdaten",
     ],
     primaryCta: {
-      label: "Opakes PP konfigurieren",
-      href: "/de/pp-rollenetiketten?material=opaque&size=standard&quantity=5000",
+      label: "Preis berechnen",
+      href: "/de/kalkulator",
     },
     secondaryCta: {
-      label: "Transparentes PP konfigurieren",
-      href: "/de/pp-rollenetiketten?material=transparent&size=standard&quantity=5000",
+      label: "B2B-Angebot anfordern",
+      href: "/de/angebot-anfordern",
     },
     sections: [
       {
@@ -1098,12 +1098,12 @@ const topLevelPages: PublicPageData[] = [
       "Klarer Ausgangspunkt für spätere Angebotsfälle",
     ],
     primaryCta: {
-      label: "100×200 im Konfigurator öffnen",
-      href: "/de/pp-rollenetiketten?material=opaque&size=standard&quantity=5000",
+      label: "Preis berechnen",
+      href: "/de/kalkulator?width=100&height=200",
     },
     secondaryCta: {
-      label: "Transparentes 100×200 konfigurieren",
-      href: "/de/pp-rollenetiketten?material=transparent&size=standard&quantity=5000",
+      label: "Transparente Variante berechnen",
+      href: "/de/kalkulator?width=100&height=200&material=pp-transparent",
     },
     sections: [
       {
@@ -1134,12 +1134,12 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Welche Mengen gibt es für 100×200-mm-Etiketten?",
         answer:
-          "Für das Standardformat laufen die festen Pakete über 1.000, 2.000, 5.000 und 10.000 Stück. Ab 20.000 Stück oder bei mehreren Varianten führt der saubere Weg über das Angebotsformular.",
+          "Im Kalkulator Menge frei wählen – ab 1 bis 19.999 Stück direkt bestellbar. Ab 20.000 Stück oder bei mehreren Varianten führt der saubere Weg über das Angebotsformular.",
       },
       {
-        question: "Was passiert, wenn ich statt 100×200 mm ein Sonderformat brauche?",
+        question: "Was passiert, wenn ich statt 100×200 mm ein anderes Format brauche?",
         answer:
-          "Dann bleibt 100×200 mm der Referenzpunkt für Preis- und Materialvergleich, aber die konkrete Anfrage läuft über Wunschformat oder direkt über den Angebotsweg. So wird ein Sondermaß nicht in ein unpassendes Standardpaket gedrückt.",
+          "Der Kalkulator unterstützt jedes Wunschformat – Breite bis 320 mm, Höhe frei wählbar. Passen Sie einfach die Maße im Kalkulator an und der Preis wird sofort neu berechnet.",
       },
     ],
     relatedLinks: [
