@@ -2508,12 +2508,23 @@ th {
 }
 
 .kalkulator-page .surface-card {
-  padding: 22px;
+  padding: 24px;
 }
 
 .kalkulator-page .surface-card h2 {
-  margin: 0 0 16px;
+  margin: 0 0 20px;
   font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.kalkulator-page .price-note {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin: 0 0 12px;
+  line-height: 1.5;
 }
 
 .kalkulator-grid {
@@ -2587,19 +2598,61 @@ th {
 .kalkulator-price-list li {
   display: flex;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   gap: var(--space-2);
+}
+
+.kalkulator-price-list li span:last-child {
+  font-family: var(--font-mono-stack);
+  font-size: 0.84rem;
+  letter-spacing: -0.01em;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .kalkulator-price-total {
   font-weight: 700;
-  font-size: 1.1rem !important;
-  padding-top: var(--space-2);
-  border-top: 1px solid var(--border);
+  font-size: 1rem !important;
+  padding: 10px 12px;
+  margin: 4px -12px 0;
+  border-radius: 8px;
+  background: rgba(176, 138, 69, 0.08);
+  border: none !important;
+  color: var(--text-strong);
+}
+
+.kalkulator-price-total span:last-child {
+  font-family: var(--font-mono-stack);
+  font-size: 1.15rem;
+  font-weight: 800;
   color: var(--accent);
+  letter-spacing: -0.02em;
 }
 
 .kalkulator-price-shipping {
   color: var(--success, #16a34a);
-  font-size: 0.85rem !important;
+  font-size: 0.82rem !important;
+}
+
+/* Offer card header */
+.kalkulator-price-box .surface-card > h3 {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin: 0 0 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(176, 138, 69, 0.25);
+}
+
+/* Full-width order button in price box */
+.kalkulator-price-box .inline-actions {
+  margin-top: 14px;
+}
+
+.kalkulator-price-box .inline-actions .cta-button {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
 }
