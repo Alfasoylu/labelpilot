@@ -265,8 +265,8 @@ export function HeroKalkulator() {
         <div className="hero-kalk__visual">
           <figure className="hero-product-photo">
             <Image
-              src="/images/editorial/sample-labels-hero.webp"
-              alt="Labelpilot.de Musterbeschriftungen auf Produkten: Sriracha-Flasche, Wildblütenhonig-Glas, Hyaluron-Serum, Whey-Protein-Dose und Kaffeebeutel – individuell bedruckte PP-Rollenetiketten"
+              src="/images/editorial/sample-labels-cmyk.webp"
+              alt="Labelpilot.de CMYK-Musteretiketten: vollflächig bedruckte PP-Rollenetiketten auf Sriracha-Flasche, Honig-Glas, Serum-Flasche, Protein-Dose und Kaffeebeutel"
               width={900}
               height={1125}
               priority
