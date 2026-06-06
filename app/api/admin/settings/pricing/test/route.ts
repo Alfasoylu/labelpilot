@@ -16,6 +16,7 @@ const testSchema = z.object({
   heightMm: z.coerce.number().int().positive(),
   quantity: z.coerce.number().int().positive(),
   colorCount: z.coerce.number().int().min(1).max(12).default(4),
+  anzahlSorten: z.coerce.number().int().min(1).max(20).default(1),
 });
 
 function buildRedirectUrl(request: Request, search: Record<string, string>) {
@@ -34,6 +35,7 @@ export async function POST(request: Request) {
     heightMm: formData.get("heightMm"),
     quantity: formData.get("quantity"),
     colorCount: formData.get("colorCount"),
+    anzahlSorten: formData.get("anzahlSorten"),
   });
 
   if (!parsed.success) {
@@ -63,6 +65,7 @@ export async function POST(request: Request) {
     heightMm: parsed.data.heightMm,
     quantity: parsed.data.quantity,
     colorCount: parsed.data.colorCount,
+    anzahlSorten: parsed.data.anzahlSorten,
     params,
     settings,
   });
@@ -74,12 +77,16 @@ export async function POST(request: Request) {
       calcHeightMm: parsed.data.heightMm.toString(),
       calcQuantity: parsed.data.quantity.toString(),
       calcColorCount: parsed.data.colorCount.toString(),
+      calcSorten: parsed.data.anzahlSorten.toString(),
       calcQuoteRequired: String(result.quoteRequired),
+      calcMethod: result.method,
       calcNet: result.netPrice.toFixed(2),
       calcGross: result.grossPrice.toFixed(2),
       calcMaterialCost: result.breakdown.materialCost.toFixed(2),
       calcInk: result.breakdown.inkCost.toFixed(2),
       calcPlate: result.breakdown.plateCost.toFixed(2),
+      calcDigital: result.breakdown.digitalPrintingCost.toFixed(2),
+      calcMultiplier: result.breakdown.multiplier.toString(),
       calcProduction: result.breakdown.productionCost.toFixed(2),
       calcLabelArea: result.breakdown.labelAreaM2.toFixed(4),
       calcTotalArea: result.breakdown.totalAreaM2.toFixed(4),

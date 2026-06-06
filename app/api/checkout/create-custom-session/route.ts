@@ -56,7 +56,8 @@ export async function POST(request: Request) {
 
     const { materialKey, widthMm, heightMm, quantity } = parsed.data;
     const farbigkeit = parsed.data.farbigkeit ?? 4;
-    const weissunterdruck = (parsed.data as Record<string, unknown>).weissunterdruck === true;
+    const weissunterdruck = parsed.data.weissunterdruck === true;
+    const anzahlSorten = parsed.data.anzahlSorten ?? 1;
     const colorCount = farbigkeit + (weissunterdruck ? 1 : 0);
 
     const [materialRow, settingsRow] = await Promise.all([
@@ -66,7 +67,7 @@ export async function POST(request: Request) {
 
     const priceResult = buildPublicCustomSizePriceResponse({
       featureEnabled: true,
-      request: { materialKey, widthMm, heightMm, quantity, colorCount },
+      request: { materialKey, widthMm, heightMm, quantity, colorCount, anzahlSorten },
       params: mapMaterialCostRecord(materialRow),
       settings: mapPricingSettingsRecord(settingsRow),
     });
@@ -85,16 +86,21 @@ export async function POST(request: Request) {
       );
     }
 
-    // Druckplatten: N Farben × 50 € netto × 1,19 MwSt.
-    const plateCostGrossCents = farbigkeit * 5950; // farbigkeit * 50 * 1.19 * 100
-    const basePriceGrossCents = Math.round(priceResult.body.grossPrice * 100);
-    const grossAmountCents = basePriceGrossCents + plateCostGrossCents;
+    // grossPrice already includes material + printing + plates via multiplier formula
+    const grossAmountCents = Math.round(priceResult.body.grossPrice * 100);
+    const method = priceResult.body.method;
     const orderNumber = createOrderNumber();
     const normalizedCountry =
       parsed.data.country.toUpperCase() === "DE" ||
       parsed.data.country.toLowerCase() === "deutschland"
         ? "DE"
         : parsed.data.country;
+
+    const sortenLabel = anzahlSorten > 1 ? `, ${anzahlSorten} Sorten` : "";
+    const weissLabel = weissunterdruck ? "+Weiß" : "";
+    const printLabel = method === "DIGITAL"
+      ? `Digitaldruck ${farbigkeit}-farbig${weissLabel}`
+      : `Flexodruck ${farbigkeit}-farbig${weissLabel}, inkl. Druckplatten`;
 
     const order = await prisma.order.create({
       data: {
@@ -129,7 +135,7 @@ export async function POST(request: Request) {
         statusEvents: {
           create: {
             status: "PENDING_PAYMENT",
-            note: `Wunschformat-Checkout: ${widthMm}×${heightMm} mm, ${quantity} Stück, ${farbigkeit}-farbig (${parsed.data.artworkStatus}).`,
+            note: `Wunschformat-Checkout: ${widthMm}×${heightMm} mm, ${quantity} Stück${sortenLabel}, ${printLabel} (${parsed.data.artworkStatus}).`,
           },
         },
       },
@@ -160,21 +166,10 @@ export async function POST(request: Request) {
           quantity: 1,
           price_data: {
             currency: "eur",
-            unit_amount: basePriceGrossCents,
+            unit_amount: grossAmountCents,
             product_data: {
               name: getProductDisplayName(materialKey, widthMm, heightMm),
-              description: `${quantity.toLocaleString("de-DE")} Stück, Wunschformat, inkl. Versand`,
-            },
-          },
-        },
-        {
-          quantity: 1,
-          price_data: {
-            currency: "eur",
-            unit_amount: plateCostGrossCents,
-            product_data: {
-              name: `Druckplatten (${farbigkeit}-farbig)`,
-              description: `${farbigkeit} Druckplatte(n) à 50,00 € netto – Flexodruck`,
+              description: `${quantity.toLocaleString("de-DE")} Stück${sortenLabel}, ${printLabel}, inkl. Versand`,
             },
           },
         },

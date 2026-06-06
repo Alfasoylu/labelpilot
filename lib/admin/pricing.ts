@@ -12,7 +12,6 @@ type PricingMaterialCostRecord = {
   materialKey: string;
   materialCostPerM2: DecimalLike | number;
   wasteFactorPct: DecimalLike | number;
-  targetMarginPct: DecimalLike | number;
   minOrderValueNet: DecimalLike | number;
   updatedAt: Date;
   updatedBy: string | null;
@@ -29,13 +28,19 @@ type PricingSettingsRecord = {
   physicalProofNet: DecimalLike | number;
   expressNet: DecimalLike | number;
   extraDesignNet: DecimalLike | number;
-  // New fields — optional until Prisma client is regenerated after migration
   platePerColorCostNet?: DecimalLike | number | null;
   inkCostTier1Net?: DecimalLike | number | null;
   inkCostTier1MaxQty?: number | null;
   inkCostTier2Net?: DecimalLike | number | null;
   inkCostTier2MaxQty?: number | null;
   inkCostAdditionalPer10kNet?: DecimalLike | number | null;
+  digitalCostPerUnitNet?: DecimalLike | number | null;
+  digitalSetupCostNet?: DecimalLike | number | null;
+  markupTier1Multiplier?: DecimalLike | number | null;
+  markupTier1MaxQty?: number | null;
+  markupTier2Multiplier?: DecimalLike | number | null;
+  markupTier2MaxQty?: number | null;
+  markupTier3Multiplier?: DecimalLike | number | null;
   updatedAt: Date;
   updatedBy: string | null;
 };
@@ -79,14 +84,12 @@ const DEFAULT_MATERIALS: Record<PricingMaterialKey, PricingMaterialParams> = {
     materialKey: "OPAQUE_PP",
     materialCostPerM2: 0.8,
     wasteFactorPct: 15,
-    targetMarginPct: 55,
     minOrderValueNet: 75,
   },
   TRANSPARENT_PP: {
     materialKey: "TRANSPARENT_PP",
     materialCostPerM2: 1.0,
     wasteFactorPct: 15,
-    targetMarginPct: 55,
     minOrderValueNet: 85,
   },
 };
@@ -108,6 +111,13 @@ const DEFAULT_SETTINGS: PricingSettingsInput & AddonSettingsInput = {
   inkCostTier2Net: 170,
   inkCostTier2MaxQty: 20000,
   inkCostAdditionalPer10kNet: 70,
+  digitalCostPerUnitNet: 0.10,
+  digitalSetupCostNet: 40,
+  markupTier1Multiplier: 1.8,
+  markupTier1MaxQty: 5000,
+  markupTier2Multiplier: 1.6,
+  markupTier2MaxQty: 10000,
+  markupTier3Multiplier: 1.5,
 };
 
 function decimalToNumber(value: { toString(): string } | number | null | undefined) {
@@ -145,7 +155,6 @@ export function mapMaterialCostRecord(record: PricingMaterialCostRecord | null |
     materialKey: record.materialKey as PricingMaterialKey,
     materialCostPerM2: decimalToNumber(record.materialCostPerM2) ?? 0,
     wasteFactorPct: decimalToNumber(record.wasteFactorPct) ?? 0,
-    targetMarginPct: decimalToNumber(record.targetMarginPct) ?? 0,
     minOrderValueNet: decimalToNumber(record.minOrderValueNet) ?? 0,
     updatedAt: record.updatedAt,
     updatedBy: record.updatedBy ?? null,
@@ -175,6 +184,13 @@ export function mapPricingSettingsRecord(record: PricingSettingsRecord | null | 
     inkCostTier2Net: decimalToNumber(record.inkCostTier2Net) ?? 170,
     inkCostTier2MaxQty: record.inkCostTier2MaxQty ?? 20000,
     inkCostAdditionalPer10kNet: decimalToNumber(record.inkCostAdditionalPer10kNet) ?? 70,
+    digitalCostPerUnitNet: decimalToNumber(record.digitalCostPerUnitNet) ?? 0.10,
+    digitalSetupCostNet: decimalToNumber(record.digitalSetupCostNet) ?? 40,
+    markupTier1Multiplier: decimalToNumber(record.markupTier1Multiplier) ?? 1.8,
+    markupTier1MaxQty: record.markupTier1MaxQty ?? 5000,
+    markupTier2Multiplier: decimalToNumber(record.markupTier2Multiplier) ?? 1.6,
+    markupTier2MaxQty: record.markupTier2MaxQty ?? 10000,
+    markupTier3Multiplier: decimalToNumber(record.markupTier3Multiplier) ?? 1.5,
     updatedAt: record.updatedAt,
     updatedBy: record.updatedBy ?? null,
   };

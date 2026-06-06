@@ -17,6 +17,7 @@ export type PublicCustomSizeRequest = {
   heightMm: number;
   quantity: number;
   colorCount: number;
+  anzahlSorten: number;
 };
 
 export type PublicCustomSizeResponse =
@@ -26,12 +27,15 @@ export type PublicCustomSizeResponse =
   | {
       configured: true;
       quoteRequired: boolean;
+      method: "DIGITAL" | "FLEXO";
       netPrice: number;
       grossPrice: number;
       breakdown: {
         inkCostNet: number;
         plateCostNet: number;
+        digitalPrintingCostNet: number;
         materialCostNet: number;
+        multiplier: number;
       };
     };
 
@@ -63,6 +67,7 @@ export function buildPublicCustomSizePriceResponse(input: {
     heightMm: input.request.heightMm,
     quantity: input.request.quantity,
     colorCount: input.request.colorCount,
+    anzahlSorten: input.request.anzahlSorten,
     params: input.params,
     settings: input.settings,
   } satisfies CustomSizePriceInput);
@@ -72,12 +77,15 @@ export function buildPublicCustomSizePriceResponse(input: {
     body: {
       configured: true,
       quoteRequired: result.quoteRequired,
+      method: result.method,
       netPrice: result.netPrice,
       grossPrice: result.grossPrice,
       breakdown: {
         inkCostNet: result.breakdown.inkCost,
         plateCostNet: result.breakdown.plateCost,
+        digitalPrintingCostNet: result.breakdown.digitalPrintingCost,
         materialCostNet: result.breakdown.materialCost,
+        multiplier: result.breakdown.multiplier,
       },
     } satisfies PublicCustomSizeResponse,
   } as const;

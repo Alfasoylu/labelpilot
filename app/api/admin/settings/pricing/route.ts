@@ -13,7 +13,6 @@ const materialSchema = z.object({
   materialKey: z.enum(["OPAQUE_PP", "TRANSPARENT_PP"]),
   materialCostPerM2: z.coerce.number().positive(),
   wasteFactorPct: z.coerce.number().min(0).max(95),
-  targetMarginPct: z.coerce.number().gt(0).lt(95),
   minOrderValueNet: z.coerce.number().positive(),
 });
 
@@ -34,6 +33,13 @@ const settingsSchema = z.object({
   inkCostTier2Net: z.coerce.number().positive(),
   inkCostTier2MaxQty: z.coerce.number().int().positive(),
   inkCostAdditionalPer10kNet: z.coerce.number().positive(),
+  digitalCostPerUnitNet: z.coerce.number().positive(),
+  digitalSetupCostNet: z.coerce.number().positive(),
+  markupTier1Multiplier: z.coerce.number().min(1),
+  markupTier1MaxQty: z.coerce.number().int().positive(),
+  markupTier2Multiplier: z.coerce.number().min(1),
+  markupTier2MaxQty: z.coerce.number().int().positive(),
+  markupTier3Multiplier: z.coerce.number().min(1),
 });
 
 function buildRedirectUrl(request: Request, search: Record<string, string>) {
@@ -49,7 +55,6 @@ function getMaterialPayload(formData: FormData, materialKey: "OPAQUE_PP" | "TRAN
     materialKey,
     materialCostPerM2: formData.get(`${materialKey}.materialCostPerM2`),
     wasteFactorPct: formData.get(`${materialKey}.wasteFactorPct`),
-    targetMarginPct: formData.get(`${materialKey}.targetMarginPct`),
     minOrderValueNet: formData.get(`${materialKey}.minOrderValueNet`),
   };
 }
@@ -86,6 +91,13 @@ export async function POST(request: Request) {
     inkCostTier2Net: formData.get("settings.inkCostTier2Net"),
     inkCostTier2MaxQty: formData.get("settings.inkCostTier2MaxQty"),
     inkCostAdditionalPer10kNet: formData.get("settings.inkCostAdditionalPer10kNet"),
+    digitalCostPerUnitNet: formData.get("settings.digitalCostPerUnitNet"),
+    digitalSetupCostNet: formData.get("settings.digitalSetupCostNet"),
+    markupTier1Multiplier: formData.get("settings.markupTier1Multiplier"),
+    markupTier1MaxQty: formData.get("settings.markupTier1MaxQty"),
+    markupTier2Multiplier: formData.get("settings.markupTier2Multiplier"),
+    markupTier2MaxQty: formData.get("settings.markupTier2MaxQty"),
+    markupTier3Multiplier: formData.get("settings.markupTier3Multiplier"),
   });
 
   const materialResults = PRICING_MATERIAL_KEYS.map((materialKey) =>
@@ -138,13 +150,19 @@ export async function POST(request: Request) {
       inkCostTier2Net?: { toString(): string } | null;
       inkCostTier2MaxQty?: number | null;
       inkCostAdditionalPer10kNet?: { toString(): string } | null;
+      digitalCostPerUnitNet?: { toString(): string } | null;
+      digitalSetupCostNet?: { toString(): string } | null;
+      markupTier1Multiplier?: { toString(): string } | null;
+      markupTier1MaxQty?: number | null;
+      markupTier2Multiplier?: { toString(): string } | null;
+      markupTier2MaxQty?: number | null;
+      markupTier3Multiplier?: { toString(): string } | null;
       updatedBy?: string | null;
     } | null,
     Array<{
       materialKey: string;
       materialCostPerM2?: { toString(): string } | null;
       wasteFactorPct?: { toString(): string } | null;
-      targetMarginPct?: { toString(): string } | null;
       minOrderValueNet?: { toString(): string } | null;
       updatedBy?: string | null;
     }>,
@@ -170,6 +188,13 @@ export async function POST(request: Request) {
       inkCostTier2Net: previousSettings?.inkCostTier2Net?.toString() ?? null,
       inkCostTier2MaxQty: previousSettings?.inkCostTier2MaxQty?.toString() ?? null,
       inkCostAdditionalPer10kNet: previousSettings?.inkCostAdditionalPer10kNet?.toString() ?? null,
+      digitalCostPerUnitNet: previousSettings?.digitalCostPerUnitNet?.toString() ?? null,
+      digitalSetupCostNet: previousSettings?.digitalSetupCostNet?.toString() ?? null,
+      markupTier1Multiplier: previousSettings?.markupTier1Multiplier?.toString() ?? null,
+      markupTier1MaxQty: previousSettings?.markupTier1MaxQty?.toString() ?? null,
+      markupTier2Multiplier: previousSettings?.markupTier2Multiplier?.toString() ?? null,
+      markupTier2MaxQty: previousSettings?.markupTier2MaxQty?.toString() ?? null,
+      markupTier3Multiplier: previousSettings?.markupTier3Multiplier?.toString() ?? null,
       updatedBy: previousSettings?.updatedBy ?? null,
     },
     next: {
@@ -189,6 +214,13 @@ export async function POST(request: Request) {
       inkCostTier2Net: settingsData.inkCostTier2Net.toString(),
       inkCostTier2MaxQty: settingsData.inkCostTier2MaxQty.toString(),
       inkCostAdditionalPer10kNet: settingsData.inkCostAdditionalPer10kNet.toString(),
+      digitalCostPerUnitNet: settingsData.digitalCostPerUnitNet.toString(),
+      digitalSetupCostNet: settingsData.digitalSetupCostNet.toString(),
+      markupTier1Multiplier: settingsData.markupTier1Multiplier.toString(),
+      markupTier1MaxQty: settingsData.markupTier1MaxQty.toString(),
+      markupTier2Multiplier: settingsData.markupTier2Multiplier.toString(),
+      markupTier2MaxQty: settingsData.markupTier2MaxQty.toString(),
+      markupTier3Multiplier: settingsData.markupTier3Multiplier.toString(),
       updatedBy: actor,
     },
   });
@@ -204,14 +236,12 @@ export async function POST(request: Request) {
       previous: {
         materialCostPerM2: previous?.materialCostPerM2?.toString() ?? null,
         wasteFactorPct: previous?.wasteFactorPct?.toString() ?? null,
-        targetMarginPct: previous?.targetMarginPct?.toString() ?? null,
         minOrderValueNet: previous?.minOrderValueNet?.toString() ?? null,
         updatedBy: previous?.updatedBy ?? null,
       },
       next: {
         materialCostPerM2: row.materialCostPerM2.toString(),
         wasteFactorPct: row.wasteFactorPct.toString(),
-        targetMarginPct: row.targetMarginPct.toString(),
         minOrderValueNet: row.minOrderValueNet.toString(),
         updatedBy: actor,
       },
@@ -219,7 +249,8 @@ export async function POST(request: Request) {
   });
 
   await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-    await tx.pricingSettings.upsert({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (tx.pricingSettings.upsert as any)({
       where: { id: "default" },
       update: {
         ...settingsData,

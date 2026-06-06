@@ -54,12 +54,16 @@ export default async function PricingSettingsPage({
         heightMm: feedback.calcHeightMm ?? "",
         quantity: feedback.calcQuantity ?? "",
         colorCount: feedback.calcColorCount ?? "",
+        sorten: feedback.calcSorten ?? "1",
         quoteRequired: feedback.calcQuoteRequired === "true",
+        method: feedback.calcMethod ?? "",
         net: feedback.calcNet,
         gross: feedback.calcGross,
         materialCost: feedback.calcMaterialCost,
         ink: feedback.calcInk,
         plate: feedback.calcPlate,
+        digital: feedback.calcDigital,
+        multiplier: feedback.calcMultiplier,
         production: feedback.calcProduction,
         labelArea: feedback.calcLabelArea,
         totalArea: feedback.calcTotalArea,
@@ -99,6 +103,11 @@ export default async function PricingSettingsPage({
               <p className="field-hint">Weißunterdruck = +1 Farbe hinzurechnen.</p>
             </div>
             <div>
+              <label htmlFor="anzahlSorten">Anzahl Sorten</label>
+              <input id="anzahlSorten" name="anzahlSorten" type="number" min="1" max="20" defaultValue="1" />
+              <p className="field-hint">Verschiedene Motive → multipliziert Plattenkosten bei Flexo.</p>
+            </div>
+            <div>
               <label htmlFor="widthMm">Breite in mm</label>
               <input id="widthMm" name="widthMm" type="number" min="1" defaultValue="100" />
             </div>
@@ -120,18 +129,27 @@ export default async function PricingSettingsPage({
 
         {calcResult ? (
           <div className="section-card">
-            <h3>Testergebnis</h3>
+            <h3>Testergebnis — {calcResult.method === "DIGITAL" ? "Digitaldruck" : "Flexodruck"}</h3>
             <ul className="simple-list">
               <li>Material: {calcResult.matKey}</li>
               <li>Format: {calcResult.widthMm} × {calcResult.heightMm} mm</li>
               <li>Menge: {calcResult.quantity}</li>
               <li>Renk Sayısı: {calcResult.colorCount}</li>
+              <li>Sorten: {calcResult.sorten}</li>
+              <li>Druckmethode: <strong>{calcResult.method}</strong></li>
               <li>Quote erforderlich: {calcResult.quoteRequired ? "Ja" : "Nein"}</li>
               <li>Labelfläche: {calcResult.labelArea} m²</li>
               <li>Gesamtfläche inkl. Ausschuss: {calcResult.totalArea} m²</li>
               <li>Materialkosten: €{calcResult.materialCost}</li>
-              <li>Boyakosten (Ink): €{calcResult.ink}</li>
-              <li>Kalıpkosten (Platten): €{calcResult.plate}</li>
+              {calcResult.method === "FLEXO" ? (
+                <>
+                  <li>Boyakosten (Ink): €{calcResult.ink}</li>
+                  <li>Kalıpkosten (Platten): €{calcResult.plate}</li>
+                </>
+              ) : (
+                <li>Digitaldruck-Kosten: €{calcResult.digital}</li>
+              )}
+              <li>Aufschlagsfaktor: ×{calcResult.multiplier}</li>
               <li>Produktionskosten gesamt: €{calcResult.production}</li>
               <li><strong>Verkauf netto: €{calcResult.net}</strong></li>
               <li><strong>Verkauf brutto: €{calcResult.gross}</strong></li>
@@ -145,15 +163,16 @@ export default async function PricingSettingsPage({
         <h2>Preisparameter speichern</h2>
 
         <div className="section-card">
-          <h3>Berechnungsformel (Flexo-Druck)</h3>
+          <h3>Berechnungsformel</h3>
           <ol className="simple-list" style={{ fontFamily: "monospace", fontSize: "0.85em", lineHeight: 1.8 }}>
             <li>Labelfläche [m²] = Breite × Höhe ÷ 1.000.000</li>
             <li>Gesamtfläche [m²] = Labelfläche × Menge × (1 + Ausschuss%)</li>
             <li>Materialkosten = Materialkosten/m² × Gesamtfläche</li>
-            <li>Boyakosten = Kademe tablosuna göre (Menge-abhängig, pauschal)</li>
-            <li>Kalıpkosten = Renk Sayısı × Kalıp/Farbe</li>
-            <li>Produktionskosten = Materialkosten + Boyakosten + Kalıpkosten</li>
-            <li>Nettopreis = max(Produktionskosten ÷ (1 − Marge%), Mindestauftragswert)</li>
+            <li><strong>Flexo:</strong> Boya = Kademe-Tabelle | Kalıp = Renk × Sortenanzahl × Kalıp/Farbe</li>
+            <li><strong>Digital:</strong> Digitaldruck = 0,10 €/Stück × Menge + Rüstgebühr</li>
+            <li>Produktionskosten = Materialkosten + min(Flexo, Digital)</li>
+            <li>Aufschlag: ≤ Tier1-Menge × Faktor1, ≤ Tier2-Menge × Faktor2, sonst × Faktor3</li>
+            <li>Nettopreis = max(Produktionskosten × Aufschlag, Mindestauftragswert)</li>
             <li>Nettopreis = aufrunden auf Rundungsschritt</li>
             <li>Bruttopreis = Nettopreis × (1 + MwSt%)</li>
           </ol>
@@ -183,12 +202,12 @@ export default async function PricingSettingsPage({
                         id={`${materialKey}-materialCostPerM2`}
                         name={`${materialKey}.materialCostPerM2`}
                         type="number"
-                        min="0.01"
+                        min="0.0001"
                         step="0.0001"
                         defaultValue={formatPricingNumber(material.materialCostPerM2, 4)}
                       />
                       <p className="field-hint">
-                        PP-Folie + Kleber + Liner. Opak PP: 70 €/m², Transparent PP: 80 €/m².
+                        PP-Folie + Kleber + Liner. Opak PP: 0,80 €/m², Transparent PP: 1,00 €/m².
                       </p>
                     </div>
                     <div>
@@ -206,23 +225,6 @@ export default async function PricingSettingsPage({
                       />
                       <p className="field-hint">
                         Materialaufschlag für Einrichten und Anlauf. Empfehlung: 15–20 %.
-                      </p>
-                    </div>
-                    <div>
-                      <label htmlFor={`${materialKey}-targetMarginPct`}>
-                        Ziel-Bruttomarge in %
-                      </label>
-                      <input
-                        id={`${materialKey}-targetMarginPct`}
-                        name={`${materialKey}.targetMarginPct`}
-                        type="number"
-                        min="0.01"
-                        max="95"
-                        step="0.01"
-                        defaultValue={formatPricingNumber(material.targetMarginPct)}
-                      />
-                      <p className="field-hint">
-                        55 % → Nettopreis = Kosten ÷ 0,45.
                       </p>
                     </div>
                     <div>
@@ -254,7 +256,113 @@ export default async function PricingSettingsPage({
                 {snapshot.settings?.updatedBy ?? "System"}
               </p>
 
-              <h4 style={{ marginTop: "1rem" }}>Kalıp & Boya Maliyetleri</h4>
+              <h4 style={{ marginTop: "1rem" }}>Aufschlagsfaktoren (Marge)</h4>
+              <div className="form-grid">
+                <div>
+                  <label htmlFor="settings-markupTier1Multiplier">
+                    Aufschlag Tier 1 (Faktor)
+                  </label>
+                  <input
+                    id="settings-markupTier1Multiplier"
+                    name="settings.markupTier1Multiplier"
+                    type="number"
+                    min="1"
+                    step="0.01"
+                    defaultValue={formatPricingNumber(settings.markupTier1Multiplier)}
+                  />
+                  <p className="field-hint">Menge ≤ Tier-1-Grenze → Kosten × dieser Faktor. Standard: 1,80.</p>
+                </div>
+                <div>
+                  <label htmlFor="settings-markupTier1MaxQty">
+                    Tier 1 — Max. Menge
+                  </label>
+                  <input
+                    id="settings-markupTier1MaxQty"
+                    name="settings.markupTier1MaxQty"
+                    type="number"
+                    min="1"
+                    step="1"
+                    defaultValue={settings.markupTier1MaxQty}
+                  />
+                  <p className="field-hint">Bis zu dieser Stückzahl gilt Faktor 1. Standard: 5.000.</p>
+                </div>
+                <div>
+                  <label htmlFor="settings-markupTier2Multiplier">
+                    Aufschlag Tier 2 (Faktor)
+                  </label>
+                  <input
+                    id="settings-markupTier2Multiplier"
+                    name="settings.markupTier2Multiplier"
+                    type="number"
+                    min="1"
+                    step="0.01"
+                    defaultValue={formatPricingNumber(settings.markupTier2Multiplier)}
+                  />
+                  <p className="field-hint">Menge ≤ Tier-2-Grenze → Kosten × dieser Faktor. Standard: 1,60.</p>
+                </div>
+                <div>
+                  <label htmlFor="settings-markupTier2MaxQty">
+                    Tier 2 — Max. Menge
+                  </label>
+                  <input
+                    id="settings-markupTier2MaxQty"
+                    name="settings.markupTier2MaxQty"
+                    type="number"
+                    min="1"
+                    step="1"
+                    defaultValue={settings.markupTier2MaxQty}
+                  />
+                  <p className="field-hint">Bis zu dieser Stückzahl gilt Faktor 2. Standard: 10.000.</p>
+                </div>
+                <div>
+                  <label htmlFor="settings-markupTier3Multiplier">
+                    Aufschlag Tier 3 (Faktor, ab Tier-2-Grenze)
+                  </label>
+                  <input
+                    id="settings-markupTier3Multiplier"
+                    name="settings.markupTier3Multiplier"
+                    type="number"
+                    min="1"
+                    step="0.01"
+                    defaultValue={formatPricingNumber(settings.markupTier3Multiplier)}
+                  />
+                  <p className="field-hint">Menge &gt; Tier-2-Grenze → Kosten × dieser Faktor. Standard: 1,50.</p>
+                </div>
+              </div>
+
+              <h4 style={{ marginTop: "1.5rem" }}>Digitaldruck</h4>
+              <div className="form-grid">
+                <div>
+                  <label htmlFor="settings-digitalCostPerUnitNet">
+                    Digitaldruck — Kosten pro Stück netto
+                  </label>
+                  <input
+                    id="settings-digitalCostPerUnitNet"
+                    name="settings.digitalCostPerUnitNet"
+                    type="number"
+                    min="0.0001"
+                    step="0.0001"
+                    defaultValue={formatPricingNumber(settings.digitalCostPerUnitNet, 4)}
+                  />
+                  <p className="field-hint">Standard: 0,10 € / Stück.</p>
+                </div>
+                <div>
+                  <label htmlFor="settings-digitalSetupCostNet">
+                    Digitaldruck — Rüstgebühr netto
+                  </label>
+                  <input
+                    id="settings-digitalSetupCostNet"
+                    name="settings.digitalSetupCostNet"
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    defaultValue={formatPricingNumber(settings.digitalSetupCostNet)}
+                  />
+                  <p className="field-hint">Pauschal pro Auftrag. Standard: 40 €.</p>
+                </div>
+              </div>
+
+              <h4 style={{ marginTop: "1.5rem" }}>Flexo: Kalıp & Boya</h4>
               <div className="form-grid">
                 <div>
                   <label htmlFor="settings-platePerColorCostNet">
@@ -269,12 +377,12 @@ export default async function PricingSettingsPage({
                     defaultValue={formatPricingNumber(settings.platePerColorCostNet)}
                   />
                   <p className="field-hint">
-                    40 € pro Farbe. 1 Farbe = 40 €, 4 Farben (CMYK) = 160 €, mit Weißunterdruck 5 Farben = 200 €.
+                    40 € pro Farbe × Sortenanzahl. 4 Farben, 2 Sorten = 320 €.
                   </p>
                 </div>
                 <div>
                   <label htmlFor="settings-inkCostTier1Net">
-                    Boya (Ink) Kademe 1 — bis Kademe 1 Menge
+                    Boya Kademe 1 — bis Kademe 1 Menge
                   </label>
                   <input
                     id="settings-inkCostTier1Net"
@@ -341,7 +449,7 @@ export default async function PricingSettingsPage({
                     defaultValue={formatPricingNumber(settings.inkCostAdditionalPer10kNet)}
                   />
                   <p className="field-hint">
-                    Aufschlag pro angefangene 10.000 Stück über Kademe 2. Bsp.: 25.000 Stück = 170 + 70 = 240 € (Standard: 70 €).
+                    Aufschlag pro angefangene 10.000 Stück über Kademe 2 (Standard: 70 €).
                   </p>
                 </div>
               </div>
@@ -371,7 +479,7 @@ export default async function PricingSettingsPage({
                     step="0.01"
                     defaultValue={formatPricingNumber(settings.roundingStepNet)}
                   />
-                  <p className="field-hint">Preise werden auf diesen Schritt aufgerundet (z. B. 5 → 95 €, 100 €, 105 €…).</p>
+                  <p className="field-hint">Preise werden auf diesen Schritt aufgerundet (z. B. 5 → 95 €, 100 €…).</p>
                 </div>
                 <div>
                   <label htmlFor="settings-customMaxWidthMm">Max. Breite in mm</label>

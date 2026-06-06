@@ -4,7 +4,6 @@ export type PricingMaterialParams = {
   materialKey: PricingMaterialKey;
   materialCostPerM2: number;
   wasteFactorPct: number;
-  targetMarginPct: number;
   minOrderValueNet: number;
 };
 
@@ -14,14 +13,23 @@ export type PricingSettingsInput = {
   customMaxWidthMm: number;
   customMaxHeightMm: number;
   customMaxQuantity: number;
-  // Kalıp (plate) maliyeti — renk başına
+  // Flexo: plate cost per color
   platePerColorCostNet: number;
-  // Boya maliyeti kademeleri
+  // Flexo: ink cost tiers (flat fee by quantity range)
   inkCostTier1Net: number;
   inkCostTier1MaxQty: number;
   inkCostTier2Net: number;
   inkCostTier2MaxQty: number;
   inkCostAdditionalPer10kNet: number;
+  // Digital: per-unit + fixed setup fee
+  digitalCostPerUnitNet: number;
+  digitalSetupCostNet: number;
+  // Quantity-based markup multipliers
+  markupTier1Multiplier: number;
+  markupTier1MaxQty: number;
+  markupTier2Multiplier: number;
+  markupTier2MaxQty: number;
+  markupTier3Multiplier: number;
 };
 
 export type CustomSizePriceInput = {
@@ -30,12 +38,14 @@ export type CustomSizePriceInput = {
   heightMm: number;
   quantity: number;
   colorCount: number;
+  anzahlSorten: number;
   params: PricingMaterialParams;
   settings: PricingSettingsInput;
 };
 
 export type CustomSizePriceResult = {
   quoteRequired: boolean;
+  method: "DIGITAL" | "FLEXO";
   netPrice: number;
   grossPrice: number;
   breakdown: {
@@ -44,7 +54,9 @@ export type CustomSizePriceResult = {
     materialCost: number;
     inkCost: number;
     plateCost: number;
+    digitalPrintingCost: number;
     productionCost: number;
+    multiplier: number;
   };
 };
 
@@ -70,13 +82,19 @@ function computeInkCost(quantity: number, settings: PricingSettingsInput): numbe
   return settings.inkCostTier2Net + additionalBatches * settings.inkCostAdditionalPer10kNet;
 }
 
+function computeMarkupMultiplier(quantity: number, settings: PricingSettingsInput): number {
+  if (quantity <= settings.markupTier1MaxQty) return settings.markupTier1Multiplier;
+  if (quantity <= settings.markupTier2MaxQty) return settings.markupTier2Multiplier;
+  return settings.markupTier3Multiplier;
+}
+
 export function computeCustomSizePrice(
   input: CustomSizePriceInput,
 ): CustomSizePriceResult {
-  const { widthMm, heightMm, quantity, colorCount, params, settings } = input;
+  const { widthMm, heightMm, quantity, colorCount, anzahlSorten, params, settings } = input;
 
-  if (widthMm <= 0 || heightMm <= 0 || quantity <= 0 || colorCount < 1) {
-    throw new RangeError("Width, height, quantity and colorCount must be positive.");
+  if (widthMm <= 0 || heightMm <= 0 || quantity <= 0 || colorCount < 1 || anzahlSorten < 1) {
+    throw new RangeError("Width, height, quantity, colorCount and anzahlSorten must be positive.");
   }
 
   if (
@@ -86,6 +104,7 @@ export function computeCustomSizePrice(
   ) {
     return {
       quoteRequired: true,
+      method: "DIGITAL",
       netPrice: 0,
       grossPrice: 0,
       breakdown: {
@@ -94,7 +113,9 @@ export function computeCustomSizePrice(
         materialCost: 0,
         inkCost: 0,
         plateCost: 0,
+        digitalPrintingCost: 0,
         productionCost: 0,
+        multiplier: 0,
       },
     };
   }
@@ -102,31 +123,40 @@ export function computeCustomSizePrice(
   const labelAreaM2 = (widthMm * heightMm) / 1_000_000;
   const totalAreaM2 = labelAreaM2 * quantity * (1 + params.wasteFactorPct / 100);
   const materialCost = params.materialCostPerM2 * totalAreaM2;
+
+  // Flexo path
   const inkCost = computeInkCost(quantity, settings);
-  const plateCost = colorCount * settings.platePerColorCostNet;
-  const productionCost = materialCost + inkCost + plateCost;
+  const plateCost = colorCount * settings.platePerColorCostNet * anzahlSorten;
+  const flexoProductionCost = materialCost + inkCost + plateCost;
 
-  const marginFactor = 1 - params.targetMarginPct / 100;
-  if (marginFactor <= 0) {
-    throw new RangeError("Target margin must be below 100%.");
-  }
+  // Digital path
+  const digitalPrintingCost = settings.digitalCostPerUnitNet * quantity + settings.digitalSetupCostNet;
+  const digitalProductionCost = materialCost + digitalPrintingCost;
 
-  const unroundedNetPrice = productionCost / marginFactor;
+  // Auto-select cheaper method
+  const method = digitalProductionCost <= flexoProductionCost ? "DIGITAL" : "FLEXO";
+  const productionCost = method === "DIGITAL" ? digitalProductionCost : flexoProductionCost;
+
+  const multiplier = computeMarkupMultiplier(quantity, settings);
+  const unroundedNetPrice = productionCost * multiplier;
   const flooredNetPrice = Math.max(unroundedNetPrice, params.minOrderValueNet);
   const netPrice = roundMoney(roundUpToStep(flooredNetPrice, settings.roundingStepNet));
   const grossPrice = roundMoney(netPrice * (1 + settings.vatPct / 100));
 
   return {
     quoteRequired: false,
+    method,
     netPrice,
     grossPrice,
     breakdown: {
       labelAreaM2: roundMoney(labelAreaM2),
       totalAreaM2: roundMoney(totalAreaM2),
       materialCost: roundMoney(materialCost),
-      inkCost: roundMoney(inkCost),
-      plateCost: roundMoney(plateCost),
+      inkCost: method === "FLEXO" ? roundMoney(inkCost) : 0,
+      plateCost: method === "FLEXO" ? roundMoney(plateCost) : 0,
+      digitalPrintingCost: method === "DIGITAL" ? roundMoney(digitalPrintingCost) : 0,
       productionCost: roundMoney(productionCost),
+      multiplier,
     },
   };
 }

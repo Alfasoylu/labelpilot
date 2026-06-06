@@ -42,7 +42,7 @@ type KalkulatorConfig = {
 type PriceState =
   | { status: "idle" }
   | { status: "loading" }
-  | { status: "configured"; quoteRequired: false; netPrice: number; grossPrice: number; inkCostNet: number; plateCostNet: number }
+  | { status: "configured"; quoteRequired: false; method: "DIGITAL" | "FLEXO"; netPrice: number; grossPrice: number; inkCostNet: number; plateCostNet: number; digitalPrintingCostNet: number }
   | { status: "quote" }
   | { status: "unconfigured" }
   | { status: "error" };
@@ -107,6 +107,7 @@ export function KalkulatorClient({
           heightMm: cfg.heightMm,
           quantity: cfg.quantity,
           colorCount,
+          anzahlSorten: cfg.anzahlSorten,
         }),
       });
       const data = await res.json().catch(() => null);
@@ -116,10 +117,12 @@ export function KalkulatorClient({
       setPriceState({
         status: "configured",
         quoteRequired: false,
+        method: data.method ?? "FLEXO",
         netPrice: data.netPrice,
         grossPrice: data.grossPrice,
         inkCostNet: data.breakdown?.inkCostNet ?? 0,
         plateCostNet: data.breakdown?.plateCostNet ?? 0,
+        digitalPrintingCostNet: data.breakdown?.digitalPrintingCostNet ?? 0,
       });
     } catch {
       setPriceState({ status: "error" });
@@ -147,6 +150,8 @@ export function KalkulatorClient({
   const finalGrossPrice = priceState.status === "configured" ? priceState.grossPrice : 0;
   const inkCostNet = priceState.status === "configured" ? priceState.inkCostNet : 0;
   const plateCostNet = priceState.status === "configured" ? priceState.plateCostNet : 0;
+  const digitalPrintingCostNet = priceState.status === "configured" ? priceState.digitalPrintingCostNet : 0;
+  const printMethod = priceState.status === "configured" ? priceState.method : null;
   const colorCount = config.farbigkeit + (config.weissunterdruck ? 1 : 0);
 
   const valid = configIsValid(config);
@@ -390,14 +395,23 @@ export function KalkulatorClient({
             {priceState.status === "configured" && (
               <>
                 <ul className="kalkulator-price-list">
-                  <li>
-                    <span>Boya + Druck (Druckfarben)</span>
-                    <span>{formatEur(inkCostNet)}</span>
-                  </li>
-                  <li>
-                    <span>Druckplatten ({colorCount} Farben)</span>
-                    <span>{formatEur(plateCostNet)}</span>
-                  </li>
+                  {printMethod === "DIGITAL" ? (
+                    <li>
+                      <span>Digitaldruck ({colorCount} Farben, {config.anzahlSorten} Sorte{config.anzahlSorten > 1 ? "n" : ""})</span>
+                      <span>{formatEur(digitalPrintingCostNet)}</span>
+                    </li>
+                  ) : (
+                    <>
+                      <li>
+                        <span>Flexo-Druckfarben</span>
+                        <span>{formatEur(inkCostNet)}</span>
+                      </li>
+                      <li>
+                        <span>Druckplatten ({colorCount} F. × {config.anzahlSorten} Sorte{config.anzahlSorten > 1 ? "n" : ""})</span>
+                        <span>{formatEur(plateCostNet)}</span>
+                      </li>
+                    </>
+                  )}
                   <li>
                     <span>Gesamt Netto</span>
                     <span>{formatEur(finalNetPrice)}</span>
