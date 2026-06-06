@@ -25,8 +25,8 @@ export function Header({ navigation }: HeaderProps) {
               {item.label}
             </Link>
           ))}
-          <Link href="/de/angebot-anfordern" className="cta-link">
-            Angebot anfordern
+          <Link href="/de/kalkulator" className="cta-link">
+            Preis berechnen
           </Link>
         </nav>
       </div>

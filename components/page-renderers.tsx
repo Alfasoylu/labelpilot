@@ -220,9 +220,9 @@ const homepageFaqs: FAQ[] = [
       "Die Produktion startet nach Ihrer Proof-Freigabe. Den konkreten Liefertermin bestätigen wir mit dem Auftrag bzw. Angebot.",
   },
   {
-    question: "Welche Rollengrößen sind möglich?",
+    question: "Welche Formate sind möglich?",
     answer:
-      "Standard ist das Format 100 × 200 mm auf Rolle. Andere Maße und Rollenkerne laufen über das Angebot.",
+      "Im Kalkulator Breite und Höhe frei wählen – Breite bis 320 mm, Höhe frei. Andere Rollenkerne oder Sonderlängen auf Anfrage.",
   },
   {
     question: "Kann ich mehrere Sorten kombinieren?",
@@ -262,7 +262,7 @@ const differentiationClassic = [
 const differentiationLabelpilot = [
   "Freigegebene Druckdaten gespeichert",
   "Nachbestellung in 30 Sekunden",
-  "Klare Mengenpakete",
+  "Wunschformat nach Maß",
   "Optimiert für Lebensmittel, Getränke, Supplemente und Handelsmarken",
 ];
 
@@ -476,8 +476,8 @@ export function HomePage({ page }: HomePageProps) {
         >
           <ProcessSteps steps={homepageOrderingSteps} />
           <div className="hero-actions">
-            <Link href="/de/opake-pp-etiketten" className="cta-link">
-              Jetzt konfigurieren
+            <Link href="/de/kalkulator" className="cta-link">
+              Zum Kalkulator
             </Link>
           </div>
         </Section>
@@ -1354,26 +1354,26 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
       {page.path === "/de/nachbestellen" ? (
         <Section
           eyebrow="Ablauf"
-          title="Gespeicherte Designs, Versionen und Erinnerungen visuell erklären"
-          lead="Die Seite kommuniziert den späteren Software-Nutzen, ohne einen noch nicht gebauten Login vorzutäuschen."
+          title="So läuft eine Nachbestellung"
+          lead="Freigegebene Druckdaten, Format und Material sind bereits gespeichert. Der nächste Abruf dauert Sekunden."
         >
           <ProcessSteps
             steps={[
               {
-                title: "Freigegebene Version erhalten",
-                body: "Die zuletzt freigegebene Gestaltung bleibt als klare Basis für die nächste Menge bestehen.",
+                title: "Kundenkonto öffnen",
+                body: "Im Kundenkonto sehen Sie alle bisherigen Bestellungen mit Spezifikation, Druckdaten und Status.",
               },
               {
-                title: "Material und Maß wiederverwenden",
-                body: "Opakes oder transparentes PP sowie die Größe müssen nicht bei jeder Wiederholung neu erklärt werden.",
+                title: "Format und Material übernehmen",
+                body: "Breite, Höhe, Material und Oberfläche werden aus der letzten freigegebenen Bestellung in den Kalkulator übertragen.",
               },
               {
-                title: "30-Tage-Erinnerung nutzen",
-                body: "Ein späterer Reminder-Mechanismus unterstützt wiederkehrende Abrufe und verhindert hektische Nachbestellungen.",
+                title: "Preis sofort berechnen",
+                body: "Der Kalkulator berechnet den aktuellen Preis sofort – Menge anpassen, Preis prüfen, direkt weiter.",
               },
               {
-                title: "Anfrage schneller starten",
-                body: "Solange das Konto noch nicht live ist, führt die Seite in Kontakt oder Angebot statt zu einem Fake-Button.",
+                title: "Druckdaten wiederverwenden",
+                body: "Freigegebene Druckdaten aus dem Kundenkonto können für die nächste Bestellung direkt verwendet werden.",
               },
             ]}
           />

@@ -349,11 +349,11 @@ export const homePageData: HomePageData = {
 };
 
 export const siteNavigation: SiteNavigationItem[] = [
+  { label: "Kalkulator", href: "/de/kalkulator" },
   { label: "Produkte", href: "/de/pp-rollenetiketten" },
   { label: "Branchen", href: "/de/lebensmittel-etiketten" },
   { label: "Ratgeber", href: "/de/ratgeber" },
   { label: "Glossar", href: "/de/glossar" },
-  { label: "Musterbox", href: "/de/musterbox" },
 ];
 
 export const footerLinks: FooterGroup[] = [
@@ -374,6 +374,7 @@ export const footerLinks: FooterGroup[] = [
   {
     title: "Wissen",
     links: [
+      { label: "Kalkulator", href: "/de/kalkulator" },
       { label: "Ratgeber", href: "/de/ratgeber" },
       { label: "Glossar", href: "/de/glossar" },
       { label: "Druckdaten", href: "/de/druckdaten" },
@@ -392,16 +393,8 @@ export const footerLinks: FooterGroup[] = [
   },
 ];
 
-export function getSiteNavigation(customSizeEnabled: boolean) {
-  if (!customSizeEnabled) {
-    return siteNavigation;
-  }
-
-  return [
-    ...siteNavigation.slice(0, 1),
-    { label: "Wunschformat", href: "/de/wunschformat" },
-    ...siteNavigation.slice(1),
-  ];
+export function getSiteNavigation(_customSizeEnabled: boolean) {
+  return siteNavigation;
 }
 
 export function getFooterLinks(customSizeEnabled: boolean) {
@@ -1377,9 +1370,9 @@ const topLevelPages: PublicPageData[] = [
     ],
     faqs: [
       {
-        question: "Kann ich schon direkt online nachbestellen?",
+        question: "Kann ich direkt online nachbestellen?",
         answer:
-          "Aktuell läuft die Nachbestellung über eine kurze Anfrage. Da Material, Größe und freigegebene Druckdaten gespeichert sind, geht das deutlich schneller als eine Erstbestellung.",
+          "Ja. Im Kundenkonto können Sie jede frühere Bestellung direkt in den Kalkulator übernehmen – Format, Material und Menge werden vorausgefüllt. Druckdaten aus der letzten freigegebenen Version können wiederverwendet werden.",
       },
     ],
     relatedLinks: [
