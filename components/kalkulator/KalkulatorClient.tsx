@@ -6,6 +6,18 @@ import { CustomSizeCheckoutForm } from "./CustomSizeCheckoutForm";
 type MaterialKey = "OPAQUE_PP" | "TRANSPARENT_PP";
 type Finishing = "MATT" | "GLAENZEND";
 
+type KalkulatorInitialProps = {
+  initialQuantity?: number;
+  initialWidthMm?: number;
+  initialHeightMm?: number;
+  initialMaterial?: string;
+};
+
+function mapInitialMaterial(slug?: string): MaterialKey {
+  if (slug === "pp-transparent") return "TRANSPARENT_PP";
+  return "OPAQUE_PP";
+}
+
 type KalkulatorConfig = {
   materialKey: MaterialKey;
   widthMm: number | "";
@@ -38,12 +50,17 @@ function configIsValid(cfg: KalkulatorConfig): cfg is KalkulatorConfig & {
   );
 }
 
-export function KalkulatorClient() {
+export function KalkulatorClient({
+  initialQuantity,
+  initialWidthMm,
+  initialHeightMm,
+  initialMaterial,
+}: KalkulatorInitialProps = {}) {
   const [config, setConfig] = useState<KalkulatorConfig>({
-    materialKey: "OPAQUE_PP",
-    widthMm: 100,
-    heightMm: 200,
-    quantity: 1000,
+    materialKey: mapInitialMaterial(initialMaterial),
+    widthMm: initialWidthMm ?? 100,
+    heightMm: initialHeightMm ?? 200,
+    quantity: initialQuantity ?? 1000,
     finishing: "MATT",
   });
   const [priceState, setPriceState] = useState<PriceState>({ status: "idle" });

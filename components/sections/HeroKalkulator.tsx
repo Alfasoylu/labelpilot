@@ -98,10 +98,10 @@ export function HeroKalkulator() {
 
   function buildParams(extra?: Record<string, string>) {
     const p = new URLSearchParams();
-    if (quantity) p.set("q", String(quantity));
-    if (widthMm) p.set("w", String(widthMm));
-    if (heightMm) p.set("h", String(heightMm));
-    p.set("m", materialSlug);
+    if (quantity) p.set("quantity", String(quantity));
+    if (widthMm) p.set("width", String(widthMm));
+    if (heightMm) p.set("height", String(heightMm));
+    p.set("material", materialSlug);
     p.set("print", printOption);
     if (extra) {
       for (const [k, v] of Object.entries(extra)) p.set(k, v);
@@ -305,7 +305,7 @@ export function HeroKalkulator() {
         <ul className="hero-kalk__trust-row">
           <li>Maßanfertigung bis 320 mm Breite</li>
           <li>Druckdatenprüfung &amp; Proof möglich</li>
-          <li>Nachbestellung in 30 Sekunden</li>
+          <li>Nachbestellung ohne neue Abstimmung</li>
         </ul>
       </div>
     </>

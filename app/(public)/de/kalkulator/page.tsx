@@ -9,7 +9,29 @@ export const metadata: Metadata = {
     "Berechnen Sie sofort den Preis für Ihre PP-Rollenetiketten im Wunschformat. Geben Sie Material, Breite, Höhe und Menge ein – und bestellen Sie direkt.",
 };
 
-export default function KalkulatorPage() {
+export default async function KalkulatorPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    quantity?: string;
+    width?: string;
+    height?: string;
+    material?: string;
+    print?: string;
+  }>;
+}) {
+  const sp = await searchParams;
+
+  const initialQuantity = sp.quantity
+    ? Math.max(1, Number.parseInt(sp.quantity, 10))
+    : undefined;
+  const initialWidthMm = sp.width
+    ? Math.min(320, Math.max(10, Number.parseInt(sp.width, 10)))
+    : undefined;
+  const initialHeightMm = sp.height
+    ? Math.max(10, Number.parseInt(sp.height, 10))
+    : undefined;
+
   return (
     <div className="container section-stack">
       <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -34,7 +56,12 @@ export default function KalkulatorPage() {
         </ul>
       </article>
 
-      <KalkulatorClient />
+      <KalkulatorClient
+        initialQuantity={initialQuantity}
+        initialWidthMm={initialWidthMm}
+        initialHeightMm={initialHeightMm}
+        initialMaterial={sp.material}
+      />
 
       <article className="surface-card">
         <h2>Fragen zum Format?</h2>
