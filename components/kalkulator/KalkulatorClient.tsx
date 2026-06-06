@@ -28,14 +28,14 @@ type KalkulatorConfig = {
   materialKey: MaterialKey;
   widthMm: number | "";
   heightMm: number | "";
-  quantity: number | "";
+  mengeProMotiv: number | "";
+  anzahlSorten: number;
   finishing: Finishing;
   cornerRadius: CornerRadius;
   weissunterdruck: boolean;
   klebertyp: Klebertyp;
   tiefkuehlgeeignet: boolean;
   farbigkeit: Farbigkeit;
-  anzahlSorten: number;
   uvLack: UVLack;
 };
 
@@ -47,19 +47,20 @@ type PriceState =
   | { status: "unconfigured" }
   | { status: "error" };
 
-function formatEur(amount: number) {
+function formatEur(amount: number | null | undefined) {
+  if (amount == null || Number.isNaN(amount)) return "–";
   return amount.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
 }
 
 function configIsValid(cfg: KalkulatorConfig): cfg is KalkulatorConfig & {
   widthMm: number;
   heightMm: number;
-  quantity: number;
+  mengeProMotiv: number;
 } {
   return (
     typeof cfg.widthMm === "number" && cfg.widthMm >= 10 &&
     typeof cfg.heightMm === "number" && cfg.heightMm >= 10 &&
-    typeof cfg.quantity === "number" && cfg.quantity >= 1
+    typeof cfg.mengeProMotiv === "number" && cfg.mengeProMotiv >= 1
   );
 }
 
@@ -79,14 +80,14 @@ export function KalkulatorClient({
     materialKey: mapInitialMaterial(initialMaterial),
     widthMm: initialWidthMm ?? 100,
     heightMm: initialHeightMm ?? 200,
-    quantity: initialQuantity ?? 1000,
+    mengeProMotiv: initialQuantity ?? 1000,
+    anzahlSorten: 1,
     finishing: "MATT",
     cornerRadius: 2,
     weissunterdruck: false,
     klebertyp: "PERMANENT",
     tiefkuehlgeeignet: false,
     farbigkeit: validFarbigkeit,
-    anzahlSorten: 1,
     uvLack: "KEIN",
   });
   const [priceState, setPriceState] = useState<PriceState>({ status: "idle" });
@@ -97,6 +98,7 @@ export function KalkulatorClient({
     if (!configIsValid(cfg)) return;
     setPriceState({ status: "loading" });
     const colorCount = cfg.farbigkeit + (cfg.weissunterdruck ? 1 : 0);
+    const totalQuantity = (cfg.mengeProMotiv as number) * cfg.anzahlSorten;
     try {
       const res = await fetch("/api/kalkulator/price", {
         method: "POST",
@@ -105,7 +107,7 @@ export function KalkulatorClient({
           materialKey: cfg.materialKey,
           widthMm: cfg.widthMm,
           heightMm: cfg.heightMm,
-          quantity: cfg.quantity,
+          quantity: totalQuantity,
           colorCount,
           anzahlSorten: cfg.anzahlSorten,
         }),
@@ -118,8 +120,8 @@ export function KalkulatorClient({
         status: "configured",
         quoteRequired: false,
         method: data.method ?? "FLEXO",
-        netPrice: data.netPrice,
-        grossPrice: data.grossPrice,
+        netPrice: data.netPrice ?? 0,
+        grossPrice: data.grossPrice ?? 0,
         inkCostNet: data.breakdown?.inkCostNet ?? 0,
         plateCostNet: data.breakdown?.plateCostNet ?? 0,
         digitalPrintingCostNet: data.breakdown?.digitalPrintingCostNet ?? 0,
@@ -153,6 +155,7 @@ export function KalkulatorClient({
   const digitalPrintingCostNet = priceState.status === "configured" ? priceState.digitalPrintingCostNet : 0;
   const printMethod = priceState.status === "configured" ? priceState.method : null;
   const colorCount = config.farbigkeit + (config.weissunterdruck ? 1 : 0);
+  const totalQuantity = typeof config.mengeProMotiv === "number" ? config.mengeProMotiv * config.anzahlSorten : 0;
 
   const valid = configIsValid(config);
   const canOrder = valid && priceState.status === "configured";
@@ -178,23 +181,23 @@ export function KalkulatorClient({
           <h2>Format & Konfiguration</h2>
 
           <div className="form-grid">
-            {/* Row 1: Menge + Anzahl der Sorten */}
+            {/* Row 1: Menge pro Motiv + Anzahl Motive */}
             <div className="field">
-              <label htmlFor="kalk-quantity">Menge (Stück)</label>
+              <label htmlFor="kalk-menge-pro-motiv">Menge pro Motiv (Stück)</label>
               <input
-                id="kalk-quantity"
-                name="quantity"
+                id="kalk-menge-pro-motiv"
+                name="mengeProMotiv"
                 type="number"
                 min={1}
-                value={config.quantity}
+                value={config.mengeProMotiv}
                 onChange={(e) => {
                   const v = e.target.value === "" ? "" : Number.parseInt(e.target.value, 10);
-                  setConfig((c) => ({ ...c, quantity: Number.isNaN(v as number) ? "" : v }));
+                  setConfig((c) => ({ ...c, mengeProMotiv: Number.isNaN(v as number) ? "" : v }));
                 }}
               />
             </div>
             <div className="field">
-              <label htmlFor="kalk-sorten">Anzahl der Sorten</label>
+              <label htmlFor="kalk-sorten">Anzahl verschiedener Motive</label>
               <input
                 id="kalk-sorten"
                 name="anzahlSorten"
@@ -207,7 +210,13 @@ export function KalkulatorClient({
                   setConfig((c) => ({ ...c, anzahlSorten: v }));
                 }}
               />
-              <p className="field-hint">Verschiedene Motive in einer Bestellung.</p>
+              {config.anzahlSorten > 1 ? (
+                <p className="field-hint">
+                  {config.anzahlSorten} Motive × {typeof config.mengeProMotiv === "number" ? config.mengeProMotiv.toLocaleString("de-DE") : "–"} Stück = <strong>{totalQuantity > 0 ? totalQuantity.toLocaleString("de-DE") : "–"} Stück gesamt</strong>
+                </p>
+              ) : (
+                <p className="field-hint">Verschiedene Motive erhöhen den Plattenaufwand bei Flexodruck.</p>
+              )}
             </div>
 
             {/* Row 2: Material + Klebertyp */}
@@ -491,14 +500,27 @@ export function KalkulatorClient({
                   <span>{config.weissunterdruck ? "Ja" : "Nein"}</span>
                 </li>
               )}
-              <li>
-                <span>Sorten</span>
-                <span>{config.anzahlSorten}</span>
-              </li>
-              <li>
-                <span>Menge</span>
-                <span>{typeof config.quantity === "number" ? config.quantity.toLocaleString("de-DE") : "–"} Stück</span>
-              </li>
+              {config.anzahlSorten > 1 ? (
+                <>
+                  <li>
+                    <span>Motive</span>
+                    <span>{config.anzahlSorten}</span>
+                  </li>
+                  <li>
+                    <span>Stück / Motiv</span>
+                    <span>{typeof config.mengeProMotiv === "number" ? config.mengeProMotiv.toLocaleString("de-DE") : "–"}</span>
+                  </li>
+                  <li>
+                    <span>Menge gesamt</span>
+                    <span>{totalQuantity > 0 ? totalQuantity.toLocaleString("de-DE") : "–"} Stück</span>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <span>Menge</span>
+                  <span>{typeof config.mengeProMotiv === "number" ? config.mengeProMotiv.toLocaleString("de-DE") : "–"} Stück</span>
+                </li>
+              )}
             </ul>
           </article>
 
@@ -521,7 +543,8 @@ export function KalkulatorClient({
             materialKey={config.materialKey}
             widthMm={config.widthMm as number}
             heightMm={config.heightMm as number}
-            quantity={config.quantity as number}
+            quantity={totalQuantity}
+            mengeProMotiv={config.mengeProMotiv as number}
             finishing={config.finishing}
             cornerRadius={config.cornerRadius}
             weissunterdruck={config.weissunterdruck}
@@ -530,9 +553,9 @@ export function KalkulatorClient({
             farbigkeit={config.farbigkeit}
             anzahlSorten={config.anzahlSorten}
             uvLack={config.uvLack}
+            printMethod={printMethod ?? "DIGITAL"}
             netPrice={finalNetPrice}
             grossPrice={finalGrossPrice}
-            plateCostNet={plateCostNet}
             onBack={handleBack}
           />
           {/* plateCostNet passed for order summary display; already included in netPrice */}

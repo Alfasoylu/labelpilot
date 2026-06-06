@@ -12,6 +12,7 @@ type CustomSizeCheckoutFormProps = {
   widthMm: number;
   heightMm: number;
   quantity: number;
+  mengeProMotiv?: number;
   finishing: Finishing;
   cornerRadius?: number;
   weissunterdruck?: boolean;
@@ -20,7 +21,7 @@ type CustomSizeCheckoutFormProps = {
   farbigkeit?: number;
   anzahlSorten?: number;
   uvLack?: string;
-  plateCostNet?: number;
+  printMethod?: "DIGITAL" | "FLEXO";
   netPrice: number;
   grossPrice: number;
   onBack: () => void;
@@ -39,6 +40,7 @@ export function CustomSizeCheckoutForm({
   widthMm,
   heightMm,
   quantity,
+  mengeProMotiv,
   finishing,
   cornerRadius = 2,
   weissunterdruck = false,
@@ -47,7 +49,7 @@ export function CustomSizeCheckoutForm({
   farbigkeit = 4,
   anzahlSorten = 1,
   uvLack = "KEIN",
-  plateCostNet = 0,
+  printMethod = "DIGITAL",
   netPrice,
   grossPrice,
   onBack,
@@ -130,13 +132,19 @@ export function CustomSizeCheckoutForm({
           <li>Material: {getMaterialLabel(materialKey)}</li>
           <li>Kleber: {klebertyp === "PERMANENT" ? "Permanent haftend" : "Wiederablösbar"}</li>
           <li>Oberfläche: {finishing === "GLAENZEND" ? "Glänzend" : "Matt"}</li>
-          <li>Farbigkeit: {farbigkeit}-farbig{farbigkeit === 4 ? " (CMYK)" : ""}</li>
+          <li>Farbigkeit: {farbigkeit}-farbig{farbigkeit === 4 ? " (CMYK)" : ""}{weissunterdruck ? " + Weißunterdruck" : ""}</li>
           {uvLack !== "KEIN" && <li>UV-Schutzlack: Glänzend</li>}
           {tiefkuehlgeeignet && <li>Tiefkühlgeeignet: Ja</li>}
-          {anzahlSorten > 1 && <li>Anzahl der Sorten: {anzahlSorten}</li>}
-          <li>Menge: {quantity.toLocaleString("de-DE")} Stück</li>
-          <li>Etiketten Netto: {formatEur(netPrice - plateCostNet)}</li>
-          <li>Druckplatten: {formatEur(plateCostNet)}</li>
+          <li>Druckmethode: {printMethod === "DIGITAL" ? "Digitaldruck" : "Flexodruck"}</li>
+          {anzahlSorten > 1 && mengeProMotiv ? (
+            <>
+              <li>Verschiedene Motive: {anzahlSorten}</li>
+              <li>Menge pro Motiv: {mengeProMotiv.toLocaleString("de-DE")} Stück</li>
+              <li>Menge gesamt: {quantity.toLocaleString("de-DE")} Stück</li>
+            </>
+          ) : (
+            <li>Menge: {quantity.toLocaleString("de-DE")} Stück</li>
+          )}
           <li>Gesamt Netto: {formatEur(netPrice)}</li>
           <li>MwSt. 19 %: {formatEur(vatAmount)}</li>
           <li>
