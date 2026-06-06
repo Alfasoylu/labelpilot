@@ -123,6 +123,17 @@ export function HeroKalkulator() {
             Flaschen&nbsp;·&nbsp;Gläser&nbsp;·&nbsp;Dosen&nbsp;·&nbsp;Beutel&nbsp;·&nbsp;Kosmetik&nbsp;·&nbsp;Supplements&nbsp;·&nbsp;Honig&nbsp;·&nbsp;Kaffee&nbsp;·&nbsp;Saucen&nbsp;·&nbsp;Private&nbsp;Label
           </p>
 
+          <div className="hero-kalk__mobile-banner">
+            <Image
+              src="/images/editorial/mobile-labels-hero.webp"
+              alt="Labelpilot.de Musteretiketten: CMYK-bedruckte PP-Rollenetiketten auf Sriracha-Flasche, Honig-Glas, Hyaluron-Serum und Protein-Dose"
+              width={1320}
+              height={440}
+              priority
+              sizes="100vw"
+            />
+          </div>
+
           <div className="hero-kalk__card">
             <div className="hero-kalk__card-head">
               <p className="hero-kalk__card-title">Etikettenpreis sofort berechnen</p>

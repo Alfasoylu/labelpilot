@@ -1847,6 +1847,11 @@ th {
   background: var(--accent);
 }
 
+/* Mobile banner image — hidden on desktop */
+.hero-kalk__mobile-banner {
+  display: none;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .hero-kalk-split {
@@ -1854,11 +1859,48 @@ th {
     gap: 1.75rem;
     padding-top: 2rem;
   }
+
+  /* Hide tall portrait image — mobile banner replaces it */
+  .hero-kalk__visual {
+    display: none;
+  }
+
+  .hero-kalk__mobile-banner {
+    display: block;
+    margin-top: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .hero-kalk__mobile-banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+@media (max-width: 860px) {
+  /* Tighten vertical rhythm to fit calculator above fold */
+  .hero-kalk-split {
+    padding-top: 1rem;
+  }
+
+  .hero-kalk__card {
+    margin-top: 12px;
+  }
 }
 
 @media (max-width: 480px) {
   .hero-kalk__form {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-kalk__card {
+    padding: 16px 16px 14px;
+  }
+
+  .hero-kalk__card-head {
+    margin-bottom: 12px;
   }
 
   /* Material (--full) already uses 1/-1; Höhe wraps to col 1 naturally */
