@@ -98,7 +98,7 @@ export default async function PricingSettingsPage({
               </select>
             </div>
             <div>
-              <label htmlFor="colorCount">Renk Sayısı (Farbanzahl)</label>
+              <label htmlFor="colorCount">Farbanzahl</label>
               <input id="colorCount" name="colorCount" type="number" min="1" max="12" defaultValue="4" />
               <p className="field-hint">Weißunterdruck = +1 Farbe hinzurechnen.</p>
             </div>
@@ -134,7 +134,7 @@ export default async function PricingSettingsPage({
               <li>Material: {calcResult.matKey}</li>
               <li>Format: {calcResult.widthMm} × {calcResult.heightMm} mm</li>
               <li>Menge: {calcResult.quantity}</li>
-              <li>Renk Sayısı: {calcResult.colorCount}</li>
+              <li>Farbanzahl: {calcResult.colorCount}</li>
               <li>Sorten: {calcResult.sorten}</li>
               <li>Druckmethode: <strong>{calcResult.method}</strong></li>
               <li>Quote erforderlich: {calcResult.quoteRequired ? "Ja" : "Nein"}</li>
@@ -144,7 +144,7 @@ export default async function PricingSettingsPage({
               {calcResult.method === "FLEXO" ? (
                 <>
                   <li>Boyakosten (Ink): €{calcResult.ink}</li>
-                  <li>Kalıpkosten (Platten): €{calcResult.plate}</li>
+                  <li>Plattenkosten: €{calcResult.plate}</li>
                 </>
               ) : (
                 <li>Digitaldruck-Kosten: €{calcResult.digital}</li>
@@ -168,7 +168,7 @@ export default async function PricingSettingsPage({
             <li>Labelfläche [m²] = Breite × Höhe ÷ 1.000.000</li>
             <li>Gesamtfläche [m²] = Labelfläche × Menge × (1 + Ausschuss%)</li>
             <li>Materialkosten = Materialkosten/m² × Gesamtfläche</li>
-            <li><strong>Flexo:</strong> Boya = Kademe-Tabelle | Kalıp = Renk × Sortenanzahl × Kalıp/Farbe</li>
+            <li><strong>Flexo:</strong> Farbe = Stufentabelle | Platte = Farbanzahl × Sortenanzahl × Platte/Farbe</li>
             <li><strong>Digital:</strong> Digitaldruck = 0,10 €/Stück × Menge + Rüstgebühr</li>
             <li>Produktionskosten = Materialkosten + min(Flexo, Digital)</li>
             <li>Aufschlag: ≤ Tier1-Menge × Faktor1, ≤ Tier2-Menge × Faktor2, sonst × Faktor3</li>
@@ -362,11 +362,11 @@ export default async function PricingSettingsPage({
                 </div>
               </div>
 
-              <h4 style={{ marginTop: "1.5rem" }}>Flexo: Kalıp & Boya</h4>
+              <h4 style={{ marginTop: "1.5rem" }}>Flexo: Platten & Farben</h4>
               <div className="form-grid">
                 <div>
                   <label htmlFor="settings-platePerColorCostNet">
-                    Kalıp/Farbe netto (Platten pro Farbe)
+                    Platte/Farbe netto (Plattenkosten pro Farbe)
                   </label>
                   <input
                     id="settings-platePerColorCostNet"
