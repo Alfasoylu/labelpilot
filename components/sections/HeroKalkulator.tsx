@@ -254,8 +254,8 @@ export function HeroKalkulator() {
         <div className="hero-kalk__visual">
           <figure className="hero-product-photo">
             <Image
-              src="/images/editorial/home-hero-label-roll-cluster.webp"
-              alt="PP-Rollenetiketten auf Flaschen, Honiggläsern, Supplement-Dosen und Kosmetikverpackungen – individuell bedruckte Rollenetiketten für Produktmarken"
+              src="/images/editorial/sample-labels-hero.webp"
+              alt="Labelpilot.de Musterbeschriftungen auf Produkten: Sriracha-Flasche, Wildblütenhonig-Glas, Hyaluron-Serum, Whey-Protein-Dose und Kaffeebeutel – individuell bedruckte PP-Rollenetiketten"
               width={900}
               height={1125}
               priority
