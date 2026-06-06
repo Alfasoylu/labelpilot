@@ -119,14 +119,16 @@ export async function POST(
         },
       });
 
-      await syncStoredDesignFromApprovedOrder({
-        tx,
-        order,
-        sourceType: "CUSTOMER_UPLOAD",
-        originalArtworkFileId: order.artworkFiles[0]?.id ?? null,
-        proofFileId: updatedProof.id,
-        changeSummary: "Proof durch Kunden freigegeben.",
-      });
+      if (order.packageId) {
+        await syncStoredDesignFromApprovedOrder({
+          tx,
+          order: order as typeof order & { packageId: string },
+          sourceType: "CUSTOMER_UPLOAD",
+          originalArtworkFileId: order.artworkFiles[0]?.id ?? null,
+          proofFileId: updatedProof.id,
+          changeSummary: "Proof durch Kunden freigegeben.",
+        });
+      }
 
       return {
         message: "Proof freigegeben. Die Bestellung ist für die Produktion vorbereitet.",

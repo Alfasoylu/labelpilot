@@ -161,6 +161,20 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
     orderId: order.id,
     orderNumber: order.orderNumber,
     uploadToken: order.uploadToken,
+    material: order.material,
+    quantity: order.quantity,
+    finishing: order.finishing,
+    amountCents: order.amountCents,
+    currency: order.currency,
+    physicalProofCents: order.physicalProofCents,
+    addonsTotalCents: order.addonsTotalCents,
+    companyName: order.companyName,
+    customerName: order.customerName,
+    streetAddress: order.streetAddress,
+    addressLine2: order.addressLine2,
+    postalCode: order.postalCode,
+    city: order.city,
+    country: order.country,
   });
 
   await sendEmail({

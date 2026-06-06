@@ -77,6 +77,10 @@ export function canTransitionOrderStatus(
   );
 }
 
+export function canCustomerUploadArtwork(status: OrderStatusValue) {
+  return ["PAID", "FILE_REVIEW", "CORRECTION_REQUIRED"].includes(status);
+}
+
 export function canReviewArtworkOrderStatus(status: OrderStatusValue) {
   return ["PAID", "FILE_REVIEW", "CORRECTION_REQUIRED", "PROOF_REQUIRED"].includes(
     status,

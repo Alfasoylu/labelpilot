@@ -9,6 +9,7 @@ import {
   getProofFileRequirementsText,
 } from "@/lib/file-validation/artwork";
 import {
+  formatFinishing,
   getArtworkFileStatusLabel,
   getArtworkStatusLabel,
   getMaterialLabel,
@@ -16,6 +17,7 @@ import {
   getProofFileStatusLabel,
 } from "@/lib/orders/artwork";
 import { getPackageById } from "@/lib/commerce/packages";
+import { canCustomerUploadArtwork } from "@/lib/orders/status";
 
 export const dynamic = "force-dynamic";
 
@@ -80,7 +82,7 @@ export default async function OrderArtworkPage({
     return <InvalidOrderAccess />;
   }
 
-  const pkg = getPackageById(order.packageId);
+  const pkg = order.packageId ? getPackageById(order.packageId) : null;
   const latestCorrectionEvent = order.statusEvents.find(
     (event: (typeof order.statusEvents)[number]) => event.status === "CORRECTION_REQUIRED" && event.note,
   );
@@ -122,6 +124,7 @@ export default async function OrderArtworkPage({
             <li>Bestellnummer: {order.orderNumber}</li>
             <li>Paket: {pkg ? `${pkg.label} (${pkg.quantity.toLocaleString("de-DE")} Stück)` : order.packageId}</li>
             <li>Material: {getMaterialLabel(order.material)}</li>
+            <li>Oberfläche: {formatFinishing(order.finishing)}</li>
             <li>Menge: {order.quantity.toLocaleString("de-DE")} Stück</li>
             <li>Bestellstatus: {getOrderStatusLabel(order.status)}</li>
             <li>Druckdatenstatus: {getArtworkStatusLabel(order.artworkStatus)}</li>
@@ -158,7 +161,7 @@ export default async function OrderArtworkPage({
       <ArtworkUploadForm
         orderId={order.id}
         token={token}
-        canUpload={order.status !== "PENDING_PAYMENT" && order.status !== "PAYMENT_FAILED" && order.status !== "CANCELLED"}
+        canUpload={canCustomerUploadArtwork(order.status)}
         requirementsText={getArtworkFileRequirementsText()}
         initialFiles={files}
       />

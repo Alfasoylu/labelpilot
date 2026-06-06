@@ -188,6 +188,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         netPriceLabel={formatPriceNet(totalNetAmountCents)}
         addonSummary={addonSummary}
         backHref={`/${["de", pkg.productSlug].join("/")}`}
+        initialFinishing={params.finishing}
       />
     </div>
   );

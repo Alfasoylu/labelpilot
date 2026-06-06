@@ -7,6 +7,23 @@ type TemplateResult = {
   text: string;
 };
 
+function formatEuroCents(amountCents: number) {
+  return (
+    (amountCents / 100).toLocaleString("de-DE", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }) + " EUR"
+  );
+}
+
+function formatMaterialLabel(material: string) {
+  return material === "TRANSPARENT" ? "Transparentes PP" : "Opakes PP";
+}
+
+function formatFinishingLabel(finishing: string | null | undefined) {
+  return finishing === "GLAENZEND" ? "Glänzend" : "Matt";
+}
+
 function escapeHtml(value: string) {
   return value
     .replaceAll("&", "&amp;")
@@ -51,17 +68,107 @@ export function orderConfirmation(input: {
   orderId: string;
   orderNumber: string;
   uploadToken: string;
+  material: string;
+  quantity: number;
+  finishing?: string | null;
+  amountCents: number;
+  currency: string;
+  physicalProofCents?: number | null;
+  addonsTotalCents?: number | null;
+  companyName?: string | null;
+  customerName?: string | null;
+  streetAddress?: string | null;
+  addressLine2?: string | null;
+  postalCode?: string | null;
+  city?: string | null;
+  country?: string | null;
 }): TemplateResult {
   const orderLink = getOrderLink(input.orderId, input.uploadToken);
   const subject = `Ihre Bestellung ${input.orderNumber} ist eingegangen`;
+
+  const hasAddons =
+    input.addonsTotalCents != null && input.addonsTotalCents > 0;
+  const baseAmountCents = hasAddons
+    ? input.amountCents - (input.addonsTotalCents ?? 0)
+    : null;
+
+  const addressParts = [
+    input.companyName || null,
+    input.customerName || null,
+    input.streetAddress || null,
+    input.addressLine2 || null,
+    input.postalCode && input.city
+      ? `${input.postalCode} ${input.city}`
+      : input.city || input.postalCode || null,
+    input.country || null,
+  ].filter((x): x is string => x !== null && x.trim() !== "");
+
+  // --- plain text ---
+  const summaryLines = [
+    `Material: ${formatMaterialLabel(input.material)}`,
+    `Menge: ${input.quantity.toLocaleString("de-DE")} Stück`,
+    `Oberfläche: ${formatFinishingLabel(input.finishing)}`,
+    `Format: 100 × 200 mm (Standardformat)`,
+  ];
+
+  const priceLines: string[] = [];
+  if (baseAmountCents !== null) {
+    priceLines.push(`Basispreis: ${formatEuroCents(baseAmountCents)} brutto`);
+  }
+  if (input.physicalProofCents != null && input.physicalProofCents > 0) {
+    priceLines.push(
+      `Physischer Andruck: ${formatEuroCents(input.physicalProofCents)} brutto`,
+    );
+  }
+  priceLines.push(
+    `Gesamtbetrag: ${formatEuroCents(input.amountCents)} brutto inkl. 19% MwSt.`,
+  );
+
   const text = [
     `Vielen Dank für Ihre Bestellung ${input.orderNumber}.`,
     "",
-    "Bitte laden Sie jetzt Ihre Druckdaten hoch oder speichern Sie den Link für später:",
+    "Bestellzusammenfassung:",
+    ...summaryLines,
+    "",
+    "Preis:",
+    ...priceLines,
+    ...(addressParts.length > 0
+      ? ["", "Lieferadresse:", ...addressParts]
+      : []),
+    "",
+    "Druckdaten-Upload-Link (bitte aufbewahren):",
     orderLink,
     "",
-    "Bitte bewahren Sie diesen Link gut auf. Über ihn erreichen Sie den Upload und später auch den Proof.",
+    "Über diesen Link erreichen Sie den Upload und später auch den Proof.",
   ].join("\n");
+
+  // --- HTML ---
+  const summaryHtml = [
+    `<p style="margin:2px 0;"><strong>Material:</strong> ${escapeHtml(formatMaterialLabel(input.material))}</p>`,
+    `<p style="margin:2px 0;"><strong>Menge:</strong> ${escapeHtml(input.quantity.toLocaleString("de-DE"))} Stück</p>`,
+    `<p style="margin:2px 0;"><strong>Oberfläche:</strong> ${escapeHtml(formatFinishingLabel(input.finishing))}</p>`,
+    `<p style="margin:2px 0;"><strong>Format:</strong> 100 × 200 mm (Standardformat)</p>`,
+  ].join("");
+
+  const priceHtmlParts: string[] = [];
+  if (baseAmountCents !== null) {
+    priceHtmlParts.push(
+      `<p style="margin:2px 0;"><strong>Basispreis:</strong> ${escapeHtml(formatEuroCents(baseAmountCents))} brutto</p>`,
+    );
+  }
+  if (input.physicalProofCents != null && input.physicalProofCents > 0) {
+    priceHtmlParts.push(
+      `<p style="margin:2px 0;"><strong>Physischer Andruck:</strong> ${escapeHtml(formatEuroCents(input.physicalProofCents))} brutto</p>`,
+    );
+  }
+  priceHtmlParts.push(
+    `<p style="margin:2px 0;"><strong>Gesamtbetrag: ${escapeHtml(formatEuroCents(input.amountCents))} brutto inkl. 19% MwSt.</strong></p>`,
+  );
+
+  const addressHtml =
+    addressParts.length > 0
+      ? `<h3 style="margin:16px 0 8px 0;font-size:15px;color:#11100E;">Lieferadresse</h3>${addressParts.map((line) => `<p style="margin:2px 0;">${escapeHtml(line)}</p>`).join("")}`
+      : "";
 
   return {
     subject,
@@ -72,8 +179,12 @@ export function orderConfirmation(input: {
       actionLabel: "Druckdaten hochladen",
       actionHref: orderLink,
       bodyHtml: `
-        <p style="margin:0 0 16px 0;">Bitte laden Sie jetzt Ihre Druckdaten hoch oder speichern Sie den Link für später.</p>
-        <p style="margin:0;">Bitte bewahren Sie diesen Link gut auf. Über ihn erreichen Sie den Upload und später auch den Proof.</p>
+        <h3 style="margin:0 0 8px 0;font-size:15px;color:#11100E;">Bestellzusammenfassung</h3>
+        ${summaryHtml}
+        <h3 style="margin:16px 0 8px 0;font-size:15px;color:#11100E;">Preis</h3>
+        ${priceHtmlParts.join("")}
+        ${addressHtml}
+        <p style="margin:16px 0 0 0;color:#6B6560;font-size:14px;">Bitte bewahren Sie Ihren Upload-Link auf. Über ihn erreichen Sie den Upload und später auch den Proof.</p>
       `,
     }),
   };
@@ -137,6 +248,37 @@ export function proofReady(input: {
       actionHref: orderLink,
       bodyHtml: `
         <p style="margin:0;">Bitte prüfen Sie den Proof über den Link oben und geben Sie ihn frei oder senden Sie einen Änderungswunsch.</p>
+      `,
+    }),
+  };
+}
+
+export function artworkApproved(input: {
+  orderId: string;
+  orderNumber: string;
+  uploadToken: string;
+}): TemplateResult {
+  const orderLink = getOrderLink(input.orderId, input.uploadToken);
+  const subject = `Druckdaten freigegeben – Bestellung ${input.orderNumber}`;
+  const text = [
+    `Ihre Druckdaten für die Bestellung ${input.orderNumber} wurden freigegeben.`,
+    "",
+    "Wir starten jetzt mit der Produktion. Es ist keine weitere Aktion von Ihrer Seite erforderlich.",
+    "",
+    "Den aktuellen Status Ihrer Bestellung sehen Sie hier:",
+    orderLink,
+  ].join("\n");
+
+  return {
+    subject,
+    text,
+    html: renderShell({
+      heading: "Ihre Druckdaten wurden freigegeben.",
+      intro: `Die Druckdaten für die Bestellung ${input.orderNumber} wurden freigegeben.`,
+      actionLabel: "Auftragsstatus ansehen",
+      actionHref: orderLink,
+      bodyHtml: `
+        <p style="margin:0;">Wir starten jetzt mit der Produktion. Es ist keine weitere Aktion von Ihrer Seite erforderlich.</p>
       `,
     }),
   };

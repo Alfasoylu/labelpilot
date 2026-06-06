@@ -7,6 +7,7 @@ import { sendEmail } from "@/lib/email/send";
 import { artworkUploadedOpsNotification } from "@/lib/email/templates/lifecycle";
 import { validateArtworkFile } from "@/lib/file-validation/artwork";
 import { getArtworkFileStatusLabel } from "@/lib/orders/artwork";
+import { canCustomerUploadArtwork } from "@/lib/orders/status";
 import { uploadArtwork } from "@/lib/storage/artwork";
 
 export const runtime = "nodejs";
@@ -64,7 +65,7 @@ export async function POST(
     return NextResponse.json({ error: "Sie haben keinen Zugriff auf diese Bestellung." }, { status: 403 });
   }
 
-  if (order.status === "PENDING_PAYMENT" || order.status === "PAYMENT_FAILED" || order.status === "CANCELLED") {
+  if (!canCustomerUploadArtwork(order.status)) {
     return NextResponse.json(
       { error: "Für diese Bestellung können derzeit keine Druckdaten hochgeladen werden." },
       { status: 409 },

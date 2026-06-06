@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Instrument_Sans } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
 
@@ -69,7 +70,10 @@ export default function RootLayout({
       lang="de"
       className={`${fontHeading.variable} ${fontBody.variable} ${fontMono.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <Toaster theme="light" position="bottom-right" richColors />
+      </body>
     </html>
   );
 }

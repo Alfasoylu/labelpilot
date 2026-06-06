@@ -77,28 +77,44 @@ export function buildCheckoutAddons(input: {
 }) {
   const normalizedAddons = normalizeCheckoutAddons(input.addons);
   const baseNetTotal = Math.round(input.baseGrossAmountCents / 1.19) / 100;
+  const settings = input.settings ?? DEFAULT_ADDON_SETTINGS;
+
+  // physicalProof is always active regardless of featureEnabled
+  const physicalProofNet = normalizedAddons.physicalProof ? physicalProofPrice(settings) : 0;
+  const physicalProofCents = normalizedAddons.physicalProof
+    ? netEuroToGrossCents(physicalProofNet)
+    : null;
 
   if (!input.featureEnabled) {
+    const lineItems: CheckoutAddonLineItem[] = [];
+    if (normalizedAddons.physicalProof) {
+      lineItems.push({
+        key: "physicalProof",
+        name: "Physischer Andruck",
+        description: "Gedruckter Andruck auf dem abgestimmten Material; digitaler Proof bleibt inklusive",
+        netAmount: physicalProofNet,
+        grossAmountCents: netEuroToGrossCents(physicalProofNet),
+      });
+    }
     return {
       normalizedAddons: {
         designService: false,
-        physicalProof: false,
+        physicalProof: normalizedAddons.physicalProof,
         express: false,
         extraDesignCount: 0,
-        customerUploadsOwnData: false,
+        customerUploadsOwnData: normalizedAddons.customerUploadsOwnData,
       },
       baseNetTotal,
       designServiceCents: null,
-      physicalProofCents: null,
+      physicalProofCents,
       expressCents: null,
       extraDesignCount: 0,
       extraDesignCents: null,
-      addonsTotalCents: 0,
-      lineItems: [],
+      addonsTotalCents: physicalProofCents ?? 0,
+      lineItems,
     } satisfies CheckoutAddonComputation;
   }
 
-  const settings = input.settings ?? DEFAULT_ADDON_SETTINGS;
   const lineItems: CheckoutAddonLineItem[] = [];
 
   const designServiceNet = normalizedAddons.designService
@@ -107,9 +123,6 @@ export function buildCheckoutAddons(input: {
         customerUploadsOwnData: normalizedAddons.customerUploadsOwnData,
         settings,
       })
-    : 0;
-  const physicalProofNet = normalizedAddons.physicalProof
-    ? physicalProofPrice(settings)
     : 0;
   const expressNet = normalizedAddons.express ? expressPrice(settings) : 0;
   const extraDesignNet = extraDesignPrice(normalizedAddons.extraDesignCount, settings);
@@ -162,8 +175,6 @@ export function buildCheckoutAddons(input: {
 
   const designServiceCents =
     normalizedAddons.designService ? netEuroToGrossCents(designServiceNet) : null;
-  const physicalProofCents =
-    normalizedAddons.physicalProof ? netEuroToGrossCents(physicalProofNet) : null;
   const expressCents = normalizedAddons.express ? netEuroToGrossCents(expressNet) : null;
   const extraDesignCents =
     normalizedAddons.extraDesignCount > 0 ? netEuroToGrossCents(extraDesignNet) : null;

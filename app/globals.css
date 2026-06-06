@@ -1,3 +1,34 @@
+@import "tailwindcss";
+
+/* shadcn/ui color tokens — Tailwind v4 @theme inline (no CSS custom property conflict).
+   These map Tailwind utilities (bg-primary, text-muted-foreground, etc.) to Labelpilot's
+   palette WITHOUT overwriting the existing --muted / --accent / --radius-* CSS variables. */
+@theme inline {
+  --color-background: #fffdf8;
+  --color-foreground: #2a2926;
+  --color-card: #fffdf8;
+  --color-card-foreground: #2a2926;
+  --color-popover: #fffdf8;
+  --color-popover-foreground: #2a2926;
+  --color-primary: #11100e;
+  --color-primary-foreground: #fffdf8;
+  --color-secondary: #efe6d6;
+  --color-secondary-foreground: #11100e;
+  --color-muted: #efe6d6;
+  --color-muted-foreground: #6f675d;
+  --color-accent: #e7d7bd;
+  --color-accent-foreground: #11100e;
+  --color-destructive: #b44336;
+  --color-destructive-foreground: #fffdf8;
+  --color-border: #e5ded2;
+  --color-input: #e5ded2;
+  --color-ring: #b08a45;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
+
 :root {
   /* "Ivory Industrial Premium" — aligned to docs/rakip_analizi_ve_stil_rehberi.md.
      Blue is NOT the brand colour; primary action is deep ink, blue is a proof accent only. */
@@ -1530,6 +1561,245 @@ th {
   padding: clamp(28px, 5vw, 52px);
 }
 
+/* ─────────────────────────────────────────
+   HeroKalkulator — homepage hero + calculator
+   ───────────────────────────────────────── */
+
+.hero-kalk-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
+  padding: clamp(3rem, 6vh, 5rem) 0 clamp(1.5rem, 3vh, 3rem);
+}
+
+.hero-kalk__left {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-kalk__h1 {
+  margin: 10px 0 0;
+  font-size: clamp(1.7rem, 2.6vw, 2.35rem);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: var(--text-strong);
+}
+
+.hero-kalk__sub {
+  margin: 12px 0 0;
+  max-width: 50ch;
+  font-size: 0.96rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.hero-kalk__card {
+  margin-top: 22px;
+  padding: 22px 22px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+
+.hero-kalk__card-head {
+  margin-bottom: 18px;
+}
+
+.hero-kalk__card-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  margin: 0 0 5px;
+}
+
+.hero-kalk__card-hint {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Form grid: 3 cols desktop */
+.hero-kalk__form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.hero-kalk__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hero-kalk__field label {
+  font-size: 0.7rem;
+  font-family: var(--font-mono-stack);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero-kalk__field input,
+.hero-kalk__field select {
+  font-size: 0.93rem;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  color: var(--text);
+  width: 100%;
+  appearance: auto;
+}
+
+.hero-kalk__field input:focus,
+.hero-kalk__field select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
+.hero-kalk__field input[aria-invalid="true"] {
+  border-color: #e11d48;
+}
+
+.hero-kalk__field-error {
+  font-size: 0.72rem;
+  color: #e11d48;
+  margin-top: 1px;
+}
+
+.hero-kalk__field--span2 {
+  grid-column: span 2;
+}
+
+/* Result area */
+.hero-kalk__result {
+  min-height: 52px;
+  padding: 13px 0;
+  border-top: 1px solid var(--line);
+  margin-bottom: 16px;
+}
+
+.hero-kalk__result-price {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hero-kalk__result-net {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.hero-kalk__result-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+.hero-kalk__result-meta {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.hero-kalk__result-m2 {
+  font-size: 0.72rem;
+  font-family: var(--font-mono-stack);
+  color: var(--muted);
+  letter-spacing: 0.03em;
+}
+
+.hero-kalk__result-dim {
+  font-size: 0.84rem;
+  color: var(--muted);
+}
+
+/* Action row */
+.hero-kalk__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Badge override — three pills in a row */
+.hero-kalk__badge-row {
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+/* Below-hero strip */
+.hero-kalk__below {
+  padding-top: 0;
+  padding-bottom: clamp(1.25rem, 2.5vh, 2rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-kalk__applications {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin: 0 0 10px;
+  letter-spacing: 0.01em;
+}
+
+.hero-kalk__trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 22px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.hero-kalk__trust-row li {
+  position: relative;
+  padding-left: 13px;
+  font-family: var(--font-mono-stack);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero-kalk__trust-row li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .hero-kalk-split {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    padding-top: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-kalk__form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-kalk__field--span2 {
+    grid-column: 1 / -1;
+  }
+
+  /* Höhe on mobile: position 3 of 2-col grid wraps to col 1 → fine */
+}
+
 .cta-editorial__content h2 {
   margin: 14px 0 12px;
   color: var(--text-strong);
@@ -2042,4 +2312,95 @@ th {
     opacity: 1;
     transform: none;
   }
+}
+
+/* ─── Kalkulator ──────────────────────────────────────── */
+
+.quick-kalkulator {
+  background: var(--surface);
+}
+
+.quick-kalkulator-header {
+  margin-bottom: var(--space-3);
+}
+
+.quick-kalkulator-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  align-items: end;
+}
+
+.quick-kalkulator-price {
+  grid-column: 1 / -1;
+  padding: var(--space-3) 0 0;
+  border-top: 1px solid var(--border);
+}
+
+.quick-kalkulator-result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.quick-kalkulator-netto {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+@media (min-width: 640px) {
+  .quick-kalkulator-form {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.kalkulator-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .kalkulator-grid {
+    grid-template-columns: 1fr 340px;
+  }
+}
+
+.kalkulator-price-box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: sticky;
+  top: var(--space-6);
+}
+
+.kalkulator-price-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.kalkulator-price-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  gap: var(--space-2);
+}
+
+.kalkulator-price-total {
+  font-weight: 700;
+  font-size: 1.1rem !important;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border);
+  color: var(--accent);
+}
+
+.kalkulator-price-shipping {
+  color: var(--success, #16a34a);
+  font-size: 0.85rem !important;
 }

@@ -1,38 +1,40 @@
 import { NextResponse } from "next/server";
 
-import { getDefaultPricingSettings, mapPricingSettingsRecord } from "@/lib/admin/pricing";
-import { checkoutIntakeSchema } from "@/lib/checkout/intake";
-import { findPackageByConfig, type PackageMaterial, type ProductSlug } from "@/lib/commerce/packages";
+import { mapMaterialCostRecord, mapPricingSettingsRecord } from "@/lib/admin/pricing";
+import { customSizeCheckoutIntakeSchema } from "@/lib/checkout/intake";
 import { createOrderNumber } from "@/lib/commerce/orders";
 import { getPrismaClient } from "@/lib/db/prisma";
-import { isAddonsEnabled } from "@/lib/pricing/addons-feature";
-import { buildCheckoutAddons } from "@/lib/pricing/checkout-addons";
 import { getCheckoutBaseUrl, getStripeServerClient } from "@/lib/stripe/server";
+import { buildPublicCustomSizePriceResponse } from "@/lib/pricing/custom-size-public";
 
 export const runtime = "nodejs";
 
-function getPackageDisplayName(productSlug: ProductSlug, material: PackageMaterial) {
-  if (productSlug === "opake-pp-etiketten" && material === "OPAQUE") {
-    return "Opake PP-Rollenetiketten 100x200 mm";
-  }
+function materialKeyToSlug(materialKey: "OPAQUE_PP" | "TRANSPARENT_PP") {
+  return materialKey === "OPAQUE_PP" ? "opake-pp-etiketten" : "transparente-pp-etiketten";
+}
 
-  return "Transparente PP-Rollenetiketten 100x200 mm";
+function materialKeyToMaterial(materialKey: "OPAQUE_PP" | "TRANSPARENT_PP") {
+  return materialKey === "OPAQUE_PP" ? "OPAQUE" : "TRANSPARENT";
+}
+
+function getProductDisplayName(materialKey: "OPAQUE_PP" | "TRANSPARENT_PP", widthMm: number, heightMm: number) {
+  const mat = materialKey === "OPAQUE_PP" ? "Opake PP-Rollenetiketten" : "Transparente PP-Rollenetiketten";
+  return `${mat} ${widthMm}×${heightMm} mm`;
 }
 
 export async function POST(request: Request) {
   let createdOrderId: string | null = null;
-  let prisma = getPrismaClient();
+  const prisma = getPrismaClient();
 
   try {
     const json = await request.json();
-    const parsed = checkoutIntakeSchema.safeParse(json);
+    const parsed = customSizeCheckoutIntakeSchema.safeParse(json);
 
     if (!parsed.success) {
       return NextResponse.json({ error: "Ungültige Checkout-Anfrage." }, { status: 400 });
     }
 
     if (!prisma) {
-      console.error("Checkout nicht verfügbar: DATABASE_URL fehlt.");
       return NextResponse.json(
         { error: "Checkout ist derzeit nicht verfügbar. Bitte nutzen Sie das Angebotsformular." },
         { status: 503 },
@@ -41,7 +43,6 @@ export async function POST(request: Request) {
 
     let stripe;
     let baseUrl;
-
     try {
       stripe = getStripeServerClient();
       baseUrl = getCheckoutBaseUrl();
@@ -53,26 +54,35 @@ export async function POST(request: Request) {
       );
     }
 
-    const pkg = findPackageByConfig(parsed.data);
+    const { materialKey, widthMm, heightMm, quantity } = parsed.data;
 
-    if (!pkg) {
-      return NextResponse.json({ error: "Unbekanntes Paket." }, { status: 400 });
+    const [materialRow, settingsRow] = await Promise.all([
+      prisma.pricingMaterialCost.findUnique({ where: { materialKey } }),
+      prisma.pricingSettings.findUnique({ where: { id: "default" } }),
+    ]);
+
+    const priceResult = buildPublicCustomSizePriceResponse({
+      featureEnabled: true,
+      request: { materialKey, widthMm, heightMm, quantity },
+      params: mapMaterialCostRecord(materialRow),
+      settings: mapPricingSettingsRecord(settingsRow),
+    });
+
+    if (priceResult.status !== 200 || !priceResult.body) {
+      return NextResponse.json(
+        { error: "Preisberechnung nicht verfügbar. Bitte nutzen Sie das Angebotsformular." },
+        { status: 503 },
+      );
     }
 
-    const addonFeatureEnabled = isAddonsEnabled();
-    const pricingSettingsRow = await prisma.pricingSettings.findUnique({
-      where: { id: "default" },
-    });
-    const pricingSettings =
-      mapPricingSettingsRecord(pricingSettingsRow) ?? getDefaultPricingSettings();
-    const addonPricing = buildCheckoutAddons({
-      featureEnabled: addonFeatureEnabled,
-      addons: parsed.data.addons,
-      baseGrossAmountCents: pkg.grossAmountCents,
-      settings: pricingSettings,
-    });
-    const totalAmountCents = pkg.grossAmountCents + addonPricing.addonsTotalCents;
+    if (!priceResult.body.configured || priceResult.body.quoteRequired) {
+      return NextResponse.json(
+        { error: "Für diese Konfiguration ist ein individuelles Angebot erforderlich." },
+        { status: 422 },
+      );
+    }
 
+    const grossAmountCents = Math.round(priceResult.body.grossPrice * 100);
     const orderNumber = createOrderNumber();
     const normalizedCountry =
       parsed.data.country.toUpperCase() === "DE" ||
@@ -84,17 +94,13 @@ export async function POST(request: Request) {
       data: {
         orderNumber,
         status: "PENDING_PAYMENT",
-        productSlug: pkg.productSlug,
-        material: pkg.material,
-        quantity: pkg.quantity,
-        packageId: pkg.id,
-        amountCents: totalAmountCents,
-        designServiceCents: addonPricing.designServiceCents,
-        physicalProofCents: addonPricing.physicalProofCents,
-        expressCents: addonPricing.expressCents,
-        extraDesignCount: parsed.data.addons?.extraDesignCount ?? 0,
-        extraDesignCents: addonPricing.extraDesignCents,
-        addonsTotalCents: addonPricing.addonsTotalCents || null,
+        productSlug: materialKeyToSlug(materialKey),
+        material: materialKeyToMaterial(materialKey),
+        quantity,
+        packageId: null,
+        widthMm,
+        heightMm,
+        amountCents: grossAmountCents,
         currency: "EUR",
         customerEmail: parsed.data.email,
         customerName: parsed.data.contactName,
@@ -113,11 +119,11 @@ export async function POST(request: Request) {
         maxRollendurchmesser: parsed.data.maxRollendurchmesser || null,
         maschineName: parsed.data.maschineName || null,
         artworkInputStatus: parsed.data.artworkStatus,
-        selectedAddons: parsed.data.addons,
+        selectedAddons: parsed.data.addons ?? undefined,
         statusEvents: {
           create: {
             status: "PENDING_PAYMENT",
-            note: `Checkout-Intake erfasst (${parsed.data.artworkStatus}).`,
+            note: `Wunschformat-Checkout: ${widthMm}×${heightMm} mm, ${quantity} Stück (${parsed.data.artworkStatus}).`,
           },
         },
       },
@@ -129,11 +135,11 @@ export async function POST(request: Request) {
       orderNumber: order.orderNumber,
       companyName: parsed.data.companyName,
       customerEmail: parsed.data.email,
-      productSlug: pkg.productSlug,
-      quantity: String(pkg.quantity),
-      material: pkg.material,
-      packageId: pkg.id,
-      source: "standard_checkout",
+      productSlug: materialKeyToSlug(materialKey),
+      quantity: String(quantity),
+      material: materialKeyToMaterial(materialKey),
+      packageId: "custom",
+      source: "custom_size_checkout",
     };
 
     const session = await stripe.checkout.sessions.create({
@@ -142,49 +148,28 @@ export async function POST(request: Request) {
       cancel_url: `${baseUrl}/checkout/cancel`,
       customer_email: parsed.data.email,
       metadata,
-      payment_intent_data: {
-        metadata,
-      },
+      payment_intent_data: { metadata },
       line_items: [
         {
           quantity: 1,
           price_data: {
             currency: "eur",
-            unit_amount: pkg.grossAmountCents,
+            unit_amount: grossAmountCents,
             product_data: {
-              name: getPackageDisplayName(pkg.productSlug, pkg.material),
-              description: `${pkg.quantity.toLocaleString("de-DE")} Stück, ${pkg.label}`,
+              name: getProductDisplayName(materialKey, widthMm, heightMm),
+              description: `${quantity.toLocaleString("de-DE")} Stück, Wunschformat, inkl. Versand`,
             },
           },
         },
-        ...addonPricing.lineItems
-          .filter((item) => item.grossAmountCents > 0)
-          .map((item) => ({
-          quantity: 1,
-          price_data: {
-            currency: "eur",
-            unit_amount: item.grossAmountCents,
-            product_data: {
-              name: item.name,
-              description: item.description,
-            },
-          },
-        })),
       ],
     });
 
     if (!session.url) {
-      console.error("Checkout-Session ohne URL erstellt:", session.id);
       await prisma.order.update({
         where: { id: order.id },
         data: {
           status: "PAYMENT_FAILED",
-          statusEvents: {
-            create: {
-              status: "PAYMENT_FAILED",
-              note: "Stripe-Checkout-Session wurde ohne Weiterleitungs-URL erstellt.",
-            },
-          },
+          statusEvents: { create: { status: "PAYMENT_FAILED", note: "Stripe-Session ohne URL." } },
         },
       });
       return NextResponse.json(
@@ -193,18 +178,12 @@ export async function POST(request: Request) {
       );
     }
 
-    await prisma.order.update({
-      where: { id: order.id },
-      data: {
-        stripeCheckoutSessionId: session.id,
-      },
-    });
-
+    await prisma.order.update({ where: { id: order.id }, data: { stripeCheckoutSessionId: session.id } });
     await prisma.payment.create({
       data: {
         orderId: order.id,
         stripeCheckoutSessionId: session.id,
-        amountCents: totalAmountCents,
+        amountCents: grossAmountCents,
         currency: "EUR",
         status: "PENDING",
         provider: "stripe",
@@ -213,24 +192,17 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ url: session.url });
   } catch (error) {
-    console.error("Checkout-Session konnte nicht erstellt werden:", error);
+    console.error("Custom-Checkout-Session fehlgeschlagen:", error);
     if (prisma && createdOrderId) {
       try {
         await prisma.order.update({
           where: { id: createdOrderId },
           data: {
             status: "PAYMENT_FAILED",
-            statusEvents: {
-              create: {
-                status: "PAYMENT_FAILED",
-                note: "Checkout-Session konnte vor der Weiterleitung nicht sauber erstellt werden.",
-              },
-            },
+            statusEvents: { create: { status: "PAYMENT_FAILED", note: "Session-Erstellung fehlgeschlagen." } },
           },
         });
-      } catch (statusError) {
-        console.error("Checkout-Fehlerstatus konnte nicht gespeichert werden:", statusError);
-      }
+      } catch {}
     }
     return NextResponse.json(
       { error: "Checkout ist derzeit nicht verfügbar. Bitte nutzen Sie das Angebotsformular." },

@@ -383,8 +383,8 @@ export function KontoClient() {
                       <li>Druckdaten: {getArtworkStatusLabel(order.artworkStatus)}</li>
                       <li>Bestelldatum: {formatDate(order.createdAt)}</li>
                     </ul>
-                    {order.uploadHref ? (
-                      <div className="cta-row">
+                    <div className="cta-row">
+                      {order.uploadHref ? (
                         <a href={order.uploadHref} className="cta-link">
                           {order.artworkStatus === "AWAITING_ARTWORK"
                             ? "Druckdaten hochladen"
@@ -392,8 +392,11 @@ export function KontoClient() {
                               ? "Proof ansehen und freigeben"
                               : "Auftrag & Druckdaten öffnen"}
                         </a>
-                      </div>
-                    ) : null}
+                      ) : null}
+                      <a href={`/konto/bestellungen/${order.id}`} className="secondary-link">
+                        Details &amp; Nachbestellen
+                      </a>
+                    </div>
                   </div>
                 ))}
               </div>

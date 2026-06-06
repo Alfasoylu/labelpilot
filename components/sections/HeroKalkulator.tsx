@@ -1,0 +1,313 @@
+"use client";
+
+import Image from "next/image";
+import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+type MaterialSlug = "pp-white" | "pp-transparent" | "paper-white";
+type PrintOption = "cmyk" | "unbedruckt";
+
+type PriceState =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "ok"; netPrice: number; grossPrice: number }
+  | { status: "quote" }
+  | { status: "unconfigured" }
+  | { status: "error" };
+
+const MATERIAL_API_KEY: Record<MaterialSlug, string> = {
+  "pp-white": "OPAQUE_PP",
+  "pp-transparent": "TRANSPARENT_PP",
+  "paper-white": "PAPER_WHITE",
+};
+
+function formatEur(amount: number) {
+  return amount.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+}
+
+export function HeroKalkulator() {
+  const router = useRouter();
+
+  const [quantity, setQuantity] = useState<number | "">(1000);
+  const [widthMm, setWidthMm] = useState<number | "">(60);
+  const [heightMm, setHeightMm] = useState<number | "">(40);
+  const [materialSlug, setMaterialSlug] = useState<MaterialSlug>("pp-white");
+  const [printOption, setPrintOption] = useState<PrintOption>("cmyk");
+  const [widthError, setWidthError] = useState("");
+  const [priceState, setPriceState] = useState<PriceState>({ status: "idle" });
+
+  const isNumeric = (v: number | "") => typeof v === "number" && v > 0;
+  const isValid =
+    isNumeric(quantity) &&
+    isNumeric(widthMm) &&
+    isNumeric(heightMm) &&
+    !widthError &&
+    typeof widthMm === "number" && widthMm <= 320;
+
+  const totalM2 =
+    isNumeric(quantity) && isNumeric(widthMm) && isNumeric(heightMm)
+      ? ((quantity as number) * (widthMm as number) * (heightMm as number)) / 1_000_000
+      : null;
+
+  const needsQuote =
+    printOption === "unbedruckt" || materialSlug === "paper-white";
+
+  const fetchPrice = useCallback(async () => {
+    if (!isValid || needsQuote) {
+      if (needsQuote) setPriceState({ status: "quote" });
+      return;
+    }
+    setPriceState({ status: "loading" });
+    try {
+      const res = await fetch("/api/kalkulator/price", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          materialKey: MATERIAL_API_KEY[materialSlug],
+          widthMm,
+          heightMm,
+          quantity,
+        }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data?.configured) {
+        setPriceState({ status: "unconfigured" });
+        return;
+      }
+      if (data.quoteRequired) { setPriceState({ status: "quote" }); return; }
+      setPriceState({ status: "ok", netPrice: data.netPrice, grossPrice: data.grossPrice });
+    } catch {
+      setPriceState({ status: "error" });
+    }
+  }, [isValid, needsQuote, materialSlug, widthMm, heightMm, quantity]);
+
+  useEffect(() => {
+    const t = setTimeout(() => { void fetchPrice(); }, 400);
+    return () => clearTimeout(t);
+  }, [fetchPrice]);
+
+  function handleWidthChange(raw: string) {
+    const v = raw === "" ? "" : Number.parseInt(raw, 10);
+    setWidthMm(v);
+    if (typeof v === "number" && v > 320) {
+      setWidthError("Max. 320 mm");
+    } else {
+      setWidthError("");
+    }
+  }
+
+  function buildParams(extra?: Record<string, string>) {
+    const p = new URLSearchParams();
+    if (quantity) p.set("q", String(quantity));
+    if (widthMm) p.set("w", String(widthMm));
+    if (heightMm) p.set("h", String(heightMm));
+    p.set("m", materialSlug);
+    p.set("print", printOption);
+    if (extra) {
+      for (const [k, v] of Object.entries(extra)) p.set(k, v);
+    }
+    return p.toString();
+  }
+
+  function handleConfigure() {
+    router.push(`/de/kalkulator?${buildParams()}`);
+  }
+
+  function handleArtworkLater() {
+    router.push(`/de/kalkulator?${buildParams({ artwork: "later" })}`);
+  }
+
+  return (
+    <>
+      {/* ── Hero: two-column split ── */}
+      <section className="hero-kalk-split container">
+        {/* LEFT: Calculator */}
+        <div className="hero-kalk__left">
+          <span className="eyebrow">PP-Rollenetiketten für Produktmarken</span>
+          <h1 className="hero-kalk__h1">PP-Rollenetiketten nach Maß</h1>
+          <p className="hero-kalk__sub">
+            Sofortpreis für Produktetiketten auf Flaschen, Gläsern, Dosen, Beuteln und
+            Supplement-Verpackungen.
+          </p>
+
+          <div className="hero-kalk__card">
+            <div className="hero-kalk__card-head">
+              <p className="hero-kalk__card-title">Etikettenpreis sofort berechnen</p>
+              <p className="hero-kalk__card-hint">
+                Wunschformat eingeben, Material wählen und direkt den Preis sehen.
+              </p>
+            </div>
+
+            <div className="hero-kalk__form">
+              {/* Row 1: Menge · Breite · Höhe */}
+              <div className="hero-kalk__field">
+                <label htmlFor="hk-qty">Menge</label>
+                <input
+                  id="hk-qty"
+                  type="number"
+                  min={1}
+                  max={19999}
+                  value={quantity}
+                  onChange={(e) =>
+                    setQuantity(e.target.value === "" ? "" : Number.parseInt(e.target.value, 10))
+                  }
+                />
+              </div>
+              <div className="hero-kalk__field">
+                <label htmlFor="hk-w">Breite (mm)</label>
+                <input
+                  id="hk-w"
+                  type="number"
+                  min={10}
+                  max={320}
+                  value={widthMm}
+                  onChange={(e) => handleWidthChange(e.target.value)}
+                  aria-invalid={Boolean(widthError) || undefined}
+                />
+                {widthError ? (
+                  <span className="hero-kalk__field-error">{widthError}</span>
+                ) : null}
+              </div>
+              <div className="hero-kalk__field">
+                <label htmlFor="hk-h">Höhe (mm)</label>
+                <input
+                  id="hk-h"
+                  type="number"
+                  min={10}
+                  value={heightMm}
+                  onChange={(e) =>
+                    setHeightMm(e.target.value === "" ? "" : Number.parseInt(e.target.value, 10))
+                  }
+                />
+              </div>
+
+              {/* Row 2: Material (span 2) · Druck (span 1) */}
+              <div className="hero-kalk__field hero-kalk__field--span2">
+                <label htmlFor="hk-mat">Material</label>
+                <select
+                  id="hk-mat"
+                  value={materialSlug}
+                  onChange={(e) => setMaterialSlug(e.target.value as MaterialSlug)}
+                >
+                  <option value="pp-white">PP-Folie weiß (opak)</option>
+                  <option value="pp-transparent">PP-Folie transparent</option>
+                  <option value="paper-white">Etikettenpapier weiß</option>
+                </select>
+              </div>
+              <div className="hero-kalk__field">
+                <label htmlFor="hk-print">Druck</label>
+                <select
+                  id="hk-print"
+                  value={printOption}
+                  onChange={(e) => setPrintOption(e.target.value as PrintOption)}
+                >
+                  <option value="cmyk">4-farbig CMYK</option>
+                  <option value="unbedruckt">Unbedruckt</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Live result */}
+            <div className="hero-kalk__result">
+              {priceState.status === "loading" && (
+                <span className="hero-kalk__result-dim">Preis wird berechnet …</span>
+              )}
+              {priceState.status === "ok" && (
+                <div className="hero-kalk__result-price">
+                  <span className="hero-kalk__result-net">
+                    {formatEur(priceState.netPrice)}
+                    <span className="hero-kalk__result-label"> Netto</span>
+                  </span>
+                  <span className="hero-kalk__result-meta">
+                    {formatEur(priceState.grossPrice)} brutto inkl. 19 % MwSt. · inkl. Versand nach Deutschland
+                  </span>
+                  {totalM2 !== null && (
+                    <span className="hero-kalk__result-m2">
+                      {totalM2.toLocaleString("de-DE", {
+                        minimumFractionDigits: 3,
+                        maximumFractionDigits: 3,
+                      })}{" "}
+                      m² gesamt
+                    </span>
+                  )}
+                </div>
+              )}
+              {priceState.status === "quote" && (
+                <span className="hero-kalk__result-dim">
+                  {printOption === "unbedruckt"
+                    ? "Unbedruckt: Angebot erforderlich."
+                    : materialSlug === "paper-white"
+                      ? "Etikettenpapier: Angebot erforderlich."
+                      : "Für diese Konfiguration bitte Angebot anfordern."}
+                </span>
+              )}
+              {priceState.status === "unconfigured" && (
+                <span className="hero-kalk__result-dim">
+                  Preiskonfiguration noch nicht abgeschlossen – im Kalkulator verfügbar.
+                </span>
+              )}
+              {priceState.status === "error" && (
+                <span className="hero-kalk__result-dim">
+                  Preisberechnung derzeit nicht verfügbar.
+                </span>
+              )}
+              {priceState.status === "idle" && (
+                <span className="hero-kalk__result-dim">Format und Menge eingeben.</span>
+              )}
+            </div>
+
+            <div className="hero-kalk__actions">
+              <button
+                type="button"
+                className="cta-button"
+                onClick={handleConfigure}
+                disabled={!isValid}
+              >
+                Weiter konfigurieren
+              </button>
+              <button
+                type="button"
+                className="secondary-link"
+                onClick={handleArtworkLater}
+              >
+                Druckdaten später hochladen
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT: Product image */}
+        <div className="hero-kalk__visual">
+          <figure className="hero-product-photo">
+            <Image
+              src="/images/editorial/home-hero-label-roll-cluster.webp"
+              alt="PP-Rollenetiketten auf Flaschen, Honiggläsern, Supplement-Dosen und Kosmetikverpackungen – individuell bedruckte Rollenetiketten für Produktmarken"
+              width={900}
+              height={1125}
+              priority
+              sizes="(max-width: 1024px) 100vw, 440px"
+              className="hero-product-photo__img"
+            />
+            <div className="hero-product-photo__badge hero-kalk__badge-row">
+              <span className="hero-product-photo__badge-pill">Wunschformat</span>
+              <span className="hero-product-photo__badge-pill">Sofortpreis</span>
+              <span className="hero-product-photo__badge-pill">Nachbestellbar</span>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      {/* ── Below hero: application row + trust ── */}
+      <div className="hero-kalk__below container">
+        <p className="hero-kalk__applications">
+          Für Flaschen · Gläser · Dosen · Beutel · Kosmetik · Supplements · Honig · Kaffee · Saucen · Private Label
+        </p>
+        <ul className="hero-kalk__trust-row">
+          <li>Maßanfertigung bis 320 mm Breite</li>
+          <li>Druckdatenprüfung &amp; Proof möglich</li>
+          <li>Nachbestellung in 30 Sekunden</li>
+        </ul>
+      </div>
+    </>
+  );
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 import { SourceTrackingFields } from "@/components/source-tracking-fields";
 import { trackLeadEvent } from "@/lib/analytics/browser";
@@ -83,6 +84,14 @@ export function QuoteRequestForm() {
   }, []);
 
   useEffect(() => {
+    if (state.status === "success") {
+      toast.success(state.message || "Anfrage erfolgreich gesendet.");
+    } else if (state.status === "warning") {
+      toast.warning(state.message || "Anfrage gesendet, bitte prüfen.");
+    } else if (state.status === "error") {
+      toast.error(state.message || "Fehler beim Senden.");
+    }
+
     if (
       (state.status === "success" || state.status === "warning") &&
       !trackedRef.current
@@ -97,7 +106,7 @@ export function QuoteRequestForm() {
     if (state.status === "idle" || state.status === "error") {
       trackedRef.current = false;
     }
-  }, [defaults.source, state.status]);
+  }, [defaults.source, state.status, state.message]);
 
   return (
     <form

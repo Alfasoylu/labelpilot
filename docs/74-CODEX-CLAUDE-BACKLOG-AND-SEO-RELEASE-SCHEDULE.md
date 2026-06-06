@@ -1802,3 +1802,75 @@ Progress note appended to keep backlog sequencing aligned with code reality:
 - Phase 8 is still intentionally disabled in production behavior, but schema and calculation helpers now exist for refill reminders.
 - Phase 9 is still intentionally internal-only, but schema scaffolding, CSV/XLSX parsing, validation harness, and generated-print placeholder logic now exist.
 - Remaining canonical next work should stay in-sequence: variable-data review surfaces, generated artifact handling, reminder email activation safeguards, then B2B account layer.
+
+---
+
+## 34. Zukunftsaufgabe: KI-Vorprüfung von Druckdaten (Claude Vision)
+
+**Phase:** P4+ (nach Artwork-Proof-System, parallel zu Admin-Ops-Verbesserungen)
+
+**Ziel:** Automatische Qualitätsvorprüfung von Kundendateien mit Claude Vision, bevor ein Mitarbeiter die Datei manuell sichtet. Spart Admin-Zeit und beschleunigt die Rückmeldung an Kunden.
+
+**Funktionsweise:**
+
+- Admin öffnet `/admin/orders/[orderId]`
+- Neben der Dateivorschau erscheint ein „KI-Vorprüfung starten"-Button
+- Server-Action ruft `@anthropic-ai/sdk` mit der hochgeladenen Druckdatei auf (als Base64-Bild oder direkter Supabase-Storage-URL)
+- Claude Vision prüft: Auflösung sichtbar ausreichend, offensichtliche Textfehler, weißer Rand/Beschnitt erkennbar, Bildinhalt plausibel für ein Etikett
+- Ergebnis wird als Admin-Notiz am Auftrag gespeichert (strukturiert: `ok / warnung / abgelehnt` + Freitext)
+- Endentscheidung bleibt beim Menschen — KI gibt nur eine Einschätzung
+
+**Technische Anforderungen:**
+
+```txt
+npm-Paket:         @anthropic-ai/sdk
+Umgebungsvariable: ANTHROPIC_API_KEY (in Vercel-Projekteinstellungen hinzufügen)
+Modell:            claude-opus-4-8 (Vision-fähig, höchste Qualität)
+Eingabe:           Supabase Storage URL oder Base64-kodiertes Vorschaubild
+Ausgabe:           Strukturiertes JSON { verdict, issues[], suggestion }
+Speicherung:       Als OrderNote mit type = "ai_preflight"
+```
+
+**Scope-Grenzen:**
+
+- Nur Vorprüfung, keine automatische Freigabe
+- Nur für already-uploaded Artwork (nicht für Upload-Flow selbst)
+- Weißunterdruck-Prüfung auf transparentem Material als möglicher Sonderfall
+- Kein direktes Kundenfeedback — nur internes Admin-Tool
+
+**Abhängigkeiten:** Artwork-Upload-Flow (P2, bereits live), Admin-Auftragsdetailseite (P3, bereits live)
+
+---
+
+## 35. Zukunftsaufgabe: Variantensystem und Order-Customization ausbauen
+
+**Phase:** P4–P5 (nach Revenue-MVP-Stabilisierung)
+
+**Kontext:** Das aktuelle Konfiguratorsystem ist ein korrekter MVP, deckt aber noch nicht alle kaufrelevanten Produkteigenschaften ab. Kunden aus der Industrie (Lebensmittel, Supplements) brauchen diese Optionen für die Kaufentscheidung.
+
+### 35.1 Fehlende Produktvarianten im Konfigurator
+
+| Option | Status | Verhalten |
+|---|---|---|
+| **Oberflächenveredelung** (Matt / Glänzend) | Fehlt vollständig | Self-Serve: Preisauswirkung dokumentieren; vorerst Angebotsfallback wenn Aufpreis |
+| **Klebstofftyp** (Permanent / Ablösbar) | Fehlt vollständig | Ablösbar = Angebotsfallback; Permanent = Standard ohne Auswahl |
+| **Rollenspezifikationen** (Kern, Abrollung, max. Rollendurchmesser) | Fehlt vollständig | Pflichtangabe für Kunden mit Etikettenspendemaschinen; als optionales Freitextfeld im Checkout-Notizfeld übergangsmäßig |
+| **Abrollung / Wickelrichtung** (ISO 1–8) | Fehlt vollständig | Standardisierter Dropdown, direkt im Checkout-Formular (nicht im Konfigurator) |
+| **Wunschformat-Rechner** | Schema + Feature-Flag vorhanden, aber deaktiviert | Aktivierung erst wenn `§30A` Admin-Kostenparameter validiert |
+| **Weißunterdruck-Hinweis** (transparent) | Fehlt im UI | Bei Material = TRANSPARENT: Hinweistext „Weißunterdruck nur über Angebot" anzeigen |
+
+### 35.2 Fehlende Order-Customization-Felder
+
+| Feld | Status | Priorität |
+|---|---|---|
+| Lot-Nummer / SKT-Datum im Checkout | Fehlt | P5 (Variable-Data-Modul) |
+| „Kleine Änderung"-Hinweis beim Reorder | Schema-Stub, kein UI | P4 |
+| Artwork-Revisions-Anfrage im Proof-Schritt | Fehlt | P3 (nächster Schritt im Proof-Flow) |
+| Mehrere Designs pro Bestellung (Mehr-SKU-Sets) | Fehlt — immer Angebotsfallback | P5 |
+
+### 35.3 Empfohlene Umsetzungsreihenfolge
+
+1. **Sofort machbar (P3-Nachzügler):** Weißunterdruck-Hinweis bei Material=TRANSPARENT im Konfigurator anzeigen (nur Text + Link zu Angebot)
+2. **Nächste Iteration (P4):** Rollenspezifikationen als optionales Freitextfeld im `CheckoutIntakeForm` ergänzen; Abrollung als Dropdown
+3. **Mittelfristig (P4–P5):** Oberflächenveredelung (Matt/Glänzend) als Konfiguratorstufe „4 · Oberfläche" — erst mit Preis-Mapping im Package-System
+4. **Langfristig (P5):** Lot/SKT-Felder, Variable-Data-Upload, Mehr-SKU-Batch-Bestellung

@@ -3,7 +3,7 @@ import type { Prisma } from "@prisma/client";
 
 import { getPrismaClient } from "@/lib/db/prisma";
 import { sendEmail } from "@/lib/email/send";
-import { correctionRequested } from "@/lib/email/templates/lifecycle";
+import { artworkApproved, correctionRequested } from "@/lib/email/templates/lifecycle";
 import { syncStoredDesignFromApprovedOrder } from "@/lib/artwork/stored-designs";
 import { canReviewArtworkOrderStatus } from "@/lib/orders/status";
 
@@ -135,13 +135,15 @@ export async function POST(
         },
       });
 
-      await syncStoredDesignFromApprovedOrder({
-        tx,
-        order,
-        sourceType: "CUSTOMER_UPLOAD",
-        originalArtworkFileId: artworkFile.id,
-        changeSummary: note || "Datei für Produktion freigegeben.",
-      });
+      if (order.packageId) {
+        await syncStoredDesignFromApprovedOrder({
+          tx,
+          order: order as typeof order & { packageId: string },
+          sourceType: "CUSTOMER_UPLOAD",
+          originalArtworkFileId: artworkFile.id,
+          changeSummary: note || "Datei für Produktion freigegeben.",
+        });
+      }
 
       return;
     }
@@ -176,6 +178,29 @@ export async function POST(
       : action === "under_review"
         ? "Datei zur Prüfung markiert."
         : "Korrektur wurde angefordert.";
+
+  if (action === "approve") {
+    if (order.customerEmail) {
+      const template = artworkApproved({
+        orderId: order.id,
+        orderNumber: order.orderNumber,
+        uploadToken: order.uploadToken,
+      });
+
+      try {
+        await sendEmail({
+          to: order.customerEmail,
+          subject: template.subject,
+          html: template.html,
+          text: template.text,
+        });
+      } catch (error) {
+        console.error("Artwork-Freigabemail fehlgeschlagen:", error);
+      }
+    } else {
+      console.debug(`Artwork-Freigabemail übersprungen: keine E-Mail für ${order.id}.`);
+    }
+  }
 
   if (action === "request_correction") {
     if (order.customerEmail) {

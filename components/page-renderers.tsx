@@ -9,7 +9,7 @@ import { ProductConfigurator } from "@/components/product-configurator";
 import { FaqAccordion } from "@/components/faq/FaqAccordion";
 import { Section } from "@/components/layout/Section";
 import { LegalNoticeBox } from "@/components/legal/LegalNoticeBox";
-import { BrandHero } from "@/components/sections/BrandHero";
+import { HeroKalkulator } from "@/components/sections/HeroKalkulator";
 import { LabelJourney } from "@/components/sections/LabelJourney";
 import { ContentCta } from "@/components/sections/ContentCta";
 import { FeatureGrid } from "@/components/sections/FeatureGrid";
@@ -171,29 +171,40 @@ const homepagePackages: HomepagePackage[] = [
 ];
 
 const homepageOrderingSteps = [
-  { title: "Etikett auswählen", body: "Opak oder transparent, passend zur Verpackung." },
-  { title: "Menge & Material", body: "Mengenpaket und Finish festlegen." },
-  { title: "Druckdaten hochladen", body: "PDF, AI, EPS oder SVG – wir prüfen die Daten." },
-  { title: "Proof freigeben", body: "Freigabe vor der Produktion." },
-  { title: "Produktion & Versand", body: "Produktion und Versand nach Deutschland." },
+  { title: "Format & Menge eingeben", body: "Breite, Höhe und Menge frei wählen – Sofortpreis erscheint direkt im Kalkulator." },
+  { title: "Material wählen", body: "Opak PP, transparent PP oder Etikettenpapier – matt oder glänzend, kein Aufpreis." },
+  { title: "Druckdaten hochladen oder später senden", body: "PDF, AI, EPS oder SVG – technische Prüfung inklusive. Druckdaten können auch nach der Bestellung nachgeliefert werden." },
+  { title: "Produktion starten & nachbestellen", body: "Nach Proof-Freigabe startet die Produktion. Beim nächsten Mal sind Format, Material und Druckdaten bereits gespeichert – Nachbestellung in 30 Sekunden." },
 ];
 
 const homepageFaqs: FAQ[] = [
+  {
+    question: "Welche Etikettenmaterialien gibt es?",
+    answer: "PP-Folie weiß (opak), PP-Folie transparent und Etikettenpapier weiß. Der Kalkulator zeigt den Preis für jedes Material direkt an.",
+  },
+  {
+    question: "Kann ich mein eigenes Format bestellen?",
+    answer: "Ja. Im Kalkulator Breite und Höhe frei eingeben – bis 320 mm Breite, keine Höhenbeschränkung. Der Preis wird sofort berechnet.",
+  },
   {
     question: "Welche Druckdaten werden benötigt?",
     answer: "PDF, AI, EPS, SVG, PNG oder JPG mit 3 mm Beschnitt. Wir prüfen die Daten vor der Produktion.",
   },
   {
+    question: "Kann ich Druckdaten später senden?",
+    answer: "Ja. Im Checkout gibt es die Option ‚Druckdaten später hochladen'. Die Produktion startet erst nach Datenprüfung und Proof-Freigabe.",
+  },
+  {
     question: "Kann ich dieselben Etiketten später nachbestellen?",
-    answer: "Ja. Freigegebene Druckdaten, Material und Maß bleiben gespeichert – die Nachbestellung startet schneller.",
+    answer: "Ja. Freigegebene Druckdaten, Material, Maße und Produktionsparameter bleiben gespeichert – die Nachbestellung startet in 30 Sekunden aus dem Kundenkonto.",
   },
   {
     question: "Gibt es transparente und opake PP-Etiketten?",
     answer: "Ja. Opak für deckende Optik, transparent für sichtbare Verpackung.",
   },
   {
-    question: "Für welche Produkte eignen sich PP-Rollenetiketten?",
-    answer: "Für Lebensmittel-, Getränke- und Supplement-Marken sowie Handelsmarken.",
+    question: "Für welche Produkte sind PP-Rollenetiketten geeignet?",
+    answer: "Für Lebensmittel, Getränke, Supplemente, Kosmetik, Kaffee, Honig, Saucen, Dressings und Private-Label-Produkte.",
   },
   {
     question: "Gibt es einen Proof vor der Produktion?",
@@ -231,10 +242,14 @@ const homepageFaqs: FAQ[] = [
 ];
 
 const homepageUseCards = [
-  { title: "Für Gläser", body: "Honig, Aufstriche, Feinkost." },
-  { title: "Für Dosen", body: "Supplemente, Kaffee, Trockenwaren." },
-  { title: "Für Beutel", body: "Kaffee, Tee, Standbeutel." },
-  { title: "Für Flaschen", body: "Getränke, Sirup, Öle." },
+  { title: "Lebensmittel", body: "Gewürze, Aufstriche, Feinkost, Gläser und Beutel." },
+  { title: "Getränke", body: "Flaschen, Sirup, Öle, Smoothies und Spirituosen." },
+  { title: "Supplemente", body: "Dosen, Flaschen und Beutel für Nahrungsergänzung." },
+  { title: "Kosmetik", body: "Tiegel, Cremes, Seren, Shampoos und Körperpflege." },
+  { title: "Kaffee & Tee", body: "Beutel, Dosen und Standbeutel für Röstkaffee und Tee." },
+  { title: "Honig & Feinkost", body: "Gläser, Tiegel und Feinkostgläser für Imker und Händler." },
+  { title: "Saucen & Dressings", body: "Dips, Würzpasten und Dressings im Glas oder Flasche." },
+  { title: "Private Label", body: "Handelsmarken, White Label und B2B-Eigenmarken." },
 ];
 
 const differentiationClassic = [
@@ -283,14 +298,14 @@ export function HomePage({ page }: HomePageProps) {
 
   return (
     <>
-      <BrandHero title={page.title} lead={page.lead} />
+      <HeroKalkulator />
 
       <div className="container section-stack">
         <TrustBar items={homepageTrustItems} />
 
         <Section
           eyebrow="Verpackungen"
-          title="PP-Rollenetiketten für Ihre Verpackung."
+          title="Für jede Produktkategorie das passende Etikett."
         >
           <div className="use-grid">
             {homepageUseCards.map((useCard) => (
@@ -327,42 +342,31 @@ export function HomePage({ page }: HomePageProps) {
         </Section>
 
         <Section
-          id="pakete"
-          eyebrow="Pakete & Preise"
-          title="Klare Mengenpakete für Produktetiketten."
-          lead="5.000 Stück ist das empfohlene Standardpaket für wiederkehrende Bestellungen."
+          id="kalkulator"
+          eyebrow="Wunschformat & Preise"
+          title="Ihr Format, Ihr Preis – sofort berechnet."
+          lead="Keine Standardgrößen. Breite, Höhe und Menge frei wählbar – der Preis wird in Sekunden berechnet."
         >
-          <div className="package-grid">
-            {homepagePackages.map((item) => (
-              <PricingCard
-                key={item.tier.label}
-                tier={item.tier}
-                ctaLink={
-                  item.checkout
-                    ? { label: "Paket wählen", href: "/de/opake-pp-etiketten" }
-                    : undefined
-                }
-              />
-            ))}
+          <div className="card-grid">
+            <article className="section-card">
+              <h3>Fertigung nach Maß</h3>
+              <p>Breite bis 320 mm, Höhe frei. Opak PP oder Transparent PP, Matt oder Glänzend – kein Aufpreis für die Oberfläche.</p>
+            </article>
+            <article className="section-card">
+              <h3>Sofortpreis im Kalkulator</h3>
+              <p>Format eingeben, Menge wählen – der Netto- und Bruttopreis erscheint sofort. Keine Anfrage nötig bis 19.999 Stück.</p>
+            </article>
+            <article className="section-card">
+              <h3>Direkt zur Bestellung</h3>
+              <p>Nach der Preisberechnung Bestelldaten eingeben und direkt zu Stripe weiter. Kein Umweg über Anfragen oder Rückrufe.</p>
+            </article>
           </div>
-          <p className="package-note">{pricingValueBundleLine}</p>
-          <p className="package-note">
-            Produktion nach Proof-Freigabe. Versand nach Deutschland inklusive.
-          </p>
-          <p className="package-note">
-            Standardweg für diese Pakete: 100×200 mm, 1 Design pro Auftrag, Standard-Datenprüfung
-            und 1 Proof-Runde. Ab 20.000 Stück oder bei Sonderumfang führt der Weg ins B2B-Angebot.
-          </p>
-          <p className="package-note">
-            1.000 Stück ist der bezahlte Einstieg. 5.000 Stück ist das empfohlene B2B-Standardpaket
-            für wiederkehrende Bestellungen.
-          </p>
           <div className="hero-actions">
-            <Link href="/de/druckdaten" className="cta-link">
-              Druckdaten prüfen lassen
+            <Link href="/de/kalkulator" className="cta-button">
+              Zum Kalkulator
             </Link>
-            <Link href="/de/pp-rollenetiketten" className="secondary-link">
-              Alle PP-Rollenetiketten ansehen
+            <Link href="/de/angebot-anfordern" className="secondary-link">
+              B2B-Angebot anfordern
             </Link>
           </div>
         </Section>
@@ -438,21 +442,29 @@ export function HomePage({ page }: HomePageProps) {
 
         <Section
           eyebrow="Nachbestellen"
-          title="Einmal freigeben. Später schneller nachbestellen."
-          lead="Nicht jedes Mal neu hochladen. Nicht jedes Mal dieselbe Datei suchen."
+          title="Einmal freigeben. Immer wieder nachbestellen."
+          lead="Freigegebene Druckdaten, Maße, Material und Produktionsparameter bleiben gespeichert – die nächste Bestellung dauert Sekunden."
         >
-          <EditorialImage
-            src="/images/editorial/home-reorder-saved-artwork.webp"
-            alt="Rolle bedruckter PP-Etiketten neben Proofbögen, Spezifikationskarten, Archivbox und passendem Produktglas"
-            caption="Freigegebene Druckdaten und gespeicherte Spezifikation – bereit für die nächste Bestellung."
-            sizes="(max-width: 1024px) 100vw, 960px"
-          />
+          <div className="card-grid">
+            <article className="section-card">
+              <h3>Druckdaten gespeichert</h3>
+              <p>Freigegebene Datei bleibt im Kundenkonto abrufbar. Kein erneutes Suchen oder Hochladen.</p>
+            </article>
+            <article className="section-card">
+              <h3>Format & Spezifikation hinterlegt</h3>
+              <p>Breite, Höhe, Material, Oberfläche und Produktionsparameter werden automatisch übernommen.</p>
+            </article>
+            <article className="section-card">
+              <h3>Nachbestellung in 30 Sekunden</h3>
+              <p>Aus dem Kundenkonto heraus eine neue Bestellung mit derselben Konfiguration starten – inklusive Bestell- und Rechnungsverlauf.</p>
+            </article>
+          </div>
           <div className="hero-actions">
-            <Link href="/de/nachbestellen" className="cta-link">
-              Nachbestellprozess ansehen
+            <Link href="/konto" className="cta-button">
+              Kundenkonto erstellen
             </Link>
-            <Link href="/de/pp-rollenetiketten" className="secondary-link">
-              PP-Rollenetiketten im Überblick
+            <Link href="/de/nachbestellen" className="secondary-link">
+              Nachbestellprozess ansehen
             </Link>
           </div>
         </Section>
@@ -525,6 +537,12 @@ export function HomePage({ page }: HomePageProps) {
               PP-Materialien und entscheiden Sie danach über die passende
               Etikettenproduktion.
             </p>
+            <ul className="simple-list">
+              <li>Musterbox: kostenlos anfordern</li>
+              <li>Digitaler Proof: 10 EUR netto</li>
+              <li>Technischer Datencheck: inklusive</li>
+              <li>Design-Service: 40 EUR netto (kostenlos ab 2.000 EUR Auftragswert)</li>
+            </ul>
             <div className="hero-actions">
               <Link href="/de/musterbox" className="cta-link">
                 Musterbox anfordern
@@ -562,14 +580,17 @@ export function HomePage({ page }: HomePageProps) {
           </div>
           <div className="cta-editorial__content">
             <span className="eyebrow">Nächster Schritt</span>
-            <h2>Bereit für professionelle Rollenetiketten?</h2>
-            <p>Fordern Sie eine Musterbox an oder stellen Sie eine Etikettenanfrage.</p>
+            <h2>Preis sofort berechnen oder direkt anfragen.</h2>
+            <p>Kalkulator für Sofortpreis, Musterbox für Materialentscheidung oder individuelles B2B-Angebot.</p>
             <div className="hero-actions">
-              <Link href="/de/angebot-anfordern" className="cta-link">
-                PP-Etiketten anfragen
+              <Link href="/de/kalkulator" className="cta-button">
+                Preis berechnen
               </Link>
               <Link href="/de/musterbox" className="secondary-link">
                 Musterbox anfordern
+              </Link>
+              <Link href="/de/angebot-anfordern" className="secondary-link">
+                Angebot erhalten
               </Link>
             </div>
           </div>

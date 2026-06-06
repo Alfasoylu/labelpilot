@@ -67,6 +67,10 @@ export function getMaterialLabel(material: string) {
   return material === "TRANSPARENT" ? "Transparentes PP" : "Opakes PP";
 }
 
+export function formatFinishing(finishing: string | null | undefined) {
+  return finishing === "GLAENZEND" ? "Glänzend" : "Matt";
+}
+
 export function getOrderStatusLabel(status: string) {
   switch (status) {
     case "PENDING_PAYMENT":

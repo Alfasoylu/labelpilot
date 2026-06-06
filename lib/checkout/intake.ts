@@ -32,6 +32,11 @@ export const checkoutIntakeSchema = z.object({
   postalCode: z.string().trim().min(1).max(20),
   city: z.string().trim().min(1).max(120),
   country: z.string().trim().min(1).max(60).default("DE"),
+  finishing: z.enum(["MATT", "GLAENZEND"]).optional(),
+  rollKern: z.string().trim().max(60).optional().or(z.literal("")),
+  abrollrichtung: z.string().trim().max(80).optional().or(z.literal("")),
+  maxRollendurchmesser: z.string().trim().max(60).optional().or(z.literal("")),
+  maschineName: z.string().trim().max(200).optional().or(z.literal("")),
   artworkStatus: checkoutArtworkInputStatusSchema,
   addons: checkoutAddonSchema.optional(),
 });
@@ -42,11 +47,43 @@ export type CheckoutArtworkInputStatus = z.infer<
   typeof checkoutArtworkInputStatusSchema
 >;
 
+const contactAddressFields = {
+  companyName: z.string().trim().min(1).max(160),
+  contactName: z.string().trim().min(1).max(120),
+  email: z.string().trim().email(),
+  phone: z.string().trim().min(1).max(60),
+  vatId: z.string().trim().max(80).optional().or(z.literal("")),
+  notes: z.string().trim().max(2000).optional().or(z.literal("")),
+  streetAddress: z.string().trim().min(1).max(160),
+  addressLine2: z.string().trim().max(160).optional().or(z.literal("")),
+  postalCode: z.string().trim().min(1).max(20),
+  city: z.string().trim().min(1).max(120),
+  country: z.string().trim().min(1).max(60).default("DE"),
+  rollKern: z.string().trim().max(60).optional().or(z.literal("")),
+  abrollrichtung: z.string().trim().max(80).optional().or(z.literal("")),
+  maxRollendurchmesser: z.string().trim().max(60).optional().or(z.literal("")),
+  maschineName: z.string().trim().max(200).optional().or(z.literal("")),
+  artworkStatus: checkoutArtworkInputStatusSchema,
+  addons: checkoutAddonSchema.optional(),
+} as const;
+
+export const customSizeCheckoutIntakeSchema = z.object({
+  materialKey: z.enum(["OPAQUE_PP", "TRANSPARENT_PP"]),
+  widthMm: z.number().int().min(10).max(500),
+  heightMm: z.number().int().min(10).max(1000),
+  quantity: z.number().int().positive(),
+  finishing: z.enum(["MATT", "GLAENZEND"]).optional(),
+  ...contactAddressFields,
+});
+
+export type CustomSizeCheckoutIntakeInput = z.infer<typeof customSizeCheckoutIntakeSchema>;
+
 export type CheckoutSearchParams = {
   packageId: string;
   productSlug: ProductSlug;
   material: PackageMaterial;
   quantity: number;
+  finishing: "MATT" | "GLAENZEND";
   addons: CheckoutAddonInput;
 };
 
@@ -79,12 +116,16 @@ export function parseCheckoutSearchParams(
     0,
     Number.parseInt(getSingle("extraDesignCount") ?? "0", 10) || 0,
   );
+  const finishingParam = getSingle("finishing");
+  const finishing: "MATT" | "GLAENZEND" =
+    finishingParam === "GLAENZEND" ? "GLAENZEND" : "MATT";
 
   return {
     packageId,
     productSlug,
     material,
     quantity,
+    finishing,
     addons: {
       designService: parseBoolean("designService"),
       physicalProof: parseBoolean("physicalProof"),

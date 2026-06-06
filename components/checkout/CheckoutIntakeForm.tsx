@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useTransition } from "react";
+import { toast } from "sonner";
 
 import type {
   CheckoutAddonInput,
@@ -20,6 +21,7 @@ type CheckoutIntakeFormProps = {
   netPriceLabel: string;
   addonSummary: string[];
   backHref: string;
+  initialFinishing?: "MATT" | "GLAENZEND";
 };
 
 export function CheckoutIntakeForm({
@@ -34,12 +36,14 @@ export function CheckoutIntakeForm({
   netPriceLabel,
   addonSummary,
   backHref,
+  initialFinishing,
 }: CheckoutIntakeFormProps) {
   const configuratorChangeHref = `/de/pp-rollenetiketten?material=${
     material === "TRANSPARENT" ? "transparent" : "opaque"
   }&size=standard&quantity=${quantity}`;
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedFinishing, setSelectedFinishing] = useState<"MATT" | "GLAENZEND">(initialFinishing ?? "MATT");
   const artworkSummary = addons.customerUploadsOwnData
     ? "druckfertige Daten werden nach der Zahlung hochgeladen"
     : addons.designService
@@ -66,6 +70,11 @@ export function CheckoutIntakeForm({
         postalCode: String(formData.get("postalCode") ?? ""),
         city: String(formData.get("city") ?? ""),
         country: String(formData.get("country") ?? "DE"),
+        finishing: String(formData.get("finishing") ?? "MATT") as "MATT" | "GLAENZEND",
+        rollKern: String(formData.get("rollKern") ?? ""),
+        abrollrichtung: String(formData.get("abrollrichtung") ?? ""),
+        maxRollendurchmesser: String(formData.get("maxRollendurchmesser") ?? ""),
+        maschineName: String(formData.get("maschineName") ?? ""),
         artworkStatus: String(
           formData.get("artworkStatus") ?? "upload_after_order",
         ) as CheckoutArtworkInputStatus,
@@ -86,18 +95,20 @@ export function CheckoutIntakeForm({
           | null;
 
         if (!response.ok || !data?.url) {
-          setErrorMessage(
+          const msg =
             data?.error ??
-              "Der Checkout ist im Moment nicht verfügbar. Bitte nutzen Sie das Angebotsformular.",
-          );
+            "Der Checkout ist im Moment nicht verfügbar. Bitte nutzen Sie das Angebotsformular.";
+          setErrorMessage(msg);
+          toast.error(msg);
           return;
         }
 
         window.location.assign(data.url);
       } catch {
-        setErrorMessage(
-          "Der Checkout ist im Moment nicht erreichbar. Bitte nutzen Sie das Angebotsformular.",
-        );
+        const msg =
+          "Der Checkout ist im Moment nicht erreichbar. Bitte nutzen Sie das Angebotsformular.";
+        setErrorMessage(msg);
+        toast.error(msg);
       }
     });
   };
@@ -117,17 +128,31 @@ export function CheckoutIntakeForm({
         <ul className="simple-list">
           <li>Produkt: {productName}</li>
           <li>Material: {material === "TRANSPARENT" ? "Transparentes PP" : "Opakes PP"}</li>
+          <li>Oberfläche: {selectedFinishing === "GLAENZEND" ? "Glänzend" : "Matt (Standard)"}</li>
           <li>Größe: 100 × 200 mm (Standardformat)</li>
           <li>Paket: {packageLabel}</li>
           <li>Menge: {quantity.toLocaleString("de-DE")} Stück</li>
           <li>Preis: {netPriceLabel} · {priceLabel} (inkl. 19% MwSt)</li>
           <li>Land: Deutschland</li>
           <li>
+            Proof: {addons.physicalProof ? "Digital + Physischer Andruck" : "Digital (inklusive)"}
+          </li>
+          <li>
             Druckdaten:
             {" "}
             {artworkSummary}
           </li>
         </ul>
+        {material === "TRANSPARENT" ? (
+          <p className="field-hint">
+            <strong>Hinweis:</strong> Weißunterdruck (Deckweiß) ist nicht im Standardpreis
+            enthalten. Falls benötigt, bitte zuerst{" "}
+            <Link href="/de/angebot-anfordern?material=transparent" className="secondary-link">
+              ein Angebot anfordern
+            </Link>
+            .
+          </p>
+        ) : null}
         <p className="field-hint">
           Lieferzeit: ca. 10–14 Werktage nach Ihrer Freigabe (Produktion + Versand nach
           Deutschland). Voraussichtlicher Zeitraum, keine bindende Garantie.
@@ -155,6 +180,29 @@ export function CheckoutIntakeForm({
       </article>
 
       <div className="form-grid">
+        <div className="form-group">
+          <span className="form-group-title">Oberfläche / Finish</span>
+        </div>
+        <div className="field">
+          <label htmlFor="finishing">Oberflächenfinish</label>
+          <select
+            id="finishing"
+            name="finishing"
+            value={selectedFinishing}
+            onChange={(e) => setSelectedFinishing(e.target.value as "MATT" | "GLAENZEND")}
+          >
+            <option value="MATT">Matt (Standard)</option>
+            <option value="GLAENZEND">Glänzend</option>
+          </select>
+        </div>
+        <div className="field-full">
+          <p className="field-hint">
+            Kein Preisunterschied zwischen Matt und Glänzend. Sonderoberflächen (Soft-Touch,
+            Folienlaminat, Hochglanzlaminat) sind nicht im Standardpreis enthalten und werden nur
+            über ein individuelles Angebot beauftragt.
+          </p>
+        </div>
+
         <div className="form-group">
           <span className="form-group-title">Unternehmen</span>
         </div>
@@ -203,6 +251,47 @@ export function CheckoutIntakeForm({
           <select id="country" name="country" defaultValue="DE">
             <option value="DE">Deutschland (DE)</option>
           </select>
+        </div>
+
+        <div className="form-group">
+          <span className="form-group-title">Rollenspezifikationen</span>
+        </div>
+        <div className="field">
+          <label htmlFor="rollKern">Rollenkern (Innendurchmesser)</label>
+          <select id="rollKern" name="rollKern" defaultValue="">
+            <option value="">Keine Angabe</option>
+            <option value="76 mm">76 mm (Standard)</option>
+            <option value="40 mm">40 mm (Kleinspule)</option>
+            <option value="Nicht sicher / Bitte beraten">Nicht sicher / Bitte beraten</option>
+          </select>
+        </div>
+        <div className="field">
+          <label htmlFor="abrollrichtung">Abrollrichtung</label>
+          <select id="abrollrichtung" name="abrollrichtung" defaultValue="">
+            <option value="">Keine Angabe (Standard)</option>
+            <option value="Abrollung 1 – von außen, Etikett oben">Abrollung 1 – von außen, Etikett oben</option>
+            <option value="Abrollung 2 – von außen, Etikett unten">Abrollung 2 – von außen, Etikett unten</option>
+            <option value="Abrollung 3 – von innen, Etikett oben">Abrollung 3 – von innen, Etikett oben</option>
+            <option value="Abrollung 4 – von innen, Etikett unten">Abrollung 4 – von innen, Etikett unten</option>
+            <option value="Abrollung 5–8 / Sonstige">Abrollung 5–8 / Sonstige</option>
+            <option value="Nicht sicher / Bitte beraten">Nicht sicher / Bitte beraten</option>
+          </select>
+        </div>
+        <div className="field">
+          <label htmlFor="maxRollendurchmesser">Max. Rollendurchmesser (optional)</label>
+          <input
+            id="maxRollendurchmesser"
+            name="maxRollendurchmesser"
+            placeholder="z. B. 200 mm"
+          />
+        </div>
+        <div className="field">
+          <label htmlFor="maschineName">Maschine / Etikettenspender (optional)</label>
+          <input
+            id="maschineName"
+            name="maschineName"
+            placeholder="z. B. HERMA 400, Zebra ZT411"
+          />
         </div>
 
         <div className="form-group">

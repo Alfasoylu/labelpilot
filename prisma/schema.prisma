@@ -224,7 +224,9 @@ model Order {
   productSlug             String
   material                String
   quantity                Int
-  packageId               String
+  packageId               String?
+  widthMm                 Int?
+  heightMm                Int?
   amountCents             Int
   designServiceCents      Int?
   physicalProofCents      Int?
@@ -253,6 +255,11 @@ model Order {
   reorderSourceArtworkVersionId String?
   reorderMode             String?
   reorderStockDuration    String?
+  finishing               String?
+  rollKern                String?
+  abrollrichtung          String?
+  maxRollendurchmesser    String?
+  maschineName            String?
   shippingMode            String?
   shippingCarrier         String?
   trackingNumber          String?

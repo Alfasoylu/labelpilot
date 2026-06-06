@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Badge } from "@/components/ui/badge";
 import {
   buildAdminOrdersListWhere,
   formatAdminDate,
@@ -11,6 +12,32 @@ import {
   getMaterialLabel,
   getOrderStatusLabel,
 } from "@/lib/orders/artwork";
+import type { OrderStatusValue } from "@/lib/orders/status";
+
+type BadgeVariant = "default" | "secondary" | "destructive" | "outline" | "success" | "warning";
+
+function orderStatusVariant(status: string): BadgeVariant {
+  switch (status as OrderStatusValue) {
+    case "CORRECTION_REQUIRED":
+    case "PAYMENT_FAILED":
+    case "CANCELLED":
+    case "REFUND_REQUESTED":
+      return "destructive";
+    case "APPROVED_FOR_PRODUCTION":
+    case "DELIVERED":
+    case "COMPLETED":
+      return "success";
+    case "SHIPPED":
+    case "IN_PRODUCTION":
+      return "secondary";
+    case "WAITING_CUSTOMER_APPROVAL":
+    case "REPRINT_REQUIRED":
+    case "ON_HOLD":
+      return "warning";
+    default:
+      return "outline";
+  }
+}
 
 export const dynamic = "force-dynamic";
 
@@ -115,10 +142,15 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
                   <div>
                     <div className="admin-order-heading">
                       <h3>{order.orderNumber}</h3>
-                      {hasOrderAddons(order) ? <span className="badge">Zusatzleistungen</span> : null}
+                      <Badge variant={orderStatusVariant(order.status)}>
+                        {getOrderStatusLabel(order.status)}
+                      </Badge>
+                      {hasOrderAddons(order) ? (
+                        <Badge variant="secondary">Zusatzleistungen</Badge>
+                      ) : null}
                     </div>
                     <p className="price-note">
-                      {getOrderStatusLabel(order.status)} · {getArtworkStatusLabel(order.artworkStatus)}
+                      {getArtworkStatusLabel(order.artworkStatus)}
                     </p>
                     <p className="price-note">
                       {order.customerEmail} · {order.productSlug} · {getMaterialLabel(order.material)}

@@ -35,6 +35,7 @@ export function ProductConfigurator({
   const [material, setMaterial] = useState<Material>(initialMaterial);
   const [size, setSize] = useState<SizePath>(initialSize);
   const [quantity, setQuantity] = useState<number>(initialQuantity);
+  const [finishing, setFinishing] = useState<"MATT" | "GLAENZEND">("MATT");
 
   const table = material === "TRANSPARENT" ? transparentPackages : opaquePackages;
   const materialLabel = material === "TRANSPARENT" ? "Transparentes PP" : "Opakes PP";
@@ -71,7 +72,26 @@ export function ProductConfigurator({
               Transparentes PP
             </button>
           </div>
+          <p className="field-hint">
+            Standard: permanent haftendes PP-Material. Ablösbarer Kleber, Tiefkühlkleber oder
+            spezielle Haftanforderungen?{" "}
+            <Link href={quoteHref} className="secondary-link">
+              Individuelles Angebot
+            </Link>
+          </p>
         </article>
+
+        {material === "TRANSPARENT" ? (
+          <article className="feature-card">
+            <p className="field-hint">
+              <strong>Hinweis:</strong> Weißunterdruck (Deckweiß) auf transparentem Material ist nicht
+              im Standardpreis enthalten und wird nur über ein individuelles Angebot beauftragt.{" "}
+              <Link href="/de/angebot-anfordern?material=transparent" className="secondary-link">
+                Angebot anfordern
+              </Link>
+            </p>
+          </article>
+        ) : null}
 
         <article className="feature-card">
           <h4>2 · Größe</h4>
@@ -128,7 +148,8 @@ export function ProductConfigurator({
         selectedTier ? (
           <article className="surface-card configurator__result">
             <p className="price-note">
-              Ausgewählt: {materialLabel} · 100×200 mm · {quantity.toLocaleString("de-DE")} Stück
+              Ausgewählt: {materialLabel} · 100×200 mm · {quantity.toLocaleString("de-DE")} Stück ·{" "}
+              {finishing === "GLAENZEND" ? "Glänzend" : "Matt"}
             </p>
             <p className="price">{selectedTier.priceLabel}</p>
             <p className="price-note">
@@ -140,11 +161,40 @@ export function ProductConfigurator({
               <li>Gespeicherte Druckdaten für die schnelle Nachbestellung</li>
               <li>Lieferzeit: ca. 10–14 Werktage nach Ihrer Freigabe (keine bindende Garantie)</li>
             </ul>
+            <p className="field-hint">
+              Rollenkern, Abrollrichtung und Maschinendaten erfassen wir im nächsten Schritt.
+            </p>
+            <div className="inline-actions">
+              <button
+                type="button"
+                className={toggle(finishing === "MATT")}
+                aria-pressed={finishing === "MATT"}
+                onClick={() => setFinishing("MATT")}
+              >
+                Matt
+              </button>
+              <button
+                type="button"
+                className={toggle(finishing === "GLAENZEND")}
+                aria-pressed={finishing === "GLAENZEND"}
+                onClick={() => setFinishing("GLAENZEND")}
+              >
+                Glänzend
+              </button>
+            </div>
+            <p className="field-hint">
+              Kein Preisunterschied zwischen Matt und Glänzend. Sonderveredelungen wie Soft-Touch,
+              Folienkaschierung, Metallic-Effekte oder Speziallacke kalkulieren wir individuell.{" "}
+              <Link href={quoteHref} className="secondary-link">
+                Angebot anfordern
+              </Link>
+            </p>
             <CheckoutButton
               packageId={`${materialParam}-pp-100x200-${quantity}`}
               productSlug={productSlug}
               material={material}
               quantity={quantity}
+              finishing={finishing}
             />
           </article>
         ) : (

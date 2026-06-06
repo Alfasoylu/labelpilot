@@ -84,7 +84,7 @@ export default async function AdminOrderDetailPage({
     );
   }
 
-  const pkg = getPackageById(order.packageId);
+  const pkg = order.packageId ? getPackageById(order.packageId) : null;
   const correctionNote = order.statusEvents.find(
     (event: (typeof order.statusEvents)[number]) => event.status === "CORRECTION_REQUIRED",
   )?.note;
@@ -120,12 +120,21 @@ export default async function AdminOrderDetailPage({
       value:
         order.extraDesignCents != null
           ? `${formatCurrencyFromCents(order.extraDesignCents, order.currency)} brutto`
-          : "Nicht gesetzt",
+          : "kein Aufpreis",
     });
   }
 
   const hasAddons =
     addonItems.length > 0 || order.addonsTotalCents != null;
+
+  const hasRollSpecs =
+    order.rollKern || order.abrollrichtung || order.maxRollendurchmesser || order.maschineName;
+  const approvedArtworkFile =
+    order.artworkFiles.find(
+      (f: (typeof order.artworkFiles)[number]) => f.status === "APPROVED",
+    ) ??
+    order.artworkFiles[0] ??
+    null;
 
   return (
     <section className="section-stack">
@@ -149,6 +158,42 @@ export default async function AdminOrderDetailPage({
         {feedback.error ? <p className="form-status error">{feedback.error}</p> : null}
       </article>
 
+      {order.status === "APPROVED_FOR_PRODUCTION" ? (
+        <article className="surface-card">
+          <span className="eyebrow">Produktionsübergabe</span>
+          <h2>Auftrag freigegeben – bereit für die Produktion</h2>
+          <ul className="simple-list">
+            <li>Material: {getMaterialLabel(order.material)}</li>
+            <li>Menge: {order.quantity.toLocaleString("de-DE")} Stück</li>
+            <li>Oberfläche: {formatFinishing(order.finishing)}</li>
+            <li>
+              Format:{" "}
+              {order.widthMm && order.heightMm
+                ? `${order.widthMm} × ${order.heightMm} mm (Wunschformat)`
+                : "100 × 200 mm (Standardformat)"}
+            </li>
+            {order.rollKern ? <li>Rollenkern: {order.rollKern}</li> : null}
+            {order.abrollrichtung ? <li>Abrollrichtung: {order.abrollrichtung}</li> : null}
+            {order.maxRollendurchmesser ? (
+              <li>Max. Rollendurchmesser: {order.maxRollendurchmesser}</li>
+            ) : null}
+            {order.maschineName ? <li>Maschine / Etikettenspender: {order.maschineName}</li> : null}
+          </ul>
+          {approvedArtworkFile ? (
+            <div className="inline-actions">
+              <a
+                href={`/api/admin/orders/${order.id}/artwork/${approvedArtworkFile.id}`}
+                className="cta-link"
+              >
+                Druckdatei herunterladen ({approvedArtworkFile.fileName})
+              </a>
+            </div>
+          ) : (
+            <p className="price-note">Noch keine freigegebene Druckdatei vorhanden.</p>
+          )}
+        </article>
+      ) : null}
+
       <div className="two-column">
         <article className="surface-card">
           <h2>Bestellfakten</h2>
@@ -159,7 +204,10 @@ export default async function AdminOrderDetailPage({
             <li>Produkt: {order.productSlug}</li>
             <li>Material: {getMaterialLabel(order.material)}</li>
             <li>Menge: {order.quantity.toLocaleString("de-DE")} Stück</li>
-            <li>Betrag: {formatCurrencyFromCents(order.amountCents, order.currency)}</li>
+            <li>Anzahl Druckmotive: {order.extraDesignCount + 1}</li>
+            <li>Oberfläche: {formatFinishing(order.finishing)}</li>
+            <li>Proof-Typ: {order.physicalProofCents != null ? "Digital + Physischer Andruck" : "Digital (inklusive)"}</li>
+            <li>Gesamtbetrag: {formatCurrencyFromCents(order.amountCents, order.currency)} brutto inkl. 19% MwSt.</li>
             <li>Zahlung: {order.payments[0]?.status ?? "PENDING"}</li>
           </ul>
         </article>
@@ -188,6 +236,18 @@ export default async function AdminOrderDetailPage({
           {order.customerNote ? <p className="field-hint">Hinweis: {order.customerNote}</p> : null}
         </article>
       </div>
+
+      {hasRollSpecs ? (
+        <article className="surface-card">
+          <h2>Rollenspezifikationen</h2>
+          <ul className="simple-list">
+            <li>Rollenkern: {order.rollKern ?? "Nicht angegeben"}</li>
+            <li>Abrollrichtung: {order.abrollrichtung ?? "Nicht angegeben"}</li>
+            <li>Max. Rollendurchmesser: {order.maxRollendurchmesser ?? "Nicht angegeben"}</li>
+            <li>Maschine / Etikettenspender: {order.maschineName ?? "Nicht angegeben"}</li>
+          </ul>
+        </article>
+      ) : null}
 
       <article className="surface-card">
         <h2>Zusatzleistungen</h2>
@@ -546,6 +606,17 @@ function formatReorderStockDuration(value: string | null) {
       return "Mehr als 6 Monate";
     default:
       return "Nicht gesetzt";
+  }
+}
+
+function formatFinishing(value: string | null) {
+  switch (value) {
+    case "MATT":
+      return "Matt";
+    case "GLAENZEND":
+      return "Glänzend";
+    default:
+      return "Nicht angegeben";
   }
 }
 
