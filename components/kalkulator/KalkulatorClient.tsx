@@ -6,6 +6,9 @@ import { CustomSizeCheckoutForm } from "./CustomSizeCheckoutForm";
 type MaterialKey = "OPAQUE_PP" | "TRANSPARENT_PP";
 type Finishing = "MATT" | "GLAENZEND";
 type CornerRadius = 0 | 2 | 3;
+type Klebertyp = "PERMANENT" | "WIEDERABLOESBAR";
+type Farbigkeit = 1 | 2 | 3 | 4;
+type UVLack = "KEIN" | "GLAENZEND";
 
 type KalkulatorInitialProps = {
   initialQuantity?: number;
@@ -28,6 +31,11 @@ type KalkulatorConfig = {
   finishing: Finishing;
   cornerRadius: CornerRadius;
   weissunterdruck: boolean;
+  klebertyp: Klebertyp;
+  tiefkuehlgeeignet: boolean;
+  farbigkeit: Farbigkeit;
+  anzahlSorten: number;
+  uvLack: UVLack;
 };
 
 type PriceState =
@@ -69,6 +77,11 @@ export function KalkulatorClient({
     finishing: "MATT",
     cornerRadius: 2,
     weissunterdruck: false,
+    klebertyp: "PERMANENT",
+    tiefkuehlgeeignet: false,
+    farbigkeit: 4,
+    anzahlSorten: 1,
+    uvLack: "KEIN",
   });
   const [priceState, setPriceState] = useState<PriceState>({ status: "idle" });
   const [mode, setMode] = useState<"configure" | "checkout">("configure");
@@ -139,7 +152,7 @@ export function KalkulatorClient({
           <h2>Format & Konfiguration</h2>
 
           <div className="form-grid">
-            {/* Row 1: Menge + Material */}
+            {/* Row 1: Menge + Anzahl der Sorten */}
             <div className="field">
               <label htmlFor="kalk-quantity">Menge (Stück)</label>
               <input
@@ -156,6 +169,24 @@ export function KalkulatorClient({
               />
             </div>
             <div className="field">
+              <label htmlFor="kalk-sorten">Anzahl der Sorten</label>
+              <input
+                id="kalk-sorten"
+                name="anzahlSorten"
+                type="number"
+                min={1}
+                max={20}
+                value={config.anzahlSorten}
+                onChange={(e) => {
+                  const v = Math.max(1, Number.parseInt(e.target.value, 10) || 1);
+                  setConfig((c) => ({ ...c, anzahlSorten: v }));
+                }}
+              />
+              <p className="field-hint">Verschiedene Motive in einer Bestellung.</p>
+            </div>
+
+            {/* Row 2: Material + Klebertyp */}
+            <div className="field">
               <label htmlFor="kalk-material">Material</label>
               <select
                 id="kalk-material"
@@ -168,6 +199,17 @@ export function KalkulatorClient({
               >
                 <option value="OPAQUE_PP">Opak PP-Folie (weiß)</option>
                 <option value="TRANSPARENT_PP">Transparent PP-Folie</option>
+              </select>
+            </div>
+            <div className="field">
+              <label htmlFor="kalk-kleber">Klebertyp</label>
+              <select
+                id="kalk-kleber"
+                value={config.klebertyp}
+                onChange={(e) => setConfig((c) => ({ ...c, klebertyp: e.target.value as Klebertyp }))}
+              >
+                <option value="PERMANENT">Permanent haftend</option>
+                <option value="WIEDERABLOESBAR">Wiederablösbar</option>
               </select>
             </div>
 
@@ -203,7 +245,7 @@ export function KalkulatorClient({
               />
             </div>
 
-            {/* Row 3: Oberfläche */}
+            {/* Row 3: Oberfläche + Eckenradius */}
             <div className="field">
               <label htmlFor="kalk-finishing">Oberfläche</label>
               <select
@@ -214,10 +256,8 @@ export function KalkulatorClient({
                 <option value="MATT">Matt</option>
                 <option value="GLAENZEND">Glänzend</option>
               </select>
-              <p className="field-hint">Kein Preisaufschlag.</p>
             </div>
 
-            {/* Row 3: Eckenradius */}
             <div className="field">
               <label htmlFor="kalk-corner">Eckenradius</label>
               <select
@@ -229,6 +269,48 @@ export function KalkulatorClient({
                 <option value={2}>2 mm – gerundet (Standard)</option>
                 <option value={3}>3 mm – stark gerundet</option>
               </select>
+            </div>
+
+            {/* Row 4: Farbigkeit + UV-Schutzlack */}
+            <div className="field">
+              <label htmlFor="kalk-farbe">Farbigkeit</label>
+              <select
+                id="kalk-farbe"
+                value={config.farbigkeit}
+                onChange={(e) => setConfig((c) => ({ ...c, farbigkeit: Number(e.target.value) as Farbigkeit }))}
+              >
+                <option value={1}>1-farbig</option>
+                <option value={2}>2-farbig</option>
+                <option value={3}>3-farbig</option>
+                <option value={4}>4-farbig – CMYK (Standard)</option>
+              </select>
+            </div>
+
+            <div className="field">
+              <label htmlFor="kalk-uvlack">UV-Schutzlack</label>
+              <select
+                id="kalk-uvlack"
+                value={config.uvLack}
+                onChange={(e) => setConfig((c) => ({ ...c, uvLack: e.target.value as UVLack }))}
+              >
+                <option value="KEIN">Kein Lack</option>
+                <option value="GLAENZEND">Glänzender Schutzlack</option>
+              </select>
+            </div>
+
+            {/* Tiefkühlgeeignet checkbox */}
+            <div className="field-full">
+              <label className="checkbox-field">
+                <input
+                  type="checkbox"
+                  checked={config.tiefkuehlgeeignet}
+                  onChange={(e) => setConfig((c) => ({ ...c, tiefkuehlgeeignet: e.target.checked }))}
+                />
+                <span>Tiefkühlgeeignet (bis −20 °C)</span>
+              </label>
+              <p className="field-hint">
+                Für Produkte, die bei Kühl- oder Gefriertemperaturen gelagert werden. Spezialkleber hält auch bei Kälte und Feuchtigkeit.
+              </p>
             </div>
 
             {/* Weißunterdruck — nur für Transparent PP */}
@@ -335,6 +417,10 @@ export function KalkulatorClient({
                 <span>{config.materialKey === "OPAQUE_PP" ? "Opak PP" : "Transparent PP"}</span>
               </li>
               <li>
+                <span>Kleber</span>
+                <span>{config.klebertyp === "PERMANENT" ? "Permanent" : "Wiederablösbar"}</span>
+              </li>
+              <li>
                 <span>Oberfläche</span>
                 <span>{config.finishing === "MATT" ? "Matt" : "Glänzend"}</span>
               </li>
@@ -342,12 +428,32 @@ export function KalkulatorClient({
                 <span>Eckenradius</span>
                 <span>{config.cornerRadius} mm</span>
               </li>
+              <li>
+                <span>Farbigkeit</span>
+                <span>{config.farbigkeit}-farbig{config.farbigkeit === 4 ? " (CMYK)" : ""}</span>
+              </li>
+              {config.uvLack !== "KEIN" && (
+                <li>
+                  <span>UV-Lack</span>
+                  <span>Glänzend</span>
+                </li>
+              )}
+              {config.tiefkuehlgeeignet && (
+                <li>
+                  <span>Tiefkühl</span>
+                  <span>Ja</span>
+                </li>
+              )}
               {config.materialKey === "TRANSPARENT_PP" && (
                 <li>
                   <span>Weißunterdruck</span>
                   <span>{config.weissunterdruck ? "Ja" : "Nein"}</span>
                 </li>
               )}
+              <li>
+                <span>Sorten</span>
+                <span>{config.anzahlSorten}</span>
+              </li>
               <li>
                 <span>Menge</span>
                 <span>{typeof config.quantity === "number" ? config.quantity.toLocaleString("de-DE") : "–"} Stück</span>
@@ -378,6 +484,11 @@ export function KalkulatorClient({
             finishing={config.finishing}
             cornerRadius={config.cornerRadius}
             weissunterdruck={config.weissunterdruck}
+            klebertyp={config.klebertyp}
+            tiefkuehlgeeignet={config.tiefkuehlgeeignet}
+            farbigkeit={config.farbigkeit}
+            anzahlSorten={config.anzahlSorten}
+            uvLack={config.uvLack}
             netPrice={priceState.netPrice}
             grossPrice={priceState.grossPrice}
             onBack={handleBack}

@@ -15,6 +15,11 @@ type CustomSizeCheckoutFormProps = {
   finishing: Finishing;
   cornerRadius?: number;
   weissunterdruck?: boolean;
+  klebertyp?: string;
+  tiefkuehlgeeignet?: boolean;
+  farbigkeit?: number;
+  anzahlSorten?: number;
+  uvLack?: string;
   netPrice: number;
   grossPrice: number;
   onBack: () => void;
@@ -36,6 +41,11 @@ export function CustomSizeCheckoutForm({
   finishing,
   cornerRadius = 2,
   weissunterdruck = false,
+  klebertyp = "PERMANENT",
+  tiefkuehlgeeignet = false,
+  farbigkeit = 4,
+  anzahlSorten = 1,
+  uvLack = "KEIN",
   netPrice,
   grossPrice,
   onBack,
@@ -55,6 +65,11 @@ export function CustomSizeCheckoutForm({
         finishing,
         cornerRadius,
         weissunterdruck,
+        klebertyp,
+        tiefkuehlgeeignet,
+        farbigkeit,
+        anzahlSorten,
+        uvLack,
         companyName: String(formData.get("companyName") ?? ""),
         contactName: String(formData.get("contactName") ?? ""),
         email: String(formData.get("email") ?? ""),
@@ -111,7 +126,12 @@ export function CustomSizeCheckoutForm({
         <ul className="simple-list">
           <li>Format: {widthMm} × {heightMm} mm (Wunschformat)</li>
           <li>Material: {getMaterialLabel(materialKey)}</li>
+          <li>Kleber: {klebertyp === "PERMANENT" ? "Permanent haftend" : "Wiederablösbar"}</li>
           <li>Oberfläche: {finishing === "GLAENZEND" ? "Glänzend" : "Matt"}</li>
+          <li>Farbigkeit: {farbigkeit}-farbig{farbigkeit === 4 ? " (CMYK)" : ""}</li>
+          {uvLack !== "KEIN" && <li>UV-Schutzlack: Glänzend</li>}
+          {tiefkuehlgeeignet && <li>Tiefkühlgeeignet: Ja</li>}
+          {anzahlSorten > 1 && <li>Anzahl der Sorten: {anzahlSorten}</li>}
           <li>Menge: {quantity.toLocaleString("de-DE")} Stück</li>
           <li>Preis netto: {formatEur(netPrice)}</li>
           <li>MwSt. 19 %: {formatEur(vatAmount)}</li>
