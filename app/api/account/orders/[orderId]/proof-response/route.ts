@@ -4,6 +4,10 @@ import { z } from "zod";
 import { getSupabaseUserFromRequest } from "@/lib/account/auth";
 import { ensureCustomerForSupabaseUser } from "@/lib/account/customers";
 import { getPrismaClient } from "@/lib/db/prisma";
+import { sendEmail } from "@/lib/email/send";
+import { proofDecisionOpsNotification } from "@/lib/email/templates/lifecycle";
+import { canRespondToProofOrderStatus } from "@/lib/orders/status";
+import { getServerEnv } from "@/lib/env";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -43,11 +47,19 @@ export async function POST(
 
     const order = await prisma.order.findFirst({
       where: { id: orderId, customerId: customer.id },
-      select: { id: true, status: true },
+      select: { id: true, status: true, orderNumber: true },
     });
 
     if (!order) {
       return NextResponse.json({ error: "Bestellung nicht gefunden." }, { status: 404 });
+    }
+
+    // BUG-001: Guard against state machine bypass — order must also be in the correct status.
+    if (!canRespondToProofOrderStatus(order.status)) {
+      return NextResponse.json(
+        { error: "Für diesen Proof ist derzeit keine Rückmeldung möglich." },
+        { status: 409 },
+      );
     }
 
     const proofFile = await prisma.proofFile.findFirst({
@@ -63,6 +75,8 @@ export async function POST(
     }
 
     const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "";
+
+    let newStatus: string;
 
     if (action === "APPROVE") {
       await prisma.$transaction([
@@ -88,32 +102,57 @@ export async function POST(
         }),
       ]);
 
-      return NextResponse.json({ ok: true, newStatus: "APPROVED_FOR_PRODUCTION" });
-    }
-
-    await prisma.$transaction([
-      prisma.proofFile.update({
-        where: { id: proofFileId },
-        data: {
-          status: "CHANGES_REQUESTED",
-          customerChangeRequestNote: note ?? "",
-        },
-      }),
-      prisma.order.update({
-        where: { id: orderId },
-        data: {
-          status: "PROOF_REQUIRED",
-          statusEvents: {
-            create: {
-              status: "PROOF_REQUIRED",
-              note: `Änderungswunsch vom Kunden: ${note ?? "keine Angabe"}`,
+      newStatus = "APPROVED_FOR_PRODUCTION";
+    } else {
+      // BUG-002: Align with token-based flow — use FILE_REVIEW (admin reviews before uploading next proof).
+      await prisma.$transaction([
+        prisma.proofFile.update({
+          where: { id: proofFileId },
+          data: {
+            status: "CHANGES_REQUESTED",
+            customerChangeRequestNote: note ?? "",
+          },
+        }),
+        prisma.order.update({
+          where: { id: orderId },
+          data: {
+            status: "FILE_REVIEW",
+            statusEvents: {
+              create: {
+                status: "FILE_REVIEW",
+                note: `Änderungswunsch vom Kunden: ${note ?? "keine Angabe"}`,
+              },
             },
           },
-        },
-      }),
-    ]);
+        }),
+      ]);
 
-    return NextResponse.json({ ok: true, newStatus: "PROOF_REQUIRED" });
+      newStatus = "FILE_REVIEW";
+    }
+
+    // BUG-003: Notify admin of proof decision via ops notification email.
+    const adminNotifyEmail = getServerEnv().ADMIN_NOTIFY_EMAIL;
+    if (adminNotifyEmail) {
+      const decisionLabel = action === "APPROVE" ? "Freigabe" : "Änderungswunsch";
+      const template = proofDecisionOpsNotification({
+        orderNumber: order.orderNumber,
+        orderId: order.id,
+        decision: decisionLabel,
+      });
+
+      try {
+        await sendEmail({
+          to: adminNotifyEmail,
+          subject: template.subject,
+          html: template.html,
+          text: template.text,
+        });
+      } catch (error) {
+        console.error("Ops-Benachrichtigung nach Proof-Entscheidung fehlgeschlagen:", error);
+      }
+    }
+
+    return NextResponse.json({ ok: true, newStatus });
   } catch (error) {
     console.error("Proof-Response fehlgeschlagen:", error);
     return NextResponse.json(

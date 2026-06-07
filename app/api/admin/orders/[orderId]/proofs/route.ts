@@ -66,12 +66,6 @@ export async function POST(
     });
   }
 
-  if (!canUploadProofForOrderStatus(order.status)) {
-    return redirectWithMessage(request, redirectTo, {
-      error: "Dieser Statuswechsel ist nicht erlaubt.",
-    });
-  }
-
   const validation = validateProofFile(file);
 
   if (!validation.ok) {
@@ -84,6 +78,17 @@ export async function POST(
     const storagePath = await uploadProofFile(order.id, file, validation.sanitizedFileName);
 
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+      // BUG-005: Re-read order inside transaction to prevent race condition between
+      // the pre-transaction status check and the actual writes.
+      const currentOrder = await tx.order.findUnique({
+        where: { id: order.id },
+        select: { status: true },
+      });
+
+      if (!currentOrder || !canUploadProofForOrderStatus(currentOrder.status)) {
+        throw new Error("Dieser Statuswechsel ist nicht erlaubt.");
+      }
+
       await tx.proofFile.updateMany({
         where: {
           orderId: order.id,
@@ -135,8 +140,12 @@ export async function POST(
     });
   } catch (error) {
     console.error("Proof-Upload fehlgeschlagen:", error);
+    const message =
+      error instanceof Error && error.message === "Dieser Statuswechsel ist nicht erlaubt."
+        ? error.message
+        : "Proof konnte nicht hochgeladen werden.";
     return redirectWithMessage(request, redirectTo, {
-      error: "Proof konnte nicht hochgeladen werden.",
+      error: message,
     });
   }
 

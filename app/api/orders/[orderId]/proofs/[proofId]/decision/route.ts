@@ -4,7 +4,7 @@ import type { Prisma } from "@prisma/client";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { sendEmail } from "@/lib/email/send";
 import { syncStoredDesignFromApprovedOrder } from "@/lib/artwork/stored-designs";
-import { proofApproved } from "@/lib/email/templates/lifecycle";
+import { proofApproved, proofDecisionOpsNotification } from "@/lib/email/templates/lifecycle";
 import {
   type ProofDecisionPayload,
   validateProofDecisionRequest,
@@ -13,6 +13,7 @@ import {
   getOrderStatusLabel,
   getProofFileStatusLabel,
 } from "@/lib/orders/artwork";
+import { getServerEnv } from "@/lib/env";
 
 export const runtime = "nodejs";
 
@@ -179,8 +180,11 @@ export async function POST(
 
   if (payload.decision === "approve") {
     if (order.customerEmail) {
+      // BUG-006: Include orderId and uploadToken so the email contains an order link.
       const template = proofApproved({
         orderNumber: order.orderNumber,
+        orderId: order.id,
+        uploadToken: order.uploadToken,
       });
 
       try {
@@ -195,6 +199,28 @@ export async function POST(
       }
     } else {
       console.debug(`Proof-Freigabemail übersprungen: keine E-Mail für ${order.id}.`);
+    }
+  }
+
+  // BUG-003: Notify admin of proof decision (both approve and request_changes).
+  const adminNotifyEmail = getServerEnv().ADMIN_NOTIFY_EMAIL;
+  if (adminNotifyEmail) {
+    const decisionLabel = payload.decision === "approve" ? "Freigabe" : "Änderungswunsch";
+    const opsTemplate = proofDecisionOpsNotification({
+      orderNumber: order.orderNumber,
+      orderId: order.id,
+      decision: decisionLabel,
+    });
+
+    try {
+      await sendEmail({
+        to: adminNotifyEmail,
+        subject: opsTemplate.subject,
+        html: opsTemplate.html,
+        text: opsTemplate.text,
+      });
+    } catch (error) {
+      console.error("Ops-Benachrichtigung nach Proof-Entscheidung fehlgeschlagen:", error);
     }
   }
 

@@ -288,12 +288,18 @@ export function artworkApproved(input: {
 
 export function proofApproved(input: {
   orderNumber: string;
+  orderId: string;
+  uploadToken: string;
 }): TemplateResult {
+  const orderLink = getOrderLink(input.orderId, input.uploadToken);
   const subject = `Proof freigegeben für ${input.orderNumber}`;
   const text = [
     `Vielen Dank. Der Proof für Ihre Bestellung ${input.orderNumber} wurde freigegeben.`,
     "",
     "Es ist keine weitere Aktion nötig. Wir bereiten den nächsten Produktionsschritt vor.",
+    "",
+    "Den aktuellen Status Ihrer Bestellung sehen Sie hier:",
+    orderLink,
   ].join("\n");
 
   return {
@@ -302,8 +308,40 @@ export function proofApproved(input: {
     html: renderShell({
       heading: "Proof erfolgreich freigegeben.",
       intro: `Vielen Dank. Der Proof für die Bestellung ${input.orderNumber} wurde bestätigt.`,
+      actionLabel: "Auftragsstatus ansehen",
+      actionHref: orderLink,
       bodyHtml: `
         <p style="margin:0;">Es ist keine weitere Aktion nötig. Wir bereiten den nächsten Produktionsschritt vor.</p>
+      `,
+    }),
+  };
+}
+
+export function proofDecisionOpsNotification(input: {
+  orderNumber: string;
+  orderId: string;
+  decision: string;
+}): TemplateResult {
+  const baseUrl = getPublicEnv().NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
+  const adminOrderLink = `${baseUrl}/admin/orders/${input.orderId}`;
+  const subject = `Proof-Entscheidung für ${input.orderNumber}: ${input.decision}`;
+  const text = [
+    `Für die Bestellung ${input.orderNumber} ist eine Proof-Entscheidung eingegangen.`,
+    `Entscheidung: ${input.decision}`,
+    "",
+    `Admin-Link: ${adminOrderLink}`,
+  ].join("\n");
+
+  return {
+    subject,
+    text,
+    html: renderShell({
+      heading: "Proof-Entscheidung eingegangen.",
+      intro: `Für die Bestellung ${input.orderNumber} liegt eine Kundenentscheidung vor.`,
+      actionLabel: "Bestellung im Admin öffnen",
+      actionHref: adminOrderLink,
+      bodyHtml: `
+        <p style="margin:0 0 8px 0;"><strong>Entscheidung:</strong> ${escapeHtml(input.decision)}</p>
       `,
     }),
   };

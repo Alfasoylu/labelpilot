@@ -9,6 +9,7 @@ import { validateProofDecisionRequest } from "../lib/orders/proof-decision.ts";
 import {
   canApplyStripePaymentFailure,
   canApplyStripePaymentSuccess,
+  canRespondToProofOrderStatus,
   canReviewArtworkOrderStatus,
   canTransitionOrderStatus,
   canUploadProofForOrderStatus,
@@ -1274,6 +1275,73 @@ assert.match(
   artworkDownloadRouteSource,
   /Cache-Control.*no-store/,
   "ART-007: Artwork download redirect must set Cache-Control: no-store to prevent caching of signed URLs.",
+);
+
+// ── Proof Approval Flow regression guards ─────────────────────────────────────
+
+// BUG-001: canRespondToProofOrderStatus must reject all non-WAITING_CUSTOMER_APPROVAL statuses.
+assert.equal(
+  canRespondToProofOrderStatus("WAITING_CUSTOMER_APPROVAL"),
+  true,
+  "BUG-001: canRespondToProofOrderStatus must allow WAITING_CUSTOMER_APPROVAL.",
+);
+assert.equal(
+  canRespondToProofOrderStatus("CANCELLED"),
+  false,
+  "BUG-001: canRespondToProofOrderStatus must reject CANCELLED to prevent state machine bypass.",
+);
+assert.equal(
+  canRespondToProofOrderStatus("IN_PRODUCTION"),
+  false,
+  "BUG-001: canRespondToProofOrderStatus must reject IN_PRODUCTION to prevent state machine bypass.",
+);
+assert.equal(
+  canRespondToProofOrderStatus("PROOF_REQUIRED"),
+  false,
+  "BUG-001: canRespondToProofOrderStatus must reject PROOF_REQUIRED (proof not yet sent to customer).",
+);
+assert.equal(
+  canRespondToProofOrderStatus("FILE_REVIEW"),
+  false,
+  "BUG-001: canRespondToProofOrderStatus must reject FILE_REVIEW.",
+);
+
+// BUG-001: Account-based proof-response route must check canRespondToProofOrderStatus on order.status.
+const accountProofResponseSource = readFileSync(
+  new URL("../app/api/account/orders/[orderId]/proof-response/route.ts", import.meta.url),
+  "utf8",
+);
+assert.match(
+  accountProofResponseSource,
+  /canRespondToProofOrderStatus\(order\.status\)/,
+  "BUG-001: Account proof-response route must call canRespondToProofOrderStatus(order.status) before executing the transaction.",
+);
+
+// BUG-002: Both proof decision routes must use FILE_REVIEW (not PROOF_REQUIRED) for change requests.
+assert.doesNotMatch(
+  accountProofResponseSource,
+  /status: "PROOF_REQUIRED"/,
+  "BUG-002: Account proof-response route must not set order status to PROOF_REQUIRED on change requests; use FILE_REVIEW.",
+);
+assert.match(
+  accountProofResponseSource,
+  /status: "FILE_REVIEW"/,
+  "BUG-002: Account proof-response route must set order status to FILE_REVIEW on change requests (aligned with token-based flow).",
+);
+
+const tokenProofDecisionSource = readFileSync(
+  new URL("../app/api/orders/[orderId]/proofs/[proofId]/decision/route.ts", import.meta.url),
+  "utf8",
+);
+assert.match(
+  tokenProofDecisionSource,
+  /status: "FILE_REVIEW"/,
+  "BUG-002: Token-based proof decision route must use FILE_REVIEW for change requests.",
+);
+assert.doesNotMatch(
+  tokenProofDecisionSource,
+  /status: "PROOF_REQUIRED"/,
+  "BUG-002: Token-based proof decision route must not use PROOF_REQUIRED for change requests.",
 );
 
 console.log("Autonomous safety regression tests passed.");
