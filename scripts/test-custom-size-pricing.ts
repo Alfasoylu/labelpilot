@@ -135,7 +135,7 @@ const result6k = computeCustomSizePrice({
 assert.equal(result6k.breakdown.multiplier, 1.6);
 assert.equal(result50k.breakdown.multiplier, 1.5);
 
-// inkCost tiers for flexo — 15000 adet → tier 2 (170 EUR)
+// inkCost for flexo — 15000 adet: 0.33 * 4 * (0.1*0.2*15000*1.15) = 455.4 EUR
 const result15k = computeCustomSizePrice({
   materialKey: "OPAQUE_PP",
   widthMm: 100,
@@ -147,9 +147,9 @@ const result15k = computeCustomSizePrice({
   settings,
 });
 assert.equal(result15k.method, "FLEXO");
-assert.equal(result15k.breakdown.inkCost, 170);
+assert.equal(result15k.breakdown.inkCost, 455.4);
 
-// 25000 adet → tier 2 + 1 additional batch (170 + 70 = 240 EUR)
+// 25000 adet: 0.33 * 4 * (0.1*0.2*25000*1.15) = 759 EUR
 const result25k = computeCustomSizePrice({
   materialKey: "OPAQUE_PP",
   widthMm: 100,
@@ -160,7 +160,7 @@ const result25k = computeCustomSizePrice({
   params,
   settings,
 });
-assert.equal(result25k.breakdown.inkCost, 240);
+assert.equal(result25k.breakdown.inkCost, 759);
 
 // Min order value floor
 const minOrder = computeCustomSizePrice({

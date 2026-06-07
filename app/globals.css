@@ -1662,7 +1662,7 @@ th {
   grid-template-columns: 1fr 1fr;
   gap: clamp(2rem, 4vw, 3.5rem);
   align-items: start;
-  padding: clamp(3rem, 6vh, 5rem) 0 clamp(1.5rem, 3vh, 3rem);
+  padding: clamp(1.75rem, 4vh, 3.5rem) 0 clamp(1rem, 2vh, 2rem);
 }
 
 .hero-kalk__left {
