@@ -114,6 +114,63 @@ function computeMarkupMultiplier(quantity: number, settings: PricingSettingsInpu
   return settings.markupTier3Multiplier;
 }
 
+// Returns the best (cheapest) raw production cost for a given quantity, along with
+// the chosen method and breakdown components.
+function computeBestProductionCost(
+  widthMm: number,
+  heightMm: number,
+  quantity: number,
+  colorCount: number,
+  anzahlSorten: number,
+  params: PricingMaterialParams,
+  settings: PricingSettingsInput,
+): {
+  cost: number;
+  method: "DIGITAL" | "FLEXO";
+  materialCost: number;
+  inkCost: number;
+  plateCost: number;
+  digitalPrintingCost: number;
+  shippingWeightKg: number;
+  shippingCost: number;
+} {
+  const labelAreaM2 = (widthMm * heightMm) / 1_000_000;
+  const totalAreaM2 = labelAreaM2 * quantity * (1 + params.wasteFactorPct / 100);
+  const materialCost = params.materialCostPerM2 * totalAreaM2;
+  const shippingWeightKg = labelAreaM2 * quantity * settings.labelWeightPerM2Grams / 1000;
+  const shippingCost = computeShippingCost(shippingWeightKg, settings);
+
+  const inkCost = computeInkCost(quantity, settings);
+  const plateCost = colorCount * settings.platePerColorCostNet * anzahlSorten;
+  const flexoProductionCost = materialCost + inkCost + plateCost + shippingCost;
+
+  const digitalPrintingCost = settings.digitalCostPerUnitNet * quantity + settings.digitalSetupCostNet;
+  const digitalProductionCost = materialCost + digitalPrintingCost + shippingCost;
+
+  if (digitalProductionCost <= flexoProductionCost) {
+    return {
+      cost: digitalProductionCost,
+      method: "DIGITAL",
+      materialCost,
+      inkCost: 0,
+      plateCost: 0,
+      digitalPrintingCost,
+      shippingWeightKg,
+      shippingCost,
+    };
+  }
+  return {
+    cost: flexoProductionCost,
+    method: "FLEXO",
+    materialCost,
+    inkCost,
+    plateCost,
+    digitalPrintingCost: 0,
+    shippingWeightKg,
+    shippingCost,
+  };
+}
+
 export function computeCustomSizePrice(
   input: CustomSizePriceInput,
 ): CustomSizePriceResult {
@@ -150,29 +207,35 @@ export function computeCustomSizePrice(
   }
 
   const labelAreaM2 = (widthMm * heightMm) / 1_000_000;
-  const totalAreaM2 = labelAreaM2 * quantity * (1 + params.wasteFactorPct / 100);
-  const materialCost = params.materialCostPerM2 * totalAreaM2;
+  const isHeavyShipment =
+    (labelAreaM2 * quantity * settings.labelWeightPerM2Grams) / 1000 > settings.shippingHeavyThresholdKg;
 
-  // Shipping — computed on actual label area (no waste factor), embedded in price
-  const shippingWeightKg = labelAreaM2 * quantity * settings.labelWeightPerM2Grams / 1000;
-  const shippingCost = computeShippingCost(shippingWeightKg, settings);
-  const isHeavyShipment = shippingWeightKg > settings.shippingHeavyThresholdKg;
-
-  // Flexo path
-  const inkCost = computeInkCost(quantity, settings);
-  const plateCost = colorCount * settings.platePerColorCostNet * anzahlSorten;
-  const flexoProductionCost = materialCost + inkCost + plateCost + shippingCost;
-
-  // Digital path
-  const digitalPrintingCost = settings.digitalCostPerUnitNet * quantity + settings.digitalSetupCostNet;
-  const digitalProductionCost = materialCost + digitalPrintingCost + shippingCost;
-
-  // Auto-select cheaper method
-  const method = digitalProductionCost <= flexoProductionCost ? "DIGITAL" : "FLEXO";
-  const productionCost = method === "DIGITAL" ? digitalProductionCost : flexoProductionCost;
+  const best = computeBestProductionCost(
+    widthMm, heightMm, quantity, colorCount, anzahlSorten, params, settings,
+  );
 
   const multiplier = computeMarkupMultiplier(quantity, settings);
-  const unroundedNetPrice = productionCost * multiplier;
+  let unroundedNetPrice = best.cost * multiplier;
+
+  // Monotonicity: price must not decrease as quantity crosses a markup tier boundary.
+  // When the multiplier drops at a tier boundary, the lower multiplier on a slightly
+  // larger production cost can produce a lower total price than the tier below it.
+  // Fix: use the price at each lower tier boundary as a floor.
+  if (quantity > settings.markupTier1MaxQty) {
+    const atBoundary = computeBestProductionCost(
+      widthMm, heightMm, settings.markupTier1MaxQty, colorCount, anzahlSorten, params, settings,
+    );
+    const floorAtTier1 = atBoundary.cost * settings.markupTier1Multiplier;
+    unroundedNetPrice = Math.max(unroundedNetPrice, floorAtTier1);
+  }
+  if (quantity > settings.markupTier2MaxQty) {
+    const atBoundary = computeBestProductionCost(
+      widthMm, heightMm, settings.markupTier2MaxQty, colorCount, anzahlSorten, params, settings,
+    );
+    const floorAtTier2 = atBoundary.cost * settings.markupTier2Multiplier;
+    unroundedNetPrice = Math.max(unroundedNetPrice, floorAtTier2);
+  }
+
   const flooredNetPrice = Math.max(unroundedNetPrice, params.minOrderValueNet);
   const netPrice = roundMoney(roundUpToStep(flooredNetPrice, settings.roundingStepNet));
   const grossPrice = roundMoney(netPrice * (1 + settings.vatPct / 100));
@@ -180,19 +243,19 @@ export function computeCustomSizePrice(
   return {
     quoteRequired: false,
     isHeavyShipment,
-    method,
+    method: best.method,
     netPrice,
     grossPrice,
     breakdown: {
       labelAreaM2: roundMoney(labelAreaM2),
-      totalAreaM2: roundMoney(totalAreaM2),
-      materialCost: roundMoney(materialCost),
-      inkCost: method === "FLEXO" ? roundMoney(inkCost) : 0,
-      plateCost: method === "FLEXO" ? roundMoney(plateCost) : 0,
-      digitalPrintingCost: method === "DIGITAL" ? roundMoney(digitalPrintingCost) : 0,
-      shippingWeightKg: roundMoney(shippingWeightKg),
-      shippingCost: roundMoney(shippingCost),
-      productionCost: roundMoney(productionCost),
+      totalAreaM2: roundMoney(labelAreaM2 * quantity * (1 + params.wasteFactorPct / 100)),
+      materialCost: roundMoney(best.materialCost),
+      inkCost: roundMoney(best.inkCost),
+      plateCost: roundMoney(best.plateCost),
+      digitalPrintingCost: roundMoney(best.digitalPrintingCost),
+      shippingWeightKg: roundMoney(best.shippingWeightKg),
+      shippingCost: roundMoney(best.shippingCost),
+      productionCost: roundMoney(best.cost),
       multiplier,
     },
   };
