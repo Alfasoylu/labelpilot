@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 
 import { mapMaterialCostRecord, mapPricingSettingsRecord } from "@/lib/admin/pricing";
+import { getSupabaseUserFromRequest } from "@/lib/account/auth";
+import { ensureCustomerForSupabaseUser } from "@/lib/account/customers";
 import { customSizeCheckoutIntakeSchema } from "@/lib/checkout/intake";
 import { createOrderNumber } from "@/lib/commerce/orders";
 import { getPrismaClient } from "@/lib/db/prisma";
@@ -89,12 +91,31 @@ export async function POST(request: Request) {
 
     // Oval surcharge is only computed after confirming the price is directly calculable (not quoteRequired).
     const ovalSurchargeNet = form === "OVAL" ? 0.03 * quantity : 0;
-    const ovalSurchargeCents = Math.round(ovalSurchargeNet * 1.19 * 100);
+    // BUG-005: Use * 119 instead of * 1.19 * 100 to eliminate one floating-point multiplication
+    // that could cause a 1-cent rounding discrepancy between the stored amountCents and
+    // the Stripe session total, which would cause the webhook amount check to fail.
+    const ovalSurchargeCents = Math.round(ovalSurchargeNet * 119);
 
     // grossPrice includes material + printing + plates; ovalSurchargeCents added for oval/round form
     const grossAmountCents = Math.round(priceResult.body.grossPrice * 100) + ovalSurchargeCents;
     const method = priceResult.body.method;
     const orderNumber = createOrderNumber();
+
+    // BUG-004: Resolve customerId for authenticated users.
+    let customerId: string | null = null;
+    const authHeader = request.headers.get("authorization") ?? "";
+    if (authHeader.startsWith("Bearer ")) {
+      const auth = await getSupabaseUserFromRequest(request);
+      if (auth.ok) {
+        try {
+          const customer = await ensureCustomerForSupabaseUser(prisma, auth.user);
+          customerId = customer.id;
+        } catch (err) {
+          // Non-critical: proceed without linking to customer account.
+          console.warn("Kundenkonto konnte nicht verknüpft werden:", err);
+        }
+      }
+    }
     const normalizedCountry =
       parsed.data.country.toUpperCase() === "DE" ||
       parsed.data.country.toLowerCase() === "deutschland"
@@ -138,6 +159,8 @@ export async function POST(request: Request) {
         maschineName: parsed.data.maschineName || null,
         artworkInputStatus: parsed.data.artworkStatus,
         selectedAddons: parsed.data.addons ?? undefined,
+        // BUG-004: Link to customer account when authenticated.
+        customerId: customerId ?? undefined,
         statusEvents: {
           create: {
             status: "PENDING_PAYMENT",
@@ -196,17 +219,24 @@ export async function POST(request: Request) {
       );
     }
 
-    await prisma.order.update({ where: { id: order.id }, data: { stripeCheckoutSessionId: session.id } });
-    await prisma.payment.create({
-      data: {
-        orderId: order.id,
-        stripeCheckoutSessionId: session.id,
-        amountCents: grossAmountCents,
-        currency: "EUR",
-        status: "PENDING",
-        provider: "stripe",
-      },
-    });
+    // BUG-003: Combine the two post-Stripe DB writes in a single transaction so that a crash
+    // between them cannot leave the Payment table missing a row for a real Stripe session.
+    await prisma.$transaction([
+      prisma.order.update({
+        where: { id: order.id },
+        data: { stripeCheckoutSessionId: session.id },
+      }),
+      prisma.payment.create({
+        data: {
+          orderId: order.id,
+          stripeCheckoutSessionId: session.id,
+          amountCents: grossAmountCents,
+          currency: "EUR",
+          status: "PENDING",
+          provider: "stripe",
+        },
+      }),
+    ]);
 
     return NextResponse.json({ url: session.url });
   } catch (error) {

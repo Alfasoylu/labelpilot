@@ -1061,4 +1061,110 @@ assert.match(
   "CHK-006: phone field must enforce min(7) to reject implausibly short values.",
 );
 
+// ── Order Creation regression guards ─────────────────────────────────────────
+
+const reorderRouteSource = readFileSync(
+  new URL("../app/api/reorders/route.ts", import.meta.url),
+  "utf8",
+);
+const createCustomSessionRouteSource = readFileSync(
+  new URL("../app/api/checkout/create-custom-session/route.ts", import.meta.url),
+  "utf8",
+);
+const leadConvertRouteSource = readFileSync(
+  new URL("../app/api/admin/leads/[leadId]/convert/route.ts", import.meta.url),
+  "utf8",
+);
+
+// BUG-002: create-session — payment.create must precede the Stripe metadata update so
+// that a Stripe API failure after payment row creation is handled by the outer catch.
+const paymentCreatePos = createSessionRouteSource.indexOf("prisma.payment.create");
+const stripeMetaUpdatePos = createSessionRouteSource.indexOf("stripe.checkout.sessions.update");
+assert.ok(
+  paymentCreatePos > 0 && stripeMetaUpdatePos > 0,
+  "BUG-002: create-session route must contain both prisma.payment.create and stripe.checkout.sessions.update.",
+);
+assert.ok(
+  paymentCreatePos < stripeMetaUpdatePos,
+  "BUG-002: create-session must write the Payment row before the non-critical Stripe metadata update so that payment row creation is covered by the error handler.",
+);
+
+// BUG-003: create-custom-session — post-Stripe DB writes must be in a prisma.$transaction.
+// Extract the $transaction block and verify both order.update and payment.create are inside it.
+const customSessionTxStart = createCustomSessionRouteSource.indexOf("prisma.$transaction");
+assert.ok(
+  customSessionTxStart > 0,
+  "BUG-003: create-custom-session must wrap the post-Stripe order.update and payment.create in a prisma.$transaction.",
+);
+const customSessionTxEnd = createCustomSessionRouteSource.indexOf("]);", customSessionTxStart);
+const customSessionTxBlock = createCustomSessionRouteSource.slice(customSessionTxStart, customSessionTxEnd);
+assert.ok(
+  customSessionTxBlock.includes("prisma.order.update"),
+  "BUG-003: order.update must be inside the prisma.$transaction block in create-custom-session.",
+);
+assert.ok(
+  customSessionTxBlock.includes("prisma.payment.create"),
+  "BUG-003: payment.create must be inside the prisma.$transaction block in create-custom-session.",
+);
+
+// BUG-004: Both standard and custom checkout routes must read the Authorization header
+// and call ensureCustomerForSupabaseUser to link authenticated users to their orders.
+assert.match(
+  createSessionRouteSource,
+  /ensureCustomerForSupabaseUser/,
+  "BUG-004: create-session must call ensureCustomerForSupabaseUser to set customerId for authenticated users.",
+);
+assert.match(
+  createCustomSessionRouteSource,
+  /ensureCustomerForSupabaseUser/,
+  "BUG-004: create-custom-session must call ensureCustomerForSupabaseUser to set customerId for authenticated users.",
+);
+assert.match(
+  createSessionRouteSource,
+  /headers\.get\("authorization"\)/,
+  "BUG-004: create-session must read the authorization header to detect authenticated checkout requests.",
+);
+assert.match(
+  createCustomSessionRouteSource,
+  /headers\.get\("authorization"\)/,
+  "BUG-004: create-custom-session must read the authorization header to detect authenticated checkout requests.",
+);
+
+// BUG-005: ovalSurchargeCents must use * 119 (one multiplication) not * 1.19 * 100
+// (two multiplications that can introduce a 1-cent floating-point discrepancy).
+assert.match(
+  createCustomSessionRouteSource,
+  /ovalSurchargeCents\s*=\s*Math\.round\(\s*ovalSurchargeNet\s*\*\s*119\s*\)/,
+  "BUG-005: ovalSurchargeCents must use Math.round(ovalSurchargeNet * 119) to avoid floating-point rounding errors.",
+);
+assert.doesNotMatch(
+  createCustomSessionRouteSource,
+  /ovalSurchargeNet\s*\*\s*1\.19\s*\*\s*100/,
+  "BUG-005: ovalSurchargeCents must not chain * 1.19 * 100 (two fp multiplications that can differ by 1 cent from the Stripe total).",
+);
+
+// BUG-006: Lead convert route must create a Payment row when skipPayment=yes.
+assert.match(
+  leadConvertRouteSource,
+  /prisma\.payment\.create/,
+  "BUG-006: Lead convert route must create a Payment row when skipPayment=yes for audit-trail parity.",
+);
+assert.match(
+  leadConvertRouteSource,
+  /provider.*manual|manual.*provider/,
+  "BUG-006: Manual payment rows created by lead convert must set provider='manual' to distinguish them from Stripe payments.",
+);
+
+// BUG-007: Reorder route must guard against session.url being null.
+assert.match(
+  reorderRouteSource,
+  /if \(!session\.url\)/,
+  "BUG-007: Reorder route must check session.url and return a 503 / mark PAYMENT_FAILED when Stripe returns no redirect URL.",
+);
+assert.match(
+  reorderRouteSource,
+  /PAYMENT_FAILED/,
+  "BUG-007: Reorder route must mark the order PAYMENT_FAILED when session.url is null so the order does not remain stuck at PENDING_PAYMENT.",
+);
+
 console.log("Autonomous safety regression tests passed.");

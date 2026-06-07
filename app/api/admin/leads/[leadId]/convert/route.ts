@@ -101,13 +101,31 @@ export async function POST(
       select: { id: true, orderNumber: true },
     });
 
-    await prisma.lead.update({
-      where: { id: leadId },
-      data: {
-        status: "WON",
-        convertedOrderId: order.id,
-      },
-    });
+    // BUG-006: Create a Payment row for audit-trail parity when an admin skips payment.
+    // Without this row, the order shows as PAID in the status but has no matching Payment
+    // record, breaking admin financial reconciliation.
+    if (paid) {
+      await prisma.$transaction([
+        prisma.lead.update({
+          where: { id: leadId },
+          data: { status: "WON", convertedOrderId: order.id },
+        }),
+        prisma.payment.create({
+          data: {
+            orderId: order.id,
+            amountCents,
+            currency: "EUR",
+            status: "PAID",
+            provider: "manual",
+          },
+        }),
+      ]);
+    } else {
+      await prisma.lead.update({
+        where: { id: leadId },
+        data: { status: "WON", convertedOrderId: order.id },
+      });
+    }
 
     return NextResponse.redirect(
       new URL(

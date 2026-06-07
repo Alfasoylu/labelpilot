@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 
 import { getDefaultPricingSettings, mapPricingSettingsRecord } from "@/lib/admin/pricing";
+import { getSupabaseUserFromRequest } from "@/lib/account/auth";
+import { ensureCustomerForSupabaseUser } from "@/lib/account/customers";
 import { checkoutIntakeSchema } from "@/lib/checkout/intake";
 import { findPackageByConfig, type PackageMaterial, type ProductSlug } from "@/lib/commerce/packages";
 import { createOrderNumber } from "@/lib/commerce/orders";
@@ -53,6 +55,22 @@ export async function POST(request: Request) {
         { error: "Checkout ist derzeit nicht verfügbar. Bitte nutzen Sie das Angebotsformular." },
         { status: 503 },
       );
+    }
+
+    // BUG-004: Resolve customerId for authenticated users.
+    let customerId: string | null = null;
+    const authHeader = request.headers.get("authorization") ?? "";
+    if (authHeader.startsWith("Bearer ")) {
+      const auth = await getSupabaseUserFromRequest(request);
+      if (auth.ok) {
+        try {
+          const customer = await ensureCustomerForSupabaseUser(prisma, auth.user);
+          customerId = customer.id;
+        } catch (err) {
+          // Non-critical: proceed without linking to customer account.
+          console.warn("Kundenkonto konnte nicht verknüpft werden:", err);
+        }
+      }
     }
 
     const pkg = findPackageByConfig(parsed.data);
@@ -183,6 +201,8 @@ export async function POST(request: Request) {
             artworkInputStatus: parsed.data.artworkStatus,
             selectedAddons: parsed.data.addons,
             stripeCheckoutSessionId: session.id,
+            // BUG-004: Link to customer account when authenticated.
+            customerId: customerId ?? undefined,
             statusEvents: {
               create: {
                 status: "PENDING_PAYMENT",
@@ -208,15 +228,10 @@ export async function POST(request: Request) {
     }
     createdOrderId = order.id;
 
-    // Back-fill orderId into Stripe session metadata so the webhook can resolve the order.
-    const fullMetadata = {
-      ...stripeMetadataPlaceholder,
-      orderId: order.id,
-    };
-    await stripe.checkout.sessions.update(session.id, {
-      metadata: fullMetadata,
-    });
-
+    // BUG-002: payment.create is the only post-Stripe DB write (stripeCheckoutSessionId is
+    // already set in order.create above). Create the Payment row first so that any failure
+    // is caught by the outer catch block which marks the order PAYMENT_FAILED.
+    // The Stripe metadata back-fill is best-effort and does not affect payment processing.
     await prisma.payment.create({
       data: {
         orderId: order.id,
@@ -227,6 +242,21 @@ export async function POST(request: Request) {
         provider: "stripe",
       },
     });
+
+    // Back-fill orderId into Stripe session metadata so the webhook can resolve the order.
+    // Non-critical: the orderId is already in the DB; this just makes the Stripe dashboard
+    // more readable. Failure here does not affect the customer flow.
+    const fullMetadata = {
+      ...stripeMetadataPlaceholder,
+      orderId: order.id,
+    };
+    try {
+      await stripe.checkout.sessions.update(session.id, {
+        metadata: fullMetadata,
+      });
+    } catch (metaErr) {
+      console.warn("Stripe-Metadaten-Update nach Bestellanlage fehlgeschlagen:", metaErr);
+    }
 
     return NextResponse.json({ url: session.url });
   } catch (error) {

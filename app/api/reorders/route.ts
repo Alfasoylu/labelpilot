@@ -251,6 +251,29 @@ export async function POST(request: Request) {
     ],
   });
 
+  // BUG-007: Guard against Stripe returning a session without a URL.
+  // Without this check the client receives { url: null } and gets no redirect;
+  // the order sits at PENDING_PAYMENT with no way for the customer to pay.
+  if (!session.url) {
+    console.error("Reorder-Checkout-Session ohne URL erstellt:", session.id);
+    await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        status: "PAYMENT_FAILED",
+        statusEvents: {
+          create: {
+            status: "PAYMENT_FAILED",
+            note: "Nachbestellung: Stripe-Session ohne Weiterleitungs-URL.",
+          },
+        },
+      },
+    });
+    return NextResponse.json(
+      { error: "Checkout ist derzeit nicht verfügbar. Bitte nutzen Sie das Angebotsformular." },
+      { status: 503 },
+    );
+  }
+
   await prisma.$transaction([
     prisma.order.update({
       where: { id: order.id },
