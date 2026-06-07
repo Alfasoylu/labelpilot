@@ -1,7 +1,32 @@
 # 14-AUTH-AND-ACCOUNTS.md
 
-> **Status: NOT IMPLEMENTED (live).**
-> Today the production access model is token-based for specific customer actions (for example upload/proof/order access), while admin is protected by a Basic-Auth stopgap. Real Supabase Auth + customer account rollout belongs to canonical build phase **P3 / Auth + Account**; until that lands, treat this document as target-state architecture, not live-state behavior.
+> **Status: PARTIALLY IMPLEMENTED.**
+> Supabase Auth is live for customer accounts (`/konto`). Password reset (email-based) and password change for logged-in users are implemented as of 2026-06-06. Admin is still protected by Basic-Auth stopgap (not Supabase roles). See §40 for the implementation log.
+
+---
+
+## 40. Implementation Log — 2026-06-06 (Claude Code Session)
+
+### 40.1 Password Reset Flow (`app/(account)/konto/KontoClient.tsx`)
+
+- **"Passwort vergessen?" button** on the login form opens a `forgotMode` form.
+- Submitting the forgot-mode form calls `supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + "/konto" })` — sends a reset email with a hash-based token.
+- When the user clicks the reset link, they return to `/konto`; the Supabase client fires `PASSWORD_RECOVERY` in `onAuthStateChange`.
+- `KontoClient` detects this event and sets `passwordRecovery(true)`, which renders a "Neues Passwort setzen" form (before the standard login gate).
+- Submitting calls `supabase.auth.updateUser({ password })` and redirects to the normal dashboard.
+
+### 40.2 Password Change for Logged-in Users (`app/(account)/konto/KontoClient.tsx`)
+
+- A "Passwort" card in the authenticated dashboard shows a toggle-based change-password form.
+- Calls `supabase.auth.updateUser({ password })` directly (no email step needed).
+- Result message shown inline; form collapses on success.
+
+### 40.3 Technical Notes
+
+- Uses plain `@supabase/supabase-js` browser client (not `@supabase/ssr`). Hash-based tokens fire `PASSWORD_RECOVERY` in `onAuthStateChange` — no separate `/auth/callback` route needed.
+- Confirmation + mismatch validation done client-side before calling `updateUser`.
+
+---
 
 # Labelpilot.de — Auth and Accounts
 

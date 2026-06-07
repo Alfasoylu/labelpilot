@@ -58,6 +58,7 @@ export function HeroKalkulator() {
           widthMm,
           heightMm,
           quantity,
+          colorCount,
         }),
       });
       const data = await res.json().catch(() => null);

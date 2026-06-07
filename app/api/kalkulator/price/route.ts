@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { mapMaterialCostRecord, mapPricingSettingsRecord } from "@/lib/admin/pricing";
+import {
+  getDefaultPricingMaterial,
+  getDefaultPricingSettings,
+  mapMaterialCostRecord,
+  mapPricingSettingsRecord,
+} from "@/lib/admin/pricing";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { buildPublicCustomSizePriceResponse } from "@/lib/pricing/custom-size-public";
 
@@ -37,13 +42,16 @@ export async function POST(request: Request) {
       ])
     : [null, null];
 
+  const params = mapMaterialCostRecord(materialRow) ?? getDefaultPricingMaterial(parsed.data.materialKey);
+  const settings = mapPricingSettingsRecord(settingsRow) ?? getDefaultPricingSettings();
+
   let result;
   try {
     result = buildPublicCustomSizePriceResponse({
       featureEnabled: true,
       request: parsed.data,
-      params: mapMaterialCostRecord(materialRow),
-      settings: mapPricingSettingsRecord(settingsRow),
+      params,
+      settings,
     });
   } catch (error) {
     console.error("[kalkulator-price] computation failed:", error);

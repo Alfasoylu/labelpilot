@@ -956,3 +956,46 @@ The wrong implementation:
 > A dashboard with charts but no safe operational control.
 
 The admin panel is where margin, quality and delivery discipline are enforced.
+
+---
+
+## 31. Implementation Log — 2026-06-06 (Claude Code Session)
+
+All work committed to `main`. Commits: `1fe47d1`, `7869ba3`, `2a66761`, `4b4f57b`, `cbbee6a`, `0b92f4e`, `01c02cb`.
+
+### 31.1 Admin Orders List
+
+- **`AdminOrdersListClient`** (`components/admin/AdminOrdersListClient.tsx`): new client component with checkbox multi-select, "Alle auswählen", and a bulk action bar (`.bulk-action-bar` CSS class). Posts selected order IDs + target status to `/api/admin/orders/bulk-status`.
+- **Pagination**: `PAGE_SIZE = 50`, `skip: page * PAGE_SIZE`, parallel `count()` query, prev/next links via `buildPageUrl()`. Total count shown in header.
+- **Bulk status API** (`app/api/admin/orders/bulk-status/route.ts`): accepts `{ orderIds[], status, note? }`, max 100 IDs, runs a Prisma `$transaction`.
+
+### 31.2 Admin Order Detail
+
+- **"Status ändern" form**: force-sets any status (bypasses `canTransitionOrderStatus` — admins need full control). API route: `app/api/admin/orders/[orderId]/status/route.ts`. Accepts JSON or form data; supports `redirectTo` for form-based reload.
+- **Customer profile link**: when `order.customer` exists, a "Kundenprofil" link appears in the detail header nav.
+
+### 31.3 Admin Dashboard
+
+- New parallel queries: `inProductionCount`, `shippedCount`, `newLeadCount`.
+- New cards: "In Produktion" (→ `/admin/production`), "Versendet (offen)" (→ `/admin/orders?status=SHIPPED`), "Neue Leads" (→ `/admin/leads?status=NEW`).
+
+### 31.4 New Admin Pages
+
+| Route | File | Purpose |
+|---|---|---|
+| `/admin/analytics` | `app/(admin)/admin/analytics/page.tsx` | Period selector (Monat/Vormonat/Quartal), KPI cards, material breakdown, 12-month trend table |
+| `/admin/production` | `app/(admin)/admin/production/page.tsx` | APPROVED_FOR_PRODUCTION + IN_PRODUCTION orders, age-in-queue (red if >7 days), inline status-transition forms |
+| `/admin/reorder` | `app/(admin)/admin/reorder/page.tsx` | RefillPredictions with inline reminder-creation form; open ReorderReminders with mark-sent/dismiss forms |
+
+### 31.5 Lead Conversion
+
+- Lead detail (`app/(admin)/admin/leads/[leadId]/page.tsx`): "In Auftrag umwandeln" section — form when `!lead.convertedOrderId`, converted order link otherwise.
+- API (`app/api/admin/leads/[leadId]/convert/route.ts`): creates `Order` from lead data, sets `lead.status = "WON"` and `lead.convertedOrderId`.
+
+### 31.6 Admin Layout Nav
+
+Added nav links: Analytik (`/admin/analytics`), Produktion (`/admin/production`), Nachbestellungen (`/admin/reorder`).
+
+### 31.7 CSS
+
+`.bulk-action-bar` added to `app/globals.css` using `var(--accent-soft)` background and brass accent rgba border (`176, 138, 69, 0.3`).
