@@ -15,12 +15,8 @@ export type PricingSettingsInput = {
   customMaxQuantity: number;
   // Flexo: plate cost per color
   platePerColorCostNet: number;
-  // Flexo: ink cost tiers (flat fee by quantity range)
-  inkCostTier1Net: number;
-  inkCostTier1MaxQty: number;
-  inkCostTier2Net: number;
-  inkCostTier2MaxQty: number;
-  inkCostAdditionalPer10kNet: number;
+  // Flexo: ink cost per m² per color (scales with label area and color count)
+  inkCostPerM2PerColorNet: number;
   // Digital: per-unit + fixed setup fee
   digitalCostPerUnitNet: number;
   digitalSetupCostNet: number;
@@ -81,19 +77,6 @@ function roundMoney(value: number) {
   return Number(value.toFixed(2));
 }
 
-function computeInkCost(quantity: number, settings: PricingSettingsInput): number {
-  if (quantity <= settings.inkCostTier1MaxQty) {
-    return settings.inkCostTier1Net;
-  }
-  if (quantity <= settings.inkCostTier2MaxQty) {
-    return settings.inkCostTier2Net;
-  }
-  // inkCostAdditionalPer10kNet is defined per 10,000 units — use the fixed batch size
-  // matching the field name, independent of the tier-boundary gap.
-  const additionalBatches = Math.ceil((quantity - settings.inkCostTier2MaxQty) / 10_000);
-  return settings.inkCostTier2Net + additionalBatches * settings.inkCostAdditionalPer10kNet;
-}
-
 function computeShippingCost(kg: number, settings: PricingSettingsInput): number {
   // Progressive tiers: each portion billed at its own rate
   const tier1Kg = Math.min(kg, settings.shippingTier1MaxKg);
@@ -140,7 +123,8 @@ function computeBestProductionCost(
   const shippingWeightKg = labelAreaM2 * quantity * settings.labelWeightPerM2Grams / 1000;
   const shippingCost = computeShippingCost(shippingWeightKg, settings);
 
-  const inkCost = computeInkCost(quantity, settings);
+  // Flexo ink: scales with printed area and color count
+  const inkCost = settings.inkCostPerM2PerColorNet * colorCount * totalAreaM2;
   const plateCost = colorCount * settings.platePerColorCostNet * anzahlSorten;
   const flexoProductionCost = materialCost + inkCost + plateCost + shippingCost;
 

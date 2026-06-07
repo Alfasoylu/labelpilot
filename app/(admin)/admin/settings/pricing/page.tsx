@@ -168,7 +168,7 @@ export default async function PricingSettingsPage({
             <li>Labelfläche [m²] = Breite × Höhe ÷ 1.000.000</li>
             <li>Gesamtfläche [m²] = Labelfläche × Menge × (1 + Ausschuss%)</li>
             <li>Materialkosten = Materialkosten/m² × Gesamtfläche</li>
-            <li><strong>Flexo:</strong> Farbe = Stufentabelle | Platte = Farbanzahl × Sortenanzahl × Platte/Farbe</li>
+            <li><strong>Flexo:</strong> Boya = €/m²/Farbe × Farbanzahl × Gesamtfläche | Platte = Farbanzahl × Sortenanzahl × Platte/Farbe</li>
             <li><strong>Digital:</strong> Digitaldruck = 0,10 €/Stück × Menge + Rüstgebühr</li>
             <li>Produktionskosten = Materialkosten + min(Flexo, Digital)</li>
             <li>Aufschlag: ≤ Tier1-Menge × Faktor1, ≤ Tier2-Menge × Faktor2, sonst × Faktor3</li>
@@ -366,7 +366,7 @@ export default async function PricingSettingsPage({
               <div className="form-grid">
                 <div>
                   <label htmlFor="settings-platePerColorCostNet">
-                    Platte/Farbe netto (Plattenkosten pro Farbe)
+                    Plattenkosten pro Farbe netto
                   </label>
                   <input
                     id="settings-platePerColorCostNet"
@@ -381,75 +381,20 @@ export default async function PricingSettingsPage({
                   </p>
                 </div>
                 <div>
-                  <label htmlFor="settings-inkCostTier1Net">
-                    Boya Kademe 1 — bis Kademe 1 Menge
+                  <label htmlFor="settings-inkCostPerM2PerColorNet">
+                    Boyakosten pro m² pro Farbe netto
                   </label>
                   <input
-                    id="settings-inkCostTier1Net"
-                    name="settings.inkCostTier1Net"
+                    id="settings-inkCostPerM2PerColorNet"
+                    name="settings.inkCostPerM2PerColorNet"
                     type="number"
-                    min="0.01"
-                    step="0.01"
-                    defaultValue={formatPricingNumber(settings.inkCostTier1Net)}
-                  />
-                  <p className="field-hint">Pauschal-Boyakosten bis inkl. Kademe-1-Grenze (Standard: 100 €).</p>
-                </div>
-                <div>
-                  <label htmlFor="settings-inkCostTier1MaxQty">
-                    Boya Kademe 1 — Max. Menge
-                  </label>
-                  <input
-                    id="settings-inkCostTier1MaxQty"
-                    name="settings.inkCostTier1MaxQty"
-                    type="number"
-                    min="1"
-                    step="1"
-                    defaultValue={settings.inkCostTier1MaxQty}
-                  />
-                  <p className="field-hint">Bis zu dieser Menge gilt Kademe 1 (Standard: 10.000).</p>
-                </div>
-                <div>
-                  <label htmlFor="settings-inkCostTier2Net">
-                    Boya Kademe 2 — bis Kademe 2 Menge
-                  </label>
-                  <input
-                    id="settings-inkCostTier2Net"
-                    name="settings.inkCostTier2Net"
-                    type="number"
-                    min="0.01"
-                    step="0.01"
-                    defaultValue={formatPricingNumber(settings.inkCostTier2Net)}
-                  />
-                  <p className="field-hint">Pauschal-Boyakosten bis inkl. Kademe-2-Grenze (Standard: 170 €).</p>
-                </div>
-                <div>
-                  <label htmlFor="settings-inkCostTier2MaxQty">
-                    Boya Kademe 2 — Max. Menge
-                  </label>
-                  <input
-                    id="settings-inkCostTier2MaxQty"
-                    name="settings.inkCostTier2MaxQty"
-                    type="number"
-                    min="1"
-                    step="1"
-                    defaultValue={settings.inkCostTier2MaxQty}
-                  />
-                  <p className="field-hint">Bis zu dieser Menge gilt Kademe 2 (Standard: 20.000).</p>
-                </div>
-                <div>
-                  <label htmlFor="settings-inkCostAdditionalPer10kNet">
-                    Boya — je weitere 10.000 Stück nach Kademe 2
-                  </label>
-                  <input
-                    id="settings-inkCostAdditionalPer10kNet"
-                    name="settings.inkCostAdditionalPer10kNet"
-                    type="number"
-                    min="0.01"
-                    step="0.01"
-                    defaultValue={formatPricingNumber(settings.inkCostAdditionalPer10kNet)}
+                    min="0.0001"
+                    step="0.0001"
+                    defaultValue={formatPricingNumber(settings.inkCostPerM2PerColorNet, 4)}
                   />
                   <p className="field-hint">
-                    Aufschlag pro angefangene 10.000 Stück über Kademe 2 (Standard: 70 €).
+                    Boya = dieser Wert × Farbanzahl × Gesamtfläche (m²). Standard: 0,33 €.
+                    Beispiel: 4 Farben × 75 m² × 0,33 € = 99 €.
                   </p>
                 </div>
               </div>

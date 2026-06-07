@@ -29,11 +29,7 @@ type PricingSettingsRecord = {
   expressNet: DecimalLike | number;
   extraDesignNet: DecimalLike | number;
   platePerColorCostNet?: DecimalLike | number | null;
-  inkCostTier1Net?: DecimalLike | number | null;
-  inkCostTier1MaxQty?: number | null;
-  inkCostTier2Net?: DecimalLike | number | null;
-  inkCostTier2MaxQty?: number | null;
-  inkCostAdditionalPer10kNet?: DecimalLike | number | null;
+  inkCostPerM2PerColorNet?: DecimalLike | number | null;
   digitalCostPerUnitNet?: DecimalLike | number | null;
   digitalSetupCostNet?: DecimalLike | number | null;
   markupTier1Multiplier?: DecimalLike | number | null;
@@ -114,11 +110,7 @@ const DEFAULT_SETTINGS: PricingSettingsInput & AddonSettingsInput = {
   expressNet: 9.9,
   extraDesignNet: 19,
   platePerColorCostNet: 40,
-  inkCostTier1Net: 100,
-  inkCostTier1MaxQty: 10000,
-  inkCostTier2Net: 170,
-  inkCostTier2MaxQty: 20000,
-  inkCostAdditionalPer10kNet: 70,
+  inkCostPerM2PerColorNet: 0.33,
   digitalCostPerUnitNet: 0.10,
   digitalSetupCostNet: 40,
   markupTier1Multiplier: 1.8,
@@ -195,11 +187,7 @@ export function mapPricingSettingsRecord(record: PricingSettingsRecord | null | 
     expressNet: decimalToNumber(record.expressNet) ?? 9.9,
     extraDesignNet: decimalToNumber(record.extraDesignNet) ?? 19,
     platePerColorCostNet: decimalToNumber(record.platePerColorCostNet) ?? 40,
-    inkCostTier1Net: decimalToNumber(record.inkCostTier1Net) ?? 100,
-    inkCostTier1MaxQty: record.inkCostTier1MaxQty ?? 10000,
-    inkCostTier2Net: decimalToNumber(record.inkCostTier2Net) ?? 170,
-    inkCostTier2MaxQty: record.inkCostTier2MaxQty ?? 20000,
-    inkCostAdditionalPer10kNet: decimalToNumber(record.inkCostAdditionalPer10kNet) ?? 70,
+    inkCostPerM2PerColorNet: decimalToNumber(record.inkCostPerM2PerColorNet) ?? 0.33,
     digitalCostPerUnitNet: decimalToNumber(record.digitalCostPerUnitNet) ?? 0.10,
     digitalSetupCostNet: decimalToNumber(record.digitalSetupCostNet) ?? 40,
     markupTier1Multiplier: decimalToNumber(record.markupTier1Multiplier) ?? 1.8,

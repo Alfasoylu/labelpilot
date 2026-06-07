@@ -28,11 +28,7 @@ const settingsSchema = z.object({
   expressNet: z.coerce.number().positive(),
   extraDesignNet: z.coerce.number().positive(),
   platePerColorCostNet: z.coerce.number().positive(),
-  inkCostTier1Net: z.coerce.number().positive(),
-  inkCostTier1MaxQty: z.coerce.number().int().positive(),
-  inkCostTier2Net: z.coerce.number().positive(),
-  inkCostTier2MaxQty: z.coerce.number().int().positive(),
-  inkCostAdditionalPer10kNet: z.coerce.number().positive(),
+  inkCostPerM2PerColorNet: z.coerce.number().positive(),
   digitalCostPerUnitNet: z.coerce.number().positive(),
   digitalSetupCostNet: z.coerce.number().positive(),
   markupTier1Multiplier: z.coerce.number().min(1),
@@ -94,11 +90,7 @@ export async function POST(request: Request) {
     expressNet: formData.get("settings.expressNet"),
     extraDesignNet: formData.get("settings.extraDesignNet"),
     platePerColorCostNet: formData.get("settings.platePerColorCostNet"),
-    inkCostTier1Net: formData.get("settings.inkCostTier1Net"),
-    inkCostTier1MaxQty: formData.get("settings.inkCostTier1MaxQty"),
-    inkCostTier2Net: formData.get("settings.inkCostTier2Net"),
-    inkCostTier2MaxQty: formData.get("settings.inkCostTier2MaxQty"),
-    inkCostAdditionalPer10kNet: formData.get("settings.inkCostAdditionalPer10kNet"),
+    inkCostPerM2PerColorNet: formData.get("settings.inkCostPerM2PerColorNet"),
     digitalCostPerUnitNet: formData.get("settings.digitalCostPerUnitNet"),
     digitalSetupCostNet: formData.get("settings.digitalSetupCostNet"),
     markupTier1Multiplier: formData.get("settings.markupTier1Multiplier"),
@@ -161,11 +153,7 @@ export async function POST(request: Request) {
       expressNet?: { toString(): string } | null;
       extraDesignNet?: { toString(): string } | null;
       platePerColorCostNet?: { toString(): string } | null;
-      inkCostTier1Net?: { toString(): string } | null;
-      inkCostTier1MaxQty?: number | null;
-      inkCostTier2Net?: { toString(): string } | null;
-      inkCostTier2MaxQty?: number | null;
-      inkCostAdditionalPer10kNet?: { toString(): string } | null;
+      inkCostPerM2PerColorNet?: { toString(): string } | null;
       digitalCostPerUnitNet?: { toString(): string } | null;
       digitalSetupCostNet?: { toString(): string } | null;
       markupTier1Multiplier?: { toString(): string } | null;
@@ -207,11 +195,7 @@ export async function POST(request: Request) {
       expressNet: previousSettings?.expressNet?.toString() ?? null,
       extraDesignNet: previousSettings?.extraDesignNet?.toString() ?? null,
       platePerColorCostNet: previousSettings?.platePerColorCostNet?.toString() ?? null,
-      inkCostTier1Net: previousSettings?.inkCostTier1Net?.toString() ?? null,
-      inkCostTier1MaxQty: previousSettings?.inkCostTier1MaxQty?.toString() ?? null,
-      inkCostTier2Net: previousSettings?.inkCostTier2Net?.toString() ?? null,
-      inkCostTier2MaxQty: previousSettings?.inkCostTier2MaxQty?.toString() ?? null,
-      inkCostAdditionalPer10kNet: previousSettings?.inkCostAdditionalPer10kNet?.toString() ?? null,
+      inkCostPerM2PerColorNet: previousSettings?.inkCostPerM2PerColorNet?.toString() ?? null,
       digitalCostPerUnitNet: previousSettings?.digitalCostPerUnitNet?.toString() ?? null,
       digitalSetupCostNet: previousSettings?.digitalSetupCostNet?.toString() ?? null,
       markupTier1Multiplier: previousSettings?.markupTier1Multiplier?.toString() ?? null,
@@ -241,11 +225,7 @@ export async function POST(request: Request) {
       expressNet: settingsData.expressNet.toString(),
       extraDesignNet: settingsData.extraDesignNet.toString(),
       platePerColorCostNet: settingsData.platePerColorCostNet.toString(),
-      inkCostTier1Net: settingsData.inkCostTier1Net.toString(),
-      inkCostTier1MaxQty: settingsData.inkCostTier1MaxQty.toString(),
-      inkCostTier2Net: settingsData.inkCostTier2Net.toString(),
-      inkCostTier2MaxQty: settingsData.inkCostTier2MaxQty.toString(),
-      inkCostAdditionalPer10kNet: settingsData.inkCostAdditionalPer10kNet.toString(),
+      inkCostPerM2PerColorNet: settingsData.inkCostPerM2PerColorNet.toString(),
       digitalCostPerUnitNet: settingsData.digitalCostPerUnitNet.toString(),
       digitalSetupCostNet: settingsData.digitalSetupCostNet.toString(),
       markupTier1Multiplier: settingsData.markupTier1Multiplier.toString(),
