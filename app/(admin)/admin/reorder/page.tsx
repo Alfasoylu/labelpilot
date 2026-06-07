@@ -205,8 +205,12 @@ export default async function AdminReorderPage({ searchParams }: ReorderPageProp
                       action={`/api/admin/reorder/reminders/${rem.id}`}
                       method="post"
                     >
-                      <input type="hidden" name="_method" value="PATCH" />
                       <input type="hidden" name="status" value="SENT" />
+                      <input
+                        type="hidden"
+                        name="redirectTo"
+                        value="/admin/reorder?message=Erinnerung+als+gesendet+markiert"
+                      />
                       <button
                         type="submit"
                         className="cta-button"
@@ -220,8 +224,12 @@ export default async function AdminReorderPage({ searchParams }: ReorderPageProp
                     action={`/api/admin/reorder/reminders/${rem.id}`}
                     method="post"
                   >
-                    <input type="hidden" name="_method" value="PATCH" />
                     <input type="hidden" name="status" value="DISMISSED" />
+                    <input
+                      type="hidden"
+                      name="redirectTo"
+                      value="/admin/reorder?message=Erinnerung+als+erledigt+markiert"
+                    />
                     <button
                       type="submit"
                       className="secondary-link"
