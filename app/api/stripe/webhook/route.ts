@@ -179,12 +179,24 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
     country: order.country,
   });
 
-  await sendEmail({
+  // SW-002: Capture sendEmail result. On failure, roll back the email reservation so a retry
+  // or manual trigger can re-send the confirmation. Log at error level for monitoring.
+  const emailResult = await sendEmail({
     to: customerEmail,
     subject: template.subject,
     html: template.html,
     text: template.text,
   });
+
+  if (!emailResult.ok) {
+    console.error(
+      `Bestellbestätigung konnte nicht gesendet werden für Bestellung ${order.id} (${customerEmail}). E-Mail-Reservierung wird zurückgesetzt.`,
+    );
+    await prisma.order.update({
+      where: { id: order.id },
+      data: { confirmationEmailSentAt: null },
+    });
+  }
 }
 
 async function handlePaymentFailed(event: Stripe.Event) {
@@ -286,26 +298,37 @@ export async function POST(request: Request) {
   try {
     event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
   } catch (error) {
-    console.error("Stripe-Signatur konnte nicht verifiziert werden:", error);
+    // SW-007: Log only the message, not the full Error object, to avoid leaking secret material.
+    console.error(
+      "Stripe-Signaturprüfung fehlgeschlagen:",
+      error instanceof Error ? error.message : String(error),
+    );
     return NextResponse.json({ error: "Ungültige Signatur." }, { status: 400 });
   }
 
-  const existingEvent = await prisma.stripeEvent.findUnique({
+  // SW-001: Atomic upsert instead of findUnique + conditional create to prevent TOCTOU race.
+  // The upsert returns the existing row unchanged if the stripeEventId already exists.
+  const stripeEventRecord = await prisma.stripeEvent.upsert({
     where: { stripeEventId: event.id },
+    update: {},
+    create: {
+      stripeEventId: event.id,
+      type: event.type,
+      status: "RECEIVED",
+    },
   });
 
-  if (existingEvent?.status === "PROCESSED") {
+  // SW-003: Skip already-PROCESSED events (idempotency). Also skip ERROR events after logging
+  // a warning — they may have partially succeeded; Stripe retries are not safe to re-run.
+  if (stripeEventRecord.status === "PROCESSED") {
     return NextResponse.json({ received: true });
   }
 
-  if (!existingEvent) {
-    await prisma.stripeEvent.create({
-      data: {
-        stripeEventId: event.id,
-        type: event.type,
-        status: "RECEIVED",
-      },
-    });
+  if (stripeEventRecord.status === "ERROR") {
+    console.warn(
+      `Stripe-Webhook ${event.id} (${event.type}) bereits mit ERROR markiert – übersprungen. Manuelle Prüfung erforderlich.`,
+    );
+    return NextResponse.json({ received: true });
   }
 
   try {
@@ -316,7 +339,30 @@ export async function POST(request: Request) {
       case "payment_intent.payment_failed":
         await handlePaymentFailed(event);
         break;
+      // SW-005: Handle expired checkout sessions so orders do not stay stuck in PENDING_PAYMENT.
+      case "checkout.session.expired": {
+        const expiredSession = event.data.object as Stripe.Checkout.Session;
+        const expiredOrderId = expiredSession.metadata?.orderId;
+        if (expiredOrderId) {
+          await prisma.order.updateMany({
+            where: { id: expiredOrderId, status: "PENDING_PAYMENT" },
+            data: { status: "CANCELLED" },
+          });
+          await prisma.orderStatusEvent.create({
+            data: {
+              orderId: expiredOrderId,
+              status: "CANCELLED",
+              note: "Stripe-Checkout-Session abgelaufen.",
+            },
+          });
+        }
+        break;
+      }
       default:
+        // SW-006: Log unrecognized event types so developers know which events arrive unhandled.
+        console.info(
+          `Stripe-Webhook-Ereignistyp nicht verarbeitet: ${event.type} (${event.id}) – als PROCESSED markiert.`,
+        );
         break;
     }
 

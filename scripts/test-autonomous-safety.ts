@@ -781,4 +781,49 @@ const validRequestChanges = validateProofDecisionRequest(
 );
 assert.deepEqual(validRequestChanges, { ok: true });
 
+// ── Stripe Webhook regression guards ─────────────────────────────────────────
+// These assertions read the source file to ensure the structural fixes for
+// SW-001, SW-002, and SW-003 are not accidentally reverted.
+
+const webhookSource = readFileSync(
+  new URL("../app/api/stripe/webhook/route.ts", import.meta.url),
+  "utf8",
+);
+
+// SW-001: Atomic upsert must replace the old findUnique + conditional create.
+assert.doesNotMatch(
+  webhookSource,
+  /prisma\.stripeEvent\.findUnique/,
+  "SW-001: Webhook must not use findUnique for idempotency – use upsert to avoid TOCTOU race condition.",
+);
+assert.match(
+  webhookSource,
+  /prisma\.stripeEvent\.upsert/,
+  "SW-001: Webhook must use prisma.stripeEvent.upsert for atomic idempotency guard.",
+);
+
+// SW-002: sendEmail return value must be captured and checked.
+assert.doesNotMatch(
+  webhookSource,
+  /await sendEmail\(\{[^}]*\}\s*\);/,
+  "SW-002: sendEmail result must be captured – bare `await sendEmail(...)` discards the ok flag.",
+);
+assert.match(
+  webhookSource,
+  /const emailResult = await sendEmail\(/,
+  "SW-002: sendEmail result must be stored in emailResult so failures are logged and the email reservation can be rolled back.",
+);
+assert.match(
+  webhookSource,
+  /if \(!emailResult\.ok\)/,
+  "SW-002: Webhook must check emailResult.ok and handle email send failures explicitly.",
+);
+
+// SW-003: ERROR events must be skipped with a warning (not re-processed on Stripe retry).
+assert.match(
+  webhookSource,
+  /stripeEventRecord\.status === "ERROR"/,
+  "SW-003: Webhook must guard against reprocessing events already marked ERROR to prevent double-execution on Stripe retries.",
+);
+
 console.log("Autonomous safety regression tests passed.");
