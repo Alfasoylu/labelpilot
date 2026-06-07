@@ -1446,4 +1446,106 @@ assert.match(
   "ADMIN-005: Reorder reminders route must use safeRedirect to prevent open redirect.",
 );
 
+// ── Reorder Flow regression guards ───────────────────────────────────────────
+
+const savedDesignsSource = readFileSync(
+  new URL("../lib/artwork/saved-designs.ts", import.meta.url),
+  "utf8",
+);
+const reminderRouteSource = readFileSync(
+  new URL("../app/api/admin/reorder/reminders/route.ts", import.meta.url),
+  "utf8",
+);
+const reminderIdRouteSource = readFileSync(
+  new URL("../app/api/admin/reorder/reminders/[reminderId]/route.ts", import.meta.url),
+  "utf8",
+);
+
+// REORDER-001: Token-based access must reject orders with non-completed statuses.
+// Verify that INELIGIBLE_TOKEN_ACCESS_STATUSES includes the three dangerous statuses
+// and that getCustomerAccessContext returns null when status is in that set.
+assert.match(
+  savedDesignsSource,
+  /INELIGIBLE_TOKEN_ACCESS_STATUSES/,
+  "REORDER-001: getCustomerAccessContext must define and use INELIGIBLE_TOKEN_ACCESS_STATUSES to block CANCELLED/PENDING_PAYMENT/PAYMENT_FAILED tokens.",
+);
+assert.match(
+  savedDesignsSource,
+  /INELIGIBLE_TOKEN_ACCESS_STATUSES\.has\(order\.status\)/,
+  "REORDER-001: getCustomerAccessContext must call INELIGIBLE_TOKEN_ACCESS_STATUSES.has(order.status) and return null for ineligible orders.",
+);
+assert.match(
+  savedDesignsSource,
+  /"CANCELLED"/,
+  "REORDER-001: INELIGIBLE_TOKEN_ACCESS_STATUSES must include CANCELLED.",
+);
+assert.match(
+  savedDesignsSource,
+  /"PENDING_PAYMENT"/,
+  "REORDER-001: INELIGIBLE_TOKEN_ACCESS_STATUSES must include PENDING_PAYMENT.",
+);
+assert.match(
+  savedDesignsSource,
+  /"PAYMENT_FAILED"/,
+  "REORDER-001: INELIGIBLE_TOKEN_ACCESS_STATUSES must include PAYMENT_FAILED.",
+);
+
+// REORDER-002: buildAccessibleStoredDesignWhere must enforce status: 'ACTIVE'.
+assert.match(
+  savedDesignsSource,
+  /status:\s*["']ACTIVE["']/,
+  "REORDER-002: buildAccessibleStoredDesignWhere must include status: 'ACTIVE' filter so non-active designs (e.g. NEEDS_REVIEW) are not reorderable.",
+);
+
+// REORDER-003: Admin reorder reminder routes must call getAdminActorFromRequest.
+assert.match(
+  reminderRouteSource,
+  /getAdminActorFromRequest/,
+  "REORDER-003: Admin reorder reminders POST route must call getAdminActorFromRequest as a secondary auth check.",
+);
+assert.match(
+  reminderIdRouteSource,
+  /getAdminActorFromRequest/,
+  "REORDER-003: Admin reorder reminders [reminderId] PATCH/POST handler must call getAdminActorFromRequest as a secondary auth check.",
+);
+
+// REORDER-004: When customerId is present, email-based ownership clauses must not be added.
+// Verify that the customerId branch returns early without OR/email clauses.
+assert.match(
+  savedDesignsSource,
+  /if \(access\.customerId\)[\s\S]*?return \{[\s\S]*?customerId: access\.customerId/,
+  "REORDER-004: buildAccessibleStoredDesignWhere must return an exact customerId filter (no email-based OR) when access.customerId is available.",
+);
+// Confirm the email-based OR clauses are inside the else path (after the customerId early return).
+const customerIdReturnPos = savedDesignsSource.indexOf("return {\n    ...baseFilter,\n    customerId: access.customerId,\n  };");
+const emailOrPos = savedDesignsSource.indexOf("lastOrder: {\n      customerEmail:");
+assert.ok(
+  customerIdReturnPos >= 0,
+  "REORDER-004: buildAccessibleStoredDesignWhere must contain the customerId-only early return.",
+);
+assert.ok(
+  emailOrPos > customerIdReturnPos,
+  "REORDER-004: Email-based ownership clauses must appear only after the customerId early return (i.e. in the token-only path).",
+);
+
+// REORDER-005: Reorder route must create a RefillPrediction row.
+assert.match(
+  reorderRouteSource,
+  /calculateRefillReminder/,
+  "REORDER-005: Reorder route must import and call calculateRefillReminder to compute the refill prediction.",
+);
+assert.match(
+  reorderRouteSource,
+  /prisma\.refillPrediction\.create/,
+  "REORDER-005: Reorder route must create a RefillPrediction row so reorders participate in the reminder pipeline.",
+);
+// Ensure refillPrediction.create is inside the prisma.$transaction block.
+const reorderTxStart = reorderRouteSource.indexOf("prisma.$transaction");
+const reorderTxEnd = reorderRouteSource.indexOf("]);", reorderTxStart);
+const refillCreatePos = reorderRouteSource.indexOf("prisma.refillPrediction.create", reorderTxStart);
+assert.ok(
+  refillCreatePos > reorderTxStart && refillCreatePos < reorderTxEnd,
+  "REORDER-005: prisma.refillPrediction.create must be inside the prisma.$transaction block in the reorder route.",
+);
+
 console.log("Autonomous safety regression tests passed.");

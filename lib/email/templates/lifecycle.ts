@@ -84,6 +84,9 @@ export function orderConfirmation(input: {
   postalCode?: string | null;
   city?: string | null;
   country?: string | null;
+  // REORDER-006: When true, the artwork is already approved and no upload is needed.
+  // The call-to-action is adjusted to avoid prompting the customer to upload artwork.
+  isSameArtworkReorder?: boolean;
 }): TemplateResult {
   const orderLink = getOrderLink(input.orderId, input.uploadToken);
   const subject = `Ihre Bestellung ${input.orderNumber} ist eingegangen`;
@@ -172,13 +175,22 @@ export function orderConfirmation(input: {
       ? `<h3 style="margin:16px 0 8px 0;font-size:15px;color:#11100E;">Lieferadresse</h3>${addressParts.map((line) => `<p style="margin:2px 0;">${escapeHtml(line)}</p>`).join("")}`
       : "";
 
+  // REORDER-006: For same-artwork reorders the artwork is already approved and no upload
+  // is required. Show a neutral order-overview CTA instead of "Druckdaten hochladen".
+  const actionLabel = input.isSameArtworkReorder
+    ? "Bestellung ansehen"
+    : "Druckdaten hochladen";
+  const footerNote = input.isSameArtworkReorder
+    ? "Ihre freigegebenen Druckdaten werden unverändert für diesen Auftrag verwendet."
+    : "Bitte bewahren Sie Ihren Upload-Link auf. Über ihn erreichen Sie den Upload und später auch den Proof.";
+
   return {
     subject,
     text,
     html: renderShell({
       heading: "Vielen Dank für Ihre Bestellung.",
       intro: `Ihre Bestellung ${input.orderNumber} wurde erfasst.`,
-      actionLabel: "Druckdaten hochladen",
+      actionLabel,
       actionHref: orderLink,
       bodyHtml: `
         <h3 style="margin:0 0 8px 0;font-size:15px;color:#11100E;">Bestellzusammenfassung</h3>
@@ -186,7 +198,7 @@ export function orderConfirmation(input: {
         <h3 style="margin:16px 0 8px 0;font-size:15px;color:#11100E;">Preis</h3>
         ${priceHtmlParts.join("")}
         ${addressHtml}
-        <p style="margin:16px 0 0 0;color:#6B6560;font-size:14px;">Bitte bewahren Sie Ihren Upload-Link auf. Über ihn erreichen Sie den Upload und später auch den Proof.</p>
+        <p style="margin:16px 0 0 0;color:#6B6560;font-size:14px;">${footerNote}</p>
       `,
     }),
   };

@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { getPrismaClient } from "@/lib/db/prisma";
 import { safeRedirect } from "@/lib/http/safe-redirect";
+import { getAdminActorFromRequest } from "@/lib/security/admin-basic-auth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -50,6 +51,12 @@ export async function GET(): Promise<Response> {
 export async function POST(request: Request): Promise<Response> {
   const prisma = getPrismaClient();
   if (!prisma) return NextResponse.json({ error: "Nicht verfügbar." }, { status: 503 });
+
+  // REORDER-003: Secondary auth check — consistent with other admin routes
+  // (e.g. /api/admin/orders/[orderId]/notes). The middleware enforces Basic Auth on
+  // /api/admin/* but calling getAdminActorFromRequest here provides a defence-in-depth
+  // layer in case the middleware is bypassed or stripped by a reverse proxy.
+  const _actor = getAdminActorFromRequest(request);
 
   const contentType = request.headers.get("content-type") ?? "";
   let rawData: unknown;

@@ -164,6 +164,8 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
     return;
   }
 
+  // REORDER-006: Pass isSameArtworkReorder so the confirmation email suppresses the
+  // artwork-upload call-to-action for reorders where artwork is already approved.
   const template = orderConfirmation({
     orderId: order.id,
     orderNumber: order.orderNumber,
@@ -184,6 +186,7 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
     postalCode: order.postalCode,
     city: order.city,
     country: order.country,
+    isSameArtworkReorder,
   });
 
   // SW-002: Capture sendEmail result. On failure, roll back the email reservation so a retry

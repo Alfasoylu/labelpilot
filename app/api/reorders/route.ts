@@ -12,6 +12,7 @@ import {
   getCustomerAccessContext,
 } from "@/lib/artwork/saved-designs";
 import { getPrismaClient } from "@/lib/db/prisma";
+import { calculateRefillReminder } from "@/lib/reorders/refill-reminder";
 import { getCheckoutBaseUrl, getStripeServerClient } from "@/lib/stripe/server";
 
 export const runtime = "nodejs";
@@ -106,10 +107,17 @@ export async function POST(request: Request) {
     );
   }
 
+  // REORDER-007: When no explicit version is requested and currentArtworkVersion is null,
+  // fall back to the first APPROVED version rather than blindly taking index 0 (which is the
+  // most-recent version due to the desc sort order and may be PENDING_REVIEW or another
+  // non-approved status). This prevents a misleading 'Keine freigegebene Druckdatenversion
+  // verfügbar' error when older approved versions exist.
   const selectedVersion =
     requestedVersion ??
     design.currentArtworkVersion ??
-    design.artworkVersions[0] ??
+    design.artworkVersions.find(
+      (version: (typeof design.artworkVersions)[number]) => version.status === "APPROVED",
+    ) ??
     null;
 
   if (!selectedVersion) {
@@ -274,6 +282,13 @@ export async function POST(request: Request) {
     );
   }
 
+  // REORDER-005: Calculate refill prediction so the reorder participates in the
+  // reminder pipeline. Mirror the logic used for initial orders.
+  const refillCalc = calculateRefillReminder({
+    anchorDate: new Date(),
+    stockDuration: parsed.data.stockDuration,
+  });
+
   await prisma.$transaction([
     prisma.order.update({
       where: { id: order.id },
@@ -289,6 +304,17 @@ export async function POST(request: Request) {
         currency: "EUR",
         status: "PENDING",
         provider: "stripe",
+      },
+    }),
+    prisma.refillPrediction.create({
+      data: {
+        orderId: order.id,
+        sourceDesignId: design.id,
+        reorderStockDuration: parsed.data.stockDuration,
+        predictedDepletionAt: refillCalc.predictedDepletionAt,
+        reminderEligibleAt: refillCalc.reminderEligibleAt ?? undefined,
+        algorithmVersion: refillCalc.algorithmVersion,
+        isEnabled: refillCalc.shouldScheduleReminder,
       },
     }),
   ]);

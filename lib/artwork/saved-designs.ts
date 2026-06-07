@@ -10,48 +10,68 @@ export type CustomerAccessContext = {
 };
 
 function buildAccessibleStoredDesignWhere(access: CustomerAccessContext) {
-  const ownershipClauses: Array<Record<string, unknown>> = [];
+  // REORDER-002: Only ACTIVE designs are reorderable. Designs under review or in other
+  // non-active states must not be accessible for reorder.
+  const baseFilter: Record<string, unknown> = {
+    archivedAt: null,
+    status: "ACTIVE",
+  };
 
+  // REORDER-004: When the caller is an authenticated Supabase user (customerId is non-null),
+  // scope the query exclusively by customerId. The email-based ownership clauses are only
+  // active for token-based (unauthenticated) access to prevent cross-customer design leakage
+  // when two customers share the same email address.
   if (access.customerId) {
-    ownershipClauses.push({
+    return {
+      ...baseFilter,
       customerId: access.customerId,
-    });
+    };
   }
 
-  ownershipClauses.push({
-    lastOrder: {
-      customerEmail: access.customerEmail,
-    },
-  });
-
-  ownershipClauses.push({
-    artworkVersions: {
-      some: {
-        OR: [
-          {
-            originalArtworkFile: {
-              order: {
-                customerEmail: access.customerEmail,
-              },
-            },
-          },
-          {
-            proofFile: {
-              order: {
-                customerEmail: access.customerEmail,
-              },
-            },
-          },
-        ],
+  const ownershipClauses: Array<Record<string, unknown>> = [
+    {
+      lastOrder: {
+        customerEmail: access.customerEmail,
       },
     },
-  });
+    {
+      artworkVersions: {
+        some: {
+          OR: [
+            {
+              originalArtworkFile: {
+                order: {
+                  customerEmail: access.customerEmail,
+                },
+              },
+            },
+            {
+              proofFile: {
+                order: {
+                  customerEmail: access.customerEmail,
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  ];
 
   return {
-    archivedAt: null,
+    ...baseFilter,
     OR: ownershipClauses,
   };
 }
+
+// REORDER-001: Only orders in a completed/active lifecycle grant token-based reorder access.
+// CANCELLED, PENDING_PAYMENT, and PAYMENT_FAILED orders must not allow a token holder to
+// place a new real order charged to the customer's email.
+const INELIGIBLE_TOKEN_ACCESS_STATUSES = new Set([
+  "CANCELLED",
+  "PENDING_PAYMENT",
+  "PAYMENT_FAILED",
+]);
 
 export async function getCustomerAccessContext(
   prisma: PrismaClient,
@@ -63,6 +83,7 @@ export async function getCustomerAccessContext(
     select: {
       id: true,
       uploadToken: true,
+      status: true,
       customerId: true,
       customerEmail: true,
       companyName: true,
@@ -74,7 +95,18 @@ export async function getCustomerAccessContext(
     return null;
   }
 
-  return order satisfies CustomerAccessContext;
+  if (INELIGIBLE_TOKEN_ACCESS_STATUSES.has(order.status)) {
+    return null;
+  }
+
+  return {
+    id: order.id,
+    uploadToken: order.uploadToken,
+    customerId: order.customerId,
+    customerEmail: order.customerEmail,
+    companyName: order.companyName,
+    customerName: order.customerName,
+  } satisfies CustomerAccessContext;
 }
 
 export async function getCustomerAccountAccessContext(

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { getPrismaClient } from "@/lib/db/prisma";
+import { getAdminActorFromRequest } from "@/lib/security/admin-basic-auth";
 
 export const runtime = "nodejs";
 
@@ -16,6 +17,12 @@ async function handleUpdate(
 ): Promise<Response> {
   const prisma = getPrismaClient();
   if (!prisma) return NextResponse.json({ error: "Nicht verfügbar." }, { status: 503 });
+
+  // REORDER-003: Secondary auth check — consistent with other admin routes.
+  // The middleware enforces Basic Auth on /api/admin/* but calling
+  // getAdminActorFromRequest here provides a defence-in-depth layer in case
+  // the middleware is bypassed or stripped by a reverse proxy.
+  const _actor = getAdminActorFromRequest(request);
 
   const contentType = request.headers.get("content-type") ?? "";
   let rawData: unknown;
