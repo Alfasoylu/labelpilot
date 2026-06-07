@@ -13,12 +13,15 @@ import {
 
 export const dynamic = "force-dynamic";
 
+const PAGE_SIZE = 50;
+
 type OrdersPageProps = {
   searchParams: Promise<{
     status?: string;
     artworkStatus?: string;
     addons?: string;
     q?: string;
+    page?: string;
   }>;
 };
 
@@ -29,6 +32,7 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
   const artworkStatusFilter = filters.artworkStatus ?? "all";
   const addonsFilter = filters.addons === "with" ? "with" : "all";
   const query = filters.q?.trim() ?? "";
+  const page = Math.max(0, parseInt(filters.page ?? "0", 10) || 0);
 
   if (!prisma) {
     return (
@@ -39,21 +43,36 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
     );
   }
 
-  const orders = await prisma.order.findMany({
-    where: buildAdminOrdersListWhere({
-      status: statusFilter,
-      artworkStatus: artworkStatusFilter,
-      addons: addonsFilter,
-      q: query,
-    }),
-    include: {
-      payments: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    take: 50,
+  const where = buildAdminOrdersListWhere({
+    status: statusFilter,
+    artworkStatus: artworkStatusFilter,
+    addons: addonsFilter,
+    q: query,
   });
+
+  const [orders, total] = await Promise.all([
+    prisma.order.findMany({
+      where,
+      include: { payments: true },
+      orderBy: { createdAt: "desc" },
+      take: PAGE_SIZE,
+      skip: page * PAGE_SIZE,
+    }),
+    prisma.order.count({ where }),
+  ]);
+
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+
+  function buildPageUrl(p: number) {
+    const params = new URLSearchParams();
+    if (statusFilter !== "review-needed") params.set("status", statusFilter);
+    if (artworkStatusFilter !== "all") params.set("artworkStatus", artworkStatusFilter);
+    if (addonsFilter !== "all") params.set("addons", addonsFilter);
+    if (query) params.set("q", query);
+    if (p > 0) params.set("page", String(p));
+    const qs = params.toString();
+    return `/admin/orders${qs ? `?${qs}` : ""}`;
+  }
 
   return (
     <section className="section-stack">
@@ -104,9 +123,14 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
 
       <article className="surface-card">
         <div className="cta-row">
-          <h2>Offene Bestellungen</h2>
+          <h2>
+            Bestellungen{" "}
+            <span className="field-hint" style={{ fontSize: "0.88rem", fontWeight: 400 }}>
+              {total.toLocaleString("de-DE")} gesamt · Seite {page + 1} von {Math.max(1, totalPages)}
+            </span>
+          </h2>
           <a href="/api/admin/orders/export" className="secondary-link" download>
-            Produktionsliste exportieren (CSV)
+            CSV exportieren
           </a>
         </div>
         <AdminOrdersListClient
@@ -126,6 +150,23 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
             hasAddons: hasOrderAddons(order),
           }))}
         />
+        {totalPages > 1 ? (
+          <div className="cta-row" style={{ marginTop: "16px", justifyContent: "center" }}>
+            {page > 0 ? (
+              <a href={buildPageUrl(page - 1)} className="secondary-link">
+                ← Vorherige
+              </a>
+            ) : null}
+            <span className="price-note">
+              Seite {page + 1} / {totalPages}
+            </span>
+            {page < totalPages - 1 ? (
+              <a href={buildPageUrl(page + 1)} className="secondary-link">
+                Nächste →
+              </a>
+            ) : null}
+          </div>
+        ) : null}
       </article>
     </section>
   );
