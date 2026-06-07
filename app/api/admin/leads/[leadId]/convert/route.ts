@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { createOrderNumber } from "@/lib/commerce/orders";
 import { getPrismaClient } from "@/lib/db/prisma";
+import { safeRedirect } from "@/lib/http/safe-redirect";
 
 export const runtime = "nodejs";
 
@@ -33,22 +34,17 @@ export async function POST(
 
   const parsed = bodySchema.safeParse(rawData);
   if (!parsed.success) {
-    const redirectTo =
-      typeof rawData.redirectTo === "string"
-        ? rawData.redirectTo
-        : `/admin/leads/${leadId}`;
+    const redirectTo = safeRedirect(
+      typeof rawData.redirectTo === "string" ? rawData.redirectTo : undefined,
+      `/admin/leads/${leadId}`,
+    );
     return NextResponse.redirect(
       new URL(`${redirectTo}?error=Ungültige+Eingabe`, request.url),
     );
   }
 
-  const {
-    quantity,
-    amountCents,
-    notes,
-    skipPayment,
-    redirectTo = `/admin/leads/${leadId}`,
-  } = parsed.data;
+  const { quantity, amountCents, notes, skipPayment } = parsed.data;
+  const redirectTo = safeRedirect(parsed.data.redirectTo, `/admin/leads/${leadId}`);
 
   try {
     const lead = await prisma.lead.findUnique({ where: { id: leadId } });

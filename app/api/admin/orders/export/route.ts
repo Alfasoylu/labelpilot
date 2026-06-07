@@ -22,29 +22,13 @@ function csvRow(fields: (string | number | null | undefined)[]) {
 }
 
 export async function GET(request: Request) {
+  // Auth is enforced exclusively by middleware (see middleware.ts and config matcher
+  // "/api/admin/:path*"). The duplicated inline auth block that previously existed
+  // here — including a secondary APP_SECRET bearer path — has been removed to avoid
+  // divergence and to keep the admin credential check in a single place.
+
   const env = getServerEnv();
-  const authHeader = request.headers.get("authorization");
   const url = new URL(request.url);
-
-  // Accept basic auth (same as admin pages) or APP_SECRET bearer
-  const basicMatch = authHeader?.match(/^Basic (.+)$/);
-  const bearerMatch = authHeader?.match(/^Bearer (.+)$/);
-  const isBasicAuth = basicMatch
-    ? (() => {
-        const [user, pass] = Buffer.from(basicMatch[1], "base64").toString().split(":");
-        return user === env.ADMIN_BASIC_USER && pass === env.ADMIN_BASIC_PASSWORD;
-      })()
-    : false;
-  const isBearerAuth = bearerMatch && env.APP_SECRET
-    ? bearerMatch[1] === env.APP_SECRET
-    : false;
-
-  if (!isBasicAuth && !isBearerAuth) {
-    return new NextResponse(null, {
-      status: 401,
-      headers: { "WWW-Authenticate": 'Basic realm="Admin"' },
-    });
-  }
 
   const prisma = getPrismaClient();
   if (!prisma) {

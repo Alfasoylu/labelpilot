@@ -1,3 +1,5 @@
+import { timingSafeEqual } from "node:crypto";
+
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
@@ -55,10 +57,24 @@ export function middleware(request: NextRequest) {
 
   const provided = parseBasicAuth(request.headers.get("authorization"));
 
+  // Use constant-time comparison to prevent timing side-channel attacks.
+  // Pad both sides to the same byte length before comparing so that length
+  // differences do not leak information via short-circuit behaviour.
+  function safeEqual(a: string, b: string): boolean {
+    const aBuf = Buffer.from(a, "utf8");
+    const bBuf = Buffer.from(b, "utf8");
+    const maxLen = Math.max(aBuf.length, bBuf.length);
+    const aPadded = Buffer.concat([aBuf, Buffer.alloc(maxLen - aBuf.length)]);
+    const bPadded = Buffer.concat([bBuf, Buffer.alloc(maxLen - bBuf.length)]);
+    // timingSafeEqual requires same-length buffers and returns whether they match.
+    // We still gate on length equality to avoid accepting a short prefix as valid.
+    return aBuf.length === bBuf.length && timingSafeEqual(aPadded, bPadded);
+  }
+
   if (
     !provided ||
-    provided.user !== expectedUser ||
-    provided.password !== expectedPassword
+    !safeEqual(provided.user, expectedUser) ||
+    !safeEqual(provided.password, expectedPassword)
   ) {
     return unauthorizedResponse();
   }

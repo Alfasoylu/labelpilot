@@ -1344,4 +1344,106 @@ assert.doesNotMatch(
   "BUG-002: Token-based proof decision route must not use PROOF_REQUIRED for change requests.",
 );
 
+// ── Admin Order Flow regression guards ───────────────────────────────────────
+
+const middlewareSource = readFileSync(
+  new URL("../middleware.ts", import.meta.url),
+  "utf8",
+);
+
+// ADMIN-001: middleware must use timingSafeEqual for credential comparison.
+assert.match(
+  middlewareSource,
+  /timingSafeEqual/,
+  "ADMIN-001: middleware must use crypto.timingSafeEqual for constant-time credential comparison.",
+);
+assert.doesNotMatch(
+  middlewareSource,
+  /provided\.user !== expectedUser|provided\.password !== expectedPassword/,
+  "ADMIN-001: middleware must not use !== for credential comparison (timing side-channel).",
+);
+
+// ADMIN-002: export route must not contain an inline auth block.
+const exportRouteSource = readFileSync(
+  new URL("../app/api/admin/orders/export/route.ts", import.meta.url),
+  "utf8",
+);
+assert.doesNotMatch(
+  exportRouteSource,
+  /isBasicAuth|isBearerAuth|APP_SECRET/,
+  "ADMIN-002: Export route must not contain an inline auth block; auth is handled exclusively by middleware.",
+);
+assert.doesNotMatch(
+  exportRouteSource,
+  /status: 401/,
+  "ADMIN-002: Export route must not return its own 401 responses; auth is handled exclusively by middleware.",
+);
+
+// ADMIN-004 / ADMIN-005: safeRedirect helper must guard against open redirects.
+import { safeRedirect } from "../lib/http/safe-redirect.ts";
+
+assert.equal(
+  safeRedirect("/admin/orders", "/fallback"),
+  "/admin/orders",
+  "ADMIN-004: safeRedirect must pass through safe relative paths.",
+);
+assert.equal(
+  safeRedirect("https://evil.com", "/fallback"),
+  "/fallback",
+  "ADMIN-004: safeRedirect must reject absolute URLs.",
+);
+assert.equal(
+  safeRedirect("//evil.com", "/fallback"),
+  "/fallback",
+  "ADMIN-004: safeRedirect must reject protocol-relative URLs (// prefix).",
+);
+assert.equal(
+  safeRedirect(undefined, "/fallback"),
+  "/fallback",
+  "ADMIN-004: safeRedirect must return fallback when input is undefined.",
+);
+assert.equal(
+  safeRedirect("", "/fallback"),
+  "/fallback",
+  "ADMIN-004: safeRedirect must return fallback when input is an empty string.",
+);
+assert.equal(
+  safeRedirect("/admin/orders?foo=bar", "/fallback"),
+  "/admin/orders?foo=bar",
+  "ADMIN-004: safeRedirect must accept relative paths with query strings.",
+);
+
+// ADMIN-004: status route must import and use safeRedirect.
+const statusRouteSource = readFileSync(
+  new URL("../app/api/admin/orders/[orderId]/status/route.ts", import.meta.url),
+  "utf8",
+);
+assert.match(
+  statusRouteSource,
+  /safeRedirect/,
+  "ADMIN-004: Single-order status route must use safeRedirect to prevent open redirect.",
+);
+
+// ADMIN-004: convert route must import and use safeRedirect.
+const convertRouteSource = readFileSync(
+  new URL("../app/api/admin/leads/[leadId]/convert/route.ts", import.meta.url),
+  "utf8",
+);
+assert.match(
+  convertRouteSource,
+  /safeRedirect/,
+  "ADMIN-004: Lead convert route must use safeRedirect to prevent open redirect.",
+);
+
+// ADMIN-005: reorder reminders route must import and use safeRedirect.
+const remindersRouteSource = readFileSync(
+  new URL("../app/api/admin/reorder/reminders/route.ts", import.meta.url),
+  "utf8",
+);
+assert.match(
+  remindersRouteSource,
+  /safeRedirect/,
+  "ADMIN-005: Reorder reminders route must use safeRedirect to prevent open redirect.",
+);
+
 console.log("Autonomous safety regression tests passed.");

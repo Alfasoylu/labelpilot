@@ -2,26 +2,9 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { getPrismaClient } from "@/lib/db/prisma";
+import { VALID_ADMIN_STATUSES } from "@/lib/orders/admin-statuses";
 
 export const runtime = "nodejs";
-
-const VALID_ADMIN_STATUSES = [
-  "PAID",
-  "FILE_REVIEW",
-  "CORRECTION_REQUIRED",
-  "ON_HOLD",
-  "PROOF_REQUIRED",
-  "WAITING_CUSTOMER_APPROVAL",
-  "APPROVED_FOR_PRODUCTION",
-  "IN_PRODUCTION",
-  "READY_TO_SHIP",
-  "SHIPPED",
-  "DELIVERED",
-  "COMPLETED",
-  "CANCELLED",
-  "REFUND_REQUESTED",
-  "REPRINT_REQUIRED",
-] as const;
 
 const bodySchema = z.object({
   orderIds: z.array(z.string().cuid()).min(1).max(100),

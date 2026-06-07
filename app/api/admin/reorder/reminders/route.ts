@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { getPrismaClient } from "@/lib/db/prisma";
+import { safeRedirect } from "@/lib/http/safe-redirect";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -81,7 +82,7 @@ export async function POST(request: Request): Promise<Response> {
     });
 
     if (redirectTo) {
-      return NextResponse.redirect(new URL(redirectTo, request.url));
+      return NextResponse.redirect(new URL(safeRedirect(redirectTo, "/admin/reorder"), request.url));
     }
     return NextResponse.json(reminder, { status: 201 });
   } catch (error) {

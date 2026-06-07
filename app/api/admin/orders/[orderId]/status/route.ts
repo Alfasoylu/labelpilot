@@ -2,27 +2,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { getPrismaClient } from "@/lib/db/prisma";
+import { safeRedirect } from "@/lib/http/safe-redirect";
+import { VALID_ADMIN_STATUSES } from "@/lib/orders/admin-statuses";
 
 export const runtime = "nodejs";
-
-const VALID_ADMIN_STATUSES = [
-  "PENDING_PAYMENT",
-  "PAID",
-  "FILE_REVIEW",
-  "CORRECTION_REQUIRED",
-  "ON_HOLD",
-  "PROOF_REQUIRED",
-  "WAITING_CUSTOMER_APPROVAL",
-  "APPROVED_FOR_PRODUCTION",
-  "IN_PRODUCTION",
-  "READY_TO_SHIP",
-  "SHIPPED",
-  "DELIVERED",
-  "COMPLETED",
-  "CANCELLED",
-  "REFUND_REQUESTED",
-  "REPRINT_REQUIRED",
-] as const;
 
 const bodySchema = z.object({
   status: z.enum(VALID_ADMIN_STATUSES),
@@ -51,14 +34,17 @@ export async function POST(
 
   const parsed = bodySchema.safeParse(rawData);
   if (!parsed.success) {
-    const redirectTo =
-      typeof rawData.redirectTo === "string" ? rawData.redirectTo : "/admin/orders";
+    const redirectTo = safeRedirect(
+      typeof rawData.redirectTo === "string" ? rawData.redirectTo : undefined,
+      "/admin/orders",
+    );
     return NextResponse.redirect(
       new URL(`${redirectTo}?error=Ungültige+Eingabe`, request.url),
     );
   }
 
-  const { status, note, redirectTo = "/admin/orders" } = parsed.data;
+  const { status, note } = parsed.data;
+  const redirectTo = safeRedirect(parsed.data.redirectTo, "/admin/orders");
 
   try {
     await prisma.order.update({
