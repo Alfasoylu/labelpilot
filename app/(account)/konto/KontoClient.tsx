@@ -106,6 +106,9 @@ export function KontoClient() {
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
   const [newPasswordMsg, setNewPasswordMsg] = useState("");
 
+  const [changePasswordMode, setChangePasswordMode] = useState(false);
+  const [changePasswordMsg, setChangePasswordMsg] = useState("");
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -243,6 +246,34 @@ export function KontoClient() {
     }
 
     setMessage("Konto angelegt. Bitte bestätigen Sie Ihre E-Mail-Adresse, falls eine Bestätigungsmail zugestellt wurde.");
+  }
+
+  async function handleChangePassword(formData: FormData) {
+    if (!supabase) return;
+    const pwd = String(formData.get("changePwd") ?? "");
+    const confirm = String(formData.get("changePwdConfirm") ?? "");
+
+    if (pwd.length < 8) {
+      setChangePasswordMsg("Das Passwort muss mindestens 8 Zeichen lang sein.");
+      return;
+    }
+    if (pwd !== confirm) {
+      setChangePasswordMsg("Die Passwörter stimmen nicht überein.");
+      return;
+    }
+
+    setPending(true);
+    setChangePasswordMsg("");
+    const { error: updateError } = await supabase.auth.updateUser({ password: pwd });
+    setPending(false);
+
+    if (updateError) {
+      setChangePasswordMsg("Passwort konnte nicht geändert werden.");
+      return;
+    }
+
+    setChangePasswordMode(false);
+    setChangePasswordMsg("Passwort erfolgreich geändert.");
   }
 
   async function handleForgotPassword(formData: FormData) {
@@ -637,6 +668,68 @@ export function KontoClient() {
               Account-Betreuung möglich. Im Self-Serve-Checkout wird kein automatischer
               Rechnungskauf angeboten.
             </p>
+          </article>
+
+          <article className="surface-card">
+            <h2>Passwort</h2>
+            {changePasswordMode ? (
+              <form action={handleChangePassword} className="section-stack">
+                <div className="form-grid">
+                  <div>
+                    <label htmlFor="changePwd">Neues Passwort</label>
+                    <input
+                      id="changePwd"
+                      name="changePwd"
+                      type="password"
+                      required
+                      minLength={8}
+                      autoComplete="new-password"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="changePwdConfirm">Neues Passwort bestätigen</label>
+                    <input
+                      id="changePwdConfirm"
+                      name="changePwdConfirm"
+                      type="password"
+                      required
+                      minLength={8}
+                      autoComplete="new-password"
+                    />
+                  </div>
+                </div>
+                {changePasswordMsg ? (
+                  <p className="form-status error">{changePasswordMsg}</p>
+                ) : null}
+                <div className="inline-actions">
+                  <button type="submit" className="cta-button" disabled={pending}>
+                    {pending ? "Bitte warten ..." : "Passwort ändern"}
+                  </button>
+                  <button
+                    type="button"
+                    className="secondary-link"
+                    onClick={() => { setChangePasswordMode(false); setChangePasswordMsg(""); }}
+                  >
+                    Abbrechen
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <>
+                {changePasswordMsg ? (
+                  <p className="form-status success">{changePasswordMsg}</p>
+                ) : null}
+                <div className="cta-row">
+                  <button
+                    type="button"
+                    className="secondary-link"
+                    onClick={() => { setChangePasswordMode(true); setChangePasswordMsg(""); }}
+                  >
+                    Passwort ändern
+                  </button>
+                </div>
+              </>
+            )}
           </article>
 
           <article className="surface-card">
