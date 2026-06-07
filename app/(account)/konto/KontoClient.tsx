@@ -100,6 +100,12 @@ export function KontoClient() {
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileMsg, setProfileMsg] = useState("");
 
+  const [forgotMode, setForgotMode] = useState(false);
+  const [passwordRecovery, setPasswordRecovery] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
+  const [newPasswordMsg, setNewPasswordMsg] = useState("");
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -127,8 +133,11 @@ export function KontoClient() {
 
     void loadSession();
 
-    const { data } = activeClient.auth.onAuthStateChange((_event, session) => {
+    const { data } = activeClient.auth.onAuthStateChange((event, session) => {
       setAccessToken(session?.access_token ?? null);
+      if (event === "PASSWORD_RECOVERY") {
+        setPasswordRecovery(true);
+      }
     });
 
     return () => {
@@ -233,7 +242,63 @@ export function KontoClient() {
       return;
     }
 
-    setMessage("Konto angelegt. Bitte bestätigen Sie bei Bedarf die E-Mail von Supabase.");
+    setMessage("Konto angelegt. Bitte bestätigen Sie Ihre E-Mail-Adresse, falls eine Bestätigungsmail zugestellt wurde.");
+  }
+
+  async function handleForgotPassword(formData: FormData) {
+    if (!supabase) return;
+    setPending(true);
+    setError("");
+    setMessage("");
+
+    const email = String(formData.get("forgotEmail") ?? "");
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: typeof window !== "undefined"
+        ? `${window.location.origin}/konto`
+        : undefined,
+    });
+
+    setPending(false);
+
+    if (resetError) {
+      setError("Der Reset-Link konnte nicht gesendet werden.");
+      return;
+    }
+
+    setForgotMode(false);
+    setMessage("Reset-Link wurde an Ihre E-Mail-Adresse gesendet. Bitte prüfen Sie Ihr Postfach.");
+  }
+
+  async function handlePasswordUpdate(formData: FormData) {
+    if (!supabase) return;
+    const pwd = String(formData.get("newPassword") ?? "");
+    const confirm = String(formData.get("confirmPassword") ?? "");
+
+    if (pwd.length < 8) {
+      setNewPasswordMsg("Das Passwort muss mindestens 8 Zeichen lang sein.");
+      return;
+    }
+    if (pwd !== confirm) {
+      setNewPasswordMsg("Die Passwörter stimmen nicht überein.");
+      return;
+    }
+
+    setPending(true);
+    setNewPasswordMsg("");
+
+    const { error: updateError } = await supabase.auth.updateUser({ password: pwd });
+
+    setPending(false);
+
+    if (updateError) {
+      setNewPasswordMsg("Passwort konnte nicht gesetzt werden.");
+      return;
+    }
+
+    setPasswordRecovery(false);
+    setNewPassword("");
+    setNewPasswordConfirm("");
+    setMessage("Passwort erfolgreich aktualisiert.");
   }
 
   async function handleLogout() {
@@ -352,6 +417,47 @@ export function KontoClient() {
     );
   }
 
+  if (passwordRecovery) {
+    return (
+      <AccountShell>
+        <article className="legal-card">
+          <span className="eyebrow">Kundenkonto</span>
+          <h1>Neues Passwort setzen</h1>
+          <p>Bitte wählen Sie ein neues Passwort für Ihr Konto.</p>
+        </article>
+        <form action={handlePasswordUpdate} className="surface-card quote-form">
+          <label htmlFor="newPassword">Neues Passwort</label>
+          <input
+            id="newPassword"
+            name="newPassword"
+            type="password"
+            required
+            minLength={8}
+            autoComplete="new-password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+          <label htmlFor="confirmPassword">Passwort bestätigen</label>
+          <input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            required
+            minLength={8}
+            autoComplete="new-password"
+            value={newPasswordConfirm}
+            onChange={(e) => setNewPasswordConfirm(e.target.value)}
+          />
+          {newPasswordMsg ? <p className="form-status error">{newPasswordMsg}</p> : null}
+          <button type="submit" className="cta-button" disabled={pending}>
+            {pending ? "Bitte warten ..." : "Passwort aktualisieren"}
+          </button>
+        </form>
+        <StatusMessage message={message} error={error} />
+      </AccountShell>
+    );
+  }
+
   if (!accessToken) {
     return (
       <AccountShell>
@@ -366,18 +472,47 @@ export function KontoClient() {
         </article>
 
         <div className="two-column">
-          <form action={handleLogin} className="surface-card quote-form">
-            <h2>Anmelden</h2>
-            <label htmlFor="email">E-Mail-Adresse</label>
-            <input id="email" name="email" type="email" required autoComplete="email" />
-            <label htmlFor="password">Passwort</label>
-            <input id="password" name="password" type="password" required autoComplete="current-password" />
-            <button type="submit" className="cta-button" disabled={pending}>
-              {pending ? "Bitte warten..." : "Anmelden"}
-            </button>
-          </form>
+          {forgotMode ? (
+            <form action={handleForgotPassword} className="surface-card quote-form">
+              <h2>Passwort vergessen</h2>
+              <p className="field-hint">
+                Wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.
+              </p>
+              <label htmlFor="forgotEmail">E-Mail-Adresse</label>
+              <input id="forgotEmail" name="forgotEmail" type="email" required autoComplete="email" />
+              <button type="submit" className="cta-button" disabled={pending}>
+                {pending ? "Bitte warten ..." : "Reset-Link senden"}
+              </button>
+              <button
+                type="button"
+                className="secondary-link"
+                onClick={() => setForgotMode(false)}
+              >
+                Zurück zur Anmeldung
+              </button>
+            </form>
+          ) : (
+            <form action={handleLogin} className="surface-card quote-form">
+              <h2>Anmelden</h2>
+              <label htmlFor="email">E-Mail-Adresse</label>
+              <input id="email" name="email" type="email" required autoComplete="email" />
+              <label htmlFor="password">Passwort</label>
+              <input id="password" name="password" type="password" required autoComplete="current-password" />
+              <button type="submit" className="cta-button" disabled={pending}>
+                {pending ? "Bitte warten ..." : "Anmelden"}
+              </button>
+              <button
+                type="button"
+                className="secondary-link"
+                style={{ fontSize: "0.88rem" }}
+                onClick={() => { setForgotMode(true); setError(""); setMessage(""); }}
+              >
+                Passwort vergessen?
+              </button>
+            </form>
+          )}
 
-          <form action={handleRegister} className="surface-card quote-form">
+          <form action={handleRegister} className="surface-card quote-form" style={{ alignSelf: "flex-start" }}>
             <h2>Konto erstellen</h2>
             <label htmlFor="companyName">Firmenname</label>
             <input id="companyName" name="companyName" autoComplete="organization" />
