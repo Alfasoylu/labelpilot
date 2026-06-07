@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { KalkulatorClient } from "@/components/kalkulator/KalkulatorClient";
+import { getDefaultPricingSettings } from "@/lib/admin/pricing";
 
 export const metadata: Metadata = {
   title: "Etiketten Kalkulator – Ihr individueller Preis | Labelpilot.de",
@@ -38,6 +39,8 @@ export default async function KalkulatorPage({
 }) {
   const sp = await searchParams;
 
+  const pricingSettings = getDefaultPricingSettings();
+
   const initialQuantity = sp.quantity
     ? Math.max(1, Number.parseInt(sp.quantity, 10))
     : undefined;
@@ -72,6 +75,8 @@ export default async function KalkulatorPage({
         initialMaterial={sp.material}
         initialPrint={sp.print}
         initialFarbigkeit={initialFarbigkeit}
+        designServiceNet={pricingSettings.designServiceNet}
+        designServiceFreeThresholdNet={pricingSettings.designServiceFreeThresholdNet}
       />
 
       <article className="surface-card">

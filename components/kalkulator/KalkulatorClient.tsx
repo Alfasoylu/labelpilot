@@ -22,6 +22,8 @@ type KalkulatorInitialProps = {
   initialMaterial?: string;
   initialPrint?: string;
   initialFarbigkeit?: number;
+  designServiceNet?: number;
+  designServiceFreeThresholdNet?: number;
 };
 
 function mapInitialMaterial(slug?: string): MaterialKey {
@@ -79,6 +81,8 @@ export function KalkulatorClient({
   initialMaterial,
   initialPrint,
   initialFarbigkeit,
+  designServiceNet = 40,
+  designServiceFreeThresholdNet = 2000,
 }: KalkulatorInitialProps = {}) {
   const validFarbigkeit = (initialFarbigkeit && [1,2,3,4].includes(initialFarbigkeit))
     ? initialFarbigkeit as Farbigkeit
@@ -103,6 +107,7 @@ export function KalkulatorClient({
     wickelrichtung: "BELIEBIG",
   });
   const [priceState, setPriceState] = useState<PriceState>({ status: "idle" });
+  const [hasOwnArtwork, setHasOwnArtwork] = useState(true);
   const [mode, setMode] = useState<"configure" | "checkout">("configure");
   const checkoutRef = useRef<HTMLDivElement>(null);
 
@@ -175,6 +180,17 @@ export function KalkulatorClient({
   const ovalSurchargeGross = Math.round(ovalSurchargeNet * 1.19 * 100) / 100;
   const displayNetPrice = finalNetPrice + ovalSurchargeNet;
   const displayGrossPrice = finalGrossPrice + ovalSurchargeGross;
+
+  const designFeeNet = !hasOwnArtwork && priceState.status === "configured" && displayNetPrice < designServiceFreeThresholdNet
+    ? designServiceNet
+    : 0;
+  const designFeeGross = Math.round(designFeeNet * 1.19 * 100) / 100;
+  const totalNetPrice = displayNetPrice + designFeeNet;
+  const totalGrossPrice = displayGrossPrice + designFeeGross;
+  // What the design fee would be if the user selected design service (regardless of current selection)
+  const prospectiveDesignFeeNet = priceState.status === "configured" && displayNetPrice < designServiceFreeThresholdNet
+    ? designServiceNet
+    : 0;
 
   const valid = configIsValid(config);
   const canOrder = valid && priceState.status === "configured";
@@ -445,6 +461,58 @@ export function KalkulatorClient({
                 </p>
               </div>
             )}
+            {/* Druckdaten / Designservice */}
+            <div className="field-full">
+              <div className="artwork-option-group">
+                <label className={`artwork-option${hasOwnArtwork ? " artwork-option--active" : ""}`}>
+                  <input
+                    type="radio"
+                    name="artworkChoice"
+                    checked={hasOwnArtwork}
+                    onChange={() => setHasOwnArtwork(true)}
+                  />
+                  <div>
+                    <span className="artwork-option__label">
+                      Druckdaten vorhanden
+                      <span className="info-tooltip">
+                        i
+                        <span className="info-tooltip__popup">
+                          Wir akzeptieren PDF, AI, EPS oder TIFF (min. 300 dpi, CMYK, 3 mm Beschnitt, Texte in Pfade). Upload nach Bestellung möglich.
+                        </span>
+                      </span>
+                    </span>
+                    <span className="artwork-option__hint">Ich lade meine Druckdatei selbst hoch.</span>
+                  </div>
+                </label>
+                <label className={`artwork-option${!hasOwnArtwork ? " artwork-option--active" : ""}`}>
+                  <input
+                    type="radio"
+                    name="artworkChoice"
+                    checked={!hasOwnArtwork}
+                    onChange={() => setHasOwnArtwork(false)}
+                  />
+                  <div>
+                    <span className="artwork-option__label">
+                      Designservice buchen
+                      <span className="info-tooltip">
+                        i
+                        <span className="info-tooltip__popup">
+                          Unser Team gestaltet Ihr Etikett nach Vorlage oder Briefing. {designServiceNet} € netto · kostenlos ab {designServiceFreeThresholdNet} € Bestellwert.
+                        </span>
+                      </span>
+                    </span>
+                    <span className="artwork-option__hint">
+                      {priceState.status === "configured"
+                        ? prospectiveDesignFeeNet > 0
+                          ? `+${formatEur(prospectiveDesignFeeNet)} Designgebühr`
+                          : "Im Bestellwert inbegriffen"
+                        : `+${designServiceNet} € Designgebühr`}
+                    </span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
           </div>
         </article>
 
@@ -502,17 +570,23 @@ export function KalkulatorClient({
                       <span>{formatEur(ovalSurchargeNet)}</span>
                     </li>
                   )}
+                  {designFeeNet > 0 && (
+                    <li>
+                      <span>Designservice</span>
+                      <span>{formatEur(designFeeNet)}</span>
+                    </li>
+                  )}
                   <li>
                     <span>Gesamt Netto</span>
-                    <span>{formatEur(displayNetPrice)}</span>
+                    <span>{formatEur(totalNetPrice)}</span>
                   </li>
                   <li>
                     <span>MwSt. 19 %</span>
-                    <span>{formatEur(displayGrossPrice - displayNetPrice)}</span>
+                    <span>{formatEur(totalGrossPrice - totalNetPrice)}</span>
                   </li>
                   <li className="kalkulator-price-total">
                     <span>Gesamt inkl. MwSt.</span>
-                    <span>{formatEur(displayGrossPrice)}</span>
+                    <span>{formatEur(totalGrossPrice)}</span>
                   </li>
                   <li className="kalkulator-price-shipping">
                     <span>✓ Inklusive Versand nach Deutschland</span>

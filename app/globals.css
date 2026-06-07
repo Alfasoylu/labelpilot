@@ -2523,13 +2523,36 @@ th {
   font-size: 0.92rem;
 }
 
-/* Compact form inputs on kalkulator page */
+/* Kalkulator: 1 column, compact typography (style guide §2.4–2.5) */
+.kalkulator-page .form-grid {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.kalkulator-page .field,
+.kalkulator-page .field-full {
+  gap: 3px;
+}
+
+.kalkulator-page .field label,
+.kalkulator-page .field-full label:not(.artwork-option):not(.checkbox-field) {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+}
+
 .kalkulator-page .field input,
 .kalkulator-page .field select,
 .kalkulator-page .field-full select,
 .kalkulator-page .field-full input {
-  min-height: 44px;
-  padding: 10px 12px;
+  min-height: 40px;
+  padding: 8px 11px;
+  font-size: 0.875rem;
+}
+
+.kalkulator-page .field-hint {
+  font-size: 0.775rem;
 }
 
 .kalkulator-page .surface-card {
@@ -2674,6 +2697,96 @@ th {
 /* Full-width order button in price box */
 .kalkulator-price-box .inline-actions {
   margin-top: 14px;
+}
+
+/* ── Info tooltip ── */
+.info-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--line-strong);
+  color: var(--muted);
+  font-size: 0.6rem;
+  font-weight: 700;
+  font-style: normal;
+  cursor: help;
+  vertical-align: middle;
+  margin-left: 5px;
+  user-select: none;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.info-tooltip__popup {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text-strong);
+  color: var(--surface);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.55;
+  padding: 9px 12px;
+  border-radius: 9px;
+  width: 260px;
+  white-space: normal;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.info-tooltip:hover .info-tooltip__popup {
+  display: block;
+}
+
+/* ── Artwork / Design service option group ── */
+.artwork-option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.artwork-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.artwork-option input[type="radio"] {
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+}
+
+.artwork-option--active {
+  border-color: var(--accent);
+  background: rgba(176, 138, 69, 0.04);
+}
+
+.artwork-option__label {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-strong);
+  line-height: 1.3;
+}
+
+.artwork-option__hint {
+  display: block;
+  font-size: 0.775rem;
+  color: var(--muted);
+  margin-top: 2px;
 }
 
 .kalkulator-price-box .inline-actions .cta-button {

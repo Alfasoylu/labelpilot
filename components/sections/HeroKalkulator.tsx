@@ -25,7 +25,7 @@ function formatEur(amount: number) {
 export function HeroKalkulator() {
   const router = useRouter();
 
-  const [quantity, setQuantity] = useState<number | "">(1000);
+  const [quantity, setQuantity] = useState<number | "">(10000);
   const [widthMm, setWidthMm] = useState<number | "">(60);
   const [heightMm, setHeightMm] = useState<number | "">(40);
   const [materialSlug, setMaterialSlug] = useState<MaterialSlug>("pp-white");
