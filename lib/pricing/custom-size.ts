@@ -88,9 +88,9 @@ function computeInkCost(quantity: number, settings: PricingSettingsInput): numbe
   if (quantity <= settings.inkCostTier2MaxQty) {
     return settings.inkCostTier2Net;
   }
-  const batchSize = settings.inkCostTier2MaxQty - settings.inkCostTier1MaxQty;
-  const safeBatch = batchSize > 0 ? batchSize : 10_000;
-  const additionalBatches = Math.ceil((quantity - settings.inkCostTier2MaxQty) / safeBatch);
+  // inkCostAdditionalPer10kNet is defined per 10,000 units — use the fixed batch size
+  // matching the field name, independent of the tier-boundary gap.
+  const additionalBatches = Math.ceil((quantity - settings.inkCostTier2MaxQty) / 10_000);
   return settings.inkCostTier2Net + additionalBatches * settings.inkCostAdditionalPer10kNet;
 }
 

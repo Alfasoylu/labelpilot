@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 import { buildCanonicalMetadata, buildPageSchema } from "../lib/seo.ts";
+import { checkoutAddonSchema } from "../lib/checkout/intake.ts";
+import { normalizeCheckoutAddons } from "../lib/pricing/checkout-addons.ts";
 import { calculateRefillReminder } from "../lib/reorders/refill-reminder.ts";
 import { validateProofDecisionRequest } from "../lib/orders/proof-decision.ts";
 import {
@@ -909,6 +911,54 @@ assert.doesNotMatch(
   sendSource,
   /from.*email\/client/,
   "EMAIL-007: send.ts must not import from the removed lib/email/client module.",
+);
+
+// ── Pricing Engine regression guards ─────────────────────────────────────────
+
+// PE-001: extraDesignCount must be capped at 4 by the schema validator.
+assert.ok(
+  checkoutAddonSchema.safeParse({ extraDesignCount: 4 }).success,
+  "PE-001: extraDesignCount=4 must be accepted by checkoutAddonSchema.",
+);
+assert.equal(
+  checkoutAddonSchema.safeParse({ extraDesignCount: 5 }).success,
+  false,
+  "PE-001: extraDesignCount=5 must be rejected by checkoutAddonSchema (max is 4).",
+);
+assert.equal(
+  checkoutAddonSchema.safeParse({ extraDesignCount: 999 }).success,
+  false,
+  "PE-001: extraDesignCount=999 must be rejected by checkoutAddonSchema to prevent absurd charges.",
+);
+
+// PE-001: normalizeCheckoutAddons must also enforce the ceiling of 4 as a safety net.
+assert.equal(
+  normalizeCheckoutAddons({ extraDesignCount: 999 }).extraDesignCount,
+  4,
+  "PE-001: normalizeCheckoutAddons must cap extraDesignCount at 4 regardless of raw input.",
+);
+assert.equal(
+  normalizeCheckoutAddons({ extraDesignCount: 4 }).extraDesignCount,
+  4,
+  "PE-001: normalizeCheckoutAddons must pass through extraDesignCount=4 unchanged.",
+);
+assert.equal(
+  normalizeCheckoutAddons({ extraDesignCount: 0 }).extraDesignCount,
+  0,
+  "PE-001: normalizeCheckoutAddons must keep extraDesignCount=0 as zero.",
+);
+
+// PE-002: oval surcharge ordering — verify that the route source computes ovalSurchargeNet
+// after the quoteRequired guard, not before.
+const createCustomSessionSource = readFileSync(
+  new URL("../app/api/checkout/create-custom-session/route.ts", import.meta.url),
+  "utf8",
+);
+const quoteRequiredGuardPos = createCustomSessionSource.indexOf("quoteRequired");
+const ovalSurchargePos = createCustomSessionSource.indexOf("ovalSurchargeNet");
+assert.ok(
+  ovalSurchargePos > quoteRequiredGuardPos,
+  "PE-002: ovalSurchargeNet must be computed after the quoteRequired guard to prevent uncapped surcharge on rejected requests.",
 );
 
 console.log("Autonomous safety regression tests passed.");

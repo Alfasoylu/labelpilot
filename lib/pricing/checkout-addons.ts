@@ -59,7 +59,7 @@ export function normalizeCheckoutAddons(
     express: addons?.express === true,
     extraDesignCount:
       typeof addons?.extraDesignCount === "number" && addons.extraDesignCount > 0
-        ? Math.floor(addons.extraDesignCount)
+        ? Math.min(Math.floor(addons.extraDesignCount), 4)
         : 0,
     customerUploadsOwnData: addons?.customerUploadsOwnData === true,
   };
@@ -76,7 +76,7 @@ export function buildCheckoutAddons(input: {
   settings?: AddonSettingsInput | null;
 }) {
   const normalizedAddons = normalizeCheckoutAddons(input.addons);
-  const baseNetTotal = Math.round(input.baseGrossAmountCents / 1.19) / 100;
+  const baseNetTotal = input.baseGrossAmountCents / 119;
   const settings = input.settings ?? DEFAULT_ADDON_SETTINGS;
 
   // physicalProof is always active regardless of featureEnabled

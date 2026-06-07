@@ -6,7 +6,7 @@ export const checkoutAddonSchema = z.object({
   designService: z.boolean().optional(),
   physicalProof: z.boolean().optional(),
   express: z.boolean().optional(),
-  extraDesignCount: z.number().int().min(0).optional(),
+  extraDesignCount: z.number().int().min(0).max(4).optional(),
   customerUploadsOwnData: z.boolean().optional(),
 });
 

@@ -60,8 +60,6 @@ export async function POST(request: Request) {
     const weissunterdruck = parsed.data.weissunterdruck === true;
     const anzahlSorten = parsed.data.anzahlSorten ?? 1;
     const colorCount = farbigkeit + (weissunterdruck ? 1 : 0);
-    const ovalSurchargeNet = form === "OVAL" ? 0.03 * quantity : 0;
-    const ovalSurchargeCents = Math.round(ovalSurchargeNet * 1.19 * 100);
 
     const [materialRow, settingsRow] = await Promise.all([
       prisma.pricingMaterialCost.findUnique({ where: { materialKey } }),
@@ -88,6 +86,10 @@ export async function POST(request: Request) {
         { status: 422 },
       );
     }
+
+    // Oval surcharge is only computed after confirming the price is directly calculable (not quoteRequired).
+    const ovalSurchargeNet = form === "OVAL" ? 0.03 * quantity : 0;
+    const ovalSurchargeCents = Math.round(ovalSurchargeNet * 1.19 * 100);
 
     // grossPrice includes material + printing + plates; ovalSurchargeCents added for oval/round form
     const grossAmountCents = Math.round(priceResult.body.grossPrice * 100) + ovalSurchargeCents;
