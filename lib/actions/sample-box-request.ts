@@ -164,31 +164,33 @@ export async function submitSampleBoxRequest(
     warnings.push("Die Datenbank ist aktuell noch nicht konfiguriert.");
   }
 
-  const adminInbox = getServerEnv().EMAIL_REPLY_TO;
-  const emailResult = await sendTransactionalEmail({
-    to: adminInbox || values.email,
-    subject: "Neue Musterbox-Anfrage über Labelpilot.de",
-    text:
-      `Neue Musterbox-Anfrage von ${values.companyName}. Interesse: ${values.productType}. Menge: ${values.quantity}.`,
-    html: `
-      <p>Neue Musterbox-Anfrage von <strong>${values.companyName}</strong>.</p>
-      <p><strong>Ansprechpartner:</strong> ${values.contactName || "Nicht angegeben"}</p>
-      <p><strong>E-Mail:</strong> ${values.email}</p>
-      <p><strong>Telefon:</strong> ${values.phone || "Nicht angegeben"}</p>
-      <p><strong>Land:</strong> ${values.country}</p>
-      <p><strong>Website / Shop:</strong> ${values.website || "Nicht angegeben"}</p>
-      <p><strong>Branche:</strong> ${values.industry || "Nicht angegeben"}</p>
-      <p><strong>Interesse:</strong> ${values.productType}</p>
-      <p><strong>Voraussichtliche Menge:</strong> ${values.quantity}</p>
-      <p><strong>Wiederkehrender Bedarf:</strong> ${values.recurringNeed || "Nicht angegeben"}</p>
-      <p><strong>Lieferadresse / PLZ:</strong> ${values.shippingAddress}</p>
-      <p><strong>Notizen:</strong> ${values.notes || "Keine"}</p>
-      <p><strong>Lead Score:</strong> ${score} (${quality})</p>
-    `,
-  });
+  const adminInbox = getServerEnv().ADMIN_NOTIFY_EMAIL || getServerEnv().EMAIL_REPLY_TO;
+  if (adminInbox) {
+    const emailResult = await sendTransactionalEmail({
+      to: adminInbox,
+      subject: "Neue Musterbox-Anfrage über Labelpilot.de",
+      text:
+        `Neue Musterbox-Anfrage von ${values.companyName}. Interesse: ${values.productType}. Menge: ${values.quantity}.`,
+      html: `
+        <p>Neue Musterbox-Anfrage von <strong>${values.companyName}</strong>.</p>
+        <p><strong>Ansprechpartner:</strong> ${values.contactName || "Nicht angegeben"}</p>
+        <p><strong>E-Mail:</strong> ${values.email}</p>
+        <p><strong>Telefon:</strong> ${values.phone || "Nicht angegeben"}</p>
+        <p><strong>Land:</strong> ${values.country}</p>
+        <p><strong>Website / Shop:</strong> ${values.website || "Nicht angegeben"}</p>
+        <p><strong>Branche:</strong> ${values.industry || "Nicht angegeben"}</p>
+        <p><strong>Interesse:</strong> ${values.productType}</p>
+        <p><strong>Voraussichtliche Menge:</strong> ${values.quantity}</p>
+        <p><strong>Wiederkehrender Bedarf:</strong> ${values.recurringNeed || "Nicht angegeben"}</p>
+        <p><strong>Lieferadresse / PLZ:</strong> ${values.shippingAddress}</p>
+        <p><strong>Notizen:</strong> ${values.notes || "Keine"}</p>
+        <p><strong>Lead Score:</strong> ${score} (${quality})</p>
+      `,
+    });
 
-  if (!emailResult.ok) {
-    warnings.push("Die E-Mail-Benachrichtigung ist aktuell noch nicht konfiguriert.");
+    if (!emailResult.ok) {
+      warnings.push("Die E-Mail-Benachrichtigung ist aktuell noch nicht konfiguriert.");
+    }
   }
 
   if (warnings.length) {

@@ -3,7 +3,7 @@ import Stripe from "stripe";
 
 import { getPrismaClient } from "@/lib/db/prisma";
 import { sendEmail } from "@/lib/email/send";
-import { orderConfirmation } from "@/lib/email/templates/lifecycle";
+import { artworkApproved, orderConfirmation } from "@/lib/email/templates/lifecycle";
 import {
   canApplyStripePaymentFailure,
   canApplyStripePaymentSuccess,
@@ -196,6 +196,26 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
       where: { id: order.id },
       data: { confirmationEmailSentAt: null },
     });
+  }
+
+  // EMAIL-004: For same-artwork reorders the order is immediately set to APPROVED_FOR_PRODUCTION.
+  // Send an artworkApproved notification so the customer knows production has started.
+  if (isSameArtworkReorder) {
+    try {
+      const approvedTemplate = artworkApproved({
+        orderId: order.id,
+        orderNumber: order.orderNumber,
+        uploadToken: order.uploadToken,
+      });
+      await sendEmail({
+        to: customerEmail,
+        subject: approvedTemplate.subject,
+        html: approvedTemplate.html,
+        text: approvedTemplate.text,
+      });
+    } catch (error) {
+      console.error(`Artwork-Freigabemail für Nachbestellung ${order.id} fehlgeschlagen:`, error);
+    }
   }
 }
 

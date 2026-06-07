@@ -1,6 +1,6 @@
 import { getServerEnv, hasResendEnv } from "@/lib/env";
 
-import { getResendClient } from "@/lib/email/client";
+import { getResendClient } from "@/lib/email/resend";
 
 type SendEmailInput = {
   to: string;

@@ -211,12 +211,16 @@ export async function POST(
         adminNote: note,
       });
 
-      await sendEmail({
-        to: order.customerEmail,
-        subject: template.subject,
-        html: template.html,
-        text: template.text,
-      });
+      try {
+        await sendEmail({
+          to: order.customerEmail,
+          subject: template.subject,
+          html: template.html,
+          text: template.text,
+        });
+      } catch (error) {
+        console.error("Korrekturmail fehlgeschlagen:", error);
+      }
     } else {
       console.debug(`Korrekturmail übersprungen: keine E-Mail für ${order.id}.`);
     }

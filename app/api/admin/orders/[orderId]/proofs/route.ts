@@ -147,12 +147,16 @@ export async function POST(
       uploadToken: order.uploadToken,
     });
 
-    await sendEmail({
-      to: order.customerEmail,
-      subject: template.subject,
-      html: template.html,
-      text: template.text,
-    });
+    try {
+      await sendEmail({
+        to: order.customerEmail,
+        subject: template.subject,
+        html: template.html,
+        text: template.text,
+      });
+    } catch (error) {
+      console.error("Proof-Mail fehlgeschlagen:", error);
+    }
   } else {
     console.debug(`Proof-Mail übersprungen: keine E-Mail für ${order.id}.`);
   }

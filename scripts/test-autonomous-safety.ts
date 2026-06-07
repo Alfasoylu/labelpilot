@@ -826,4 +826,89 @@ assert.match(
   "SW-003: Webhook must guard against reprocessing events already marked ERROR to prevent double-execution on Stripe retries.",
 );
 
+// ── Email Integration regression guards ──────────────────────────────────────
+
+const proofsRouteSource = readFileSync(
+  new URL("../app/api/admin/orders/[orderId]/proofs/route.ts", import.meta.url),
+  "utf8",
+);
+
+// EMAIL-002: proofReady sendEmail must be wrapped in try/catch so proof upload succeeds
+// even when the Resend API throws.
+assert.match(
+  proofsRouteSource,
+  /try \{[\s\S]*?await sendEmail\([\s\S]*?\}[\s\S]*?catch \(error\)/,
+  "EMAIL-002: sendEmail in proofs route must be wrapped in try/catch to prevent email errors from failing the proof upload.",
+);
+
+const artworkReviewRouteSource = readFileSync(
+  new URL("../app/api/admin/orders/[orderId]/artwork/review/route.ts", import.meta.url),
+  "utf8",
+);
+
+// EMAIL-003: correctionRequested sendEmail must be wrapped in try/catch (consistent with artworkApproved).
+// Verify that the request_correction branch contains a try/catch around sendEmail.
+assert.match(
+  artworkReviewRouteSource,
+  /request_correction[\s\S]*?try \{[\s\S]*?await sendEmail\([\s\S]*?catch \(error\)/,
+  "EMAIL-003: correctionRequested sendEmail must be wrapped in try/catch to prevent email errors from failing the admin action.",
+);
+
+// EMAIL-004: same-artwork reorder webhook must send artworkApproved email when isSameArtworkReorder is true.
+assert.match(
+  webhookSource,
+  /isSameArtworkReorder[\s\S]*?artworkApproved\(/,
+  "EMAIL-004: Webhook must send artworkApproved email for same-artwork reorders so customers are notified that production has started.",
+);
+assert.match(
+  webhookSource,
+  /artworkApproved[\s\S]*?try \{[\s\S]*?await sendEmail/,
+  "EMAIL-004: artworkApproved send in webhook must be wrapped in try/catch.",
+);
+
+const sampleBoxSource = readFileSync(
+  new URL("../lib/actions/sample-box-request.ts", import.meta.url),
+  "utf8",
+);
+
+// EMAIL-005: ops notification must use ADMIN_NOTIFY_EMAIL as primary, not fall back to customer email.
+assert.match(
+  sampleBoxSource,
+  /ADMIN_NOTIFY_EMAIL.*\|\|.*EMAIL_REPLY_TO/,
+  "EMAIL-005: Sample-box ops notification must use ADMIN_NOTIFY_EMAIL as primary recipient with EMAIL_REPLY_TO as fallback.",
+);
+assert.doesNotMatch(
+  sampleBoxSource,
+  /adminInbox \|\| values\.email/,
+  "EMAIL-005: Ops notification must never fall back to the customer email address when no admin inbox is configured.",
+);
+
+const resendSource = readFileSync(
+  new URL("../lib/email/resend.ts", import.meta.url),
+  "utf8",
+);
+
+// EMAIL-006: sendTransactionalEmail must wrap client.emails.send() in try/catch.
+assert.match(
+  resendSource,
+  /try \{[\s\S]*?client\.emails\.send\(/,
+  "EMAIL-006: sendTransactionalEmail must wrap client.emails.send() in try/catch to handle Resend SDK network errors gracefully.",
+);
+
+// EMAIL-007: send.ts must import getResendClient from resend.ts (consolidated singleton), not client.ts.
+const sendSource = readFileSync(
+  new URL("../lib/email/send.ts", import.meta.url),
+  "utf8",
+);
+assert.match(
+  sendSource,
+  /from.*email\/resend/,
+  "EMAIL-007: send.ts must import getResendClient from lib/email/resend (singleton) not the removed lib/email/client.",
+);
+assert.doesNotMatch(
+  sendSource,
+  /from.*email\/client/,
+  "EMAIL-007: send.ts must not import from the removed lib/email/client module.",
+);
+
 console.log("Autonomous safety regression tests passed.");

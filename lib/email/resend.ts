@@ -34,14 +34,24 @@ export async function sendTransactionalEmail(input: SendEmailInput) {
     };
   }
 
-  const result = await client.emails.send({
-    from: env.EMAIL_FROM,
-    replyTo: env.EMAIL_REPLY_TO,
-    to: input.to,
-    subject: input.subject,
-    html: input.html,
-    text: input.text,
-  });
+  let result: Awaited<ReturnType<typeof client.emails.send>>;
+
+  try {
+    result = await client.emails.send({
+      from: env.EMAIL_FROM,
+      replyTo: env.EMAIL_REPLY_TO,
+      to: input.to,
+      subject: input.subject,
+      html: input.html,
+      text: input.text,
+    });
+  } catch (e) {
+    return {
+      ok: false as const,
+      reason: "send_failed" as const,
+      error: e instanceof Error ? e.message : String(e),
+    };
+  }
 
   if (result.error) {
     return {
