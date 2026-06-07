@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 import type {
@@ -44,6 +44,8 @@ export function CheckoutIntakeForm({
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedFinishing, setSelectedFinishing] = useState<"MATT" | "GLAENZEND">(initialFinishing ?? "MATT");
+  // CHK-004: Prevent double-submit with a ref guard that is more reliable than isPending alone.
+  const submittedRef = useRef(false);
   const artworkSummary = addons.customerUploadsOwnData
     ? "druckfertige Daten werden nach der Zahlung hochgeladen"
     : addons.designService
@@ -51,6 +53,11 @@ export function CheckoutIntakeForm({
       : "Druckdaten folgen nach der Bestellung; Designservice nur bei Auswahl oder wenn die Freiregel greift";
 
   const handleSubmit = (formData: FormData) => {
+    // CHK-004: Guard against double-submit before the transition starts or during slow redirects.
+    if (submittedRef.current) {
+      return;
+    }
+    submittedRef.current = true;
     setErrorMessage("");
 
     startTransition(async () => {
@@ -100,6 +107,7 @@ export function CheckoutIntakeForm({
             "Der Checkout ist im Moment nicht verfügbar. Bitte nutzen Sie das Angebotsformular.";
           setErrorMessage(msg);
           toast.error(msg);
+          submittedRef.current = false; // allow retry on error
           return;
         }
 
@@ -109,6 +117,7 @@ export function CheckoutIntakeForm({
           "Der Checkout ist im Moment nicht erreichbar. Bitte nutzen Sie das Angebotsformular.";
         setErrorMessage(msg);
         toast.error(msg);
+        submittedRef.current = false; // allow retry on error
       }
     });
   };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 type MaterialKey = "OPAQUE_PP" | "TRANSPARENT_PP";
@@ -74,9 +74,16 @@ export function CustomSizeCheckoutForm({
 }: CustomSizeCheckoutFormProps) {
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState("");
+  // CHK-004: Prevent double-submit with a ref guard that is more reliable than isPending alone.
+  const submittedRef = useRef(false);
   const vatAmount = grossPrice - netPrice;
 
   const handleSubmit = (formData: FormData) => {
+    // CHK-004: Guard against double-submit before the transition starts or during slow redirects.
+    if (submittedRef.current) {
+      return;
+    }
+    submittedRef.current = true;
     setErrorMessage("");
     startTransition(async () => {
       const payload = {
@@ -123,6 +130,7 @@ export function CustomSizeCheckoutForm({
           const msg = data?.error ?? "Der Checkout ist nicht verfügbar. Bitte nutzen Sie das Angebotsformular.";
           setErrorMessage(msg);
           toast.error(msg);
+          submittedRef.current = false; // allow retry on error
           return;
         }
         window.location.assign(data.url);
@@ -130,6 +138,7 @@ export function CustomSizeCheckoutForm({
         const msg = "Der Checkout ist nicht erreichbar. Bitte nutzen Sie das Angebotsformular.";
         setErrorMessage(msg);
         toast.error(msg);
+        submittedRef.current = false; // allow retry on error
       }
     });
   };

@@ -31,6 +31,7 @@ export function CheckoutButton({
 }: CheckoutButtonProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [navError, setNavError] = useState("");
   const [designService, setDesignService] = useState(false);
   const [physicalProof, setPhysicalProof] = useState(false);
   const [express, setExpress] = useState(false);
@@ -183,6 +184,7 @@ export function CheckoutButton({
         type="button"
         className="pricing-card__action pricing-card__action--primary"
         onClick={() => {
+          setNavError("");
           startTransition(() => {
             const params = new URLSearchParams({
               packageId,
@@ -197,13 +199,19 @@ export function CheckoutButton({
               extraDesignCount: String(extraDesignCount),
             });
 
-            router.push(`/de/checkout?${params.toString()}`);
+            // CHK-007: Wrap router.push in try/catch so navigation failures show feedback.
+            try {
+              router.push(`/de/checkout?${params.toString()}`);
+            } catch {
+              setNavError("Weiterleitung zur Checkout-Seite ist fehlgeschlagen. Bitte versuchen Sie es erneut.");
+            }
           });
         }}
         disabled={isPending}
       >
         {isPending ? "Weiterleitung..." : "Zahlungspflichtig bestellen"}
       </button>
+      {navError ? <p className="form-status error">{navError}</p> : null}
     </div>
   );
 }

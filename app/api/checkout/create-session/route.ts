@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { Prisma } from "@prisma/client";
+
 import { getDefaultPricingSettings, mapPricingSettingsRecord } from "@/lib/admin/pricing";
 import { checkoutIntakeSchema } from "@/lib/checkout/intake";
 import { findPackageByConfig, type PackageMaterial, type ProductSlug } from "@/lib/commerce/packages";
@@ -73,6 +75,7 @@ export async function POST(request: Request) {
     });
     const totalAmountCents = pkg.grossAmountCents + addonPricing.addonsTotalCents;
 
+    // CHK-003: Use 8 hex chars (16^8 ≈ 4 billion) to reduce collision risk; retry on P2002.
     const orderNumber = createOrderNumber();
     const normalizedCountry =
       parsed.data.country.toUpperCase() === "DE" ||
@@ -80,53 +83,11 @@ export async function POST(request: Request) {
         ? "DE"
         : parsed.data.country;
 
-    const order = await prisma.order.create({
-      data: {
-        orderNumber,
-        status: "PENDING_PAYMENT",
-        productSlug: pkg.productSlug,
-        material: pkg.material,
-        quantity: pkg.quantity,
-        packageId: pkg.id,
-        amountCents: totalAmountCents,
-        designServiceCents: addonPricing.designServiceCents,
-        physicalProofCents: addonPricing.physicalProofCents,
-        expressCents: addonPricing.expressCents,
-        extraDesignCount: parsed.data.addons?.extraDesignCount ?? 0,
-        extraDesignCents: addonPricing.extraDesignCents,
-        addonsTotalCents: addonPricing.addonsTotalCents || null,
-        currency: "EUR",
-        customerEmail: parsed.data.email,
-        customerName: parsed.data.contactName,
-        companyName: parsed.data.companyName,
-        customerPhone: parsed.data.phone,
-        vatId: parsed.data.vatId || null,
-        country: normalizedCountry,
-        streetAddress: parsed.data.streetAddress,
-        addressLine2: parsed.data.addressLine2 || null,
-        postalCode: parsed.data.postalCode,
-        city: parsed.data.city,
-        customerNote: parsed.data.notes || null,
-        finishing: parsed.data.finishing || null,
-        rollKern: parsed.data.rollKern || null,
-        abrollrichtung: parsed.data.abrollrichtung || null,
-        maxRollendurchmesser: parsed.data.maxRollendurchmesser || null,
-        maschineName: parsed.data.maschineName || null,
-        artworkInputStatus: parsed.data.artworkStatus,
-        selectedAddons: parsed.data.addons,
-        statusEvents: {
-          create: {
-            status: "PENDING_PAYMENT",
-            note: `Checkout-Intake erfasst (${parsed.data.artworkStatus}).`,
-          },
-        },
-      },
-    });
-    createdOrderId = order.id;
-
-    const metadata = {
-      orderId: order.id,
-      orderNumber: order.orderNumber,
+    // CHK-002: Create Stripe session FIRST so that no DB order is left orphaned when
+    // the Stripe API call fails. The order is only written once we have a valid session.
+    const stripeMetadataPlaceholder = {
+      orderId: "",
+      orderNumber,
       companyName: parsed.data.companyName,
       customerEmail: parsed.data.email,
       productSlug: pkg.productSlug,
@@ -141,9 +102,9 @@ export async function POST(request: Request) {
       success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/checkout/cancel`,
       customer_email: parsed.data.email,
-      metadata,
+      metadata: stripeMetadataPlaceholder,
       payment_intent_data: {
-        metadata,
+        metadata: stripeMetadataPlaceholder,
       },
       line_items: [
         {
@@ -175,29 +136,85 @@ export async function POST(request: Request) {
 
     if (!session.url) {
       console.error("Checkout-Session ohne URL erstellt:", session.id);
-      await prisma.order.update({
-        where: { id: order.id },
-        data: {
-          status: "PAYMENT_FAILED",
-          statusEvents: {
-            create: {
-              status: "PAYMENT_FAILED",
-              note: "Stripe-Checkout-Session wurde ohne Weiterleitungs-URL erstellt.",
-            },
-          },
-        },
-      });
       return NextResponse.json(
         { error: "Checkout ist derzeit nicht verfügbar. Bitte nutzen Sie das Angebotsformular." },
         { status: 503 },
       );
     }
 
-    await prisma.order.update({
-      where: { id: order.id },
-      data: {
-        stripeCheckoutSessionId: session.id,
-      },
+    // Stripe session exists with a valid URL — now persist the order.
+    // CHK-003: Retry up to 3 times on orderNumber collision (Prisma P2002).
+    let order: Awaited<ReturnType<typeof prisma.order.create>>;
+    let currentOrderNumber = orderNumber;
+    for (let attempt = 1; ; attempt++) {
+      try {
+        order = await prisma.order.create({
+          data: {
+            orderNumber: currentOrderNumber,
+            status: "PENDING_PAYMENT",
+            productSlug: pkg.productSlug,
+            material: pkg.material,
+            quantity: pkg.quantity,
+            packageId: pkg.id,
+            amountCents: totalAmountCents,
+            designServiceCents: addonPricing.designServiceCents,
+            physicalProofCents: addonPricing.physicalProofCents,
+            expressCents: addonPricing.expressCents,
+            extraDesignCount: parsed.data.addons?.extraDesignCount ?? 0,
+            extraDesignCents: addonPricing.extraDesignCents,
+            addonsTotalCents: addonPricing.addonsTotalCents || null,
+            currency: "EUR",
+            customerEmail: parsed.data.email,
+            customerName: parsed.data.contactName,
+            companyName: parsed.data.companyName,
+            customerPhone: parsed.data.phone,
+            vatId: parsed.data.vatId || null,
+            country: normalizedCountry,
+            streetAddress: parsed.data.streetAddress,
+            addressLine2: parsed.data.addressLine2 || null,
+            postalCode: parsed.data.postalCode,
+            city: parsed.data.city,
+            customerNote: parsed.data.notes || null,
+            finishing: parsed.data.finishing || null,
+            rollKern: parsed.data.rollKern || null,
+            abrollrichtung: parsed.data.abrollrichtung || null,
+            maxRollendurchmesser: parsed.data.maxRollendurchmesser || null,
+            maschineName: parsed.data.maschineName || null,
+            artworkInputStatus: parsed.data.artworkStatus,
+            selectedAddons: parsed.data.addons,
+            stripeCheckoutSessionId: session.id,
+            statusEvents: {
+              create: {
+                status: "PENDING_PAYMENT",
+                note: `Checkout-Intake erfasst (${parsed.data.artworkStatus}).`,
+              },
+            },
+          },
+        });
+        break; // success
+      } catch (err) {
+        // CHK-003: Retry on orderNumber uniqueness collision.
+        if (
+          err instanceof Prisma.PrismaClientKnownRequestError &&
+          err.code === "P2002" &&
+          attempt < 3
+        ) {
+          console.warn(`Bestellnummer-Kollision bei ${currentOrderNumber}, neuer Versuch ${attempt + 1}.`);
+          currentOrderNumber = createOrderNumber();
+          continue;
+        }
+        throw err; // unrelated error or exhausted retries
+      }
+    }
+    createdOrderId = order.id;
+
+    // Back-fill orderId into Stripe session metadata so the webhook can resolve the order.
+    const fullMetadata = {
+      ...stripeMetadataPlaceholder,
+      orderId: order.id,
+    };
+    await stripe.checkout.sessions.update(session.id, {
+      metadata: fullMetadata,
     });
 
     await prisma.payment.create({

@@ -78,7 +78,11 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
   const nextStatus = isSameArtworkReorder ? "APPROVED_FOR_PRODUCTION" : "PAID";
   const nextArtworkStatus = isSameArtworkReorder ? "ARTWORK_APPROVED" : "AWAITING_ARTWORK";
 
-  await prisma.$transaction([
+  // CHK-005: Move confirmationEmailSentAt reservation INSIDE the transaction so that
+  // the idempotency check and the order status update are atomic. On a partial retry
+  // caused by a transaction failure, the email can only be sent once.
+  const now = new Date();
+  const txResults = await prisma.$transaction([
     prisma.order.update({
       where: { id: order.id },
       data: {
@@ -100,7 +104,7 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
         stripeCustomerId:
           typeof session.customer === "string" ? session.customer : session.customer?.id,
         stripeEventId: event.id,
-        paidAt: new Date(),
+        paidAt: now,
       },
       create: {
         orderId: order.id,
@@ -113,7 +117,7 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
         status: "PAID",
         provider: "stripe",
         stripeEventId: event.id,
-        paidAt: new Date(),
+        paidAt: now,
       },
     }),
     prisma.orderStatusEvent.create({
@@ -134,17 +138,20 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
           }),
         ]
       : []),
+    // Idempotent email reservation: only succeeds (count=1) when confirmationEmailSentAt is null.
+    prisma.order.updateMany({
+      where: {
+        id: order.id,
+        confirmationEmailSentAt: null,
+      },
+      data: {
+        confirmationEmailSentAt: now,
+      },
+    }),
   ]);
 
-  const emailReservation = await prisma.order.updateMany({
-    where: {
-      id: order.id,
-      confirmationEmailSentAt: null,
-    },
-    data: {
-      confirmationEmailSentAt: new Date(),
-    },
-  });
+  // The last element of txResults is always the emailReservation updateMany result.
+  const emailReservation = txResults[txResults.length - 1] as { count: number };
 
   const customerEmail = session.customer_details?.email ?? order.customerEmail;
 

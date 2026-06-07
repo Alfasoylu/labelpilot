@@ -24,12 +24,14 @@ export const checkoutIntakeSchema = z.object({
   companyName: z.string().trim().min(1).max(160),
   contactName: z.string().trim().min(1).max(120),
   email: z.string().trim().email(),
-  phone: z.string().trim().min(1).max(60),
+  // CHK-006: Require at least 7 characters for a plausible phone number.
+  phone: z.string().trim().min(7).max(60),
   vatId: z.string().trim().max(80).optional().or(z.literal("")),
   notes: z.string().trim().max(2000).optional().or(z.literal("")),
   streetAddress: z.string().trim().min(1).max(160),
   addressLine2: z.string().trim().max(160).optional().or(z.literal("")),
-  postalCode: z.string().trim().min(1).max(20),
+  // CHK-006: Enforce 5-digit German postal code.
+  postalCode: z.string().trim().regex(/^\d{5}$/, "Ungültige PLZ – bitte eine gültige 5-stellige Postleitzahl eingeben."),
   city: z.string().trim().min(1).max(120),
   country: z.string().trim().min(1).max(60).default("DE"),
   finishing: z.enum(["MATT", "GLAENZEND"]).optional(),
@@ -51,12 +53,14 @@ const contactAddressFields = {
   companyName: z.string().trim().min(1).max(160),
   contactName: z.string().trim().min(1).max(120),
   email: z.string().trim().email(),
-  phone: z.string().trim().min(1).max(60),
+  // CHK-006: Require at least 7 characters for a plausible phone number.
+  phone: z.string().trim().min(7).max(60),
   vatId: z.string().trim().max(80).optional().or(z.literal("")),
   notes: z.string().trim().max(2000).optional().or(z.literal("")),
   streetAddress: z.string().trim().min(1).max(160),
   addressLine2: z.string().trim().max(160).optional().or(z.literal("")),
-  postalCode: z.string().trim().min(1).max(20),
+  // CHK-006: Enforce 5-digit German postal code.
+  postalCode: z.string().trim().regex(/^\d{5}$/, "Ungültige PLZ – bitte eine gültige 5-stellige Postleitzahl eingeben."),
   city: z.string().trim().min(1).max(120),
   country: z.string().trim().min(1).max(60).default("DE"),
   rollKern: z.string().trim().max(60).optional().or(z.literal("")),

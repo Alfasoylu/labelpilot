@@ -961,4 +961,104 @@ assert.ok(
   "PE-002: ovalSurchargeNet must be computed after the quoteRequired guard to prevent uncapped surcharge on rejected requests.",
 );
 
+// ── Checkout Flow regression guards ──────────────────────────────────────────
+
+const createSessionRouteSource = readFileSync(
+  new URL("../app/api/checkout/create-session/route.ts", import.meta.url),
+  "utf8",
+);
+const checkoutSuccessPageSourceForChk = readFileSync(
+  new URL("../app/(public)/checkout/success/page.tsx", import.meta.url),
+  "utf8",
+);
+const ordersLibSource = readFileSync(
+  new URL("../lib/commerce/orders.ts", import.meta.url),
+  "utf8",
+);
+const checkoutIntakeFormSourceForChk = readFileSync(
+  new URL("../components/checkout/CheckoutIntakeForm.tsx", import.meta.url),
+  "utf8",
+);
+const customSizeCheckoutFormSource = readFileSync(
+  new URL("../components/kalkulator/CustomSizeCheckoutForm.tsx", import.meta.url),
+  "utf8",
+);
+const webhookSourceForChk = readFileSync(
+  new URL("../app/api/stripe/webhook/route.ts", import.meta.url),
+  "utf8",
+);
+const intakeSource = readFileSync(
+  new URL("../lib/checkout/intake.ts", import.meta.url),
+  "utf8",
+);
+
+// CHK-001: Success page must verify payment_status === 'paid' before showing success UI.
+assert.match(
+  checkoutSuccessPageSourceForChk,
+  /payment_status !== ["']paid["']/,
+  "CHK-001: Success page must guard against unpaid sessions by checking payment_status !== 'paid'.",
+);
+assert.match(
+  checkoutSuccessPageSourceForChk,
+  /order\.status !== ["']PAID["']/,
+  "CHK-001: Success page must also verify the DB order has status PAID (or APPROVED_FOR_PRODUCTION) before rendering success UI.",
+);
+
+// CHK-002: Stripe session must be created BEFORE the DB order to prevent orphaned orders.
+const stripeSessionCreatePos = createSessionRouteSource.indexOf("stripe.checkout.sessions.create");
+const prismaOrderCreatePos = createSessionRouteSource.indexOf("prisma.order.create");
+assert.ok(
+  stripeSessionCreatePos > 0 && prismaOrderCreatePos > 0,
+  "CHK-002: create-session route must contain both stripe.checkout.sessions.create and prisma.order.create.",
+);
+assert.ok(
+  stripeSessionCreatePos < prismaOrderCreatePos,
+  "CHK-002: Stripe session must be created BEFORE the DB order to avoid orphaned PENDING_PAYMENT orders when Stripe fails.",
+);
+
+// CHK-003: Order number must use 8 hex chars (higher entropy) and have P2002 retry logic.
+assert.match(
+  ordersLibSource,
+  /slice\(0,\s*8\)/,
+  "CHK-003: createOrderNumber must use 8 hex characters for higher entropy (not 6).",
+);
+assert.match(
+  createSessionRouteSource,
+  /P2002/,
+  "CHK-003: create-session route must handle Prisma P2002 (unique constraint) for orderNumber collision with a retry loop.",
+);
+
+// CHK-004: Double-submit guard must exist in both checkout forms.
+assert.match(
+  checkoutIntakeFormSourceForChk,
+  /submittedRef\.current/,
+  "CHK-004: CheckoutIntakeForm must use a submittedRef guard to prevent double-submit.",
+);
+assert.match(
+  customSizeCheckoutFormSource,
+  /submittedRef\.current/,
+  "CHK-004: CustomSizeCheckoutForm must use a submittedRef guard to prevent double-submit.",
+);
+
+// CHK-005: Email reservation (confirmationEmailSentAt) must be inside the prisma.$transaction.
+const txStart = webhookSourceForChk.indexOf("prisma.$transaction");
+const txEnd = webhookSourceForChk.indexOf("];", txStart);
+const emailReservationInTx = webhookSourceForChk.indexOf("confirmationEmailSentAt", txStart);
+assert.ok(
+  emailReservationInTx > txStart && emailReservationInTx < txEnd,
+  "CHK-005: confirmationEmailSentAt reservation must be inside prisma.$transaction to prevent double-email on webhook retry.",
+);
+
+// CHK-006: postalCode must be validated with a 5-digit regex.
+assert.match(
+  intakeSource,
+  /postalCode[\s\S]*?regex\([\s\S]*?\\d\{5\}/,
+  "CHK-006: checkoutIntakeSchema must validate postalCode with a \\d{5} regex.",
+);
+assert.match(
+  intakeSource,
+  /phone[\s\S]*?min\(7\)/,
+  "CHK-006: phone field must enforce min(7) to reject implausibly short values.",
+);
+
 console.log("Autonomous safety regression tests passed.");

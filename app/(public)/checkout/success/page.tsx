@@ -26,6 +26,12 @@ async function getSuccessPageData(sessionId?: string) {
   try {
     const stripe = getStripeServerClient();
     const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    // CHK-001: Only show success UI for completed payments.
+    if (session.payment_status !== "paid") {
+      return null;
+    }
+
     const orderId = session.metadata?.orderId;
 
     if (!orderId) {
@@ -47,11 +53,17 @@ async function getSuccessPageData(sessionId?: string) {
       select: {
         id: true,
         orderNumber: true,
+        status: true,
         reorderMode: true,
         uploadToken: true,
         artworkInputStatus: true,
       },
     });
+
+    // CHK-001: Also guard against orders that are not yet marked PAID in the DB.
+    if (!order || order.status !== "PAID" && order.status !== "APPROVED_FOR_PRODUCTION") {
+      return null;
+    }
 
     return {
       orderNumber: order?.orderNumber ?? session.metadata?.orderNumber ?? null,
