@@ -29,8 +29,8 @@ const settingsSchema = z.object({
   extraDesignNet: z.coerce.number().positive(),
   platePerColorCostNet: z.coerce.number().positive(),
   inkCostPerM2PerColorNet: z.coerce.number().positive(),
-  digitalCostPerUnitNet: z.coerce.number().positive(),
-  digitalSetupCostNet: z.coerce.number().positive(),
+  digitalCostPerM2Net: z.coerce.number().positive(),
+  digitalSellingPricePerM2Net: z.coerce.number().positive(),
   markupTier1Multiplier: z.coerce.number().min(1),
   markupTier1MaxQty: z.coerce.number().int().positive(),
   markupTier2Multiplier: z.coerce.number().min(1),
@@ -91,8 +91,8 @@ export async function POST(request: Request) {
     extraDesignNet: formData.get("settings.extraDesignNet"),
     platePerColorCostNet: formData.get("settings.platePerColorCostNet"),
     inkCostPerM2PerColorNet: formData.get("settings.inkCostPerM2PerColorNet"),
-    digitalCostPerUnitNet: formData.get("settings.digitalCostPerUnitNet"),
-    digitalSetupCostNet: formData.get("settings.digitalSetupCostNet"),
+    digitalCostPerM2Net: formData.get("settings.digitalCostPerM2Net"),
+    digitalSellingPricePerM2Net: formData.get("settings.digitalSellingPricePerM2Net"),
     markupTier1Multiplier: formData.get("settings.markupTier1Multiplier"),
     markupTier1MaxQty: formData.get("settings.markupTier1MaxQty"),
     markupTier2Multiplier: formData.get("settings.markupTier2Multiplier"),
@@ -154,8 +154,8 @@ export async function POST(request: Request) {
       extraDesignNet?: { toString(): string } | null;
       platePerColorCostNet?: { toString(): string } | null;
       inkCostPerM2PerColorNet?: { toString(): string } | null;
-      digitalCostPerUnitNet?: { toString(): string } | null;
-      digitalSetupCostNet?: { toString(): string } | null;
+      digitalCostPerM2Net?: { toString(): string } | null;
+      digitalSellingPricePerM2Net?: { toString(): string } | null;
       markupTier1Multiplier?: { toString(): string } | null;
       markupTier1MaxQty?: number | null;
       markupTier2Multiplier?: { toString(): string } | null;
@@ -196,8 +196,8 @@ export async function POST(request: Request) {
       extraDesignNet: previousSettings?.extraDesignNet?.toString() ?? null,
       platePerColorCostNet: previousSettings?.platePerColorCostNet?.toString() ?? null,
       inkCostPerM2PerColorNet: previousSettings?.inkCostPerM2PerColorNet?.toString() ?? null,
-      digitalCostPerUnitNet: previousSettings?.digitalCostPerUnitNet?.toString() ?? null,
-      digitalSetupCostNet: previousSettings?.digitalSetupCostNet?.toString() ?? null,
+      digitalCostPerM2Net: previousSettings?.digitalCostPerM2Net?.toString() ?? null,
+      digitalSellingPricePerM2Net: previousSettings?.digitalSellingPricePerM2Net?.toString() ?? null,
       markupTier1Multiplier: previousSettings?.markupTier1Multiplier?.toString() ?? null,
       markupTier1MaxQty: previousSettings?.markupTier1MaxQty?.toString() ?? null,
       markupTier2Multiplier: previousSettings?.markupTier2Multiplier?.toString() ?? null,
@@ -226,8 +226,8 @@ export async function POST(request: Request) {
       extraDesignNet: settingsData.extraDesignNet.toString(),
       platePerColorCostNet: settingsData.platePerColorCostNet.toString(),
       inkCostPerM2PerColorNet: settingsData.inkCostPerM2PerColorNet.toString(),
-      digitalCostPerUnitNet: settingsData.digitalCostPerUnitNet.toString(),
-      digitalSetupCostNet: settingsData.digitalSetupCostNet.toString(),
+      digitalCostPerM2Net: settingsData.digitalCostPerM2Net.toString(),
+      digitalSellingPricePerM2Net: settingsData.digitalSellingPricePerM2Net.toString(),
       markupTier1Multiplier: settingsData.markupTier1Multiplier.toString(),
       markupTier1MaxQty: settingsData.markupTier1MaxQty.toString(),
       markupTier2Multiplier: settingsData.markupTier2Multiplier.toString(),

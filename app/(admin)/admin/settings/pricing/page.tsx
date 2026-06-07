@@ -333,32 +333,32 @@ export default async function PricingSettingsPage({
               <h4 style={{ marginTop: "1.5rem" }}>Digitaldruck</h4>
               <div className="form-grid">
                 <div>
-                  <label htmlFor="settings-digitalCostPerUnitNet">
-                    Digitaldruck — Kosten pro Stück netto
+                  <label htmlFor="settings-digitalCostPerM2Net">
+                    Digitaldruck — Kosten pro m² netto
                   </label>
                   <input
-                    id="settings-digitalCostPerUnitNet"
-                    name="settings.digitalCostPerUnitNet"
-                    type="number"
-                    min="0.0001"
-                    step="0.0001"
-                    defaultValue={formatPricingNumber(settings.digitalCostPerUnitNet, 4)}
-                  />
-                  <p className="field-hint">Standard: 0,10 € / Stück.</p>
-                </div>
-                <div>
-                  <label htmlFor="settings-digitalSetupCostNet">
-                    Digitaldruck — Rüstgebühr netto
-                  </label>
-                  <input
-                    id="settings-digitalSetupCostNet"
-                    name="settings.digitalSetupCostNet"
+                    id="settings-digitalCostPerM2Net"
+                    name="settings.digitalCostPerM2Net"
                     type="number"
                     min="0.01"
                     step="0.01"
-                    defaultValue={formatPricingNumber(settings.digitalSetupCostNet)}
+                    defaultValue={formatPricingNumber(settings.digitalCostPerM2Net)}
                   />
-                  <p className="field-hint">Pauschal pro Auftrag. Standard: 40 €.</p>
+                  <p className="field-hint">Gesamtkosten inkl. Material. Standard: 8,00 €/m².</p>
+                </div>
+                <div>
+                  <label htmlFor="settings-digitalSellingPricePerM2Net">
+                    Digitaldruck — Verkaufspreis pro m² netto
+                  </label>
+                  <input
+                    id="settings-digitalSellingPricePerM2Net"
+                    name="settings.digitalSellingPricePerM2Net"
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    defaultValue={formatPricingNumber(settings.digitalSellingPricePerM2Net)}
+                  />
+                  <p className="field-hint">Kundenseitige Netto-Rate. Standard: 12,00 €/m².</p>
                 </div>
               </div>
 

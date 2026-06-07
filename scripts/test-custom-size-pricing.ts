@@ -23,8 +23,8 @@ const settings = {
   customMaxQuantity: 300000,
   platePerColorCostNet: 40,
   inkCostPerM2PerColorNet: 0.33,
-  digitalCostPerUnitNet: 0.10,
-  digitalSetupCostNet: 40,
+  digitalCostPerM2Net: 8,
+  digitalSellingPricePerM2Net: 12,
   markupTier1Multiplier: 1.8,
   markupTier1MaxQty: 5000,
   markupTier2Multiplier: 1.6,
@@ -41,11 +41,10 @@ const settings = {
 };
 
 // 1000 adet, 4 renk CMYK, 1 sorten — small quantity, digital should win vs flexo
-// Digital cost: 0.10 * 1000 + 40 = 140 EUR
-// Flexo cost: ink(100) + plates(4*40*1=160) = 260 EUR
-// Material cost: 0.8 * (100*200/1M) * 1000 * 1.15 = 0.8 * 0.02 * 1000 * 1.15 = 18.4 EUR
-// Digital total: 18.4 + 140 = 158.4 EUR
-// Flexo total: 18.4 + 260 = 278.4 EUR → DIGITAL wins
+// totalAreaM2 = 0.02 * 1000 * 1.15 = 23 m²
+// Digital cost (all-in): 8 * 23 = 184 EUR + shipping → ~189 EUR
+// Flexo cost: material(0.8*23=18.4) + ink(0.33*4*23=30.36) + plates(4*40=160) + shipping → ~213 EUR
+// DIGITAL wins; selling price = 12 * 23 + shipping = 281 EUR
 const result1000 = computeCustomSizePrice({
   materialKey: "OPAQUE_PP",
   widthMm: 100,
@@ -79,9 +78,9 @@ const result1000_3sorten = computeCustomSizePrice({
 assert.equal(result1000_3sorten.method, "DIGITAL");
 
 // High quantity — flexo should become cheaper eventually
-// 50000 adet, 4 renk: digital = 0.10*50000+40 = 5040 EUR; flexo ink=170+3*70=380, plates=160; flexo=540
-// With material for 50k: material >> both printing costs
-// Flexo: 18.4*(50/1) + 540 = 920+540 — let's just check method changes to FLEXO at high qty
+// 50000 adet: totalAreaM2 = 0.02 * 50000 * 1.15 = 1150 m²
+// Digital cost: 8 * 1150 = 9200 EUR; Flexo: material(920) + ink(1518) + plates(160) = 2598 EUR
+// FLEXO wins at 50k
 const result50k = computeCustomSizePrice({
   materialKey: "OPAQUE_PP",
   widthMm: 100,
@@ -119,8 +118,9 @@ const result_flexo_1sorten = computeCustomSizePrice({
 });
 assert.equal(result_flexo_2sorten.breakdown.plateCost, result_flexo_1sorten.breakdown.plateCost * 2);
 
-// Markup tiers: ≤5000 → ×1.8, ≤10000 → ×1.6, >10000 → ×1.5
-assert.equal(result1000.breakdown.multiplier, 1.8);
+// Digital method: multiplier is 1 (margin embedded in digitalSellingPricePerM2Net)
+assert.equal(result1000.breakdown.multiplier, 1);
+// Flexo markup tiers: ≤5000 → ×1.8, ≤10000 → ×1.6, >10000 → ×1.5 (verified on flexo results below)
 
 const result6k = computeCustomSizePrice({
   materialKey: "OPAQUE_PP",

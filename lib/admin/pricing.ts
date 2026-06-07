@@ -30,8 +30,8 @@ type PricingSettingsRecord = {
   extraDesignNet: DecimalLike | number;
   platePerColorCostNet?: DecimalLike | number | null;
   inkCostPerM2PerColorNet?: DecimalLike | number | null;
-  digitalCostPerUnitNet?: DecimalLike | number | null;
-  digitalSetupCostNet?: DecimalLike | number | null;
+  digitalCostPerM2Net?: DecimalLike | number | null;
+  digitalSellingPricePerM2Net?: DecimalLike | number | null;
   markupTier1Multiplier?: DecimalLike | number | null;
   markupTier1MaxQty?: number | null;
   markupTier2Multiplier?: DecimalLike | number | null;
@@ -111,8 +111,8 @@ const DEFAULT_SETTINGS: PricingSettingsInput & AddonSettingsInput = {
   extraDesignNet: 19,
   platePerColorCostNet: 40,
   inkCostPerM2PerColorNet: 0.33,
-  digitalCostPerUnitNet: 0.10,
-  digitalSetupCostNet: 40,
+  digitalCostPerM2Net: 8,
+  digitalSellingPricePerM2Net: 12,
   markupTier1Multiplier: 1.8,
   markupTier1MaxQty: 5000,
   markupTier2Multiplier: 1.6,
@@ -188,8 +188,8 @@ export function mapPricingSettingsRecord(record: PricingSettingsRecord | null | 
     extraDesignNet: decimalToNumber(record.extraDesignNet) ?? 19,
     platePerColorCostNet: decimalToNumber(record.platePerColorCostNet) ?? 40,
     inkCostPerM2PerColorNet: decimalToNumber(record.inkCostPerM2PerColorNet) ?? 0.33,
-    digitalCostPerUnitNet: decimalToNumber(record.digitalCostPerUnitNet) ?? 0.10,
-    digitalSetupCostNet: decimalToNumber(record.digitalSetupCostNet) ?? 40,
+    digitalCostPerM2Net: decimalToNumber(record.digitalCostPerM2Net) ?? 8,
+    digitalSellingPricePerM2Net: decimalToNumber(record.digitalSellingPricePerM2Net) ?? 12,
     markupTier1Multiplier: decimalToNumber(record.markupTier1Multiplier) ?? 1.8,
     markupTier1MaxQty: record.markupTier1MaxQty ?? 5000,
     markupTier2Multiplier: decimalToNumber(record.markupTier2Multiplier) ?? 1.6,

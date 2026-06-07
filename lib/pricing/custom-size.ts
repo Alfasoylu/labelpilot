@@ -17,9 +17,9 @@ export type PricingSettingsInput = {
   platePerColorCostNet: number;
   // Flexo: ink cost per m² per color (scales with label area and color count)
   inkCostPerM2PerColorNet: number;
-  // Digital: per-unit + fixed setup fee
-  digitalCostPerUnitNet: number;
-  digitalSetupCostNet: number;
+  // Digital: all-in cost and selling price per m² (include material + printing)
+  digitalCostPerM2Net: number;
+  digitalSellingPricePerM2Net: number;
   // Quantity-based markup multipliers
   markupTier1Multiplier: number;
   markupTier1MaxQty: number;
@@ -97,8 +97,9 @@ function computeMarkupMultiplier(quantity: number, settings: PricingSettingsInpu
   return settings.markupTier3Multiplier;
 }
 
-// Returns the best (cheapest) raw production cost for a given quantity, along with
-// the chosen method and breakdown components.
+// Returns the best (cheapest) production cost for a given quantity along with the
+// customer-facing selling price for that method and a cost breakdown.
+// Digital uses a fixed per-m² selling price (margin embedded); flexo uses cost × multiplier.
 function computeBestProductionCost(
   widthMm: number,
   heightMm: number,
@@ -109,6 +110,7 @@ function computeBestProductionCost(
   settings: PricingSettingsInput,
 ): {
   cost: number;
+  sellingPrice: number;
   method: "DIGITAL" | "FLEXO";
   materialCost: number;
   inkCost: number;
@@ -126,25 +128,30 @@ function computeBestProductionCost(
   // Flexo ink: scales with printed area and color count
   const inkCost = settings.inkCostPerM2PerColorNet * colorCount * totalAreaM2;
   const plateCost = colorCount * settings.platePerColorCostNet * anzahlSorten;
-  const flexoProductionCost = materialCost + inkCost + plateCost + shippingCost;
+  const flexoCost = materialCost + inkCost + plateCost + shippingCost;
+  const flexoSellingPrice = flexoCost * computeMarkupMultiplier(quantity, settings);
 
-  const digitalPrintingCost = settings.digitalCostPerUnitNet * quantity + settings.digitalSetupCostNet;
-  const digitalProductionCost = materialCost + digitalPrintingCost + shippingCost;
+  // Digital: all-in per-m² cost (includes material + printing).
+  // The selling price uses a separate configurable per-m² rate — margin is embedded.
+  const digitalCost = settings.digitalCostPerM2Net * totalAreaM2 + shippingCost;
+  const digitalSellingPrice = settings.digitalSellingPricePerM2Net * totalAreaM2 + shippingCost;
 
-  if (digitalProductionCost <= flexoProductionCost) {
+  if (digitalCost <= flexoCost) {
     return {
-      cost: digitalProductionCost,
+      cost: digitalCost,
+      sellingPrice: digitalSellingPrice,
       method: "DIGITAL",
-      materialCost,
+      materialCost: 0,
       inkCost: 0,
       plateCost: 0,
-      digitalPrintingCost,
+      digitalPrintingCost: settings.digitalSellingPricePerM2Net * totalAreaM2,
       shippingWeightKg,
       shippingCost,
     };
   }
   return {
-    cost: flexoProductionCost,
+    cost: flexoCost,
+    sellingPrice: flexoSellingPrice,
     method: "FLEXO",
     materialCost,
     inkCost,
@@ -198,31 +205,32 @@ export function computeCustomSizePrice(
     widthMm, heightMm, quantity, colorCount, anzahlSorten, params, settings,
   );
 
-  const multiplier = computeMarkupMultiplier(quantity, settings);
-  let unroundedNetPrice = best.cost * multiplier;
+  // Use the method-specific selling price directly.
+  // Digital: fixed per-m² selling price (no additional multiplier).
+  // Flexo: cost × multiplier (already computed inside computeBestProductionCost).
+  let unroundedNetPrice = best.sellingPrice;
 
-  // Monotonicity: price must not decrease as quantity crosses a markup tier boundary.
-  // When the multiplier drops at a tier boundary, the lower multiplier on a slightly
-  // larger production cost can produce a lower total price than the tier below it.
-  // Fix: use the price at each lower tier boundary as a floor.
+  // Monotonicity: price must not drop as quantity crosses a markup tier boundary.
+  // Applies to both methods — compute the best selling price at the boundary qty as floor.
   if (quantity > settings.markupTier1MaxQty) {
     const atBoundary = computeBestProductionCost(
       widthMm, heightMm, settings.markupTier1MaxQty, colorCount, anzahlSorten, params, settings,
     );
-    const floorAtTier1 = atBoundary.cost * settings.markupTier1Multiplier;
-    unroundedNetPrice = Math.max(unroundedNetPrice, floorAtTier1);
+    unroundedNetPrice = Math.max(unroundedNetPrice, atBoundary.sellingPrice);
   }
   if (quantity > settings.markupTier2MaxQty) {
     const atBoundary = computeBestProductionCost(
       widthMm, heightMm, settings.markupTier2MaxQty, colorCount, anzahlSorten, params, settings,
     );
-    const floorAtTier2 = atBoundary.cost * settings.markupTier2Multiplier;
-    unroundedNetPrice = Math.max(unroundedNetPrice, floorAtTier2);
+    unroundedNetPrice = Math.max(unroundedNetPrice, atBoundary.sellingPrice);
   }
 
   const flooredNetPrice = Math.max(unroundedNetPrice, params.minOrderValueNet);
   const netPrice = roundMoney(roundUpToStep(flooredNetPrice, settings.roundingStepNet));
   const grossPrice = roundMoney(netPrice * (1 + settings.vatPct / 100));
+
+  // For display: digital has no separate multiplier (it is embedded in sellingPricePerM2).
+  const multiplier = best.method === "DIGITAL" ? 1 : computeMarkupMultiplier(quantity, settings);
 
   return {
     quoteRequired: false,
