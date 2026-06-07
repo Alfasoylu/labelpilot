@@ -70,6 +70,9 @@ export default async function AdminOrderDetailPage({
         },
         take: 50,
       },
+      customer: {
+        select: { id: true, companyName: true },
+      },
     },
   });
 
@@ -149,6 +152,14 @@ export default async function AdminOrderDetailPage({
           >
             Kundenseite öffnen
           </Link>
+          {order.customer ? (
+            <Link
+              href={`/admin/customers/${order.customer.id}`}
+              className="secondary-link"
+            >
+              Kundenprofil ({order.customer.companyName ?? order.customerEmail})
+            </Link>
+          ) : null}
         </div>
         <h2>{order.orderNumber}</h2>
         <p className="price-note">
