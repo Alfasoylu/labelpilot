@@ -18,6 +18,7 @@ export type PublicCustomSizeRequest = {
   quantity: number;
   colorCount: number;
   anzahlSorten: number;
+  finishing?: "MATT" | "GLAENZEND";
 };
 
 export type PublicCustomSizeResponse =
@@ -38,6 +39,7 @@ export type PublicCustomSizeResponse =
         materialCostNet: number;
         shippingCostNet: number;
         multiplier: number;
+        mattSurchargeNet: number;
       };
     };
 
@@ -70,6 +72,7 @@ export function buildPublicCustomSizePriceResponse(input: {
     quantity: input.request.quantity,
     colorCount: input.request.colorCount,
     anzahlSorten: input.request.anzahlSorten,
+    finishing: input.request.finishing,
     params: input.params,
     settings: input.settings,
   } satisfies CustomSizePriceInput);
@@ -90,6 +93,7 @@ export function buildPublicCustomSizePriceResponse(input: {
         materialCostNet: result.breakdown.materialCost,
         shippingCostNet: result.breakdown.shippingCost,
         multiplier: result.breakdown.multiplier,
+        mattSurchargeNet: result.breakdown.mattSurcharge,
       },
     } satisfies PublicCustomSizeResponse,
   } as const;

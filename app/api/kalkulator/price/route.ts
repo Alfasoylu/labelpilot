@@ -19,6 +19,7 @@ const requestSchema = z.object({
   quantity: z.coerce.number().int().positive(),
   colorCount: z.coerce.number().int().min(1).max(12),
   anzahlSorten: z.coerce.number().int().min(1).max(20).default(1),
+  finishing: z.enum(["MATT", "GLAENZEND"]).optional().default("GLAENZEND"),
 });
 
 export async function POST(request: Request) {
@@ -49,7 +50,10 @@ export async function POST(request: Request) {
   try {
     result = buildPublicCustomSizePriceResponse({
       featureEnabled: true,
-      request: parsed.data,
+      request: {
+        ...parsed.data,
+        finishing: parsed.data.finishing,
+      },
       params,
       settings,
     });

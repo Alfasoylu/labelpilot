@@ -25,6 +25,7 @@ const settings = {
   inkCostPerM2PerColorNet: 0.33,
   digitalCostPerM2Net: 8,
   digitalSellingPricePerM2Net: 12,
+  mattSurchargeNet: 0,
   markupTier1Multiplier: 1.8,
   markupTier1MaxQty: 5000,
   markupTier2Multiplier: 1.6,

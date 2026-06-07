@@ -597,6 +597,7 @@ model PricingSettings {
   inkCostPerM2PerColorNet       Decimal  @default(0.33) @db.Decimal(10, 4)
   digitalCostPerM2Net           Decimal  @default(8)    @db.Decimal(10, 4)
   digitalSellingPricePerM2Net   Decimal  @default(12)   @db.Decimal(10, 4)
+  mattSurchargeNet              Decimal  @default(0)    @db.Decimal(10, 2)
   markupTier1Multiplier         Decimal  @default(1.80) @db.Decimal(5, 2)
   markupTier1MaxQty             Int      @default(5000)
   markupTier2Multiplier         Decimal  @default(1.60) @db.Decimal(5, 2)

@@ -32,6 +32,7 @@ type PricingSettingsRecord = {
   inkCostPerM2PerColorNet?: DecimalLike | number | null;
   digitalCostPerM2Net?: DecimalLike | number | null;
   digitalSellingPricePerM2Net?: DecimalLike | number | null;
+  mattSurchargeNet?: DecimalLike | number | null;
   markupTier1Multiplier?: DecimalLike | number | null;
   markupTier1MaxQty?: number | null;
   markupTier2Multiplier?: DecimalLike | number | null;
@@ -113,6 +114,7 @@ const DEFAULT_SETTINGS: PricingSettingsInput & AddonSettingsInput = {
   inkCostPerM2PerColorNet: 0.33,
   digitalCostPerM2Net: 8,
   digitalSellingPricePerM2Net: 12,
+  mattSurchargeNet: 0,
   markupTier1Multiplier: 1.8,
   markupTier1MaxQty: 5000,
   markupTier2Multiplier: 1.6,
@@ -190,6 +192,7 @@ export function mapPricingSettingsRecord(record: PricingSettingsRecord | null | 
     inkCostPerM2PerColorNet: decimalToNumber(record.inkCostPerM2PerColorNet) ?? 0.33,
     digitalCostPerM2Net: decimalToNumber(record.digitalCostPerM2Net) ?? 8,
     digitalSellingPricePerM2Net: decimalToNumber(record.digitalSellingPricePerM2Net) ?? 12,
+    mattSurchargeNet: decimalToNumber(record.mattSurchargeNet) ?? 0,
     markupTier1Multiplier: decimalToNumber(record.markupTier1Multiplier) ?? 1.8,
     markupTier1MaxQty: record.markupTier1MaxQty ?? 5000,
     markupTier2Multiplier: decimalToNumber(record.markupTier2Multiplier) ?? 1.6,

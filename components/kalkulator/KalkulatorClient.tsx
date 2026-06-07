@@ -92,7 +92,7 @@ export function KalkulatorClient({
     heightMm: initialHeightMm ?? 200,
     mengeProMotiv: initialQuantity ?? 1000,
     anzahlSorten: 1,
-    finishing: initialMaterialKey === "TRANSPARENT_PP" ? "GLAENZEND" : "MATT",
+    finishing: "GLAENZEND",
     cornerRadius: 2,
     weissunterdruck: initialMaterialKey === "TRANSPARENT_PP",
     klebertyp: "PERMANENT",
@@ -122,6 +122,7 @@ export function KalkulatorClient({
           quantity: totalQuantity,
           colorCount,
           anzahlSorten: cfg.anzahlSorten,
+          finishing: cfg.finishing,
         }),
       });
       const data = await res.json().catch(() => null);
@@ -237,7 +238,7 @@ export function KalkulatorClient({
               )}
             </div>
 
-            {/* Row 2: Material + Form */}
+            {/* Row 2: Material + Oberfläche */}
             <div className="field">
               <label htmlFor="kalk-material">Material</label>
               <select
@@ -257,6 +258,23 @@ export function KalkulatorClient({
                 <option value="TRANSPARENT_PP">Transparent PP-Folie</option>
               </select>
             </div>
+            <div className="field">
+              <label htmlFor="kalk-finishing">Oberfläche</label>
+              <select
+                id="kalk-finishing"
+                value={config.finishing}
+                disabled={config.materialKey === "TRANSPARENT_PP"}
+                onChange={(e) => setConfig((c) => ({ ...c, finishing: e.target.value as Finishing }))}
+              >
+                <option value="GLAENZEND">Glänzend</option>
+                <option value="MATT" disabled={config.materialKey === "TRANSPARENT_PP"}>Matt</option>
+              </select>
+              {config.materialKey === "TRANSPARENT_PP" && (
+                <p className="field-hint">Transparent PP ist immer glänzend.</p>
+              )}
+            </div>
+
+            {/* Row 3: Form + Klebertyp */}
             <div className="field">
               <label htmlFor="kalk-form">Form</label>
               <select
@@ -330,23 +348,7 @@ export function KalkulatorClient({
               />
             </div>
 
-            {/* Oberfläche + Eckenradius (Eckenradius nur bei Rechteckig) */}
-            <div className={config.form === "OVAL" ? "field-full" : "field"}>
-              <label htmlFor="kalk-finishing">Oberfläche</label>
-              <select
-                id="kalk-finishing"
-                value={config.finishing}
-                disabled={config.materialKey === "TRANSPARENT_PP"}
-                onChange={(e) => setConfig((c) => ({ ...c, finishing: e.target.value as Finishing }))}
-              >
-                <option value="MATT" disabled={config.materialKey === "TRANSPARENT_PP"}>Matt</option>
-                <option value="GLAENZEND">Glänzend</option>
-              </select>
-              {config.materialKey === "TRANSPARENT_PP" && (
-                <p className="field-hint">Transparent PP ist immer glänzend.</p>
-              )}
-            </div>
-
+            {/* Eckenradius (nur bei Rechteckig) */}
             {config.form === "RECHTECKIG" && (
               <div className="field">
                 <label htmlFor="kalk-corner">Eckenradius</label>

@@ -30,6 +30,7 @@ export function HeroKalkulator() {
   const [heightMm, setHeightMm] = useState<number | "">(40);
   const [materialSlug, setMaterialSlug] = useState<MaterialSlug>("pp-white");
   const [colorCount, setColorCount] = useState<number>(4);
+  const [finishing, setFinishing] = useState<"MATT" | "GLAENZEND">("GLAENZEND");
   const [widthError, setWidthError] = useState("");
   const [priceState, setPriceState] = useState<PriceState>({ status: "loading" });
 
@@ -59,6 +60,7 @@ export function HeroKalkulator() {
           heightMm,
           quantity,
           colorCount,
+          finishing: materialSlug === "pp-transparent" ? "GLAENZEND" : finishing,
         }),
       });
       const data = await res.json().catch(() => null);
@@ -71,7 +73,7 @@ export function HeroKalkulator() {
     } catch {
       setPriceState({ status: "error" });
     }
-  }, [isValid, materialSlug, widthMm, heightMm, quantity, colorCount]);
+  }, [isValid, materialSlug, widthMm, heightMm, quantity, colorCount, finishing]);
 
   useEffect(() => {
     const t = setTimeout(() => { void fetchPrice(); }, 400);
@@ -96,6 +98,7 @@ export function HeroKalkulator() {
     p.set("material", materialSlug);
     p.set("print", "cmyk");
     p.set("colors", String(colorCount));
+    p.set("finishing", materialSlug === "pp-transparent" ? "GLAENZEND" : finishing);
     if (extra) {
       for (const [k, v] of Object.entries(extra)) p.set(k, v);
     }
@@ -189,16 +192,32 @@ export function HeroKalkulator() {
                 />
               </div>
 
-              {/* Row 2: Material + Farbigkeit */}
-              <div className="hero-kalk__field hero-kalk__field--full">
+              {/* Row 2: Material + Oberfläche */}
+              <div className="hero-kalk__field">
                 <label htmlFor="hk-mat">Material</label>
                 <select
                   id="hk-mat"
                   value={materialSlug}
-                  onChange={(e) => setMaterialSlug(e.target.value as MaterialSlug)}
+                  onChange={(e) => {
+                    const mat = e.target.value as MaterialSlug;
+                    setMaterialSlug(mat);
+                    if (mat === "pp-transparent") setFinishing("GLAENZEND");
+                  }}
                 >
                   <option value="pp-white">PP-Folie weiß (opak)</option>
                   <option value="pp-transparent">PP-Folie transparent</option>
+                </select>
+              </div>
+              <div className="hero-kalk__field">
+                <label htmlFor="hk-finishing">Oberfläche</label>
+                <select
+                  id="hk-finishing"
+                  value={materialSlug === "pp-transparent" ? "GLAENZEND" : finishing}
+                  disabled={materialSlug === "pp-transparent"}
+                  onChange={(e) => setFinishing(e.target.value as "MATT" | "GLAENZEND")}
+                >
+                  <option value="GLAENZEND">Glänzend</option>
+                  <option value="MATT">Matt</option>
                 </select>
               </div>
               <div className="hero-kalk__field hero-kalk__field--full">

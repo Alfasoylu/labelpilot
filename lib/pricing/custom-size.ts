@@ -20,6 +20,8 @@ export type PricingSettingsInput = {
   // Digital: all-in cost and selling price per m² (include material + printing)
   digitalCostPerM2Net: number;
   digitalSellingPricePerM2Net: number;
+  // Matt finish: flat net surcharge added after base price calculation (0 = disabled)
+  mattSurchargeNet: number;
   // Quantity-based markup multipliers
   markupTier1Multiplier: number;
   markupTier1MaxQty: number;
@@ -44,6 +46,7 @@ export type CustomSizePriceInput = {
   quantity: number;
   colorCount: number;
   anzahlSorten: number;
+  finishing?: "MATT" | "GLAENZEND";
   params: PricingMaterialParams;
   settings: PricingSettingsInput;
 };
@@ -65,6 +68,7 @@ export type CustomSizePriceResult = {
     shippingCost: number;
     productionCost: number;
     multiplier: number;
+    mattSurcharge: number;
   };
 };
 
@@ -193,6 +197,7 @@ export function computeCustomSizePrice(
         shippingCost: 0,
         productionCost: 0,
         multiplier: 0,
+        mattSurcharge: 0,
       },
     };
   }
@@ -225,8 +230,9 @@ export function computeCustomSizePrice(
     unroundedNetPrice = Math.max(unroundedNetPrice, atBoundary.sellingPrice);
   }
 
+  const mattSurcharge = input.finishing === "MATT" ? settings.mattSurchargeNet : 0;
   const flooredNetPrice = Math.max(unroundedNetPrice, params.minOrderValueNet);
-  const netPrice = roundMoney(roundUpToStep(flooredNetPrice, settings.roundingStepNet));
+  const netPrice = roundMoney(roundUpToStep(flooredNetPrice + mattSurcharge, settings.roundingStepNet));
   const grossPrice = roundMoney(netPrice * (1 + settings.vatPct / 100));
 
   // For display: digital has no separate multiplier (it is embedded in sellingPricePerM2).
@@ -249,6 +255,7 @@ export function computeCustomSizePrice(
       shippingCost: roundMoney(best.shippingCost),
       productionCost: roundMoney(best.cost),
       multiplier,
+      mattSurcharge: roundMoney(mattSurcharge),
     },
   };
 }
