@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+
 import { NextResponse } from "next/server";
 import type { Prisma } from "@prisma/client";
 
@@ -11,6 +13,18 @@ import { canCustomerUploadArtwork } from "@/lib/orders/status";
 import { uploadArtwork } from "@/lib/storage/artwork";
 
 export const runtime = "nodejs";
+
+// Disable the default body parser so Next.js does not buffer the full request
+// before we can check the Content-Length header.
+export const config = {
+  api: {
+    bodyParser: false,
+    responseLimit: false,
+  },
+};
+
+// Maximum allowed upload size in bytes (150 MB — matches the largest artwork rule).
+const MAX_UPLOAD_BYTES = 150 * 1024 * 1024;
 
 function formatDateLabel(value: Date) {
   return new Intl.DateTimeFormat("de-DE", {
@@ -34,6 +48,16 @@ export async function POST(
   }
 
   const { orderId } = await context.params;
+
+  // Early size guard — reject oversized requests before buffering the body.
+  const contentLength = request.headers.get("content-length");
+  if (contentLength !== null && parseInt(contentLength, 10) > MAX_UPLOAD_BYTES) {
+    return NextResponse.json(
+      { error: "Die Datei ist zu gross. Bitte laden Sie eine kleinere Datei hoch oder kontaktieren Sie uns." },
+      { status: 413 },
+    );
+  }
+
   const formData = await request.formData();
   const token = formData.get("token") ?? new URL(request.url).searchParams.get("token");
   const file = formData.get("file");
@@ -57,12 +81,17 @@ export async function POST(
       status: true,
       customerEmail: true,
       uploadToken: true,
+      uploadTokenExpiresAt: true,
       artworkStatus: true,
     },
   });
 
   if (!order || order.uploadToken !== token) {
     return NextResponse.json({ error: "Sie haben keinen Zugriff auf diese Bestellung." }, { status: 403 });
+  }
+
+  if (order.uploadTokenExpiresAt && Date.now() > order.uploadTokenExpiresAt.getTime()) {
+    return NextResponse.json({ error: "Ihr Upload-Link ist abgelaufen. Bitte fordern Sie einen neuen Link an." }, { status: 403 });
   }
 
   if (!canCustomerUploadArtwork(order.status)) {
@@ -83,6 +112,8 @@ export async function POST(
     // PENDING_PAYMENT / PAYMENT_FAILED / CANCELLED are already rejected with 409
     // above, so any reachable upload moves the order into technical file review.
     const nextOrderStatus = "FILE_REVIEW" as const;
+    const newUploadToken = randomUUID();
+    const newUploadTokenExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
     const createdFile = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       await tx.proofFile.updateMany({
         where: {
@@ -117,6 +148,8 @@ export async function POST(
         data: {
           artworkStatus: "ARTWORK_UPLOADED",
           status: nextOrderStatus,
+          uploadToken: newUploadToken,
+          uploadTokenExpiresAt: newUploadTokenExpiresAt,
         },
       });
 
@@ -159,7 +192,7 @@ export async function POST(
         fileName: createdFile.fileName,
         sizeBytes: createdFile.sizeBytes,
         statusLabel: getArtworkFileStatusLabel(createdFile.status),
-        downloadHref: `/api/orders/${order.id}/artwork/${createdFile.id}?token=${encodeURIComponent(token)}`,
+        downloadHref: `/api/orders/${order.id}/artwork/${createdFile.id}?token=${encodeURIComponent(newUploadToken)}`,
         createdAtLabel: formatDateLabel(createdFile.createdAt),
       },
     });

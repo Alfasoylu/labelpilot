@@ -1167,4 +1167,113 @@ assert.match(
   "BUG-007: Reorder route must mark the order PAYMENT_FAILED when session.url is null so the order does not remain stuck at PENDING_PAYMENT.",
 );
 
+// ── Artwork Upload Flow regression guards ─────────────────────────────────────
+
+import {
+  sanitizeFileName,
+  validateArtworkFile,
+} from "../lib/file-validation/artwork.ts";
+
+// ART-002: MIME type bypass — empty/missing type must be rejected.
+const missingMimeResult = validateArtworkFile(
+  new File([new Uint8Array(10)], "test.pdf", { type: "" }),
+);
+assert.equal(
+  missingMimeResult.ok,
+  false,
+  "ART-002: validateArtworkFile must reject a file with an empty MIME type (bypass attempt).",
+);
+
+const wrongMimeResult = validateArtworkFile(
+  new File([new Uint8Array(10)], "test.pdf", { type: "application/octet-stream" }),
+);
+assert.equal(
+  wrongMimeResult.ok,
+  false,
+  "ART-002: validateArtworkFile must reject a PDF filename with application/octet-stream MIME type.",
+);
+
+const validPdfResult = validateArtworkFile(
+  new File([new Uint8Array(10)], "artwork.pdf", { type: "application/pdf" }),
+);
+assert.equal(
+  validPdfResult.ok,
+  true,
+  "ART-002: validateArtworkFile must accept a valid PDF file with the correct MIME type.",
+);
+
+// ART-005: TIFF files must be accepted.
+const validTiffResult = validateArtworkFile(
+  new File([new Uint8Array(10)], "artwork.tiff", { type: "image/tiff" }),
+);
+assert.equal(
+  validTiffResult.ok,
+  true,
+  "ART-005: validateArtworkFile must accept TIFF files (.tiff) with image/tiff MIME type.",
+);
+
+const validTifResult = validateArtworkFile(
+  new File([new Uint8Array(10)], "artwork.tif", { type: "image/tiff" }),
+);
+assert.equal(
+  validTifResult.ok,
+  true,
+  "ART-005: validateArtworkFile must accept TIFF files (.tif) with image/tiff MIME type.",
+);
+
+// ART-006: sanitizeFileName must strip leading dots.
+assert.equal(
+  sanitizeFileName(".hidden"),
+  "hidden",
+  "ART-006: sanitizeFileName must strip leading dots to prevent hidden-file paths.",
+);
+assert.equal(
+  sanitizeFileName("...multiple-dots"),
+  "multiple-dots",
+  "ART-006: sanitizeFileName must strip multiple leading dots.",
+);
+assert.equal(
+  sanitizeFileName("normal-file.pdf"),
+  "normal-file.pdf",
+  "ART-006: sanitizeFileName must leave regular file names unchanged.",
+);
+
+// ART-001: Prisma schema must include the uploadTokenExpiresAt column.
+const prismaSchemaForArtwork = readFileSync(
+  new URL("../prisma/schema.prisma", import.meta.url),
+  "utf8",
+);
+assert.match(
+  prismaSchemaForArtwork,
+  /uploadTokenExpiresAt\s+DateTime\?/,
+  "ART-001: Order model must have an uploadTokenExpiresAt column so upload tokens can expire.",
+);
+
+// ART-003: Upload route must export a config that disables the default body parser.
+const artworkUploadRouteSource = readFileSync(
+  new URL("../app/api/orders/[orderId]/artwork/route.ts", import.meta.url),
+  "utf8",
+);
+assert.match(
+  artworkUploadRouteSource,
+  /export const config[\s\S]*bodyParser: false/,
+  "ART-003: Artwork upload route must export config with bodyParser: false to allow streaming size checks.",
+);
+assert.match(
+  artworkUploadRouteSource,
+  /content-length[\s\S]*MAX_UPLOAD_BYTES|MAX_UPLOAD_BYTES[\s\S]*content-length/i,
+  "ART-003: Artwork upload route must perform an early Content-Length check against MAX_UPLOAD_BYTES.",
+);
+
+// ART-007: Customer artwork download route must set Cache-Control: no-store on the redirect.
+const artworkDownloadRouteSource = readFileSync(
+  new URL("../app/api/orders/[orderId]/artwork/[fileId]/route.ts", import.meta.url),
+  "utf8",
+);
+assert.match(
+  artworkDownloadRouteSource,
+  /Cache-Control.*no-store/,
+  "ART-007: Artwork download redirect must set Cache-Control: no-store to prevent caching of signed URLs.",
+);
+
 console.log("Autonomous safety regression tests passed.");

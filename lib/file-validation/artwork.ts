@@ -8,7 +8,6 @@ const artworkRules = {
     mimeTypes: [
       "application/postscript",
       "application/illustrator",
-      "application/octet-stream",
       "application/pdf",
     ],
   },
@@ -17,7 +16,6 @@ const artworkRules = {
     mimeTypes: [
       "application/postscript",
       "application/eps",
-      "application/octet-stream",
     ],
   },
   svg: {
@@ -36,12 +34,19 @@ const artworkRules = {
     maxBytes: 50 * 1024 * 1024,
     mimeTypes: ["image/jpeg"],
   },
+  tiff: {
+    maxBytes: 100 * 1024 * 1024,
+    mimeTypes: ["image/tiff"],
+  },
+  tif: {
+    maxBytes: 100 * 1024 * 1024,
+    mimeTypes: ["image/tiff"],
+  },
   zip: {
     maxBytes: 150 * 1024 * 1024,
     mimeTypes: [
       "application/zip",
       "application/x-zip-compressed",
-      "application/octet-stream",
       "multipart/x-zip",
     ],
   },
@@ -82,7 +87,8 @@ export function sanitizeFileName(fileName: string) {
   const sanitized = normalized
     .replace(/[^\w.\-]+/g, "-")
     .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
+    .replace(/^-|-$/g, "")
+    .replace(/^\.+/, "");
 
   return sanitized.length > 0 ? sanitized.toLowerCase() : "druckdatei";
 }
@@ -116,7 +122,7 @@ export function validateArtworkFile(file: File) {
     };
   }
 
-  if (file.type && !mimeTypes.includes(file.type)) {
+  if (!file.type || !mimeTypes.includes(file.type)) {
     return {
       ok: false as const,
       message: "Dieses Dateiformat wird nicht unterstützt.",
@@ -151,7 +157,7 @@ export function validateProofFile(file: File) {
     };
   }
 
-  if (file.type && !mimeTypes.includes(file.type)) {
+  if (!file.type || !mimeTypes.includes(file.type)) {
     return {
       ok: false as const,
       message: "Dieses Dateiformat wird nicht unterstützt.",

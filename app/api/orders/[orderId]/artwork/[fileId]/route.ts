@@ -27,11 +27,16 @@ export async function GET(
     select: {
       id: true,
       uploadToken: true,
+      uploadTokenExpiresAt: true,
     },
   });
 
   if (!order || order.uploadToken !== token) {
     return NextResponse.json({ error: "Sie haben keinen Zugriff auf diese Datei." }, { status: 403 });
+  }
+
+  if (order.uploadTokenExpiresAt && Date.now() > order.uploadTokenExpiresAt.getTime()) {
+    return NextResponse.json({ error: "Ihr Zugangs-Link ist abgelaufen. Bitte fordern Sie einen neuen Link an." }, { status: 403 });
   }
 
   const artworkFile = await prisma.artworkFile.findFirst({
@@ -50,7 +55,12 @@ export async function GET(
 
   try {
     const signedUrl = await getSignedUrl(artworkFile.storagePath, 60);
-    return NextResponse.redirect(signedUrl, { status: 302 });
+    return NextResponse.redirect(signedUrl, {
+      status: 302,
+      headers: {
+        "Cache-Control": "no-store, private",
+      },
+    });
   } catch (error) {
     console.error("Signed URL fehlgeschlagen:", error);
     return NextResponse.json({ error: "Datei ist derzeit nicht verfügbar." }, { status: 500 });
