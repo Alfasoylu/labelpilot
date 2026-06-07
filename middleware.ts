@@ -1,5 +1,3 @@
-import { timingSafeEqual } from "node:crypto";
-
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
@@ -27,7 +25,7 @@ function parseBasicAuth(headerValue: string | null) {
 
   try {
     const encoded = headerValue.slice("Basic ".length).trim();
-    const decoded = Buffer.from(encoded, "base64").toString("utf8");
+    const decoded = atob(encoded);
     const separatorIndex = decoded.indexOf(":");
 
     if (separatorIndex === -1) {
@@ -43,7 +41,34 @@ function parseBasicAuth(headerValue: string | null) {
   }
 }
 
-export function middleware(request: NextRequest) {
+// Constant-time string comparison using the Web Crypto API (Edge Runtime safe).
+// We HMAC-sign both values with a per-request random key and compare the MACs,
+// which are fixed-length and ensure constant-time equality regardless of input length.
+async function safeEqual(a: string, b: string): Promise<boolean> {
+  const enc = new TextEncoder();
+  const keyMaterial = crypto.getRandomValues(new Uint8Array(32));
+  const key = await crypto.subtle.importKey(
+    "raw",
+    keyMaterial,
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const [macA, macB] = await Promise.all([
+    crypto.subtle.sign("HMAC", key, enc.encode(a)),
+    crypto.subtle.sign("HMAC", key, enc.encode(b)),
+  ]);
+  // Both MACs are 32 bytes; compare byte-by-byte with a bitwise OR accumulator.
+  const viewA = new Uint8Array(macA);
+  const viewB = new Uint8Array(macB);
+  let diff = 0;
+  for (let i = 0; i < viewA.length; i++) {
+    diff |= viewA[i] ^ viewB[i];
+  }
+  return diff === 0;
+}
+
+export async function middleware(request: NextRequest) {
   if (!isAdminPath(request.nextUrl.pathname)) {
     return NextResponse.next();
   }
@@ -57,25 +82,16 @@ export function middleware(request: NextRequest) {
 
   const provided = parseBasicAuth(request.headers.get("authorization"));
 
-  // Use constant-time comparison to prevent timing side-channel attacks.
-  // Pad both sides to the same byte length before comparing so that length
-  // differences do not leak information via short-circuit behaviour.
-  function safeEqual(a: string, b: string): boolean {
-    const aBuf = Buffer.from(a, "utf8");
-    const bBuf = Buffer.from(b, "utf8");
-    const maxLen = Math.max(aBuf.length, bBuf.length);
-    const aPadded = Buffer.concat([aBuf, Buffer.alloc(maxLen - aBuf.length)]);
-    const bPadded = Buffer.concat([bBuf, Buffer.alloc(maxLen - bBuf.length)]);
-    // timingSafeEqual requires same-length buffers and returns whether they match.
-    // We still gate on length equality to avoid accepting a short prefix as valid.
-    return aBuf.length === bBuf.length && timingSafeEqual(aPadded, bPadded);
+  if (!provided) {
+    return unauthorizedResponse();
   }
 
-  if (
-    !provided ||
-    !safeEqual(provided.user, expectedUser) ||
-    !safeEqual(provided.password, expectedPassword)
-  ) {
+  const [userOk, passOk] = await Promise.all([
+    safeEqual(provided.user, expectedUser),
+    safeEqual(provided.password, expectedPassword),
+  ]);
+
+  if (!userOk || !passOk) {
     return unauthorizedResponse();
   }
 
