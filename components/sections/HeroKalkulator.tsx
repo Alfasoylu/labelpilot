@@ -71,7 +71,7 @@ export function HeroKalkulator() {
     } catch {
       setPriceState({ status: "error" });
     }
-  }, [isValid, materialSlug, widthMm, heightMm, quantity]);
+  }, [isValid, materialSlug, widthMm, heightMm, quantity, colorCount]);
 
   useEffect(() => {
     const t = setTimeout(() => { void fetchPrice(); }, 400);
