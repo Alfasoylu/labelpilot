@@ -31,6 +31,7 @@ export function buildCanonicalMetadata(
   return {
     title,
     description,
+    keywords: entry.keywords,
     alternates: isNonIndexable
       ? undefined
       : {
@@ -76,6 +77,7 @@ export function buildOrganizationSchema() {
     name: "Labelpilot.de",
     url: buildAbsoluteUrl("/"),
     logo: buildAbsoluteUrl("/images/logo.png"),
+    sameAs: ["https://www.instagram.com/labelpilot"],
     description:
       "Labelpilot.de ist eine B2B-Plattform für individuell bedruckte PP-Rollenetiketten und Thermoetiketten für Lebensmittel-, Getränke- und Supplement-Marken in Deutschland.",
     areaServed: {

@@ -44,6 +44,15 @@ export default function AdminLayout({
           <Link href="/admin/variable-data" className="secondary-link">
             Variable Data
           </Link>
+          <Link href="/admin/analytics" className="secondary-link">
+            Analytik
+          </Link>
+          <Link href="/admin/production" className="secondary-link">
+            Produktion
+          </Link>
+          <Link href="/admin/reorder" className="secondary-link">
+            Nachbestellungen
+          </Link>
           <Link href="/admin/settings/pricing" className="secondary-link">
             Preisparameter
           </Link>

@@ -1,0 +1,45 @@
+# Labelpilot.de
+
+> Labelpilot ist eine B2B-Etikettenplattform für deutsche Marken in den Bereichen Lebensmittel, Getränke, Supplements, Kaffee und Kosmetik. Das Angebot umfasst PP-Rollenetiketten (opak und transparent) sowie Thermo-Versandetiketten im Standardformat 100×200 mm. Kernleistungen sind Druckdatenprüfung, Proof-Freigabe und ein 30-Sekunden-Nachbestellsystem für freigegebene Designs – ohne Rüstkosten ab der zweiten Bestellung.
+
+## Produkte
+
+- [Opake PP-Etiketten](https://labelpilot.de/de/opake-pp-etiketten): Weißfolie, deckend, für Gläser, Dosen und Behälter – ideal für Lebensmittel, Supplements und Kaffee.
+- [Transparente PP-Etiketten](https://labelpilot.de/de/transparente-pp-etiketten): Klarsichtfolie für den No-Label-Look auf Glas- und Plastikflaschen – beliebt in Kosmetik und Getränken.
+- [PP-Rollenetiketten Übersicht](https://labelpilot.de/de/pp-rollenetiketten): Produktüberblick beider PP-Varianten mit Materialvergleich.
+- [Thermo-Versandetiketten](https://labelpilot.de/de/thermo-versandetiketten): Thermal-Direktdruck-Etiketten für Versand und Logistik, kompatibel mit Zebra und ähnlichen Druckern.
+
+## Branchen
+
+- [Lebensmittel-Etiketten](https://labelpilot.de/de/lebensmittel-etiketten): Anforderungen an Etiketten im Lebensmittelbereich – Haftung, Beständigkeit, Lebensmittelkonformität.
+- [Getränke-Etiketten](https://labelpilot.de/de/getraenke-etiketten): Etiketten für Flaschen und Dosen – nass- und kältefest, transparent oder opak.
+- [Supplement-Etiketten](https://labelpilot.de/de/supplement-etiketten): Etiketten für Nahrungsergänzungsmittel, inkl. Unterstützung für Chargen- und Losnummern.
+- [Kaffee-Etiketten](https://labelpilot.de/de/kaffee-etiketten): Lösungen für Kaffeeverpackungen – Beutel, Dosen, Standbodenbeutel.
+- [Honig- & Marmeladen-Etiketten](https://labelpilot.de/de/honig-marmelade-etiketten): Etiketten für Gläser mit hoher Anforderung an Haftung und Beständigkeit.
+
+## Tools & Services
+
+- [Preiskalkulator](https://labelpilot.de/de/kalkulator): Online-Kalkulator für sofortige Preisauskünfte nach Format, Material, Auflage und Veredelung.
+- [Druckdaten-Prüfung](https://labelpilot.de/de/druckdaten): Kostenloser Druckdaten-Check mit einem Korrektur-Proof inklusive – Anforderungen und Uploadprozess.
+- [Nachbestellen](https://labelpilot.de/de/nachbestellen): Freigegebene Designs werden gespeichert; Nachbestellungen sind in unter 30 Sekunden abgeschlossen.
+- [Musterbox](https://labelpilot.de/de/musterbox): Kostenloses Materialmuster-Set mit Druckbeispielen aller Etikettentypen.
+- [Angebot anfordern](https://labelpilot.de/de/angebot-anfordern): Angebotsanfrage für Sonderformate, hohe Auflagen oder individuelle Anforderungen.
+
+## Wissen
+
+- [Ratgeber](https://labelpilot.de/de/ratgeber): Fachbeiträge zu Druckdaten, Materialwahl, Veredelung, Kennzeichnungspflichten und Etikettenproduktion.
+- [Glossar](https://labelpilot.de/de/glossar): Fachbegriffe aus der Etikettenherstellung – von Auflage bis Wickelrichtung, von CMYK bis Stanzen.
+- [Wunschformat](https://labelpilot.de/de/wunschformat): Informationen zu Sonderformaten außerhalb des Standard-100×200-mm-Formats.
+
+## Social Media
+
+- [Instagram @labelpilot](https://www.instagram.com/labelpilot): Offizieller Instagram-Kanal von Labelpilot.de.
+
+## Unternehmen & Rechtliches
+
+- [Kontakt](https://labelpilot.de/de/kontakt): Kontaktformular und Erreichbarkeit des Labelpilot-Teams.
+- [Impressum](https://labelpilot.de/de/impressum): Gesetzlich vorgeschriebene Anbieterangaben.
+- [Datenschutz](https://labelpilot.de/de/datenschutz): Datenschutzerklärung gemäß DSGVO.
+- [AGB](https://labelpilot.de/de/agb): Allgemeine Geschäftsbedingungen für Bestellungen über labelpilot.de.
+- [Versand & Lieferung](https://labelpilot.de/de/versand): Lieferzeiten, Versandkosten und Lieferregionen.
+- [Widerruf](https://labelpilot.de/de/widerruf): Widerrufsrecht und -formular für B2C-Bestellungen.

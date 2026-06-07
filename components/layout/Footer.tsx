@@ -22,6 +22,15 @@ export function Footer({ groups }: FooterProps) {
             gespeicherte Druckdaten, wiederholbare Spezifikationen und spätere
             Nachbestellung.
           </p>
+          <a
+            href="https://www.instagram.com/labelpilot"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-social-link"
+            aria-label="Labelpilot auf Instagram"
+          >
+            @labelpilot
+          </a>
         </div>
         <div className="footer-grid">
           {groups.map((group) => (

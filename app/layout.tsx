@@ -31,6 +31,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(buildAbsoluteUrl("/")),
   title: "Labelpilot.de",
   description: "B2B-Etikettenplattform für deutsche Marken.",
+  keywords: [
+    "PP-Rollenetiketten",
+    "PP-Etiketten",
+    "Rollenetiketten B2B",
+    "Etiketten drucken",
+    "Labelpilot",
+    "Etiketten Deutschland",
+  ],
   icons: {
     icon: "/images/favicon.png",
     shortcut: "/images/favicon.png",
@@ -41,8 +49,8 @@ export const metadata: Metadata = {
     locale: "de_DE",
     type: "website",
     url: buildAbsoluteUrl("/de"),
-    title: "Labelpilot.de",
-    description: "B2B-Etikettenplattform für deutsche Marken.",
+    title: "Labelpilot – PP-Etiketten B2B",
+    description: "PP-Rollenetiketten für Lebensmittel, Getränke & Supplemente.",
     images: [
       {
         url: buildAbsoluteUrl("/images/og-default-labelpilot-1200x630.png"),
@@ -54,6 +62,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    title: "Labelpilot – PP-Etiketten B2B",
+    description: "PP-Rollenetiketten für Lebensmittel, Getränke & Supplemente.",
     images: [
       buildAbsoluteUrl("/images/og-default-labelpilot-1200x630.png"),
     ],

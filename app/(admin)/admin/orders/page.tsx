@@ -1,9 +1,6 @@
-import Link from "next/link";
-
-import { Badge } from "@/components/ui/badge";
+import { AdminOrdersListClient } from "@/components/admin/AdminOrdersListClient";
 import {
   buildAdminOrdersListWhere,
-  formatAdminDate,
   hasOrderAddons,
 } from "@/lib/admin/orders";
 import { getPrismaClient } from "@/lib/db/prisma";
@@ -12,32 +9,7 @@ import {
   getMaterialLabel,
   getOrderStatusLabel,
 } from "@/lib/orders/artwork";
-import type { OrderStatusValue } from "@/lib/orders/status";
 
-type BadgeVariant = "default" | "secondary" | "destructive" | "outline" | "success" | "warning";
-
-function orderStatusVariant(status: string): BadgeVariant {
-  switch (status as OrderStatusValue) {
-    case "CORRECTION_REQUIRED":
-    case "PAYMENT_FAILED":
-    case "CANCELLED":
-    case "REFUND_REQUESTED":
-      return "destructive";
-    case "APPROVED_FOR_PRODUCTION":
-    case "DELIVERED":
-    case "COMPLETED":
-      return "success";
-    case "SHIPPED":
-    case "IN_PRODUCTION":
-      return "secondary";
-    case "WAITING_CUSTOMER_APPROVAL":
-    case "REPRINT_REQUIRED":
-    case "ON_HOLD":
-      return "warning";
-    default:
-      return "outline";
-  }
-}
 
 export const dynamic = "force-dynamic";
 
@@ -133,58 +105,27 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
       <article className="surface-card">
         <div className="cta-row">
           <h2>Offene Bestellungen</h2>
-          <a
-            href="/api/admin/orders/export"
-            className="secondary-link"
-            download
-          >
+          <a href="/api/admin/orders/export" className="secondary-link" download>
             Produktionsliste exportieren (CSV)
           </a>
         </div>
-        {orders.length === 0 ? (
-          <p className="price-note">Keine Bestellungen gefunden.</p>
-        ) : (
-          <div className="section-stack">
-            {orders.map((order: (typeof orders)[number]) => (
-              <div key={order.id} className="section-card">
-                <div className="two-column">
-                  <div>
-                    <div className="admin-order-heading">
-                      <h3>{order.orderNumber}</h3>
-                      <Badge variant={orderStatusVariant(order.status)}>
-                        {getOrderStatusLabel(order.status)}
-                      </Badge>
-                      {order.widthMm ? (
-                        <Badge variant="outline">Wunschformat</Badge>
-                      ) : null}
-                      {hasOrderAddons(order) ? (
-                        <Badge variant="secondary">Zusatzleistungen</Badge>
-                      ) : null}
-                    </div>
-                    <p className="price-note">
-                      {getArtworkStatusLabel(order.artworkStatus)}
-                    </p>
-                    <p className="price-note">
-                      {order.customerEmail} · {order.productSlug} · {getMaterialLabel(order.material)}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="price-note">
-                      Menge: {order.quantity.toLocaleString("de-DE")} Stück
-                    </p>
-                    <p className="price-note">
-                      Zahlung: {order.payments[0]?.status ?? "PENDING"}
-                    </p>
-                    <p className="price-note">{formatAdminDate(order.createdAt)}</p>
-                  </div>
-                </div>
-                <Link href={`/admin/orders/${order.id}`} className="secondary-link">
-                  Bestellung öffnen
-                </Link>
-              </div>
-            ))}
-          </div>
-        )}
+        <AdminOrdersListClient
+          orders={orders.map((order) => ({
+            id: order.id,
+            orderNumber: order.orderNumber,
+            status: order.status,
+            statusLabel: getOrderStatusLabel(order.status),
+            artworkStatusLabel: getArtworkStatusLabel(order.artworkStatus),
+            customerEmail: order.customerEmail,
+            productSlug: order.productSlug,
+            materialLabel: getMaterialLabel(order.material),
+            quantity: order.quantity,
+            createdAt: order.createdAt.toISOString(),
+            widthMm: order.widthMm,
+            paymentStatus: order.payments[0]?.status ?? null,
+            hasAddons: hasOrderAddons(order),
+          }))}
+        />
       </article>
     </section>
   );

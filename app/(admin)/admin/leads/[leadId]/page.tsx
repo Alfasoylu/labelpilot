@@ -128,6 +128,78 @@ export default async function AdminLeadDetailPage({
         </form>
       </article>
 
+      {!lead.convertedOrderId ? (
+        <article className="surface-card">
+          <h2>In Auftrag umwandeln</h2>
+          <p className="price-note">
+            Erstellt einen neuen Auftrag aus diesem Lead und setzt den Lead-Status auf
+            &bdquo;Gewonnen&ldquo;.
+          </p>
+          <form
+            action={`/api/admin/leads/${lead.id}/convert`}
+            method="post"
+            className="quote-form"
+          >
+            <input type="hidden" name="redirectTo" value={`/admin/leads/${lead.id}`} />
+            <div className="form-grid">
+              <div>
+                <label htmlFor="conv-quantity">Menge (Stück)</label>
+                <input
+                  id="conv-quantity"
+                  name="quantity"
+                  type="number"
+                  min="1"
+                  required
+                  defaultValue={lead.quantity ? Number(lead.quantity) || "" : ""}
+                />
+              </div>
+              <div>
+                <label htmlFor="conv-amount">Betrag (in Cent)</label>
+                <input
+                  id="conv-amount"
+                  name="amountCents"
+                  type="number"
+                  min="1"
+                  required
+                  placeholder="z. B. 4900 für 49,00 €"
+                />
+              </div>
+              <div className="field-full">
+                <label htmlFor="conv-notes">Interne Notiz (optional)</label>
+                <textarea
+                  id="conv-notes"
+                  name="notes"
+                  rows={3}
+                  placeholder="Wird als Kundennotiz am Auftrag gespeichert"
+                />
+              </div>
+              <div>
+                <label htmlFor="conv-skippayment">Zahlung</label>
+                <select id="conv-skippayment" name="skipPayment" defaultValue="no">
+                  <option value="no">Zahlung ausstehend (PENDING_PAYMENT)</option>
+                  <option value="yes">Zahlung überspringen (direkt PAID)</option>
+                </select>
+              </div>
+            </div>
+            <div className="inline-actions">
+              <button type="submit" className="cta-button">
+                Auftrag erstellen
+              </button>
+            </div>
+          </form>
+        </article>
+      ) : (
+        <article className="surface-card">
+          <h2>In Auftrag umwandeln</h2>
+          <p className="form-status success">
+            Lead wurde bereits konvertiert.{" "}
+            <a href={`/admin/orders/${lead.convertedOrderId}`} className="secondary-link">
+              Auftrag öffnen →
+            </a>
+          </p>
+        </article>
+      )}
+
       <article className="surface-card">
         <h2>Details</h2>
         <ul className="simple-list">

@@ -7,6 +7,21 @@ export const metadata: Metadata = {
   title: "Etiketten Kalkulator – Ihr individueller Preis | Labelpilot.de",
   description:
     "Berechnen Sie sofort den Preis für Ihre PP-Rollenetiketten im Wunschformat. Geben Sie Material, Breite, Höhe und Menge ein – und bestellen Sie direkt.",
+  keywords: [
+    "Etiketten Kalkulator",
+    "PP-Etiketten Preis",
+    "Rollenetiketten Preisrechner",
+    "Etiketten Preiskalkulation",
+  ],
+  openGraph: {
+    title: "Etiketten-Kalkulator | Labelpilot",
+    description: "Sofort-Preis für PP-Etiketten – Format, Material, Menge.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Etiketten-Kalkulator | Labelpilot",
+    description: "Sofort-Preis für PP-Etiketten – Format, Material, Menge.",
+  },
 };
 
 export default async function KalkulatorPage({
