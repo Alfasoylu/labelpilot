@@ -88,8 +88,6 @@ export function HeroKalkulator() {
     }
   }
 
-  const plateCostNet = colorCount * 50;
-
   function buildParams(extra?: Record<string, string>) {
     const p = new URLSearchParams();
     if (quantity) p.set("quantity", String(quantity));
@@ -226,14 +224,11 @@ export function HeroKalkulator() {
               {priceState.status === "ok" && (
                 <div className="hero-kalk__result-price">
                   <span className="hero-kalk__result-net">
-                    {formatEur(priceState.netPrice + plateCostNet)}
+                    {formatEur(priceState.netPrice)}
                     <span className="hero-kalk__result-label"> Netto</span>
                   </span>
                   <span className="hero-kalk__result-meta">
-                    {formatEur((priceState.netPrice + plateCostNet) * 1.19)} brutto inkl. 19 % MwSt. · inkl. Versand nach Deutschland
-                  </span>
-                  <span className="hero-kalk__result-meta">
-                    inkl. Druckplatten ({colorCount}×50 €): {formatEur(plateCostNet)}
+                    {formatEur(priceState.grossPrice)} brutto inkl. 19 % MwSt. · inkl. Versand nach Deutschland
                   </span>
                   {totalM2 !== null && (
                     <span className="hero-kalk__result-m2">

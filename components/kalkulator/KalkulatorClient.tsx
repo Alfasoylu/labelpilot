@@ -233,7 +233,7 @@ export function KalkulatorClient({
                   {config.anzahlSorten} Motive × {typeof config.mengeProMotiv === "number" ? config.mengeProMotiv.toLocaleString("de-DE") : "–"} Stück = <strong>{totalQuantity > 0 ? totalQuantity.toLocaleString("de-DE") : "–"} Stück gesamt</strong>
                 </p>
               ) : (
-                <p className="field-hint">Verschiedene Motive erhöhen den Plattenaufwand bei Flexodruck.</p>
+                <p className="field-hint">Verschiedene Motive werden als separate Druckjobs produziert.</p>
               )}
             </div>
 
@@ -489,16 +489,10 @@ export function KalkulatorClient({
                       <span>{formatEur(digitalPrintingCostNet)}</span>
                     </li>
                   ) : (
-                    <>
-                      <li>
-                        <span>Flexo-Druckfarben</span>
-                        <span>{formatEur(inkCostNet)}</span>
-                      </li>
-                      <li>
-                        <span>Druckplatten ({colorCount} F. × {config.anzahlSorten} Sorte{config.anzahlSorten > 1 ? "n" : ""})</span>
-                        <span>{formatEur(plateCostNet)}</span>
-                      </li>
-                    </>
+                    <li>
+                      <span>Flexodruck ({colorCount} Farben, {config.anzahlSorten} Sorte{config.anzahlSorten > 1 ? "n" : ""})</span>
+                      <span>{formatEur(inkCostNet + plateCostNet)}</span>
+                    </li>
                   )}
                   {config.form === "OVAL" && ovalSurchargeNet > 0 && (
                     <li>
