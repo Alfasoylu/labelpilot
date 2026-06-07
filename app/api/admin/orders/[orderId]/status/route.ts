@@ -6,6 +6,7 @@ import { getPrismaClient } from "@/lib/db/prisma";
 export const runtime = "nodejs";
 
 const VALID_ADMIN_STATUSES = [
+  "PENDING_PAYMENT",
   "PAID",
   "FILE_REVIEW",
   "CORRECTION_REQUIRED",

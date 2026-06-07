@@ -287,6 +287,47 @@ export default async function AdminOrderDetailPage({
       ) : null}
 
       <article className="surface-card">
+        <h2>Status ändern</h2>
+        <form
+          action={`/api/admin/orders/${order.id}/status`}
+          method="post"
+          className="quote-form"
+        >
+          <input type="hidden" name="redirectTo" value={`/admin/orders/${order.id}`} />
+          <div className="form-grid">
+            <div>
+              <label htmlFor="new-status">Neuer Status</label>
+              <select id="new-status" name="status" defaultValue={order.status}>
+                <option value="PENDING_PAYMENT">Zahlung ausstehend</option>
+                <option value="PAID">Bezahlt</option>
+                <option value="FILE_REVIEW">Dateiprüfung</option>
+                <option value="CORRECTION_REQUIRED">Korrektur erforderlich</option>
+                <option value="ON_HOLD">On Hold</option>
+                <option value="PROOF_REQUIRED">Proof nötig</option>
+                <option value="WAITING_CUSTOMER_APPROVAL">Proof wartet auf Freigabe</option>
+                <option value="APPROVED_FOR_PRODUCTION">Freigegeben für Produktion</option>
+                <option value="IN_PRODUCTION">In Produktion</option>
+                <option value="READY_TO_SHIP">Versandbereit</option>
+                <option value="SHIPPED">Versendet</option>
+                <option value="DELIVERED">Zugestellt</option>
+                <option value="COMPLETED">Abgeschlossen</option>
+                <option value="REPRINT_REQUIRED">Nachdruck nötig</option>
+                <option value="REFUND_REQUESTED">Rückerstattung angefragt</option>
+                <option value="CANCELLED">Storniert</option>
+              </select>
+            </div>
+            <div className="field-full">
+              <label htmlFor="status-note">Interne Notiz (optional)</label>
+              <textarea id="status-note" name="note" rows={3} />
+            </div>
+          </div>
+          <div className="inline-actions">
+            <button type="submit" className="cta-button">Status speichern</button>
+          </div>
+        </form>
+      </article>
+
+      <article className="surface-card">
         <h2>Druckdateien</h2>
         {order.artworkFiles.length === 0 ? (
           <p className="price-note">Keine Dateien für diese Bestellung vorhanden.</p>

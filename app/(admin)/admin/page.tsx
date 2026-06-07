@@ -22,7 +22,10 @@ export default async function AdminDashboardPage() {
     reviewCount,
     proofCount,
     productionReadyCount,
+    inProductionCount,
+    shippedCount,
     addonsOrderCount,
+    newLeadCount,
     totalQuoteCount,
     wunschformatQuoteCount,
   ] = await Promise.all([
@@ -32,25 +35,28 @@ export default async function AdminDashboardPage() {
       },
     }),
     prisma.order.count({
-      where: {
-        status: "WAITING_CUSTOMER_APPROVAL",
-      },
+      where: { status: "WAITING_CUSTOMER_APPROVAL" },
     }),
     prisma.order.count({
-      where: {
-        status: "APPROVED_FOR_PRODUCTION",
-      },
+      where: { status: "APPROVED_FOR_PRODUCTION" },
+    }),
+    prisma.order.count({
+      where: { status: "IN_PRODUCTION" },
+    }),
+    prisma.order.count({
+      where: { status: "SHIPPED" },
     }),
     prisma.order.count({
       where: {
         OR: [...ADMIN_ORDER_ADDONS_OR],
       },
     }),
+    prisma.lead.count({
+      where: { status: "NEW" },
+    }),
     prisma.quoteRequest.count(),
     prisma.quoteRequest.count({
-      where: {
-        source: QUOTE_SOURCE_WUNSCHFORMAT,
-      },
+      where: { source: QUOTE_SOURCE_WUNSCHFORMAT },
     }),
   ]);
 
@@ -84,6 +90,27 @@ export default async function AdminDashboardPage() {
               className="secondary-link"
             >
               Freigaben ansehen
+            </Link>
+          </div>
+          <div className="section-card">
+            <h3>In Produktion</h3>
+            <p className="price-note">{inProductionCount} Bestellungen</p>
+            <Link href="/admin/production" className="secondary-link">
+              Produktionskontrolle
+            </Link>
+          </div>
+          <div className="section-card">
+            <h3>Versendet (offen)</h3>
+            <p className="price-note">{shippedCount} Bestellungen</p>
+            <Link href="/admin/orders?status=SHIPPED" className="secondary-link">
+              Versendete ansehen
+            </Link>
+          </div>
+          <div className="section-card">
+            <h3>Neue Leads</h3>
+            <p className="price-note">{newLeadCount} unbearbeitet</p>
+            <Link href="/admin/leads?status=NEW" className="secondary-link">
+              Leads ansehen
             </Link>
           </div>
           <div className="section-card">

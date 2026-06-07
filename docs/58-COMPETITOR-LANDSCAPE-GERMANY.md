@@ -123,7 +123,8 @@ Main players:
 
 ```txt
 Labelprint24 / All4Labels
-Etikett.de / German label specialists
+etikett.de (Föhren) — online B2B label printer, transparent calculator, 48h express
+herpa print GmbH (Much, NRW) — industrial label manufacturer, 70+ years, ISO/TISAX certified
 Pago / All4Labels-type industrial players
 ```
 
@@ -178,6 +179,8 @@ other custom sticker players
 | Avery Zweckform | Office/self-print label brand | German brand trust, templates, software, strong label recognition | Self-print / office label heritage; not custom B2B PP roll label supply infrastructure | Target brands that have outgrown DIY labels |
 | Sticker Mule | Global sticker/label platform | Strong UX, simple ordering, design/studio tools, global awareness | US-centric/global sticker culture; weak German B2B micro-brand specificity; not supplement variable data infrastructure | Compete with German B2B workflows, not sticker fun |
 | StickerApp | Sticker/custom print platform | Modern sticker brand, online customization | Sticker-first; not deep B2B account/reorder/lot automation | Same: avoid sticker market, own recurring product labels |
+| etikett.de | Online B2B label specialist | Transparent online calculator, 48h express, free EU shipping, broad materials (PP/PE/Tyvek/metallic), sustainability focus, DPG cert | No saved-design/reorder infrastructure visible; not micro-brand lifecycle-first | Beat on stored artwork + reorder speed; match on transparency |
+| herpa print GmbH | Industrial label manufacturer | 70+ years, ISO 9001/14001/TISAX, BMW/Siemens refs, One-Stop-Shop (design→production→integration) | Enterprise/industrial only; no online self-service; minimum orders likely high; no public pricing | Completely different segment — ignore for pricing, watch for enterprise credibility signals |
 
 ---
 
@@ -624,6 +627,131 @@ not obvious variable data/reorder infrastructure
 Study UX simplicity.
 
 Do not copy the sticker-first positioning.
+
+---
+
+## 5.9 etikett.de
+
+### What they are
+
+etikett.de is a German online B2B label printing company headquartered in Föhren (Rheinland-Pfalz). They describe themselves as a "B2B Etikettendruckerei" and offer an online calculator with transparent pricing, similar to Labelpilot's approach.
+
+### Observed strengths
+
+```txt
+online calculator with transparent pricing shown upfront
+48-hour express production option
+free EU shipping
+broad material range: papers (glossy, matte, natural, cotton, grass, hemp, thermal), films (PP, PE, Tyvek), metallic
+special finishes: water-soluble, lye-soluble
+sustainability focus: 100% regional renewable energy
+DPG certification (Pfand/deposit labels)
+design services and print data workshops
+award recognition (2025 Druck & Medien Awards)
+German manufacturing
+```
+
+### Strong points
+
+1. Most directly comparable to Labelpilot's online-first, transparent-pricing model.
+2. Broader material range than Labelpilot's current PP-only offering.
+3. Strong sustainability positioning.
+4. 48h express is a strong B2B hook.
+5. DPG cert opens beverage/deposit label market.
+
+### Weak points / gaps
+
+1. No visible saved-design / stored artwork library.
+2. No obvious one-click reorder or refill reminder system.
+3. Not positioned around micro-brand product lifecycle.
+4. No variable lot/SKT automation visible.
+5. B2B account management is not the front-door promise.
+
+### Labelpilot.de competitive strategy
+
+etikett.de is the closest structural competitor in the online-first space.
+
+Match on:
+
+```txt
+transparent pricing (we already have online calculator)
+free shipping (we embed shipping in price)
+express option (future)
+```
+
+Beat on:
+
+```txt
+saved artwork + version history
+one-click reorder
+refill reminders
+micro-brand supplement/food focus
+```
+
+### Verdict
+
+Highest structural similarity to Labelpilot. The most important online competitor to track. Study their calculator UX and material page structure.
+
+---
+
+## 5.10 herpa print GmbH
+
+### What they are
+
+herpa print GmbH is an industrial label manufacturer in Much, NRW, founded in 1948. They are a three-generation family business serving large industrial customers. They explicitly reference BMW, Siemens, Coca-Cola, Hermes and Hella as clients.
+
+### Observed strengths
+
+```txt
+70+ years of experience and deep industrial credibility
+ISO 9001, ISO 14001, TISAX certified
+one-stop-shop: design, production, integration
+industrial segments: automotive, pharma, chemical, electrical
+RFID labels and solutions
+security labels and hazardous substance labels
+film covers and membrane keypads
+pipeline labeling and warehouse identification
+```
+
+### Strong points
+
+1. Extremely strong industrial B2B credibility.
+2. TISAX certification opens automotive supply chain.
+3. Deep engineering and compliance label expertise.
+4. Full-service: design through integration.
+5. Long track record and enterprise trust.
+
+### Weak points / gaps
+
+1. No public pricing — quote-only B2B model.
+2. No online self-service or configurator.
+3. Targets large enterprises, not micro food/supplement brands.
+4. Not positioned for small repeat B2B orders.
+5. High minimum orders assumed (enterprise-tier).
+
+### Labelpilot.de competitive strategy
+
+herpa print GmbH and Labelpilot.de are in different segments. Do not compete head-on.
+
+They own:
+
+```txt
+industrial / automotive / pharma compliance labels
+large enterprise accounts
+RFID and security label systems
+```
+
+Labelpilot owns:
+
+```txt
+food / beverage / supplement micro-brand roll labels
+online self-service and transparent calculator
+saved artwork and one-click reorder
+```
+
+### Verdict
+
+Not a direct competitor for Labelpilot's target segment. Useful as a credibility reference point: if a customer needs TISAX-cert or industrial RFID, redirect. If a customer needs PP roll labels for their food or supplement brand, that is Labelpilot's territory.
 
 ---
 
