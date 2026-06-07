@@ -1,6 +1,8 @@
-import { headers } from "next/headers";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Admin | Labelpilot.de",
@@ -11,67 +13,48 @@ export const metadata: Metadata = {
 };
 
 /**
- * Defence-in-depth server-side auth check.
+ * Defense-in-depth server-side auth check.
  *
- * The middleware matcher ("/admin/:path*", "/api/admin/:path*") is the primary
- * gate. This layout-level check adds a second layer so that a future routing
- * change that inadvertently bypasses the middleware does not silently expose
- * the admin UI.
+ * The middleware matcher is the primary gate. This layout-level check adds a
+ * second layer so that a future routing change that inadvertently bypasses the
+ * middleware does not silently expose the admin UI.
  *
- * Checks the incoming Authorization header directly; returns a 401 response
- * when it is missing or incorrect. Uses constant-time comparison via Buffer to
- * match the protection level in middleware.ts.
+ * When Supabase env vars are present, verifies the session via @supabase/ssr
+ * and checks the user's email against ADMIN_EMAIL. When Supabase is not
+ * configured (dev / partial env), the middleware's Basic Auth fallback has
+ * already run — this layer skips silently.
  */
-async function assertAdminAuth(): Promise<Response | null> {
-  const { timingSafeEqual } = await import("node:crypto");
+async function assertAdminSession(): Promise<void> {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
+  const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
 
-  const expectedUser = process.env.ADMIN_BASIC_USER?.trim() ?? "";
-  const expectedPassword = process.env.ADMIN_BASIC_PASSWORD?.trim() ?? "";
-
-  // If credentials are not configured at all, block access unconditionally.
-  if (!expectedUser || !expectedPassword) {
-    return new Response("Authentication required.", {
-      status: 401,
-      headers: { "WWW-Authenticate": 'Basic realm="Labelpilot Admin"' },
-    });
+  if (!supabaseUrl || !supabaseAnonKey || !adminEmail) {
+    // Basic Auth mode — middleware already verified the credential.
+    return;
   }
 
-  const headerList = await headers();
-  const authHeader = headerList.get("authorization") ?? "";
+  const cookieStore = await cookies();
+  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
+      },
+      setAll(cookiesToSet) {
+        for (const { name, value, options } of cookiesToSet) {
+          cookieStore.set(name, value, options);
+        }
+      },
+    },
+  });
 
-  let user = "";
-  let password = "";
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (authHeader.startsWith("Basic ")) {
-    try {
-      const decoded = Buffer.from(authHeader.slice(6).trim(), "base64").toString("utf8");
-      const sep = decoded.indexOf(":");
-      if (sep !== -1) {
-        user = decoded.slice(0, sep);
-        password = decoded.slice(sep + 1);
-      }
-    } catch {
-      // malformed header — fall through with empty user/password
-    }
+  if (!user || user.email?.toLowerCase() !== adminEmail) {
+    redirect("/admin-login");
   }
-
-  function safeEqual(a: string, b: string): boolean {
-    const aBuf = Buffer.from(a, "utf8");
-    const bBuf = Buffer.from(b, "utf8");
-    const maxLen = Math.max(aBuf.length, bBuf.length);
-    const aPadded = Buffer.concat([aBuf, Buffer.alloc(maxLen - aBuf.length)]);
-    const bPadded = Buffer.concat([bBuf, Buffer.alloc(maxLen - bBuf.length)]);
-    return aBuf.length === bBuf.length && timingSafeEqual(aPadded, bPadded);
-  }
-
-  if (!safeEqual(user, expectedUser) || !safeEqual(password, expectedPassword)) {
-    return new Response("Authentication required.", {
-      status: 401,
-      headers: { "WWW-Authenticate": 'Basic realm="Labelpilot Admin"' },
-    });
-  }
-
-  return null;
 }
 
 export default async function AdminLayout({
@@ -79,17 +62,13 @@ export default async function AdminLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const authError = await assertAdminAuth();
-  if (authError) return authError;
+  await assertAdminSession();
 
   return (
     <div className="container section-stack">
       <header className="surface-card">
         <p className="eyebrow">Admin</p>
         <h1>Labelpilot Operations</h1>
-        <p className="price-note">
-          Stopgap-Zugang per Basic Auth. Später durch Supabase Auth ersetzen.
-        </p>
         <nav className="cta-row">
           <Link href="/admin" className="secondary-link">
             Übersicht
@@ -124,6 +103,11 @@ export default async function AdminLayout({
           <Link href="/admin/settings/pricing" className="secondary-link">
             Preisparameter
           </Link>
+          <form action="/api/admin/auth/logout" method="post" style={{ display: "inline" }}>
+            <button type="submit" className="secondary-link" style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+              Abmelden
+            </button>
+          </form>
         </nav>
       </header>
       {children}

@@ -9,6 +9,7 @@ type ServerEnv = {
   DATABASE_URL?: string;
   DIRECT_URL?: string;
   APP_SECRET?: string;
+  ADMIN_EMAIL?: string;
   ADMIN_BASIC_USER?: string;
   ADMIN_BASIC_PASSWORD?: string;
   SUPABASE_SERVICE_ROLE_KEY?: string;
@@ -46,6 +47,7 @@ export function getServerEnv(): ServerEnv {
     DATABASE_URL: normalize(process.env.DATABASE_URL),
     DIRECT_URL: normalize(process.env.DIRECT_URL),
     APP_SECRET: normalize(process.env.APP_SECRET),
+    ADMIN_EMAIL: normalize(process.env.ADMIN_EMAIL),
     ADMIN_BASIC_USER: normalize(process.env.ADMIN_BASIC_USER),
     ADMIN_BASIC_PASSWORD: normalize(process.env.ADMIN_BASIC_PASSWORD),
     SUPABASE_SERVICE_ROLE_KEY: normalize(process.env.SUPABASE_SERVICE_ROLE_KEY),
