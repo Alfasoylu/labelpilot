@@ -463,6 +463,24 @@ export function KontoClient() {
     }
   }
 
+  async function handleProofOpen(orderId: string, proofId: string) {
+    if (!accessToken) return;
+    setError("");
+    try {
+      const res = await fetch(`/api/account/orders/${orderId}/proof-file/${proofId}`, {
+        headers: { Accept: "application/json", Authorization: `Bearer ${accessToken}` },
+      });
+      const data = (await res.json()) as { url?: string; error?: string };
+      if (res.ok && data.url) {
+        window.open(data.url, "_blank", "noopener");
+      } else {
+        setError(data.error ?? "Korrekturabzug konnte nicht geöffnet werden.");
+      }
+    } catch {
+      setError("Korrekturabzug konnte nicht geöffnet werden.");
+    }
+  }
+
   async function handleSupportDownload(requestId: string, index: number) {
     if (!accessToken) return;
     setSupportError("");
@@ -1174,14 +1192,13 @@ export function KontoClient() {
                 );
               }}
             />
-            <a
-              href={`/api/account/orders/${order.id}/proof-file/${order.latestProof.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
               className="secondary-link"
+              onClick={() => handleProofOpen(order.id, order.latestProof!.id)}
             >
               Korrekturabzug öffnen →
-            </a>
+            </button>
           </div>
         ) : null}
         <div className="cta-row">

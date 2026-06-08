@@ -91,6 +91,7 @@ export function BestellungDetailClient({ orderId }: { orderId: string }) {
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(Boolean(supabase));
   const [error, setError] = useState("");
+  const [actionError, setActionError] = useState("");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -186,6 +187,23 @@ export function BestellungDetailClient({ orderId }: { orderId: string }) {
     );
   }
 
+  async function handleProofOpen(proofId: string) {
+    if (!accessToken) return;
+    try {
+      const res = await fetch(`/api/account/orders/${orderId}/proof-file/${proofId}`, {
+        headers: { Accept: "application/json", Authorization: `Bearer ${accessToken}` },
+      });
+      const data = (await res.json()) as { url?: string; error?: string };
+      if (res.ok && data.url) {
+        window.open(data.url, "_blank", "noopener");
+      } else {
+        setActionError(data.error ?? "Korrekturabzug konnte nicht geöffnet werden.");
+      }
+    } catch {
+      setActionError("Korrekturabzug konnte nicht geöffnet werden.");
+    }
+  }
+
   const reorderUrl = buildReorderUrl(order);
   const isCustomSize = Boolean(order.widthMm && order.heightMm);
   const orderDesc = describeOrderStatus(order.status);
@@ -205,6 +223,8 @@ export function BestellungDetailClient({ orderId }: { orderId: string }) {
           <a href="/konto" className="secondary-link">Kundenkonto</a>
         </div>
       </article>
+
+      {actionError ? <p className="form-status error" role="alert">{actionError}</p> : null}
 
       <div className="two-column">
         <article className="surface-card">
@@ -296,14 +316,13 @@ export function BestellungDetailClient({ orderId }: { orderId: string }) {
           <h2>Korrekturabzug wartet auf Freigabe</h2>
           {proof.adminNote ? <p className="field-hint">{proof.adminNote}</p> : null}
           <div className="cta-row">
-            <a
-              href={`/api/account/orders/${order.id}/proof-file/${proof.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
               className="secondary-link"
+              onClick={() => handleProofOpen(proof.id)}
             >
               Korrekturabzug öffnen →
-            </a>
+            </button>
           </div>
           <ProofApprovalForm
             orderId={order.id}

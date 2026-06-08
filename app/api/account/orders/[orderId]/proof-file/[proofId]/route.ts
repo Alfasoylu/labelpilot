@@ -37,6 +37,12 @@ export async function GET(
     }
 
     const signedUrl = await getSignedUrl(proofFile.storagePath, 900);
+    // A plain top-level navigation cannot carry the Bearer token, so the client
+    // fetches this with Accept: application/json and opens the returned URL.
+    const wantsJson = (request.headers.get("accept") ?? "").includes("application/json");
+    if (wantsJson) {
+      return NextResponse.json({ url: signedUrl });
+    }
     return NextResponse.redirect(signedUrl);
   } catch (error) {
     console.error("Proof-Download fehlgeschlagen:", error);
