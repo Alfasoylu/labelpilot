@@ -39,7 +39,6 @@ export type PublicCustomSizeResponse =
         materialCostNet: number;
         shippingCostNet: number;
         multiplier: number;
-        mattSurchargeNet: number;
       };
     };
 
@@ -93,7 +92,6 @@ export function buildPublicCustomSizePriceResponse(input: {
         materialCostNet: result.breakdown.materialCost,
         shippingCostNet: result.breakdown.shippingCost,
         multiplier: result.breakdown.multiplier,
-        mattSurchargeNet: result.breakdown.mattSurcharge,
       },
     } satisfies PublicCustomSizeResponse,
   } as const;

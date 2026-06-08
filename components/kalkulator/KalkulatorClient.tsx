@@ -52,7 +52,7 @@ type KalkulatorConfig = {
 type PriceState =
   | { status: "idle" }
   | { status: "loading" }
-  | { status: "configured"; quoteRequired: false; method: "DIGITAL" | "FLEXO"; netPrice: number; grossPrice: number; inkCostNet: number; plateCostNet: number; digitalPrintingCostNet: number; mattSurchargeNet: number; isHeavyShipment: boolean }
+  | { status: "configured"; quoteRequired: false; method: "DIGITAL" | "FLEXO"; netPrice: number; grossPrice: number; inkCostNet: number; plateCostNet: number; digitalPrintingCostNet: number; isHeavyShipment: boolean }
   | { status: "quote" }
   | { status: "unconfigured" }
   | { status: "error" };
@@ -143,7 +143,6 @@ export function KalkulatorClient({
         inkCostNet: data.breakdown?.inkCostNet ?? 0,
         plateCostNet: data.breakdown?.plateCostNet ?? 0,
         digitalPrintingCostNet: data.breakdown?.digitalPrintingCostNet ?? 0,
-        mattSurchargeNet: data.breakdown?.mattSurchargeNet ?? 0,
         isHeavyShipment: data.isHeavyShipment ?? false,
       });
     } catch {
@@ -173,7 +172,6 @@ export function KalkulatorClient({
   const inkCostNet = priceState.status === "configured" ? priceState.inkCostNet : 0;
   const plateCostNet = priceState.status === "configured" ? priceState.plateCostNet : 0;
   const digitalPrintingCostNet = priceState.status === "configured" ? priceState.digitalPrintingCostNet : 0;
-  const mattSurchargeNet = priceState.status === "configured" ? priceState.mattSurchargeNet : 0;
   const printMethod = priceState.status === "configured" ? priceState.method : null;
   const isHeavyShipment = priceState.status === "configured" ? priceState.isHeavyShipment : false;
   const colorCount = config.farbigkeit + (config.weissunterdruck ? 1 : 0);
@@ -564,12 +562,6 @@ export function KalkulatorClient({
                     <li>
                       <span>Ovale Stanzform ({totalQuantity.toLocaleString("de-DE")} × 0,03 €)</span>
                       <span>{formatEur(ovalSurchargeNet)}</span>
-                    </li>
-                  )}
-                  {mattSurchargeNet > 0 && (
-                    <li>
-                      <span>Matt-Aufpreis</span>
-                      <span>{formatEur(mattSurchargeNet)}</span>
                     </li>
                   )}
                   {designFeeNet > 0 && (

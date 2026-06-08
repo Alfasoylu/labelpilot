@@ -35,7 +35,6 @@ const settingsSchema = z.object({
   inkCostPerM2PerColorNet: z.coerce.number().positive(),
   digitalCostPerM2Net: z.coerce.number().positive(),
   digitalSellingPricePerM2Net: z.coerce.number().positive(),
-  mattSurchargeNet: z.coerce.number().min(0),
   markupTier1Multiplier: z.coerce.number().min(1),
   markupTier1MaxQty: z.coerce.number().int().positive(),
   markupTier2Multiplier: z.coerce.number().min(1),
@@ -99,7 +98,6 @@ export async function POST(request: Request) {
     inkCostPerM2PerColorNet: formData.get("settings.inkCostPerM2PerColorNet"),
     digitalCostPerM2Net: formData.get("settings.digitalCostPerM2Net"),
     digitalSellingPricePerM2Net: formData.get("settings.digitalSellingPricePerM2Net"),
-    mattSurchargeNet: formData.get("settings.mattSurchargeNet"),
     markupTier1Multiplier: formData.get("settings.markupTier1Multiplier"),
     markupTier1MaxQty: formData.get("settings.markupTier1MaxQty"),
     markupTier2Multiplier: formData.get("settings.markupTier2Multiplier"),
@@ -163,7 +161,6 @@ export async function POST(request: Request) {
       inkCostPerM2PerColorNet?: { toString(): string } | null;
       digitalCostPerM2Net?: { toString(): string } | null;
       digitalSellingPricePerM2Net?: { toString(): string } | null;
-      mattSurchargeNet?: { toString(): string } | null;
       markupTier1Multiplier?: { toString(): string } | null;
       markupTier1MaxQty?: number | null;
       markupTier2Multiplier?: { toString(): string } | null;
@@ -207,7 +204,6 @@ export async function POST(request: Request) {
       inkCostPerM2PerColorNet: previousSettings?.inkCostPerM2PerColorNet?.toString() ?? null,
       digitalCostPerM2Net: previousSettings?.digitalCostPerM2Net?.toString() ?? null,
       digitalSellingPricePerM2Net: previousSettings?.digitalSellingPricePerM2Net?.toString() ?? null,
-      mattSurchargeNet: previousSettings?.mattSurchargeNet?.toString() ?? null,
       markupTier1Multiplier: previousSettings?.markupTier1Multiplier?.toString() ?? null,
       markupTier1MaxQty: previousSettings?.markupTier1MaxQty?.toString() ?? null,
       markupTier2Multiplier: previousSettings?.markupTier2Multiplier?.toString() ?? null,
@@ -238,7 +234,6 @@ export async function POST(request: Request) {
       inkCostPerM2PerColorNet: settingsData.inkCostPerM2PerColorNet.toString(),
       digitalCostPerM2Net: settingsData.digitalCostPerM2Net.toString(),
       digitalSellingPricePerM2Net: settingsData.digitalSellingPricePerM2Net.toString(),
-      mattSurchargeNet: settingsData.mattSurchargeNet.toString(),
       markupTier1Multiplier: settingsData.markupTier1Multiplier.toString(),
       markupTier1MaxQty: settingsData.markupTier1MaxQty.toString(),
       markupTier2Multiplier: settingsData.markupTier2Multiplier.toString(),

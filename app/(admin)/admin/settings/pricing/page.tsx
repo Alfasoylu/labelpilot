@@ -338,17 +338,6 @@ export default async function PricingSettingsPage({ searchParams }: PricingSetti
               </div>
             </div>
 
-            {/* Matt-Aufpreis */}
-            <div style={{ marginTop: "1.25rem", borderTop: "1px solid var(--color-border, #e5e5e5)", paddingTop: "1.25rem" }}>
-              <Field
-                id="settings-mattSurchargeNet"
-                name="settings.mattSurchargeNet"
-                label="Matt-Aufpreis (pauschal)"
-                value={formatPricingNumber(settings.mattSurchargeNet)}
-                min="0" step="0.01" suffix="€ netto"
-                hint="Pauschaler Aufschlag zusätzlich zum Materialpreis. Bei Nutzung der Matt-Materialkosten pro Material auf 0 setzen."
-              />
-            </div>
           </article>
 
           {/* §3 Aufschlagsstaffel */}
