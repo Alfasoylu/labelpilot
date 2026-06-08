@@ -52,7 +52,7 @@ type KalkulatorConfig = {
 type PriceState =
   | { status: "idle" }
   | { status: "loading" }
-  | { status: "configured"; quoteRequired: false; method: "DIGITAL" | "FLEXO"; netPrice: number; grossPrice: number; inkCostNet: number; plateCostNet: number; digitalPrintingCostNet: number; isHeavyShipment: boolean }
+  | { status: "configured"; quoteRequired: false; method: "DIGITAL" | "FLEXO"; netPrice: number; grossPrice: number; inkCostNet: number; plateCostNet: number; digitalPrintingCostNet: number; mattSurchargeNet: number; isHeavyShipment: boolean }
   | { status: "quote" }
   | { status: "unconfigured" }
   | { status: "error" };
@@ -143,6 +143,7 @@ export function KalkulatorClient({
         inkCostNet: data.breakdown?.inkCostNet ?? 0,
         plateCostNet: data.breakdown?.plateCostNet ?? 0,
         digitalPrintingCostNet: data.breakdown?.digitalPrintingCostNet ?? 0,
+        mattSurchargeNet: data.breakdown?.mattSurchargeNet ?? 0,
         isHeavyShipment: data.isHeavyShipment ?? false,
       });
     } catch {
@@ -172,6 +173,7 @@ export function KalkulatorClient({
   const inkCostNet = priceState.status === "configured" ? priceState.inkCostNet : 0;
   const plateCostNet = priceState.status === "configured" ? priceState.plateCostNet : 0;
   const digitalPrintingCostNet = priceState.status === "configured" ? priceState.digitalPrintingCostNet : 0;
+  const mattSurchargeNet = priceState.status === "configured" ? priceState.mattSurchargeNet : 0;
   const printMethod = priceState.status === "configured" ? priceState.method : null;
   const isHeavyShipment = priceState.status === "configured" ? priceState.isHeavyShipment : false;
   const colorCount = config.farbigkeit + (config.weissunterdruck ? 1 : 0);
@@ -440,27 +442,21 @@ export function KalkulatorClient({
             </div>
 
             {/* Weißunterdruck */}
-            {config.materialKey === "OPAQUE_PP" ? (
-              <div className="field-full">
-                <label className="checkbox-field">
-                  <input
-                    type="checkbox"
-                    checked={config.weissunterdruck}
-                    onChange={(e) => setConfig((c) => ({ ...c, weissunterdruck: e.target.checked }))}
-                  />
-                  <span>Weißunterdruck (weiße Grundschicht)</span>
-                </label>
-                <p className="field-hint">
-                  Opake Basisschicht unter dem Motiv für maximale Farbdeckkraft – zählt als +1 Druckfarbe im Preis.
-                </p>
-              </div>
-            ) : (
-              <div className="field-full">
-                <p className="field-hint">
-                  <strong>Weißunterdruck inklusive:</strong> Bei Transparent PP wird automatisch eine opake weiße Schicht unter das Motiv gedruckt, damit Farben leuchtend wirken und nicht durchscheinen.
-                </p>
-              </div>
-            )}
+            <div className="field-full">
+              <label className="checkbox-field">
+                <input
+                  type="checkbox"
+                  checked={config.weissunterdruck}
+                  onChange={(e) => setConfig((c) => ({ ...c, weissunterdruck: e.target.checked }))}
+                />
+                <span>Weißunterdruck (weiße Grundschicht)</span>
+              </label>
+              <p className="field-hint">
+                {config.materialKey === "TRANSPARENT_PP"
+                  ? "Empfohlen für Transparent PP – opake Basisschicht damit Farben leuchten und nicht durchscheinen. Zählt als +1 Druckfarbe im Preis."
+                  : "Opake Basisschicht unter dem Motiv für maximale Farbdeckkraft – zählt als +1 Druckfarbe im Preis."}
+              </p>
+            </div>
             {/* Druckdaten / Designservice */}
             <div className="field-full">
               <div className="artwork-option-group">
@@ -568,6 +564,12 @@ export function KalkulatorClient({
                     <li>
                       <span>Ovale Stanzform ({totalQuantity.toLocaleString("de-DE")} × 0,03 €)</span>
                       <span>{formatEur(ovalSurchargeNet)}</span>
+                    </li>
+                  )}
+                  {mattSurchargeNet > 0 && (
+                    <li>
+                      <span>Matt-Aufpreis</span>
+                      <span>{formatEur(mattSurchargeNet)}</span>
                     </li>
                   )}
                   {designFeeNet > 0 && (

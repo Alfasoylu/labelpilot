@@ -2954,6 +2954,7 @@ export const hubPagesBySlug: Record<string, PublicPageData> = {
 
 export const sitemapEntries: SitemapEntry[] = [
   { path: "/de", priority: 1, changeFrequency: "weekly" },
+  { path: "/de/kalkulator", priority: 0.9, changeFrequency: "weekly" },
   { path: "/de/lebensmittel-etiketten", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/supplement-etiketten", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/getraenke-etiketten", priority: 0.8, changeFrequency: "weekly" },
@@ -2968,6 +2969,7 @@ export const sitemapEntries: SitemapEntry[] = [
   { path: "/de/druckdaten", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/produktion-versand", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/kontakt", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/de/auf-rechnung-beantragen", priority: 0.6, changeFrequency: "monthly" },
   { path: "/de/kaffee-etiketten", priority: 0.7, changeFrequency: "weekly" },
   { path: "/de/gewuerz-etiketten", priority: 0.7, changeFrequency: "weekly" },
   { path: "/de/honig-marmelade-etiketten", priority: 0.7, changeFrequency: "weekly" },
