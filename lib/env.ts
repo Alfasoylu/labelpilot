@@ -20,6 +20,9 @@ type ServerEnv = {
   EMAIL_REPLY_TO?: string;
   ADMIN_NOTIFY_EMAIL?: string;
   ENABLE_REORDER_REMINDERS?: string;
+  TELEGRAM_BOT_TOKEN?: string;
+  TELEGRAM_OPERATOR_CHAT_ID?: string;
+  CHAT_WEBHOOK_SECRET?: string;
 };
 
 function normalize(value?: string) {
@@ -58,6 +61,9 @@ export function getServerEnv(): ServerEnv {
     EMAIL_REPLY_TO: normalize(process.env.EMAIL_REPLY_TO),
     ADMIN_NOTIFY_EMAIL: normalize(process.env.ADMIN_NOTIFY_EMAIL),
     ENABLE_REORDER_REMINDERS: normalize(process.env.ENABLE_REORDER_REMINDERS),
+    TELEGRAM_BOT_TOKEN: normalize(process.env.TELEGRAM_BOT_TOKEN),
+    TELEGRAM_OPERATOR_CHAT_ID: normalize(process.env.TELEGRAM_OPERATOR_CHAT_ID),
+    CHAT_WEBHOOK_SECRET: normalize(process.env.CHAT_WEBHOOK_SECRET),
   };
 }
 

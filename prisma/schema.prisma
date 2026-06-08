@@ -630,3 +630,26 @@ model PricingAudit {
   @@index([tableName])
   @@index([fieldName])
 }
+
+model ChatSession {
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  visitorId  String       @map("visitor_id")
+  pageUrl    String?      @map("page_url")
+  createdAt  DateTime     @default(now()) @map("created_at")
+  resolvedAt DateTime?    @map("resolved_at")
+  messages   ChatMessage[]
+
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id        String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId String      @map("session_id") @db.Uuid
+  sender    String
+  content   String
+  createdAt DateTime    @default(now()) @map("created_at")
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, createdAt])
+  @@map("chat_messages")
+}
