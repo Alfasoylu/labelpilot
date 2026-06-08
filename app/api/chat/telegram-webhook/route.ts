@@ -13,7 +13,7 @@ type TelegramMessage = {
 };
 
 type TelegramUpdate = {
-  message?: TelegramMessage;
+  message?: TelegramMessage & { from?: { id: number }; chat?: { id: number } };
 };
 
 // Extract session ID from Telegram notification text: "[abc12345] ..."
@@ -21,6 +21,14 @@ function extractSessionPrefix(text?: string): string | null {
   if (!text) return null;
   const match = text.match(/\[([a-f0-9]{8})\]/);
   return match ? match[1] : null;
+}
+
+async function sendTelegramReply(token: string, chatId: number, text: string) {
+  await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: chatId, text }),
+  });
 }
 
 export async function POST(req: NextRequest) {
@@ -36,6 +44,19 @@ export async function POST(req: NextRequest) {
 
   const update: TelegramUpdate = await req.json().catch(() => ({}));
   const msg = update.message;
+
+  // /start or /chatid command — reply with the sender's numeric chat ID
+  if (msg?.text && (msg.text === "/start" || msg.text === "/chatid") && msg.from?.id) {
+    if (env.TELEGRAM_BOT_TOKEN) {
+      await sendTelegramReply(
+        env.TELEGRAM_BOT_TOKEN,
+        msg.from.id,
+        `Deine Chat-ID: ${msg.from.id}\n\nTrage diese Zahl als TELEGRAM_OPERATOR_CHAT_ID in Vercel ein.`,
+      );
+    }
+    return NextResponse.json({ ok: true });
+  }
+
   if (!msg?.text || !msg.reply_to_message) {
     // Not a reply — ignore
     return NextResponse.json({ ok: true });
