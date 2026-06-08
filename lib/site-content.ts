@@ -1959,9 +1959,19 @@ const topLevelPages: PublicPageData[] = [
         ],
       },
       {
-        title: "Cookies",
+        title: "Cookies und Einwilligung",
         body: [
-          "Diese Website verwendet ausschließlich technisch notwendige Cookies. Es findet kein Tracking statt; es werden keine Analyse- oder Marketing-Cookies eingesetzt. Eine Einwilligung ist daher nicht erforderlich.",
+          "Technisch notwendige Cookies setzen wir ohne Einwilligung ein, da sie für den Betrieb der Website erforderlich sind (§ 25 Abs. 2 TTDSG, Art. 6 Abs. 1 lit. f DSGVO). Dazu gehören das Speichern Ihrer Cookie-Auswahl sowie Anmelde- und Sicherheitsfunktionen im Kundenkonto.",
+          "Zusätzliche Statistik-Funktionen aktivieren wir ausschließlich mit Ihrer vorherigen Einwilligung (§ 25 Abs. 1 TTDSG, Art. 6 Abs. 1 lit. a DSGVO). Beim ersten Besuch können Sie im Banner zustimmen oder ablehnen.",
+          "Sie können Ihre Auswahl jederzeit ändern oder widerrufen – über den Link „Cookie-Einstellungen“ im Fußbereich der Website. Der Widerruf wirkt für die Zukunft.",
+        ],
+      },
+      {
+        title: "Reichweitenmessung (Statistik)",
+        body: [
+          "Mit Ihrer Einwilligung führen wir eine anonyme, eigene Reichweitenmessung durch (kein Drittanbieter-Tracking). Dabei wird im Browser eine zufällige Besucher-Kennung (Cookie „lp_vid“) gespeichert, um Seitenaufrufe und die Herkunft (z. B. Kampagnen-Parameter) zu erfassen und die Website zu verbessern.",
+          "Wir speichern dabei keine vollständige IP-Adresse. Es wird lediglich ein grobes Herkunftsland sowie eine grobe Geräteklasse (Desktop, Tablet, Mobil) verarbeitet.",
+          "Ohne Ihre Einwilligung findet keine Statistik-Erfassung statt; die Besucher-Kennung wird dann nicht gesetzt und bei einem Widerruf gelöscht.",
         ],
       },
       {

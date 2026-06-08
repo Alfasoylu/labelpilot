@@ -13,6 +13,8 @@ const EVENT_LABELS: Record<string, string> = {
   reorder_start_submit: "Nachbestellung gestartet",
   reorder_checkout_redirect: "Nachbestellung → Checkout",
   reorder_quote_redirect: "Nachbestellung → Angebot",
+  configurator_price_calculated: "Preis berechnet",
+  configurator_order_click: "Bestellung gestartet",
 };
 
 export default async function AdminVisitorsPage() {

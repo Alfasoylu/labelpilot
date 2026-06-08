@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+
+import { trackLeadEvent } from "@/lib/analytics/browser";
 import { CustomSizeCheckoutForm } from "./CustomSizeCheckoutForm";
 
 type MaterialKey = "OPAQUE_PP" | "TRANSPARENT_PP";
@@ -110,6 +112,7 @@ export function KalkulatorClient({
   const [hasOwnArtwork, setHasOwnArtwork] = useState(true);
   const [mode, setMode] = useState<"configure" | "checkout">("configure");
   const checkoutRef = useRef<HTMLDivElement>(null);
+  const lastTrackedRef = useRef<string>("");
 
   const fetchPrice = useCallback(async (cfg: KalkulatorConfig) => {
     if (!configIsValid(cfg)) return;
@@ -145,6 +148,22 @@ export function KalkulatorClient({
         digitalPrintingCostNet: data.breakdown?.digitalPrintingCostNet ?? 0,
         isHeavyShipment: data.isHeavyShipment ?? false,
       });
+      // Funnel signal: which configuration/price the visitor actually saw.
+      // De-duplicated so fiddling with one field doesn't flood events.
+      const signature = `${cfg.materialKey}|${cfg.widthMm}x${cfg.heightMm}|${totalQuantity}|${colorCount}|${cfg.finishing}`;
+      if (signature !== lastTrackedRef.current) {
+        lastTrackedRef.current = signature;
+        trackLeadEvent("configurator_price_calculated", {
+          material: cfg.materialKey,
+          widthMm: cfg.widthMm,
+          heightMm: cfg.heightMm,
+          quantity: totalQuantity,
+          colorCount,
+          finishing: cfg.finishing,
+          method: data.method ?? "FLEXO",
+          netPrice: data.netPrice ?? 0,
+        });
+      }
     } catch {
       setPriceState({ status: "error" });
     }
@@ -156,6 +175,14 @@ export function KalkulatorClient({
   }, [config, fetchPrice]);
 
   function handleOrder() {
+    trackLeadEvent("configurator_order_click", {
+      material: config.materialKey,
+      widthMm: config.widthMm,
+      heightMm: config.heightMm,
+      quantity: typeof config.mengeProMotiv === "number" ? config.mengeProMotiv * config.anzahlSorten : null,
+      finishing: config.finishing,
+      netPrice: priceState.status === "configured" ? priceState.netPrice : null,
+    });
     setMode("checkout");
     setTimeout(() => {
       checkoutRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });

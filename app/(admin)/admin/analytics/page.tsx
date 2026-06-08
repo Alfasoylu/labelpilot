@@ -74,25 +74,42 @@ export default async function AdminAnalyticsPage({ searchParams }: AnalyticsPage
   twelveMonthsAgo.setDate(1);
   twelveMonthsAgo.setHours(0, 0, 0, 0);
 
-  const [periodOrders, newCustomers, trendOrders, quoteCount] = await Promise.all([
-    prisma.order.findMany({
-      where: {
-        status: { in: PAID_STATUSES as never[] },
-        createdAt: { gte: start, lte: end },
-      },
-      select: { amountCents: true, material: true, createdAt: true },
-    }),
-    prisma.customer.count({ where: { createdAt: { gte: start, lte: end } } }),
-    prisma.order.findMany({
-      where: {
-        status: { in: PAID_STATUSES as never[] },
-        createdAt: { gte: twelveMonthsAgo },
-      },
-      select: { amountCents: true, createdAt: true },
-      orderBy: { createdAt: "asc" },
-    }),
-    prisma.quoteRequest.count({ where: { createdAt: { gte: start, lte: end } } }),
-  ]);
+  const [periodOrders, newCustomers, trendOrders, quoteCount, trafficBySource, leadsBySource] =
+    await Promise.all([
+      prisma.order.findMany({
+        where: {
+          status: { in: PAID_STATUSES as never[] },
+          createdAt: { gte: start, lte: end },
+        },
+        select: { amountCents: true, material: true, createdAt: true },
+      }),
+      prisma.customer.count({ where: { createdAt: { gte: start, lte: end } } }),
+      prisma.order.findMany({
+        where: {
+          status: { in: PAID_STATUSES as never[] },
+          createdAt: { gte: twelveMonthsAgo },
+        },
+        select: { amountCents: true, createdAt: true },
+        orderBy: { createdAt: "asc" },
+      }),
+      prisma.quoteRequest.count({ where: { createdAt: { gte: start, lte: end } } }),
+      // Consent-based first-party traffic by channel (page views per UTM source).
+      prisma.visitorEvent.groupBy({
+        by: ["utmSource"],
+        where: { eventType: "page_view", createdAt: { gte: start, lte: end } },
+        _count: { _all: true },
+        orderBy: { _count: { utmSource: "desc" } },
+        take: 10,
+      }),
+      // Lead attribution captured at form submit (independent of cookie consent).
+      prisma.lead.groupBy({
+        by: ["utmSource"],
+        where: { createdAt: { gte: start, lte: end } },
+        _count: { _all: true },
+        orderBy: { _count: { utmSource: "desc" } },
+        take: 10,
+      }),
+    ]);
 
   const totalRevenueCents = periodOrders.reduce((s, o) => s + o.amountCents, 0);
   const orderCount = periodOrders.length;
@@ -179,6 +196,48 @@ export default async function AdminAnalyticsPage({ searchParams }: AnalyticsPage
           </p>
           <p className="field-hint">{label}</p>
         </div>
+      </div>
+
+      <div className="two-column">
+        <article className="surface-card">
+          <h2>Traffic-Quellen ({label})</h2>
+          <p className="field-hint">Seitenaufrufe nach Kampagnen-Quelle (einwilligungsbasiert).</p>
+          {trafficBySource.length === 0 ? (
+            <p className="price-note">Noch keine quellenbasierten Daten.</p>
+          ) : (
+            <table className="admin-table">
+              <thead><tr><th>Quelle</th><th>Seitenaufrufe</th></tr></thead>
+              <tbody>
+                {trafficBySource.map((row) => (
+                  <tr key={row.utmSource ?? "direct"}>
+                    <td>{row.utmSource ?? "Direkt / keine"}</td>
+                    <td>{row._count._all.toLocaleString("de-DE")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </article>
+
+        <article className="surface-card">
+          <h2>Leads nach Quelle ({label})</h2>
+          <p className="field-hint">Angebots-/Musterbox-Anfragen nach Herkunft (beim Absenden erfasst).</p>
+          {leadsBySource.length === 0 ? (
+            <p className="price-note">Noch keine Leads im Zeitraum.</p>
+          ) : (
+            <table className="admin-table">
+              <thead><tr><th>Quelle</th><th>Leads</th></tr></thead>
+              <tbody>
+                {leadsBySource.map((row) => (
+                  <tr key={row.utmSource ?? "direct"}>
+                    <td>{row.utmSource ?? "Direkt / keine"}</td>
+                    <td>{row._count._all.toLocaleString("de-DE")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </article>
       </div>
 
       {Object.keys(byMaterial).length > 0 ? (
