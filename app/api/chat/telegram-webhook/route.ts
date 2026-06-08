@@ -58,34 +58,42 @@ export async function POST(req: NextRequest) {
   }
 
   if (!msg?.text || !msg.reply_to_message) {
-    // Not a reply — ignore
+    console.log("[webhook] ignored: no text or no reply_to_message", { text: msg?.text?.slice(0, 30), hasReply: !!msg?.reply_to_message });
     return NextResponse.json({ ok: true });
   }
 
   const sessionPrefix = extractSessionPrefix(msg.reply_to_message.text);
+  console.log("[webhook] reply received", { replyText: msg.reply_to_message.text?.slice(0, 60), sessionPrefix });
   if (!sessionPrefix) {
+    console.log("[webhook] no session prefix found in reply text");
     return NextResponse.json({ ok: true });
   }
 
   const supabase = getSupabaseServerClient();
-  if (!supabase) return NextResponse.json({ ok: true });
+  if (!supabase) {
+    console.log("[webhook] supabase client unavailable");
+    return NextResponse.json({ ok: true });
+  }
 
   // Find session by ID prefix
-  const { data: sessions } = await supabase
+  const { data: sessions, error: sessionError } = await supabase
     .from("chat_sessions")
     .select("id")
     .ilike("id", `${sessionPrefix}%`)
     .is("resolved_at", null)
     .limit(1);
 
+  console.log("[webhook] session lookup", { sessionPrefix, found: sessions?.length, error: sessionError?.message });
+
   const session = sessions?.[0] as { id: string } | undefined;
   if (!session) return NextResponse.json({ ok: true });
 
-  await supabase.from("chat_messages").insert({
+  const { error: insertError } = await supabase.from("chat_messages").insert({
     session_id: session.id,
     sender: "operator",
     content: msg.text,
   });
+  console.log("[webhook] insert result", { sessionId: session.id, error: insertError?.message });
 
   return NextResponse.json({ ok: true });
 }
