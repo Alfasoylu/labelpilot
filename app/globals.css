@@ -3391,6 +3391,43 @@ th {
   margin: 8px 0 0;
 }
 
+.account-attach-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.account-attach-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface-alt);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.82rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.account-attach-chip--link {
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.account-attach-chip--link:hover {
+  border-color: var(--accent);
+  color: var(--text-strong);
+}
+.account-attach-size {
+  color: var(--muted);
+  font-size: 0.74rem;
+}
+
 .account-address-block {
   color: var(--text);
   white-space: pre-line;

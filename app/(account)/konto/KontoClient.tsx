@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { ProofApprovalForm } from "@/components/account/ProofApprovalForm";
 import {
@@ -120,6 +120,8 @@ const NOTIFICATION_LABELS: { key: keyof NotificationPrefs; label: string; hint: 
   { key: "quoteUpdates", label: "Angebots-Updates", hint: "E-Mail bei Statusänderungen Ihrer Angebotsanfragen." },
 ];
 
+type SupportAttachmentMeta = { name: string; size: number };
+
 type SupportRequestItem = {
   id: string;
   type: string;
@@ -128,7 +130,15 @@ type SupportRequestItem = {
   status: string;
   createdAt: string;
   orderNumber: string | null;
+  attachments?: SupportAttachmentMeta[];
 };
+
+function formatBytes(bytes: number): string {
+  if (!bytes) return "";
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
 
 type RefillPredictionItem = {
   id: string;
@@ -261,6 +271,8 @@ export function KontoClient() {
   const [supportMsg, setSupportMsg] = useState("");
   const [supportError, setSupportError] = useState("");
   const [supportLoadError, setSupportLoadError] = useState(false);
+  const [supportFileNames, setSupportFileNames] = useState<string[]>([]);
+  const supportFileRef = useRef<HTMLInputElement>(null);
 
   const [refillPredictions, setRefillPredictions] = useState<RefillPredictionItem[] | null>(null);
   const [refillTogglingId, setRefillTogglingId] = useState<string | null>(null);
@@ -419,15 +431,20 @@ export function KontoClient() {
     setSupportMsg("");
     setSupportError("");
     try {
+      const fd = new FormData();
+      fd.set("type", supportForm.type);
+      if (supportForm.orderId) fd.set("orderId", supportForm.orderId);
+      fd.set("subject", supportForm.subject);
+      fd.set("message", supportForm.message);
+      const files = supportFileRef.current?.files;
+      if (files) {
+        for (const file of Array.from(files)) fd.append("attachment", file);
+      }
+      // No Content-Type header — the browser sets the multipart boundary.
       const res = await fetch("/api/account/support", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
-        body: JSON.stringify({
-          type: supportForm.type,
-          orderId: supportForm.orderId || undefined,
-          subject: supportForm.subject,
-          message: supportForm.message,
-        }),
+        headers: { Authorization: `Bearer ${accessToken}` },
+        body: fd,
       });
       const data = (await res.json()) as { request?: SupportRequestItem; error?: string };
       if (!res.ok || !data.request) {
@@ -436,11 +453,31 @@ export function KontoClient() {
       }
       setSupportRequests((prev) => [data.request!, ...(prev ?? [])]);
       setSupportForm({ type: "GENERAL", orderId: "", subject: "", message: "" });
+      setSupportFileNames([]);
+      if (supportFileRef.current) supportFileRef.current.value = "";
       setSupportMsg("Ihre Anfrage wurde gesendet. Wir melden uns per E-Mail.");
     } catch {
       setSupportError("Anfrage konnte nicht gesendet werden.");
     } finally {
       setSupportSending(false);
+    }
+  }
+
+  async function handleSupportDownload(requestId: string, index: number) {
+    if (!accessToken) return;
+    setSupportError("");
+    try {
+      const res = await fetch(`/api/account/support/${requestId}/attachment/${index}`, {
+        headers: { Accept: "application/json", Authorization: `Bearer ${accessToken}` },
+      });
+      const data = (await res.json()) as { url?: string; error?: string };
+      if (res.ok && data.url) {
+        window.open(data.url, "_blank", "noopener");
+      } else {
+        setSupportError(data.error ?? "Anhang konnte nicht geöffnet werden.");
+      }
+    } catch {
+      setSupportError("Anhang konnte nicht geöffnet werden.");
     }
   }
 
@@ -1945,6 +1982,31 @@ export function KontoClient() {
                         onChange={(e) => setSupportForm((f) => ({ ...f, message: e.target.value }))}
                       />
                     </div>
+                    <div className="field field-full">
+                      <label htmlFor="support-files">Design / Datei anhängen (optional)</label>
+                      <input
+                        id="support-files"
+                        ref={supportFileRef}
+                        type="file"
+                        multiple
+                        accept=".pdf,.ai,.eps,.svg,.png,.jpg,.jpeg,.tif,.tiff,.zip"
+                        onChange={(e) =>
+                          setSupportFileNames(Array.from(e.target.files ?? []).map((f) => f.name))
+                        }
+                      />
+                      <p className="field-hint">
+                        PDF, AI, EPS, SVG, PNG, JPG, TIFF oder ZIP. Bis zu 3 Dateien.
+                      </p>
+                      {supportFileNames.length > 0 ? (
+                        <ul className="account-attach-list">
+                          {supportFileNames.map((name, i) => (
+                            <li key={`${name}-${i}`} className="account-attach-chip">
+                              <Icons.IconDocuments size={14} /> {name}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </div>
                   </div>
                   {supportError ? <p className="form-status error" role="alert">{supportError}</p> : null}
                   {supportMsg ? <p className="form-status success" role="status">{supportMsg}</p> : null}
@@ -1999,6 +2061,22 @@ export function KontoClient() {
                             {r.orderNumber ? ` · ${r.orderNumber}` : ""} · {formatDate(r.createdAt)}
                           </p>
                           <p className="account-support-message">{r.message}</p>
+                          {r.attachments && r.attachments.length > 0 ? (
+                            <ul className="account-attach-list">
+                              {r.attachments.map((a, i) => (
+                                <li key={`${r.id}-att-${i}`}>
+                                  <button
+                                    type="button"
+                                    className="account-attach-chip account-attach-chip--link"
+                                    onClick={() => handleSupportDownload(r.id, i)}
+                                  >
+                                    <Icons.IconDownload size={14} /> {a.name}
+                                    {a.size ? <span className="account-attach-size">{formatBytes(a.size)}</span> : null}
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : null}
                         </div>
                       );
                     })}

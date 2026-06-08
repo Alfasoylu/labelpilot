@@ -66,6 +66,28 @@ export async function uploadProofFile(orderId: string, file: File, sanitizedFile
   return storagePath;
 }
 
+export async function uploadSupportAttachment(
+  supportRequestId: string,
+  file: File,
+  sanitizedFileName: string,
+) {
+  const client = getStorageClient();
+  const bucket = getArtworkBucketName();
+  const storagePath = `support/${supportRequestId}/${randomUUID()}-${sanitizedFileName}`;
+  const buffer = Buffer.from(await file.arrayBuffer());
+
+  const { error } = await client.storage.from(bucket).upload(storagePath, buffer, {
+    contentType: file.type || "application/octet-stream",
+    upsert: false,
+  });
+
+  if (error) {
+    throw new Error("Anhang-Upload fehlgeschlagen.");
+  }
+
+  return storagePath;
+}
+
 export async function getSignedUrl(storagePath: string, expiresInSeconds = 60) {
   const client = getStorageClient();
   const bucket = getArtworkBucketName();
