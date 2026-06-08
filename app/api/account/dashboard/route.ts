@@ -71,6 +71,7 @@ export async function GET(request: Request) {
         where: {
           customerId: customer.id,
           archivedAt: null,
+          status: "ACTIVE",
         },
         select: {
           id: true,

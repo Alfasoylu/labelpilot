@@ -23,6 +23,7 @@ export function StatusTimeline({ steps }: StatusTimelineProps) {
           <li
             key={step.key}
             className={`account-timeline__step account-timeline__step--${step.state}${toneClass}`}
+            aria-current={step.state === "current" ? "step" : undefined}
           >
             <span className="account-timeline__rail" aria-hidden>
               <span className="account-timeline__dot">{dotContent(step)}</span>

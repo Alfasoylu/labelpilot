@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getPrismaClient } from "@/lib/db/prisma";
+import { prefsAllow } from "@/lib/email/preferences";
 import { sendEmail } from "@/lib/email/send";
 import { reorderReminder } from "@/lib/email/templates/lifecycle";
 import { getServerEnv, isReorderReminderEnabled } from "@/lib/env";
@@ -42,6 +43,7 @@ export async function GET(request: Request) {
           companyName: true,
           quantity: true,
           material: true,
+          customer: { select: { notificationPrefs: true } },
         },
       },
     },
@@ -50,6 +52,8 @@ export async function GET(request: Request) {
 
   let sent = 0;
   let failed = 0;
+
+  let skipped = 0;
 
   for (const reminder of reminders) {
     const { order } = reminder;
@@ -60,6 +64,16 @@ export async function GET(request: Request) {
         data: { status: "FAILED", sentAt: now },
       });
       failed++;
+      continue;
+    }
+
+    // Respect the customer's notification preference for reorder reminders.
+    if (!prefsAllow(order.customer?.notificationPrefs, "reorderReminder")) {
+      await prisma.reorderReminder.update({
+        where: { id: reminder.id },
+        data: { status: "DISMISSED", sentAt: now },
+      });
+      skipped++;
       continue;
     }
 
@@ -92,5 +106,5 @@ export async function GET(request: Request) {
     else failed++;
   }
 
-  return NextResponse.json({ processed: reminders.length, sent, failed });
+  return NextResponse.json({ processed: reminders.length, sent, failed, skipped });
 }

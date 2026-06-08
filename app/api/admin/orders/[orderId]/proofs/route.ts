@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { Prisma } from "@prisma/client";
 
 import { getPrismaClient } from "@/lib/db/prisma";
+import { customerAllowsEmail } from "@/lib/email/preferences";
 import { sendEmail } from "@/lib/email/send";
 import { proofReady } from "@/lib/email/templates/lifecycle";
 import { canUploadProofForOrderStatus } from "@/lib/orders/status";
@@ -149,7 +150,7 @@ export async function POST(
     });
   }
 
-  if (order.customerEmail) {
+  if (order.customerEmail && (await customerAllowsEmail(prisma, order.id, "proofReady"))) {
     const template = proofReady({
       orderId: order.id,
       orderNumber: order.orderNumber,
@@ -167,7 +168,7 @@ export async function POST(
       console.error("Proof-Mail fehlgeschlagen:", error);
     }
   } else {
-    console.debug(`Proof-Mail übersprungen: keine E-Mail für ${order.id}.`);
+    console.debug(`Proof-Mail übersprungen für ${order.id}.`);
   }
 
   return redirectWithMessage(request, redirectTo, {

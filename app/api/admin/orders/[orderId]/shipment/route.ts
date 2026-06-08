@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { getPrismaClient } from "@/lib/db/prisma";
+import { customerAllowsEmail } from "@/lib/email/preferences";
 import { sendEmail } from "@/lib/email/send";
 import { shippedOrderCustomer } from "@/lib/email/templates/lifecycle";
 import { canTransitionOrderStatus } from "@/lib/orders/status";
@@ -144,7 +145,12 @@ export async function POST(
     }
   });
 
-  if (nextStatus === "SHIPPED" && order.status !== "SHIPPED" && order.customerEmail) {
+  if (
+    nextStatus === "SHIPPED" &&
+    order.status !== "SHIPPED" &&
+    order.customerEmail &&
+    (await customerAllowsEmail(prisma, order.id, "shipped"))
+  ) {
     const template = shippedOrderCustomer({
       orderId: order.id,
       orderNumber: order.orderNumber,

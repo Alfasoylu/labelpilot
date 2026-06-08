@@ -141,7 +141,7 @@ function matchesOrderFilter(order: AccountOrder, filter: OrderFilterKey): boolea
     case "approval":
       return order.latestProof != null || order.status === "WAITING_CUSTOMER_APPROVAL";
     case "shipped":
-      return ["READY_TO_SHIP", "SHIPPED", "DELIVERED"].includes(order.status);
+      return ["READY_TO_SHIP", "SHIPPED"].includes(order.status);
     case "done":
       return ["DELIVERED", "COMPLETED"].includes(order.status);
     case "all":
@@ -185,6 +185,7 @@ export function KontoClient() {
   const [addressMsg, setAddressMsg] = useState("");
 
   const [notifSaving, setNotifSaving] = useState<keyof NotificationPrefs | null>(null);
+  const [notifSavedKey, setNotifSavedKey] = useState<keyof NotificationPrefs | null>(null);
   const [notifMsg, setNotifMsg] = useState("");
 
   const [forgotMode, setForgotMode] = useState(false);
@@ -558,9 +559,10 @@ export function KontoClient() {
 
   async function toggleNotificationPref(key: keyof NotificationPrefs, next: boolean) {
     if (!accessToken || !dashboard) return;
-    const current = dashboard.customer.notificationPrefs ?? DEFAULT_NOTIFICATION_PREFS;
+    const current: NotificationPrefs = { ...DEFAULT_NOTIFICATION_PREFS, ...(dashboard.customer.notificationPrefs ?? {}) };
     const updatedPrefs: NotificationPrefs = { ...current, [key]: next };
     setNotifSaving(key);
+    setNotifSavedKey(null);
     setNotifMsg("");
     // Optimistic update
     setDashboard((prev) =>
@@ -572,7 +574,9 @@ export function KontoClient() {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
         body: JSON.stringify({ notificationPrefs: updatedPrefs }),
       });
-      if (!res.ok) {
+      if (res.ok) {
+        setNotifSavedKey(key);
+      } else {
         // Revert on failure
         setDashboard((prev) =>
           prev ? { ...prev, customer: { ...prev.customer, notificationPrefs: current } } : prev,
@@ -767,7 +771,7 @@ export function KontoClient() {
     (o) => o.latestProof != null || o.status === "WAITING_CUSTOMER_APPROVAL",
   ).length;
   const totalSpentCents = orders
-    .filter((o) => o.status !== "CANCELLED" && o.status !== "PAYMENT_FAILED")
+    .filter((o) => !["CANCELLED", "PAYMENT_FAILED", "PENDING_PAYMENT"].includes(o.status))
     .reduce((sum, o) => sum + (o.amountCents ?? 0), 0);
   const totalSpentLabel = new Intl.NumberFormat("de-DE", {
     style: "currency",
@@ -1223,7 +1227,7 @@ export function KontoClient() {
             </p>
             <div className="account-toggle-list">
               {NOTIFICATION_LABELS.map((n) => {
-                const prefs = dashboard.customer.notificationPrefs ?? DEFAULT_NOTIFICATION_PREFS;
+                const prefs: NotificationPrefs = { ...DEFAULT_NOTIFICATION_PREFS, ...(dashboard.customer.notificationPrefs ?? {}) };
                 return (
                   <label key={n.key} className="account-toggle-row">
                     <input
@@ -1236,6 +1240,11 @@ export function KontoClient() {
                       <span className="account-toggle-label">{n.label}</span>
                       <span className="account-toggle-hint">{n.hint}</span>
                     </span>
+                    {notifSaving === n.key ? (
+                      <span className="account-toggle-status account-toggle-status--saving">Wird gespeichert …</span>
+                    ) : notifSavedKey === n.key ? (
+                      <span className="account-toggle-status account-toggle-status--saved" role="status">✓ Gespeichert</span>
+                    ) : null}
                   </label>
                 );
               })}
@@ -1272,6 +1281,26 @@ export function KontoClient() {
 
           {dashboard && view === "overview" ? (
             <>
+              {!dashboard.customer.street || !dashboard.customer.vatId ? (
+                <div className="account-nudge" role="region" aria-label="Profilhinweis">
+                  <span className="account-nudge__icon"><Icons.IconAlert size={20} /></span>
+                  <div className="account-nudge__body">
+                    <strong>Profil vervollständigen</strong>
+                    <span className="field-hint">
+                      Hinterlegen Sie Anschrift und USt-IdNr., um den Bestellprozess zu beschleunigen
+                      und Rechnungskauf zu beantragen.
+                    </span>
+                    <button
+                      type="button"
+                      className="secondary-link"
+                      style={{ alignSelf: "flex-start", marginTop: "4px" }}
+                      onClick={() => selectView("profile")}
+                    >
+                      Jetzt vervollständigen →
+                    </button>
+                  </div>
+                </div>
+              ) : null}
               <div className="account-stat-grid">
                 <StatCard
                   label="Offene Bestellungen"
@@ -1344,18 +1373,22 @@ export function KontoClient() {
                 <>
                   <div className="account-filterbar">
                     <div className="account-filter-chips" role="tablist" aria-label="Bestellungen filtern">
-                      {ORDER_FILTERS.map((f) => (
-                        <button
-                          key={f.key}
-                          type="button"
-                          role="tab"
-                          aria-selected={orderFilter === f.key}
-                          className={`account-chip${orderFilter === f.key ? " account-chip--active" : ""}`}
-                          onClick={() => setOrderFilter(f.key)}
-                        >
-                          {f.label}
-                        </button>
-                      ))}
+                      {ORDER_FILTERS.map((f) => {
+                        const count = orders.filter((o) => matchesOrderFilter(o, f.key)).length;
+                        return (
+                          <button
+                            key={f.key}
+                            type="button"
+                            role="tab"
+                            aria-selected={orderFilter === f.key}
+                            className={`account-chip${orderFilter === f.key ? " account-chip--active" : ""}`}
+                            onClick={() => setOrderFilter(f.key)}
+                          >
+                            {f.label}
+                            <span className="account-chip__badge">{count}</span>
+                          </button>
+                        );
+                      })}
                     </div>
                     <input
                       type="search"
@@ -1373,7 +1406,13 @@ export function KontoClient() {
                       description="Für diese Filter- und Suchkombination gibt es keine Treffer."
                     />
                   ) : (
-                    <div className="section-stack">{filteredOrders.map(renderOrderCard)}</div>
+                    <>
+                      <p className="field-hint" role="status" aria-live="polite">
+                        {filteredOrders.length}{" "}
+                        {filteredOrders.length === 1 ? "Bestellung" : "Bestellungen"} angezeigt
+                      </p>
+                      <div className="section-stack">{filteredOrders.map(renderOrderCard)}</div>
+                    </>
                   )}
                 </>
               )}
@@ -1449,8 +1488,8 @@ function AccountShell({ children }: { children: React.ReactNode }) {
 function StatusMessage({ message, error }: { message: string; error: string }) {
   return (
     <>
-      {message ? <p className="form-status success">{message}</p> : null}
-      {error ? <p className="form-status error">{error}</p> : null}
+      {message ? <p className="form-status success" role="status" aria-live="polite">{message}</p> : null}
+      {error ? <p className="form-status error" role="alert">{error}</p> : null}
     </>
   );
 }
