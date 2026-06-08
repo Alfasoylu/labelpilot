@@ -3318,6 +3318,12 @@ th {
   color: var(--muted);
 }
 
+.account-support-message {
+  color: var(--text);
+  white-space: pre-wrap;
+  margin: 8px 0 0;
+}
+
 /* Refill reminder rows */
 .account-reminder-row {
   display: flex;

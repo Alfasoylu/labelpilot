@@ -18,7 +18,7 @@ import {
   getArtworkStatusLabel,
   getMaterialLabel,
 } from "@/lib/orders/artwork";
-import { describeArtworkStatus, describeOrderStatus } from "@/lib/orders/status-style";
+import { describeArtworkStatus, describeOrderStatus, type StatusTone } from "@/lib/orders/status-style";
 
 type AccountOrder = {
   id: string;
@@ -114,6 +114,39 @@ const NOTIFICATION_LABELS: { key: keyof NotificationPrefs; label: string; hint: 
   { key: "quoteUpdates", label: "Angebots-Updates", hint: "E-Mail bei Statusänderungen Ihrer Angebotsanfragen." },
 ];
 
+type SupportRequestItem = {
+  id: string;
+  type: string;
+  subject: string;
+  message: string;
+  status: string;
+  createdAt: string;
+  orderNumber: string | null;
+};
+
+const SUPPORT_TYPE_OPTIONS = [
+  { value: "GENERAL", label: "Allgemeine Anfrage" },
+  { value: "REPRINT", label: "Nachdruck / Reklamation" },
+  { value: "BILLING", label: "Rechnung & Zahlung" },
+  { value: "DELIVERY", label: "Lieferung & Versand" },
+];
+
+const SUPPORT_TYPE_LABELS: Record<string, string> = Object.fromEntries(
+  SUPPORT_TYPE_OPTIONS.map((o) => [o.value, o.label]),
+);
+
+function describeSupportStatus(status: string): { tone: StatusTone; label: string } {
+  switch (status) {
+    case "RESOLVED":
+      return { tone: "success", label: "Gelöst" };
+    case "IN_REVIEW":
+      return { tone: "info", label: "In Bearbeitung" };
+    case "OPEN":
+    default:
+      return { tone: "warning", label: "Offen" };
+  }
+}
+
 function formatDate(value: string | null) {
   if (!value) {
     return "Nicht vorhanden";
@@ -188,6 +221,12 @@ export function KontoClient() {
   const [notifSavedKey, setNotifSavedKey] = useState<keyof NotificationPrefs | null>(null);
   const [notifMsg, setNotifMsg] = useState("");
 
+  const [supportRequests, setSupportRequests] = useState<SupportRequestItem[] | null>(null);
+  const [supportForm, setSupportForm] = useState({ type: "GENERAL", orderId: "", subject: "", message: "" });
+  const [supportSending, setSupportSending] = useState(false);
+  const [supportMsg, setSupportMsg] = useState("");
+  const [supportError, setSupportError] = useState("");
+
   const [forgotMode, setForgotMode] = useState(false);
   const [passwordRecovery, setPasswordRecovery] = useState(false);
   const [newPassword, setNewPassword] = useState("");
@@ -197,7 +236,7 @@ export function KontoClient() {
   const [changePasswordMode, setChangePasswordMode] = useState(false);
   const [changePasswordMsg, setChangePasswordMsg] = useState("");
 
-  const VALID_VIEWS: AccountView[] = ["overview", "orders", "designs", "profile", "documents"];
+  const VALID_VIEWS: AccountView[] = ["overview", "orders", "designs", "profile", "documents", "support"];
 
   useEffect(() => {
     setMounted(true);
@@ -301,6 +340,61 @@ export function KontoClient() {
       ignore = true;
     };
   }, [accessToken]);
+
+  // Lazy-load support requests the first time the Support view is opened.
+  useEffect(() => {
+    if (!accessToken || view !== "support" || supportRequests !== null) return;
+
+    let ignore = false;
+
+    async function loadSupport() {
+      try {
+        const res = await fetch("/api/account/support", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        const data = (await res.json()) as { requests?: SupportRequestItem[] };
+        if (!ignore && res.ok) setSupportRequests(data.requests ?? []);
+      } catch {
+        if (!ignore) setSupportRequests([]);
+      }
+    }
+
+    void loadSupport();
+    return () => {
+      ignore = true;
+    };
+  }, [accessToken, view, supportRequests]);
+
+  async function handleSupportSubmit() {
+    if (!accessToken) return;
+    setSupportSending(true);
+    setSupportMsg("");
+    setSupportError("");
+    try {
+      const res = await fetch("/api/account/support", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify({
+          type: supportForm.type,
+          orderId: supportForm.orderId || undefined,
+          subject: supportForm.subject,
+          message: supportForm.message,
+        }),
+      });
+      const data = (await res.json()) as { request?: SupportRequestItem; error?: string };
+      if (!res.ok || !data.request) {
+        setSupportError(data.error ?? "Anfrage konnte nicht gesendet werden.");
+        return;
+      }
+      setSupportRequests((prev) => [data.request!, ...(prev ?? [])]);
+      setSupportForm({ type: "GENERAL", orderId: "", subject: "", message: "" });
+      setSupportMsg("Ihre Anfrage wurde gesendet. Wir melden uns per E-Mail.");
+    } catch {
+      setSupportError("Anfrage konnte nicht gesendet werden.");
+    } finally {
+      setSupportSending(false);
+    }
+  }
 
   async function handleLogin(formData: FormData) {
     if (!supabase) return;
@@ -1261,7 +1355,12 @@ export function KontoClient() {
         <AccountSidebar
           active={view}
           onSelect={selectView}
-          counts={{ orders: orders.length, designs: storedDesigns.length, documents: documentEntries.length }}
+          counts={{
+            orders: orders.length,
+            designs: storedDesigns.length,
+            documents: documentEntries.length,
+            support: supportRequests?.filter((r) => r.status !== "RESOLVED").length ?? 0,
+          }}
           onLogout={handleLogout}
           customerLabel={customerLabel ?? undefined}
         />
@@ -1474,6 +1573,113 @@ export function KontoClient() {
                 </ul>
               )}
             </article>
+          ) : null}
+
+          {dashboard && view === "support" ? (
+            <>
+              <article className="surface-card">
+                <div className="account-card-head">
+                  <h2>Support-Anfrage</h2>
+                  <span className="account-section-icon"><Icons.IconSupport size={20} /></span>
+                </div>
+                <p className="field-hint">
+                  Fragen zu Bestellung, Nachdruck, Rechnung oder Lieferung? Schreiben Sie uns – wir
+                  antworten per E-Mail.
+                </p>
+                <div className="section-stack">
+                  <div className="form-grid">
+                    <div className="field">
+                      <label htmlFor="support-type">Anliegen</label>
+                      <select
+                        id="support-type"
+                        value={supportForm.type}
+                        onChange={(e) => setSupportForm((f) => ({ ...f, type: e.target.value }))}
+                      >
+                        {SUPPORT_TYPE_OPTIONS.map((o) => (
+                          <option key={o.value} value={o.value}>{o.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="field">
+                      <label htmlFor="support-order">Bestellung (optional)</label>
+                      <select
+                        id="support-order"
+                        value={supportForm.orderId}
+                        onChange={(e) => setSupportForm((f) => ({ ...f, orderId: e.target.value }))}
+                      >
+                        <option value="">Keine Zuordnung</option>
+                        {orders.map((o) => (
+                          <option key={o.id} value={o.id}>{o.orderNumber}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="field field-full">
+                      <label htmlFor="support-subject">Betreff</label>
+                      <input
+                        id="support-subject"
+                        value={supportForm.subject}
+                        maxLength={160}
+                        onChange={(e) => setSupportForm((f) => ({ ...f, subject: e.target.value }))}
+                      />
+                    </div>
+                    <div className="field field-full">
+                      <label htmlFor="support-message">Nachricht</label>
+                      <textarea
+                        id="support-message"
+                        rows={5}
+                        value={supportForm.message}
+                        maxLength={2000}
+                        onChange={(e) => setSupportForm((f) => ({ ...f, message: e.target.value }))}
+                      />
+                    </div>
+                  </div>
+                  {supportError ? <p className="form-status error" role="alert">{supportError}</p> : null}
+                  {supportMsg ? <p className="form-status success" role="status">{supportMsg}</p> : null}
+                  <div className="inline-actions">
+                    <button
+                      type="button"
+                      className="cta-button"
+                      disabled={supportSending || supportForm.subject.trim().length < 3 || supportForm.message.trim().length < 5}
+                      onClick={handleSupportSubmit}
+                    >
+                      {supportSending ? "Wird gesendet …" : "Anfrage senden"}
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article className="surface-card">
+                <h2>Meine Anfragen</h2>
+                {supportRequests === null ? (
+                  <SkeletonCard />
+                ) : supportRequests.length === 0 ? (
+                  <EmptyState
+                    icon={<Icons.IconSupport size={32} />}
+                    title="Noch keine Anfragen"
+                    description="Ihre Support-Anfragen erscheinen hier mit aktuellem Status."
+                  />
+                ) : (
+                  <div className="section-stack">
+                    {supportRequests.map((r) => {
+                      const s = describeSupportStatus(r.status);
+                      return (
+                        <div key={r.id} className="section-card">
+                          <div className="account-card-head">
+                            <h3>{r.subject}</h3>
+                            <StatusBadge tone={s.tone} size="sm">{s.label}</StatusBadge>
+                          </div>
+                          <p className="price-note">
+                            {SUPPORT_TYPE_LABELS[r.type] ?? r.type}
+                            {r.orderNumber ? ` · ${r.orderNumber}` : ""} · {formatDate(r.createdAt)}
+                          </p>
+                          <p className="account-support-message">{r.message}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </article>
+            </>
           ) : null}
         </div>
       </div>

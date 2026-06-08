@@ -4,9 +4,10 @@ import {
   IconDesigns,
   IconOrders,
   IconProfile,
+  IconSupport,
 } from "./Icons";
 
-export type AccountView = "overview" | "orders" | "designs" | "profile" | "documents";
+export type AccountView = "overview" | "orders" | "designs" | "profile" | "documents" | "support";
 
 const NAV_ITEMS: { view: AccountView; label: string; Icon: typeof IconDashboard }[] = [
   { view: "overview", label: "Übersicht", Icon: IconDashboard },
@@ -14,6 +15,7 @@ const NAV_ITEMS: { view: AccountView; label: string; Icon: typeof IconDashboard 
   { view: "designs", label: "Designs", Icon: IconDesigns },
   { view: "profile", label: "Profil", Icon: IconProfile },
   { view: "documents", label: "Dokumente", Icon: IconDocuments },
+  { view: "support", label: "Support", Icon: IconSupport },
 ];
 
 interface AccountSidebarProps {

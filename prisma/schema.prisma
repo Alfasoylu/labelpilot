@@ -220,9 +220,28 @@ model Customer {
   updatedAt   DateTime @updatedAt
   orders      Order[]
   storedDesigns StoredDesign[]
+  supportRequests SupportRequest[]
 
   @@index([email])
   @@index([authUserId])
+}
+
+model SupportRequest {
+  id         String   @id @default(cuid())
+  customerId String
+  orderId    String?
+  type       String   @default("GENERAL")
+  subject    String
+  message    String
+  status     String   @default("OPEN")
+  adminNote  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  order      Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  @@index([customerId])
+  @@index([status])
 }
 
 model Order {
@@ -292,6 +311,7 @@ model Order {
   refillPredictions       RefillPrediction[]
   reorderReminders        ReorderReminder[]
   variableDataBatches     VariableDataBatch[]
+  supportRequests         SupportRequest[]
   customer                Customer?         @relation(fields: [customerId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   storedDesigns           StoredDesign[]    @relation("StoredDesignLastOrder")
 

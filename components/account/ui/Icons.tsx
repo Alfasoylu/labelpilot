@@ -166,6 +166,16 @@ export function IconDownload(props: IconProps) {
   );
 }
 
+export function IconSupport(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M21 11.5a8.38 8.38 0 0 1-9 8.34 9.5 9.5 0 0 1-3.9-.7L3 21l1.86-5.1A8.38 8.38 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5Z" />
+      <path d="M9.5 9.5a2.5 2.5 0 0 1 4.6 1.2c0 1.5-2.1 2-2.1 2.6" />
+      <path d="M12 16.5v.01" />
+    </svg>
+  );
+}
+
 export function IconRepeat(props: IconProps) {
   return (
     <svg {...base(props)}>
