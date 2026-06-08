@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { CookieSettingsLink } from "@/components/consent/CookieSettingsLink";
 import type { SiteNavigationItem } from "@/lib/site-content";
 
 type FooterGroup = {
@@ -31,6 +32,9 @@ export function Footer({ groups }: FooterProps) {
           >
             @labelpilot
           </a>
+          <div className="footer-cookie-row">
+            <CookieSettingsLink />
+          </div>
         </div>
         <div className="footer-grid">
           {groups.map((group) => (

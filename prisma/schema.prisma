@@ -558,6 +558,38 @@ model StripeEvent {
   createdAt     DateTime          @default(now())
 }
 
+model ConsentRecord {
+  id            String   @id @default(cuid())
+  visitorId     String?
+  analytics     Boolean  @default(false)
+  marketing     Boolean  @default(false)
+  policyVersion String   @default("v1")
+  userAgent     String?
+  createdAt     DateTime @default(now())
+
+  @@index([visitorId])
+  @@index([createdAt])
+}
+
+model VisitorEvent {
+  id          String   @id @default(cuid())
+  visitorId   String
+  eventType   String
+  path        String?
+  referrer    String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  country     String?
+  device      String?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  @@index([visitorId])
+  @@index([eventType])
+  @@index([createdAt])
+}
+
 model OrderStatusEvent {
   id        String      @id @default(cuid())
   orderId   String

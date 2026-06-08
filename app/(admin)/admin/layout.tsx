@@ -97,6 +97,9 @@ export default async function AdminLayout({
           <Link href="/admin/analytics" className="secondary-link">
             Analytik
           </Link>
+          <Link href="/admin/visitors" className="secondary-link">
+            Besucher
+          </Link>
           <Link href="/admin/production" className="secondary-link">
             Produktion
           </Link>
