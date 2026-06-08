@@ -124,6 +124,22 @@ type SupportRequestItem = {
   orderNumber: string | null;
 };
 
+type RefillPredictionItem = {
+  id: string;
+  sourceDesignId: string | null;
+  predictedDepletionAt: string;
+  reminderWindowDays: number;
+  isEnabled: boolean;
+  orderNumber: string;
+};
+
+// Whole days from now until the given ISO date (negative = already past).
+function daysUntil(iso: string): number {
+  const target = new Date(iso).getTime();
+  const now = Date.now();
+  return Math.ceil((target - now) / 86_400_000);
+}
+
 const SUPPORT_TYPE_OPTIONS = [
   { value: "GENERAL", label: "Allgemeine Anfrage" },
   { value: "REPRINT", label: "Nachdruck / Reklamation" },
@@ -227,6 +243,9 @@ export function KontoClient() {
   const [supportMsg, setSupportMsg] = useState("");
   const [supportError, setSupportError] = useState("");
   const [supportLoadError, setSupportLoadError] = useState(false);
+
+  const [refillPredictions, setRefillPredictions] = useState<RefillPredictionItem[] | null>(null);
+  const [refillTogglingId, setRefillTogglingId] = useState<string | null>(null);
 
   const [forgotMode, setForgotMode] = useState(false);
   const [passwordRecovery, setPasswordRecovery] = useState(false);
@@ -404,6 +423,57 @@ export function KontoClient() {
       setSupportError("Anfrage konnte nicht gesendet werden.");
     } finally {
       setSupportSending(false);
+    }
+  }
+
+  // Load all refill predictions for the overview "Nachbestellung" section.
+  useEffect(() => {
+    if (!accessToken || view !== "overview" || refillPredictions !== null) return;
+
+    let ignore = false;
+
+    async function loadPredictions() {
+      try {
+        const res = await fetch("/api/account/refill-predictions", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        const data = (await res.json()) as { predictions?: RefillPredictionItem[] };
+        if (!ignore) setRefillPredictions(res.ok ? data.predictions ?? [] : []);
+      } catch {
+        if (!ignore) setRefillPredictions([]);
+      }
+    }
+
+    void loadPredictions();
+    return () => {
+      ignore = true;
+    };
+  }, [accessToken, view, refillPredictions]);
+
+  async function toggleRefillReminder(id: string, next: boolean) {
+    if (!accessToken) return;
+    setRefillTogglingId(id);
+    // Optimistic
+    setRefillPredictions((prev) =>
+      prev ? prev.map((p) => (p.id === id ? { ...p, isEnabled: next } : p)) : prev,
+    );
+    try {
+      const res = await fetch(`/api/account/refill-predictions/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify({ isEnabled: next }),
+      });
+      if (!res.ok) {
+        setRefillPredictions((prev) =>
+          prev ? prev.map((p) => (p.id === id ? { ...p, isEnabled: !next } : p)) : prev,
+        );
+      }
+    } catch {
+      setRefillPredictions((prev) =>
+        prev ? prev.map((p) => (p.id === id ? { ...p, isEnabled: !next } : p)) : prev,
+      );
+    } finally {
+      setRefillTogglingId(null);
     }
   }
 
@@ -1441,6 +1511,71 @@ export function KontoClient() {
                   hint="Ohne stornierte Bestellungen"
                 />
               </div>
+
+              {refillPredictions && refillPredictions.length > 0 ? (
+                <article className="surface-card">
+                  <div className="account-card-head">
+                    <h2>Nachbestellung im Blick</h2>
+                    <span className="account-section-icon"><Icons.IconRepeat size={20} /></span>
+                  </div>
+                  <p className="field-hint">
+                    Geschätzter Verbrauch Ihrer letzten Bestellungen – aktivieren Sie eine
+                    Erinnerung, bevor der Etikettenbestand zur Neige geht.
+                  </p>
+                  <div className="section-stack">
+                    {[...refillPredictions]
+                      .sort((a, b) => a.predictedDepletionAt.localeCompare(b.predictedDepletionAt))
+                      .map((p) => {
+                        const days = daysUntil(p.predictedDepletionAt);
+                        const soon = days <= 45;
+                        return (
+                          <div key={p.id} className="account-reminder-row">
+                            <span className="account-reminder-meta">
+                              <span className="account-reminder-date">
+                                {p.orderNumber} · aufgebraucht ca. {formatDate(p.predictedDepletionAt)}
+                              </span>
+                              <span className="account-reminder-sub">
+                                {days > 0 ? `noch ca. ${days} Tage` : "Bestand vermutlich aufgebraucht"}
+                                {soon ? " · bald fällig" : ""} · Erinnerung {p.reminderWindowDays} Tage vorher
+                              </span>
+                            </span>
+                            <span className="account-reminder-actions">
+                              {p.sourceDesignId ? (
+                                <a href={`/konto/designs/${p.sourceDesignId}`} className="secondary-link">
+                                  Nachbestellen →
+                                </a>
+                              ) : null}
+                              {p.isEnabled ? (
+                                <>
+                                  <StatusBadge tone="success" size="sm">
+                                    <Icons.IconCheck size={13} /> Erinnerung aktiv
+                                  </StatusBadge>
+                                  <button
+                                    type="button"
+                                    className="secondary-link"
+                                    disabled={refillTogglingId === p.id}
+                                    onClick={() => toggleRefillReminder(p.id, false)}
+                                  >
+                                    Aus
+                                  </button>
+                                </>
+                              ) : (
+                                <button
+                                  type="button"
+                                  className="cta-button account-reminder-cta"
+                                  disabled={refillTogglingId === p.id}
+                                  onClick={() => toggleRefillReminder(p.id, true)}
+                                >
+                                  {refillTogglingId === p.id ? "…" : "Erinnerung aktivieren"}
+                                </button>
+                              )}
+                            </span>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </article>
+              ) : null}
 
               <article className="surface-card">
                 <div className="account-card-head">
