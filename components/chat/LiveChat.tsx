@@ -149,7 +149,7 @@ export function LiveChat() {
         <div className="livechat__window" role="dialog" aria-label="Live Chat">
           <div className="livechat__header">
             <span className="livechat__header-title">Labelpilot Support</span>
-            <span className="livechat__header-hint">Genellikle birkaç dakika içinde yanıt verilir</span>
+            <span className="livechat__header-hint">Wir antworten in der Regel innerhalb weniger Minuten</span>
             <button
               className="livechat__close"
               onClick={() => setOpen(false)}
@@ -162,8 +162,8 @@ export function LiveChat() {
           <div className="livechat__messages">
             {!started && messages.length === 0 && (
               <div className="livechat__welcome">
-                <p>Merhaba! Size nasıl yardımcı olabiliriz?</p>
-                <p className="livechat__welcome-sub">Etiket formatı, sipariş veya teknik sorularınızı yazabilirsiniz.</p>
+                <p>Hallo! Wie können wir Ihnen helfen?</p>
+                <p className="livechat__welcome-sub">Fragen zu Format, Material, Bestellung oder Druckdaten – einfach schreiben.</p>
               </div>
             )}
             {messages.map((m) => (
@@ -182,7 +182,7 @@ export function LiveChat() {
               ref={inputRef}
               className="livechat__input"
               type="text"
-              placeholder="Mesajınızı yazın…"
+              placeholder="Ihre Nachricht …"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKey}
