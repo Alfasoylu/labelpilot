@@ -3,6 +3,7 @@ export type PricingMaterialKey = "OPAQUE_PP" | "TRANSPARENT_PP";
 export type PricingMaterialParams = {
   materialKey: PricingMaterialKey;
   materialCostPerM2: number;
+  mattMaterialCostPerM2?: number;
   wasteFactorPct: number;
   minOrderValueNet: number;
 };
@@ -112,6 +113,7 @@ function computeBestProductionCost(
   anzahlSorten: number,
   params: PricingMaterialParams,
   settings: PricingSettingsInput,
+  finishing?: "MATT" | "GLAENZEND",
 ): {
   cost: number;
   sellingPrice: number;
@@ -125,7 +127,11 @@ function computeBestProductionCost(
 } {
   const labelAreaM2 = (widthMm * heightMm) / 1_000_000;
   const totalAreaM2 = labelAreaM2 * quantity * (1 + params.wasteFactorPct / 100);
-  const materialCost = params.materialCostPerM2 * totalAreaM2;
+  const effectiveMaterialCostPerM2 =
+    finishing === "MATT" && params.mattMaterialCostPerM2 != null
+      ? params.mattMaterialCostPerM2
+      : params.materialCostPerM2;
+  const materialCost = effectiveMaterialCostPerM2 * totalAreaM2;
   const shippingWeightKg = labelAreaM2 * quantity * settings.labelWeightPerM2Grams / 1000;
   const shippingCost = computeShippingCost(shippingWeightKg, settings);
 
@@ -207,7 +213,7 @@ export function computeCustomSizePrice(
     (labelAreaM2 * quantity * settings.labelWeightPerM2Grams) / 1000 > settings.shippingHeavyThresholdKg;
 
   const best = computeBestProductionCost(
-    widthMm, heightMm, quantity, colorCount, anzahlSorten, params, settings,
+    widthMm, heightMm, quantity, colorCount, anzahlSorten, params, settings, input.finishing,
   );
 
   // Use the method-specific selling price directly.
@@ -219,13 +225,13 @@ export function computeCustomSizePrice(
   // Applies to both methods — compute the best selling price at the boundary qty as floor.
   if (quantity > settings.markupTier1MaxQty) {
     const atBoundary = computeBestProductionCost(
-      widthMm, heightMm, settings.markupTier1MaxQty, colorCount, anzahlSorten, params, settings,
+      widthMm, heightMm, settings.markupTier1MaxQty, colorCount, anzahlSorten, params, settings, input.finishing,
     );
     unroundedNetPrice = Math.max(unroundedNetPrice, atBoundary.sellingPrice);
   }
   if (quantity > settings.markupTier2MaxQty) {
     const atBoundary = computeBestProductionCost(
-      widthMm, heightMm, settings.markupTier2MaxQty, colorCount, anzahlSorten, params, settings,
+      widthMm, heightMm, settings.markupTier2MaxQty, colorCount, anzahlSorten, params, settings, input.finishing,
     );
     unroundedNetPrice = Math.max(unroundedNetPrice, atBoundary.sellingPrice);
   }

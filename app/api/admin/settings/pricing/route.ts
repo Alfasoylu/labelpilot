@@ -12,6 +12,10 @@ import { getAdminActorFromRequest } from "@/lib/security/admin-basic-auth";
 const materialSchema = z.object({
   materialKey: z.enum(["OPAQUE_PP", "TRANSPARENT_PP"]),
   materialCostPerM2: z.coerce.number().positive(),
+  mattMaterialCostPerM2: z.preprocess(
+    (v) => (v === "" || v === null || v === undefined ? undefined : Number(v)),
+    z.number().positive().optional(),
+  ),
   wasteFactorPct: z.coerce.number().min(0).max(95),
   minOrderValueNet: z.coerce.number().positive(),
 });
@@ -59,6 +63,7 @@ function getMaterialPayload(formData: FormData, materialKey: "OPAQUE_PP" | "TRAN
   return {
     materialKey,
     materialCostPerM2: formData.get(`${materialKey}.materialCostPerM2`),
+    mattMaterialCostPerM2: formData.get(`${materialKey}.mattMaterialCostPerM2`),
     wasteFactorPct: formData.get(`${materialKey}.wasteFactorPct`),
     minOrderValueNet: formData.get(`${materialKey}.minOrderValueNet`),
   };
@@ -177,6 +182,7 @@ export async function POST(request: Request) {
     Array<{
       materialKey: string;
       materialCostPerM2?: { toString(): string } | null;
+      mattMaterialCostPerM2?: { toString(): string } | null;
       wasteFactorPct?: { toString(): string } | null;
       minOrderValueNet?: { toString(): string } | null;
       updatedBy?: string | null;
@@ -260,12 +266,14 @@ export async function POST(request: Request) {
       tableName: `PricingMaterialCost:${row.materialKey}`,
       previous: {
         materialCostPerM2: previous?.materialCostPerM2?.toString() ?? null,
+        mattMaterialCostPerM2: previous?.mattMaterialCostPerM2?.toString() ?? null,
         wasteFactorPct: previous?.wasteFactorPct?.toString() ?? null,
         minOrderValueNet: previous?.minOrderValueNet?.toString() ?? null,
         updatedBy: previous?.updatedBy ?? null,
       },
       next: {
         materialCostPerM2: row.materialCostPerM2.toString(),
+        mattMaterialCostPerM2: row.mattMaterialCostPerM2?.toString() ?? null,
         wasteFactorPct: row.wasteFactorPct.toString(),
         minOrderValueNet: row.minOrderValueNet.toString(),
         updatedBy: actor,

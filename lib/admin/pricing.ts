@@ -11,6 +11,7 @@ type DecimalLike = { toString(): string };
 type PricingMaterialCostRecord = {
   materialKey: string;
   materialCostPerM2: DecimalLike | number;
+  mattMaterialCostPerM2?: DecimalLike | number | null;
   wasteFactorPct: DecimalLike | number;
   minOrderValueNet: DecimalLike | number;
   updatedAt: Date;
@@ -164,6 +165,7 @@ export function mapMaterialCostRecord(record: PricingMaterialCostRecord | null |
   return {
     materialKey: record.materialKey as PricingMaterialKey,
     materialCostPerM2: decimalToNumber(record.materialCostPerM2) ?? 0,
+    mattMaterialCostPerM2: decimalToNumber(record.mattMaterialCostPerM2) ?? undefined,
     wasteFactorPct: decimalToNumber(record.wasteFactorPct) ?? 0,
     minOrderValueNet: decimalToNumber(record.minOrderValueNet) ?? 0,
     updatedAt: record.updatedAt,

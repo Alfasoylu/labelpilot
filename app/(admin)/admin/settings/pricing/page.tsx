@@ -227,10 +227,20 @@ export default async function PricingSettingsPage({ searchParams }: PricingSetti
                     <Field
                       id={`${materialKey}-materialCostPerM2`}
                       name={`${materialKey}.materialCostPerM2`}
-                      label="Materialkosten"
+                      label="Materialkosten (Glanz)"
                       value={formatPricingNumber(material.materialCostPerM2, 4)}
                       min="0.0001" step="0.0001" suffix="€/m²"
                     />
+                    <div style={{ marginTop: "0.75rem" }}>
+                      <Field
+                        id={`${materialKey}-mattMaterialCostPerM2`}
+                        name={`${materialKey}.mattMaterialCostPerM2`}
+                        label="Materialkosten (Matt)"
+                        value={formatPricingNumber(material.mattMaterialCostPerM2, 4)}
+                        min="0.0001" step="0.0001" suffix="€/m²"
+                        hint="Einkaufspreis des mattierten PP-Films. Leer = wie Glanz."
+                      />
+                    </div>
                     <div style={{ marginTop: "0.75rem" }}>
                       <Field
                         id={`${materialKey}-wasteFactorPct`}
@@ -333,10 +343,10 @@ export default async function PricingSettingsPage({ searchParams }: PricingSetti
               <Field
                 id="settings-mattSurchargeNet"
                 name="settings.mattSurchargeNet"
-                label="Matt-Aufpreis"
+                label="Matt-Aufpreis (pauschal)"
                 value={formatPricingNumber(settings.mattSurchargeNet)}
                 min="0" step="0.01" suffix="€ netto"
-                hint="Wird bei Matt-Oberfläche zum Basispreis addiert. 0 = kein Aufpreis."
+                hint="Pauschaler Aufschlag zusätzlich zum Materialpreis. Bei Nutzung der Matt-Materialkosten pro Material auf 0 setzen."
               />
             </div>
           </article>
