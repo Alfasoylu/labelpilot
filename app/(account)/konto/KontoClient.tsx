@@ -780,9 +780,11 @@ export function KontoClient() {
       <div key={design.id} className="section-card">
         <div className="account-card-head">
           <h3>{design.name}</h3>
-          <a href={`/konto/designs/${design.id}`} className="secondary-link">
-            Details ansehen →
-          </a>
+          {design.status === "ACTIVE" ? (
+            <a href={`/konto/designs/${design.id}`} className="secondary-link">
+              Details ansehen →
+            </a>
+          ) : null}
         </div>
         <p className="price-note">
           {design.productSlug} - {design.material ? getMaterialLabel(design.material) : "Material offen"} - {design.labelSize ?? "Format offen"}

@@ -58,6 +58,7 @@ export function DesignDetailClient({ designId }: { designId: string }) {
   const [togglingId, setTogglingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(Boolean(supabase));
   const [error, setError] = useState("");
+  const [actionError, setActionError] = useState("");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -133,6 +134,7 @@ export function DesignDetailClient({ designId }: { designId: string }) {
   async function toggleReminder(id: string, next: boolean) {
     if (!accessToken) return;
     setTogglingId(id);
+    setActionError("");
     try {
       const res = await fetch(`/api/account/refill-predictions/${id}`, {
         method: "PATCH",
@@ -143,10 +145,10 @@ export function DesignDetailClient({ designId }: { designId: string }) {
       if (res.ok && typeof data.isEnabled === "boolean") {
         setPredictions((prev) => prev.map((p) => (p.id === id ? { ...p, isEnabled: data.isEnabled! } : p)));
       } else {
-        setError(data.error ?? "Erinnerung konnte nicht aktualisiert werden.");
+        setActionError(data.error ?? "Erinnerung konnte nicht aktualisiert werden.");
       }
     } catch {
-      setError("Erinnerung konnte nicht aktualisiert werden.");
+      setActionError("Erinnerung konnte nicht aktualisiert werden.");
     } finally {
       setTogglingId(null);
     }
@@ -154,14 +156,14 @@ export function DesignDetailClient({ designId }: { designId: string }) {
 
   async function handleDownload(versionId: string, asset: "artwork" | "proof") {
     if (!accessToken) return;
-    setError("");
+    setActionError("");
     const res = await fetch(
       `/api/stored-designs/${designId}/versions/${versionId}${asset === "proof" ? "?asset=proof" : ""}`,
       { headers: { Accept: "application/json", Authorization: `Bearer ${accessToken}` } },
     );
     const result = (await res.json()) as { url?: string; error?: string };
     if (!res.ok || !result.url) {
-      setError(result.error ?? "Datei konnte nicht bereitgestellt werden.");
+      setActionError(result.error ?? "Datei konnte nicht bereitgestellt werden.");
       return;
     }
     window.location.href = result.url;
@@ -222,6 +224,8 @@ export function DesignDetailClient({ designId }: { designId: string }) {
         </div>
       </article>
 
+      {actionError ? <p className="form-status error">{actionError}</p> : null}
+
       <div className="two-column">
         <article className="surface-card">
           <div className="account-card-head">
@@ -233,7 +237,7 @@ export function DesignDetailClient({ designId }: { designId: string }) {
             <li>Material: {design.material ? getMaterialLabel(design.material) : "Material offen"}</li>
             <li>Format: {design.labelSize ?? "Format offen"}</li>
             <li>Letzte Bestellung: {design.lastOrder?.orderNumber ?? "Nicht vorhanden"}</li>
-            <li>Letzte Freigabe: {formatDate(design.lastOrderedAt)}</li>
+            <li>Zuletzt bestellt am: {formatDate(design.lastOrderedAt)}</li>
             <li>Bisherige Nachbestellungen: {design.totalOrders.toLocaleString("de-DE")}</li>
           </ul>
         </article>
