@@ -16,10 +16,10 @@ type TelegramUpdate = {
   message?: TelegramMessage & { from?: { id: number }; chat?: { id: number } };
 };
 
-// Extract session ID from Telegram notification text: "SID:abc12345 | ..."
-function extractSessionPrefix(text?: string): string | null {
+// Extract full session UUID from Telegram notification text: "SID:<uuid> | ..."
+function extractSessionId(text?: string): string | null {
   if (!text) return null;
-  const match = text.match(/SID:([a-f0-9]{8})/);
+  const match = text.match(/SID:([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/);
   return match ? match[1] : null;
 }
 
@@ -62,10 +62,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   }
 
-  const sessionPrefix = extractSessionPrefix(msg.reply_to_message.text);
-  console.log("[webhook] reply received", { replyText: msg.reply_to_message.text?.slice(0, 60), sessionPrefix });
-  if (!sessionPrefix) {
-    console.log("[webhook] no session prefix found in reply text");
+  const sessionId = extractSessionId(msg.reply_to_message.text);
+  console.log("[webhook] reply received", { replyText: msg.reply_to_message.text?.slice(0, 80), sessionId });
+  if (!sessionId) {
+    console.log("[webhook] no session ID found in reply text");
     return NextResponse.json({ ok: true });
   }
 
@@ -75,25 +75,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   }
 
-  // Find session by ID prefix
-  const { data: sessions, error: sessionError } = await supabase
-    .from("chat_sessions")
-    .select("id")
-    .ilike("id", `${sessionPrefix}%`)
-    .is("resolved_at", null)
-    .limit(1);
-
-  console.log("[webhook] session lookup", { sessionPrefix, found: sessions?.length, error: sessionError?.message });
-
-  const session = sessions?.[0] as { id: string } | undefined;
-  if (!session) return NextResponse.json({ ok: true });
-
   const { error: insertError } = await supabase.from("chat_messages").insert({
-    session_id: session.id,
+    session_id: sessionId,
     sender: "operator",
     content: msg.text,
   });
-  console.log("[webhook] insert result", { sessionId: session.id, error: insertError?.message });
+  console.log("[webhook] insert result", { sessionId, error: insertError?.message });
 
   return NextResponse.json({ ok: true });
 }
