@@ -17,9 +17,8 @@ export async function GET(req: NextRequest) {
   }
 
   const appUrl =
-    process.env.NEXT_PUBLIC_APP_URL ?? process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : null;
+    process.env.NEXT_PUBLIC_APP_URL ??
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);
 
   if (!appUrl) {
     return NextResponse.json({ error: "Could not determine app URL" }, { status: 500 });
