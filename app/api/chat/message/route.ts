@@ -74,13 +74,17 @@ export async function POST(req: NextRequest) {
   // Notify operator via Telegram (fire-and-forget; don't block response)
   const env = getServerEnv();
   if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_OPERATOR_CHAT_ID) {
-    void sendTelegramNotification(
+    sendTelegramNotification(
       env.TELEGRAM_BOT_TOKEN,
       env.TELEGRAM_OPERATOR_CHAT_ID,
       activeSessionId,
       content,
       pageUrl,
-    );
+    ).catch((err: unknown) => {
+      console.error("[chat/message] Telegram notification failed:", err instanceof Error ? err.message : String(err));
+    });
+  } else {
+    console.log("[chat/message] Telegram env vars missing", { hasToken: !!env.TELEGRAM_BOT_TOKEN, hasChatId: !!env.TELEGRAM_OPERATOR_CHAT_ID });
   }
 
   return NextResponse.json({ sessionId: activeSessionId });
