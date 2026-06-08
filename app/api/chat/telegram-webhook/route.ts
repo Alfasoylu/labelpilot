@@ -16,10 +16,10 @@ type TelegramUpdate = {
   message?: TelegramMessage & { from?: { id: number }; chat?: { id: number } };
 };
 
-// Extract session ID from Telegram notification text: "[abc12345] ..."
+// Extract session ID from Telegram notification text: "SID:abc12345 | ..."
 function extractSessionPrefix(text?: string): string | null {
   if (!text) return null;
-  const match = text.match(/\[([a-f0-9]{8})\]/);
+  const match = text.match(/SID:([a-f0-9]{8})/);
   return match ? match[1] : null;
 }
 
