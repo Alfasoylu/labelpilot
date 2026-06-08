@@ -3434,6 +3434,58 @@ th {
   margin: 4px 0 0;
 }
 
+/* Order status history (event log) */
+.account-history {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+.account-history__item {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 12px;
+  padding-bottom: 16px;
+  position: relative;
+}
+.account-history__item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 16px;
+  bottom: 0;
+  width: 2px;
+  background: var(--line-strong);
+}
+.account-history__dot {
+  width: 14px;
+  height: 14px;
+  margin-top: 3px;
+  border-radius: 999px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+.account-history__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.account-history__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.account-history__date {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.account-history__note {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
 /* Refill reminder rows */
 .account-reminder-row {
   display: flex;

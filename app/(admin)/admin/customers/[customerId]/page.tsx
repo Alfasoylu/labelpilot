@@ -14,7 +14,26 @@ export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: Promise<{ customerId: string }>;
+  searchParams: Promise<{ message?: string; error?: string }>;
 };
+
+function formatAddressBlock(parts: {
+  company?: string | null;
+  street?: string | null;
+  line2?: string | null;
+  postalCode?: string | null;
+  city?: string | null;
+  country?: string | null;
+}): string {
+  const lines: string[] = [];
+  if (parts.company) lines.push(parts.company);
+  if (parts.street) lines.push(parts.street);
+  if (parts.line2) lines.push(parts.line2);
+  const cityLine = [parts.postalCode, parts.city].filter(Boolean).join(" ");
+  if (cityLine) lines.push(cityLine);
+  if (parts.country) lines.push(parts.country);
+  return lines.join("\n");
+}
 
 const PAID_STATUSES = [
   "PAID",
@@ -31,9 +50,10 @@ const PAID_STATUSES = [
   "COMPLETED",
 ];
 
-export default async function AdminCustomerDetailPage({ params }: PageProps) {
+export default async function AdminCustomerDetailPage({ params, searchParams }: PageProps) {
   const prisma = getPrismaClient();
   const { customerId } = await params;
+  const feedback = await searchParams;
 
   if (!prisma) {
     return (
@@ -131,6 +151,89 @@ export default async function AdminCustomerDetailPage({ params }: PageProps) {
           </ul>
         </article>
       </div>
+
+      <article className="surface-card">
+        <h2>Adressen & USt-IdNr.</h2>
+        <div className="two-column">
+          <div>
+            <p className="eyebrow">Lieferadresse</p>
+            {customer.street ? (
+              <p style={{ whiteSpace: "pre-line", margin: "4px 0 0" }}>
+                {formatAddressBlock({
+                  street: customer.street,
+                  line2: customer.addressLine2,
+                  postalCode: customer.postalCode,
+                  city: customer.city,
+                  country: customer.country,
+                })}
+              </p>
+            ) : (
+              <p className="price-note">Nicht hinterlegt</p>
+            )}
+          </div>
+          <div>
+            <p className="eyebrow">Rechnungsadresse</p>
+            {customer.billingStreet ? (
+              <p style={{ whiteSpace: "pre-line", margin: "4px 0 0" }}>
+                {formatAddressBlock({
+                  company: customer.billingCompanyName,
+                  street: customer.billingStreet,
+                  line2: customer.billingAddressLine2,
+                  postalCode: customer.billingPostalCode,
+                  city: customer.billingCity,
+                  country: customer.billingCountry,
+                })}
+              </p>
+            ) : (
+              <p className="price-note">Wie Lieferadresse</p>
+            )}
+          </div>
+        </div>
+        <ul className="simple-list" style={{ marginTop: "0.75rem" }}>
+          <li>USt-IdNr.: {customer.vatId ?? "—"}</li>
+        </ul>
+      </article>
+
+      <article className="surface-card">
+        <h2>Zahlungskonditionen</h2>
+        <p className="price-note">
+          Aktuell:{" "}
+          {customer.paymentTermsApproved
+            ? `Rechnungskauf freigegeben (Netto-${customer.paymentTermsNetDays ?? 15} Tage)`
+            : "Vorkasse (Stripe Checkout)"}
+        </p>
+        {feedback.message ? <p className="form-status success">{feedback.message}</p> : null}
+        {feedback.error ? <p className="form-status error">{feedback.error}</p> : null}
+        <form action={`/api/admin/customers/${customer.id}/payment-terms`} method="post" className="quote-form">
+          <div className="form-grid">
+            <div>
+              <label htmlFor="paymentTermsApproved">Rechnungskauf</label>
+              <select
+                id="paymentTermsApproved"
+                name="paymentTermsApproved"
+                defaultValue={customer.paymentTermsApproved ? "true" : "false"}
+              >
+                <option value="false">Nein – Vorkasse</option>
+                <option value="true">Ja – Rechnungskauf freigegeben</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="paymentTermsNetDays">Zahlungsziel (Tage netto)</label>
+              <input
+                id="paymentTermsNetDays"
+                name="paymentTermsNetDays"
+                type="number"
+                min="0"
+                max="120"
+                defaultValue={customer.paymentTermsNetDays ?? 15}
+              />
+            </div>
+          </div>
+          <div className="inline-actions">
+            <button type="submit" className="cta-button">Speichern</button>
+          </div>
+        </form>
+      </article>
 
       <article className="surface-card">
         <h2>Letzte 20 Bestellungen</h2>

@@ -135,6 +135,21 @@ export async function GET(request: Request) {
       }),
     ]);
 
+    // Quote requests are matched by the customer's verified email.
+    const quotes = await prisma.quoteRequest.findMany({
+      where: { email: customer.email },
+      select: {
+        id: true,
+        status: true,
+        productType: true,
+        material: true,
+        quantity: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: "desc" },
+      take: 20,
+    });
+
     return NextResponse.json({
       customer: {
         email: customer.email,
@@ -195,6 +210,14 @@ export async function GET(request: Request) {
           ...version,
           approvedAt: version.approvedAt?.toISOString() ?? null,
         })),
+      })),
+      quotes: quotes.map((quote) => ({
+        id: quote.id,
+        status: quote.status,
+        productType: quote.productType ?? null,
+        material: quote.material ?? null,
+        quantity: quote.quantity ?? null,
+        createdAt: quote.createdAt.toISOString(),
       })),
     });
   } catch (error) {

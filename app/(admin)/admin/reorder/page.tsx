@@ -26,7 +26,6 @@ export default async function AdminReorderPage({ searchParams }: ReorderPageProp
 
   const [predictions, reminders] = await Promise.all([
     prisma.refillPrediction.findMany({
-      where: { isEnabled: true },
       include: {
         order: {
           select: {
@@ -40,7 +39,7 @@ export default async function AdminReorderPage({ searchParams }: ReorderPageProp
         },
       },
       orderBy: { predictedDepletionAt: "asc" },
-      take: 50,
+      take: 100,
     }),
     prisma.reorderReminder.findMany({
       where: { status: { in: ["PENDING", "SENT"] } },
@@ -65,7 +64,8 @@ export default async function AdminReorderPage({ searchParams }: ReorderPageProp
       <article className="surface-card">
         <h2>Nachbestellungs-Management</h2>
         <p className="price-note">
-          {predictions.length} aktive Predictions · {reminders.length} offene Erinnerungen
+          {predictions.length} Prognosen ({predictions.filter((p) => p.isEnabled).length} vom Kunden
+          aktiviert) · {reminders.length} offene Erinnerungen
         </p>
         {feedback.message ? (
           <p className="form-status success">{feedback.message}</p>
@@ -107,11 +107,35 @@ export default async function AdminReorderPage({ searchParams }: ReorderPageProp
                     </p>
                   </div>
                   <div>
+                    <p
+                      className="price-note"
+                      style={{
+                        fontWeight: 600,
+                        color: pred.isEnabled ? "var(--success)" : "var(--muted)",
+                      }}
+                    >
+                      {pred.isEnabled ? "✓ Erinnerung aktiv (Kunde)" : "Erinnerung nicht aktiviert"}
+                    </p>
                     <p className="price-note">
                       {pred.reminderEligibleAt
                         ? `Erinnerung ab: ${formatDate(pred.reminderEligibleAt)}`
                         : "Kein Erinnerungsdatum"}
                     </p>
+                    <form
+                      action={`/api/admin/reorder/predictions/${pred.id}`}
+                      method="post"
+                      style={{ marginTop: "6px" }}
+                    >
+                      <input type="hidden" name="isEnabled" value={pred.isEnabled ? "false" : "true"} />
+                      <input
+                        type="hidden"
+                        name="redirectTo"
+                        value="/admin/reorder?message=Prognose+aktualisiert"
+                      />
+                      <button type="submit" className="secondary-link" style={{ fontSize: "0.84rem" }}>
+                        {pred.isEnabled ? "Erinnerung deaktivieren" : "Erinnerung aktivieren"}
+                      </button>
+                    </form>
                   </div>
                 </div>
 

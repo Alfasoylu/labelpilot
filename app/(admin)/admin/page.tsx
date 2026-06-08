@@ -18,6 +18,8 @@ export default async function AdminDashboardPage() {
     );
   }
 
+  const stuckThreshold = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
   const [
     reviewCount,
     proofCount,
@@ -28,6 +30,8 @@ export default async function AdminDashboardPage() {
     newLeadCount,
     totalQuoteCount,
     wunschformatQuoteCount,
+    supportOpenCount,
+    stuckCount,
   ] = await Promise.all([
     prisma.order.count({
       where: {
@@ -58,10 +62,38 @@ export default async function AdminDashboardPage() {
     prisma.quoteRequest.count({
       where: { source: QUOTE_SOURCE_WUNSCHFORMAT },
     }),
+    prisma.supportRequest.count({ where: { status: "OPEN" } }),
+    prisma.order.count({
+      where: {
+        status: {
+          in: [
+            "FILE_REVIEW",
+            "CORRECTION_REQUIRED",
+            "WAITING_CUSTOMER_APPROVAL",
+            "APPROVED_FOR_PRODUCTION",
+            "IN_PRODUCTION",
+          ],
+        },
+        updatedAt: { lt: stuckThreshold },
+      },
+    }),
   ]);
 
   return (
     <section className="section-stack">
+      {stuckCount > 0 ? (
+        <article className="surface-card" style={{ borderColor: "var(--warning)", background: "var(--warning-soft)" }}>
+          <h2>⚠ Frühwarnung</h2>
+          <p className="price-note">
+            {stuckCount} aktive Bestellung{stuckCount === 1 ? "" : "en"} ohne Statusänderung seit
+            über 7 Tagen.
+          </p>
+          <Link href="/admin/production" className="secondary-link">
+            Produktionskontrolle öffnen →
+          </Link>
+        </article>
+      ) : null}
+
       <article className="surface-card">
         <h2>Aktionen heute</h2>
         <div className="feature-grid">
@@ -111,6 +143,13 @@ export default async function AdminDashboardPage() {
             <p className="price-note">{newLeadCount} unbearbeitet</p>
             <Link href="/admin/leads?status=NEW" className="secondary-link">
               Leads ansehen
+            </Link>
+          </div>
+          <div className="section-card">
+            <h3>Support-Anfragen</h3>
+            <p className="price-note">{supportOpenCount} offen</p>
+            <Link href="/admin/support?status=OPEN" className="secondary-link">
+              Support öffnen
             </Link>
           </div>
           <div className="section-card">

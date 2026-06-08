@@ -51,6 +51,7 @@ type OrderDetail = {
   billingPostalCode: string | null;
   billingCity: string | null;
   billingCountry: string | null;
+  statusEvents?: { status: string; note: string | null; createdAt: string }[];
   amountLabel: string;
   createdAt: string;
   uploadHref: string | null;
@@ -82,6 +83,10 @@ function buildReorderUrl(order: OrderDetail): string {
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("de-DE", { dateStyle: "long" }).format(new Date(value));
+}
+
+function formatDateTime(value: string) {
+  return new Intl.DateTimeFormat("de-DE", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
 }
 
 export function BestellungDetailClient({ orderId }: { orderId: string }) {
@@ -389,6 +394,32 @@ export function BestellungDetailClient({ orderId }: { orderId: string }) {
           ) : null}
         </article>
       )}
+
+      {order.statusEvents && order.statusEvents.length > 0 ? (
+        <article className="surface-card">
+          <div className="account-card-head">
+            <h2>Verlauf</h2>
+            <span className="account-section-icon"><Icons.IconClock size={20} /></span>
+          </div>
+          <ol className="account-history">
+            {order.statusEvents.map((event, i) => {
+              const desc = describeOrderStatus(event.status);
+              return (
+                <li key={`${event.createdAt}-${i}`} className="account-history__item">
+                  <span className="account-history__dot" aria-hidden />
+                  <div className="account-history__body">
+                    <div className="account-history__head">
+                      <StatusBadge tone={desc.tone} size="sm">{desc.label}</StatusBadge>
+                      <span className="account-history__date">{formatDateTime(event.createdAt)}</span>
+                    </div>
+                    {event.note ? <p className="account-history__note">{event.note}</p> : null}
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </article>
+      ) : null}
 
       <article className="surface-card">
         <div className="account-card-head">

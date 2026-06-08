@@ -81,6 +81,11 @@ export async function GET(
           },
           orderBy: { createdAt: "desc" },
         },
+        statusEvents: {
+          select: { status: true, note: true, createdAt: true },
+          orderBy: { createdAt: "desc" },
+          take: 50,
+        },
       },
     });
 
@@ -97,7 +102,7 @@ export async function GET(
       "CANCELLED",
     ].includes(order.status);
 
-    const { uploadToken, proofFiles, ...orderData } = order;
+    const { uploadToken, proofFiles, statusEvents, ...orderData } = order;
 
     return NextResponse.json({
       ...orderData,
@@ -120,6 +125,11 @@ export async function GET(
         adminNote: p.adminNote ?? null,
         customerApprovedAt: p.customerApprovedAt?.toISOString() ?? null,
         createdAt: p.createdAt.toISOString(),
+      })),
+      statusEvents: statusEvents.map((e) => ({
+        status: e.status,
+        note: e.note ?? null,
+        createdAt: e.createdAt.toISOString(),
       })),
     });
   } catch (error) {

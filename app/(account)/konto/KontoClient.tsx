@@ -100,10 +100,31 @@ type AccountCustomer = {
   paymentTermsNetDays: number | null;
 };
 
+type AccountQuote = {
+  id: string;
+  status: string;
+  productType: string | null;
+  material: string | null;
+  quantity: string | null;
+  createdAt: string;
+};
+
 type AccountDashboard = {
   customer: AccountCustomer;
   orders: AccountOrder[];
   storedDesigns: AccountStoredDesign[];
+  quotes: AccountQuote[];
+};
+
+const QUOTE_STATUS: Record<string, { tone: StatusTone; label: string }> = {
+  NEW: { tone: "info", label: "Eingegangen" },
+  UNDER_REVIEW: { tone: "info", label: "In Prüfung" },
+  NEEDS_MORE_INFO: { tone: "warning", label: "Weitere Infos nötig" },
+  QUOTE_SENT: { tone: "proof", label: "Angebot gesendet" },
+  ACCEPTED: { tone: "success", label: "Akzeptiert" },
+  REJECTED: { tone: "danger", label: "Abgelehnt" },
+  EXPIRED: { tone: "neutral", label: "Abgelaufen" },
+  CONVERTED_TO_ORDER: { tone: "success", label: "In Bestellung umgewandelt" },
 };
 
 const DEFAULT_NOTIFICATION_PREFS: NotificationPrefs = {
@@ -1080,6 +1101,7 @@ export function KontoClient() {
   const ACTIVE_ORDER_DONE = ["DELIVERED", "COMPLETED", "CANCELLED", "PAYMENT_FAILED"];
   const orders = dashboard?.orders ?? [];
   const storedDesigns = dashboard?.storedDesigns ?? [];
+  const quotes = dashboard?.quotes ?? [];
   const openOrdersCount = orders.filter((o) => !ACTIVE_ORDER_DONE.includes(o.status)).length;
   const awaitingApprovalCount = orders.filter(
     (o) => o.latestProof != null || o.status === "WAITING_CUSTOMER_APPROVAL",
@@ -1826,6 +1848,7 @@ export function KontoClient() {
           ) : null}
 
           {dashboard && view === "orders" ? (
+            <>
             <article className="surface-card">
               <h2>Meine Bestellungen</h2>
               {orders.length === 0 ? (
@@ -1883,6 +1906,33 @@ export function KontoClient() {
                 </>
               )}
             </article>
+            {quotes.length > 0 ? (
+              <article className="surface-card">
+                <h2>Meine Angebotsanfragen</h2>
+                <div className="section-stack">
+                  {quotes.map((q) => {
+                    const s = QUOTE_STATUS[q.status] ?? { tone: "neutral" as StatusTone, label: q.status };
+                    return (
+                      <div key={q.id} className="section-card">
+                        <div className="account-card-head">
+                          <h3>{q.productType || "Angebotsanfrage"}</h3>
+                          <StatusBadge tone={s.tone} size="sm">{s.label}</StatusBadge>
+                        </div>
+                        <p className="price-note">
+                          {q.material ? `${q.material} · ` : ""}
+                          {q.quantity ? `${q.quantity} · ` : ""}
+                          {formatDate(q.createdAt)}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+                <p className="field-hint">
+                  Angebote werden per E-Mail beantwortet. Bei Fragen nutzen Sie den Support-Bereich.
+                </p>
+              </article>
+            ) : null}
+            </>
           ) : null}
 
           {dashboard && view === "designs" ? (
