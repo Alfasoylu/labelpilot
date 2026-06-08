@@ -26,6 +26,16 @@ const TYPE_LABELS: Record<(typeof SUPPORT_TYPES)[number], string> = {
   DELIVERY: "Lieferung & Versand",
 };
 
+// Customer-supplied strings are escaped before being placed into the operator email HTML.
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export async function GET(request: Request) {
   const auth = await getSupabaseUserFromRequest(request);
   if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
@@ -126,12 +136,22 @@ export async function POST(request: Request) {
     // Notify the operator (best-effort; failure must not block the request).
     const env = getServerEnv();
     const notifyTo = env.EMAIL_REPLY_TO ?? "info@labelpilot.de";
-    const orderLine = created.order?.orderNumber ? `\nBestellung: ${created.order.orderNumber}` : "";
-    const text = `Neue Support-Anfrage (${TYPE_LABELS[d.type]})\n\nVon: ${customer.companyName ?? customer.contactName ?? customer.email} <${customer.email}>${orderLine}\nBetreff: ${d.subject}\n\n${d.message}`;
+    const sender = customer.companyName ?? customer.contactName ?? customer.email;
+    const orderNumber = created.order?.orderNumber ?? null;
+    const orderLine = orderNumber ? `\nBestellung: ${orderNumber}` : "";
+    const text = `Neue Support-Anfrage (${TYPE_LABELS[d.type]})\n\nVon: ${sender} <${customer.email}>${orderLine}\nBetreff: ${d.subject}\n\n${d.message}`;
+    const html = [
+      `<h2>Neue Support-Anfrage</h2>`,
+      `<p><strong>Typ:</strong> ${TYPE_LABELS[d.type]}</p>`,
+      `<p><strong>Von:</strong> ${escapeHtml(sender)} &lt;${escapeHtml(customer.email)}&gt;</p>`,
+      orderNumber ? `<p><strong>Bestellung:</strong> ${escapeHtml(orderNumber)}</p>` : "",
+      `<p><strong>Betreff:</strong> ${escapeHtml(d.subject)}</p>`,
+      `<p>${escapeHtml(d.message).replace(/\n/g, "<br>")}</p>`,
+    ].join("");
     void sendEmail({
       to: notifyTo,
       subject: `Support-Anfrage: ${d.subject}`,
-      html: `<h2>Neue Support-Anfrage</h2><p><strong>Typ:</strong> ${TYPE_LABELS[d.type]}</p><p><strong>Von:</strong> ${customer.companyName ?? customer.contactName ?? customer.email} &lt;${customer.email}&gt;</p>${created.order?.orderNumber ? `<p><strong>Bestellung:</strong> ${created.order.orderNumber}</p>` : ""}<p><strong>Betreff:</strong> ${d.subject}</p><p>${d.message.replace(/\n/g, "<br>")}</p>`,
+      html,
       text,
     }).catch((e) => console.error("Support-Mail fehlgeschlagen:", e));
 

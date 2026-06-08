@@ -25,16 +25,25 @@ export async function POST(req: NextRequest) {
   const env = getServerEnv();
   const notifyTo = env.EMAIL_REPLY_TO ?? "info@labelpilot.de";
 
+  // Escape customer-supplied strings before placing them into the operator email HTML.
+  const esc = (value: string) =>
+    value
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+
   const html = `
     <h2>Neue Auf-Rechnung-Anfrage</h2>
     <table cellpadding="6">
-      <tr><td><strong>Firma</strong></td><td>${d.firmenname}</td></tr>
-      <tr><td><strong>USt-IdNr.</strong></td><td>${d.ustId ?? "–"}</td></tr>
-      <tr><td><strong>Ansprechpartner</strong></td><td>${d.ansprechpartner}</td></tr>
-      <tr><td><strong>E-Mail</strong></td><td>${d.email}</td></tr>
-      <tr><td><strong>Telefon</strong></td><td>${d.telefon ?? "–"}</td></tr>
-      <tr><td><strong>Monatl. Bestellvolumen</strong></td><td>${d.bestellvolumen ?? "–"}</td></tr>
-      <tr><td><strong>Nachricht</strong></td><td>${d.nachricht ?? "–"}</td></tr>
+      <tr><td><strong>Firma</strong></td><td>${esc(d.firmenname)}</td></tr>
+      <tr><td><strong>USt-IdNr.</strong></td><td>${d.ustId ? esc(d.ustId) : "–"}</td></tr>
+      <tr><td><strong>Ansprechpartner</strong></td><td>${esc(d.ansprechpartner)}</td></tr>
+      <tr><td><strong>E-Mail</strong></td><td>${esc(d.email)}</td></tr>
+      <tr><td><strong>Telefon</strong></td><td>${d.telefon ? esc(d.telefon) : "–"}</td></tr>
+      <tr><td><strong>Monatl. Bestellvolumen</strong></td><td>${d.bestellvolumen ? esc(d.bestellvolumen) : "–"}</td></tr>
+      <tr><td><strong>Nachricht</strong></td><td>${d.nachricht ? esc(d.nachricht) : "–"}</td></tr>
     </table>
   `;
   const text = `Auf-Rechnung-Anfrage\nFirma: ${d.firmenname}\nUSt-IdNr.: ${d.ustId ?? "–"}\nAnsprechpartner: ${d.ansprechpartner}\nE-Mail: ${d.email}\nTelefon: ${d.telefon ?? "–"}\nBestellvolumen: ${d.bestellvolumen ?? "–"}\nNachricht: ${d.nachricht ?? "–"}`;

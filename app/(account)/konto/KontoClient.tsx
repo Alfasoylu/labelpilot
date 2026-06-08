@@ -226,6 +226,7 @@ export function KontoClient() {
   const [supportSending, setSupportSending] = useState(false);
   const [supportMsg, setSupportMsg] = useState("");
   const [supportError, setSupportError] = useState("");
+  const [supportLoadError, setSupportLoadError] = useState(false);
 
   const [forgotMode, setForgotMode] = useState(false);
   const [passwordRecovery, setPasswordRecovery] = useState(false);
@@ -348,14 +349,24 @@ export function KontoClient() {
     let ignore = false;
 
     async function loadSupport() {
+      setSupportLoadError(false);
       try {
         const res = await fetch("/api/account/support", {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         const data = (await res.json()) as { requests?: SupportRequestItem[] };
-        if (!ignore && res.ok) setSupportRequests(data.requests ?? []);
+        if (ignore) return;
+        if (res.ok) {
+          setSupportRequests(data.requests ?? []);
+        } else {
+          setSupportRequests([]);
+          setSupportLoadError(true);
+        }
       } catch {
-        if (!ignore) setSupportRequests([]);
+        if (!ignore) {
+          setSupportRequests([]);
+          setSupportLoadError(true);
+        }
       }
     }
 
@@ -1652,6 +1663,19 @@ export function KontoClient() {
                 <h2>Meine Anfragen</h2>
                 {supportRequests === null ? (
                   <SkeletonCard />
+                ) : supportLoadError ? (
+                  <EmptyState
+                    icon={<Icons.IconAlert size={32} />}
+                    title="Anfragen konnten nicht geladen werden"
+                    description="Bitte versuchen Sie es erneut."
+                    action={{
+                      label: "Erneut versuchen",
+                      onClick: () => {
+                        setSupportLoadError(false);
+                        setSupportRequests(null);
+                      },
+                    }}
+                  />
                 ) : supportRequests.length === 0 ? (
                   <EmptyState
                     icon={<Icons.IconSupport size={32} />}
