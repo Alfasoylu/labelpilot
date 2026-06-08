@@ -3223,6 +3223,45 @@ th {
   outline-offset: 1px;
 }
 
+/* Notification toggle list */
+.account-toggle-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
+.account-toggle-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+.account-toggle-row:last-child {
+  border-bottom: none;
+}
+.account-toggle-row input[type="checkbox"] {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.account-toggle-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.account-toggle-label {
+  color: var(--text-strong);
+  font-weight: 500;
+}
+.account-toggle-hint {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
 /* Refill reminder rows */
 .account-reminder-row {
   display: flex;

@@ -8,10 +8,24 @@ import { getPrismaClient } from "@/lib/db/prisma";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+const notificationPrefsSchema = z.object({
+  proofReady: z.boolean(),
+  shipped: z.boolean(),
+  reorderReminder: z.boolean(),
+  quoteUpdates: z.boolean(),
+});
+
 const patchSchema = z.object({
   contactName: z.string().trim().min(0).max(120).optional(),
   companyName: z.string().trim().min(0).max(160).optional(),
   phone: z.string().trim().min(0).max(60).optional(),
+  street: z.string().trim().min(0).max(160).optional(),
+  addressLine2: z.string().trim().min(0).max(160).optional(),
+  postalCode: z.string().trim().min(0).max(20).optional(),
+  city: z.string().trim().min(0).max(120).optional(),
+  country: z.string().trim().min(0).max(60).optional(),
+  vatId: z.string().trim().min(0).max(40).optional(),
+  notificationPrefs: notificationPrefsSchema.optional(),
 });
 
 export async function GET(request: Request): Promise<Response> {
@@ -28,6 +42,15 @@ export async function GET(request: Request): Promise<Response> {
       contactName: customer.contactName ?? null,
       companyName: customer.companyName ?? null,
       phone: customer.phone ?? null,
+      street: customer.street ?? null,
+      addressLine2: customer.addressLine2 ?? null,
+      postalCode: customer.postalCode ?? null,
+      city: customer.city ?? null,
+      country: customer.country ?? null,
+      vatId: customer.vatId ?? null,
+      notificationPrefs: customer.notificationPrefs ?? null,
+      paymentTermsApproved: customer.paymentTermsApproved,
+      paymentTermsNetDays: customer.paymentTermsNetDays ?? null,
     });
   } catch (error) {
     console.error("Profil-GET fehlgeschlagen:", error);
@@ -55,24 +78,35 @@ export async function PATCH(request: Request): Promise<Response> {
   try {
     const customer = await ensureCustomerForSupabaseUser(prisma, auth.user);
 
+    const d = parsed.data;
     const updated = await prisma.customer.update({
       where: { id: customer.id },
       data: {
-        ...(parsed.data.contactName !== undefined && {
-          contactName: parsed.data.contactName || null,
-        }),
-        ...(parsed.data.companyName !== undefined && {
-          companyName: parsed.data.companyName || null,
-        }),
-        ...(parsed.data.phone !== undefined && {
-          phone: parsed.data.phone || null,
-        }),
+        ...(d.contactName !== undefined && { contactName: d.contactName || null }),
+        ...(d.companyName !== undefined && { companyName: d.companyName || null }),
+        ...(d.phone !== undefined && { phone: d.phone || null }),
+        ...(d.street !== undefined && { street: d.street || null }),
+        ...(d.addressLine2 !== undefined && { addressLine2: d.addressLine2 || null }),
+        ...(d.postalCode !== undefined && { postalCode: d.postalCode || null }),
+        ...(d.city !== undefined && { city: d.city || null }),
+        ...(d.country !== undefined && { country: d.country || null }),
+        ...(d.vatId !== undefined && { vatId: d.vatId || null }),
+        ...(d.notificationPrefs !== undefined && { notificationPrefs: d.notificationPrefs }),
       },
       select: {
         email: true,
         contactName: true,
         companyName: true,
         phone: true,
+        street: true,
+        addressLine2: true,
+        postalCode: true,
+        city: true,
+        country: true,
+        vatId: true,
+        notificationPrefs: true,
+        paymentTermsApproved: true,
+        paymentTermsNetDays: true,
       },
     });
 

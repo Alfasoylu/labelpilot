@@ -207,6 +207,15 @@ model Customer {
   companyName String?
   contactName String?
   phone       String?
+  street               String?
+  addressLine2         String?
+  postalCode           String?
+  city                 String?
+  country              String?
+  vatId                String?
+  notificationPrefs    Json?
+  paymentTermsApproved Boolean  @default(false)
+  paymentTermsNetDays  Int?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   orders      Order[]

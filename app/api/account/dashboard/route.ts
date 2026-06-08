@@ -140,6 +140,15 @@ export async function GET(request: Request) {
         companyName: customer.companyName,
         contactName: customer.contactName,
         phone: customer.phone ?? null,
+        street: customer.street ?? null,
+        addressLine2: customer.addressLine2 ?? null,
+        postalCode: customer.postalCode ?? null,
+        city: customer.city ?? null,
+        country: customer.country ?? null,
+        vatId: customer.vatId ?? null,
+        notificationPrefs: (customer.notificationPrefs as Record<string, boolean> | null) ?? null,
+        paymentTermsApproved: customer.paymentTermsApproved,
+        paymentTermsNetDays: customer.paymentTermsNetDays ?? null,
       },
       orders: orders.map((order) => {
         const { uploadToken, proofFiles, ...rest } = order;

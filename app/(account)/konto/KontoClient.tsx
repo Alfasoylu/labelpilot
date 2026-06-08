@@ -71,16 +71,48 @@ type AccountStoredDesign = {
   artworkVersions: AccountArtworkVersion[];
 };
 
+type NotificationPrefs = {
+  proofReady: boolean;
+  shipped: boolean;
+  reorderReminder: boolean;
+  quoteUpdates: boolean;
+};
+
+type AccountCustomer = {
+  email: string;
+  companyName: string | null;
+  contactName: string | null;
+  phone: string | null;
+  street: string | null;
+  addressLine2: string | null;
+  postalCode: string | null;
+  city: string | null;
+  country: string | null;
+  vatId: string | null;
+  notificationPrefs: NotificationPrefs | null;
+  paymentTermsApproved: boolean;
+  paymentTermsNetDays: number | null;
+};
+
 type AccountDashboard = {
-  customer: {
-    email: string;
-    companyName: string | null;
-    contactName: string | null;
-    phone: string | null;
-  };
+  customer: AccountCustomer;
   orders: AccountOrder[];
   storedDesigns: AccountStoredDesign[];
 };
+
+const DEFAULT_NOTIFICATION_PREFS: NotificationPrefs = {
+  proofReady: true,
+  shipped: true,
+  reorderReminder: true,
+  quoteUpdates: true,
+};
+
+const NOTIFICATION_LABELS: { key: keyof NotificationPrefs; label: string; hint: string }[] = [
+  { key: "proofReady", label: "Korrekturabzug bereit", hint: "E-Mail, sobald ein Proof zur Freigabe bereitsteht." },
+  { key: "shipped", label: "Versandbenachrichtigung", hint: "E-Mail, sobald Ihre Bestellung versandt wurde." },
+  { key: "reorderReminder", label: "Nachbestell-Erinnerung", hint: "Erinnerung, bevor Ihr Etikettenbestand zur Neige geht." },
+  { key: "quoteUpdates", label: "Angebots-Updates", hint: "E-Mail bei Statusänderungen Ihrer Angebotsanfragen." },
+];
 
 function formatDate(value: string | null) {
   if (!value) {
@@ -139,6 +171,21 @@ export function KontoClient() {
   });
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileMsg, setProfileMsg] = useState("");
+
+  const [addressEdit, setAddressEdit] = useState(false);
+  const [addressFields, setAddressFields] = useState({
+    street: "",
+    addressLine2: "",
+    postalCode: "",
+    city: "",
+    country: "",
+    vatId: "",
+  });
+  const [addressSaving, setAddressSaving] = useState(false);
+  const [addressMsg, setAddressMsg] = useState("");
+
+  const [notifSaving, setNotifSaving] = useState<keyof NotificationPrefs | null>(null);
+  const [notifMsg, setNotifMsg] = useState("");
 
   const [forgotMode, setForgotMode] = useState(false);
   const [passwordRecovery, setPasswordRecovery] = useState(false);
@@ -451,6 +498,94 @@ export function KontoClient() {
       setProfileMsg("Speichern fehlgeschlagen.");
     } finally {
       setProfileSaving(false);
+    }
+  }
+
+  function handleAddressEditStart() {
+    if (!dashboard) return;
+    const c = dashboard.customer;
+    setAddressFields({
+      street: c.street ?? "",
+      addressLine2: c.addressLine2 ?? "",
+      postalCode: c.postalCode ?? "",
+      city: c.city ?? "",
+      country: c.country ?? "",
+      vatId: c.vatId ?? "",
+    });
+    setAddressMsg("");
+    setAddressEdit(true);
+  }
+
+  async function handleAddressSave() {
+    if (!accessToken) return;
+    setAddressSaving(true);
+    setAddressMsg("");
+    try {
+      const res = await fetch("/api/account/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify(addressFields),
+      });
+      const data = (await res.json()) as Partial<AccountCustomer> & { error?: string };
+      if (!res.ok) {
+        setAddressMsg(data.error ?? "Speichern fehlgeschlagen.");
+        return;
+      }
+      setDashboard((prev) =>
+        prev
+          ? {
+              ...prev,
+              customer: {
+                ...prev.customer,
+                street: data.street ?? null,
+                addressLine2: data.addressLine2 ?? null,
+                postalCode: data.postalCode ?? null,
+                city: data.city ?? null,
+                country: data.country ?? null,
+                vatId: data.vatId ?? null,
+              },
+            }
+          : prev,
+      );
+      setAddressEdit(false);
+      setAddressMsg("Adresse gespeichert.");
+    } catch {
+      setAddressMsg("Speichern fehlgeschlagen.");
+    } finally {
+      setAddressSaving(false);
+    }
+  }
+
+  async function toggleNotificationPref(key: keyof NotificationPrefs, next: boolean) {
+    if (!accessToken || !dashboard) return;
+    const current = dashboard.customer.notificationPrefs ?? DEFAULT_NOTIFICATION_PREFS;
+    const updatedPrefs: NotificationPrefs = { ...current, [key]: next };
+    setNotifSaving(key);
+    setNotifMsg("");
+    // Optimistic update
+    setDashboard((prev) =>
+      prev ? { ...prev, customer: { ...prev.customer, notificationPrefs: updatedPrefs } } : prev,
+    );
+    try {
+      const res = await fetch("/api/account/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify({ notificationPrefs: updatedPrefs }),
+      });
+      if (!res.ok) {
+        // Revert on failure
+        setDashboard((prev) =>
+          prev ? { ...prev, customer: { ...prev.customer, notificationPrefs: current } } : prev,
+        );
+        setNotifMsg("Einstellung konnte nicht gespeichert werden.");
+      }
+    } catch {
+      setDashboard((prev) =>
+        prev ? { ...prev, customer: { ...prev.customer, notificationPrefs: current } } : prev,
+      );
+      setNotifMsg("Einstellung konnte nicht gespeichert werden.");
+    } finally {
+      setNotifSaving(null);
     }
   }
 
@@ -970,6 +1105,142 @@ export function KontoClient() {
                 </div>
               </>
             )}
+          </article>
+
+          <article className="surface-card">
+            <div className="account-card-head">
+              <h2>Adresse & USt-IdNr.</h2>
+              <span className="account-section-icon"><Icons.IconProfile size={20} /></span>
+            </div>
+            {addressEdit ? (
+              <div className="section-stack">
+                <div className="form-grid">
+                  <div className="field field-full">
+                    <label htmlFor="addr-street">Straße und Hausnummer</label>
+                    <input id="addr-street" value={addressFields.street}
+                      onChange={(e) => setAddressFields((p) => ({ ...p, street: e.target.value }))} />
+                  </div>
+                  <div className="field field-full">
+                    <label htmlFor="addr-line2">Adresszusatz (optional)</label>
+                    <input id="addr-line2" value={addressFields.addressLine2}
+                      onChange={(e) => setAddressFields((p) => ({ ...p, addressLine2: e.target.value }))} />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="addr-plz">PLZ</label>
+                    <input id="addr-plz" value={addressFields.postalCode}
+                      onChange={(e) => setAddressFields((p) => ({ ...p, postalCode: e.target.value }))} />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="addr-city">Stadt</label>
+                    <input id="addr-city" value={addressFields.city}
+                      onChange={(e) => setAddressFields((p) => ({ ...p, city: e.target.value }))} />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="addr-country">Land</label>
+                    <input id="addr-country" placeholder="z. B. Deutschland" value={addressFields.country}
+                      onChange={(e) => setAddressFields((p) => ({ ...p, country: e.target.value }))} />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="addr-vat">USt-IdNr.</label>
+                    <input id="addr-vat" placeholder="DE123456789" value={addressFields.vatId}
+                      onChange={(e) => setAddressFields((p) => ({ ...p, vatId: e.target.value }))} />
+                  </div>
+                </div>
+                {addressMsg ? <p className="form-status error">{addressMsg}</p> : null}
+                <div className="inline-actions">
+                  <button type="button" className="cta-button" disabled={addressSaving} onClick={handleAddressSave}>
+                    {addressSaving ? "Wird gespeichert …" : "Speichern"}
+                  </button>
+                  <button type="button" className="secondary-link" disabled={addressSaving}
+                    onClick={() => { setAddressEdit(false); setAddressMsg(""); }}>
+                    Abbrechen
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <ul className="simple-list">
+                  <li>
+                    Anschrift:{" "}
+                    {dashboard.customer.street
+                      ? `${dashboard.customer.street}${dashboard.customer.addressLine2 ? `, ${dashboard.customer.addressLine2}` : ""}, ${dashboard.customer.postalCode ?? ""} ${dashboard.customer.city ?? ""}${dashboard.customer.country ? `, ${dashboard.customer.country}` : ""}`
+                      : "Nicht hinterlegt"}
+                  </li>
+                  <li>USt-IdNr.: {dashboard.customer.vatId ?? "Nicht hinterlegt"}</li>
+                </ul>
+                {addressMsg ? <p className="form-status success">{addressMsg}</p> : null}
+                <div className="cta-row">
+                  <button type="button" className="secondary-link" onClick={handleAddressEditStart}>
+                    Adresse bearbeiten
+                  </button>
+                </div>
+              </>
+            )}
+          </article>
+
+          <article className="surface-card">
+            <div className="account-card-head">
+              <h2>Zahlungskonditionen</h2>
+              <span className="account-section-icon"><Icons.IconEuro size={20} /></span>
+            </div>
+            {dashboard.customer.paymentTermsApproved ? (
+              <>
+                <div className="cta-row" style={{ alignItems: "center" }}>
+                  <StatusBadge tone="success">
+                    <Icons.IconCheck size={14} /> Rechnungskauf freigegeben
+                  </StatusBadge>
+                </div>
+                <p className="field-hint">
+                  Zahlungsziel: Netto-{dashboard.customer.paymentTermsNetDays ?? 15} Tage nach Lieferung.
+                </p>
+              </>
+            ) : (
+              <>
+                <ul className="simple-list">
+                  <li>Aktuelle Zahlart: Vorkasse (Stripe Checkout)</li>
+                </ul>
+                <p className="field-hint">
+                  Rechnungskauf (Netto-15) ist nur nach manueller Freigabe für geprüfte
+                  Geschäftskunden möglich.
+                </p>
+                <div className="cta-row">
+                  <a href="/de/auf-rechnung-beantragen" className="secondary-link">
+                    Rechnungskauf beantragen →
+                  </a>
+                </div>
+              </>
+            )}
+          </article>
+
+          <article className="surface-card">
+            <div className="account-card-head">
+              <h2>E-Mail-Benachrichtigungen</h2>
+              <span className="account-section-icon"><Icons.IconClock size={20} /></span>
+            </div>
+            <p className="field-hint">
+              Wichtige Bestell- und Freigabe-E-Mails erhalten Sie immer. Hier steuern Sie optionale
+              Benachrichtigungen.
+            </p>
+            <div className="account-toggle-list">
+              {NOTIFICATION_LABELS.map((n) => {
+                const prefs = dashboard.customer.notificationPrefs ?? DEFAULT_NOTIFICATION_PREFS;
+                return (
+                  <label key={n.key} className="account-toggle-row">
+                    <input
+                      type="checkbox"
+                      checked={prefs[n.key]}
+                      disabled={notifSaving === n.key}
+                      onChange={(e) => toggleNotificationPref(n.key, e.target.checked)}
+                    />
+                    <span className="account-toggle-meta">
+                      <span className="account-toggle-label">{n.label}</span>
+                      <span className="account-toggle-hint">{n.hint}</span>
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+            {notifMsg ? <p className="form-status error">{notifMsg}</p> : null}
           </article>
     </>
   ) : null;
