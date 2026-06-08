@@ -19,14 +19,13 @@ async function sendTelegramNotification(
   pageUrl?: string,
 ) {
   const page = pageUrl ? `\n🔗 ${pageUrl}` : "";
-  const text = `💬 [${sessionId.slice(0, 8)}] Neue Nachricht${page}\n\n"${content}"\n\n_Zum Antworten diese Nachricht zitieren._`;
+  const text = `💬 [${sessionId.slice(0, 8)}] Neue Nachricht${page}\n\n"${content}"\n\nZum Antworten diese Nachricht zitieren.`;
   const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       chat_id: chatId,
       text,
-      parse_mode: "Markdown",
     }),
   });
   const data = await res.json() as { ok: boolean; result?: { message_id: number } };
