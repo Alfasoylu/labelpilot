@@ -245,6 +245,15 @@ textarea {
   color: var(--muted);
 }
 
+.nav-link--account {
+  gap: 6px;
+  color: var(--text-strong);
+  font-weight: 500;
+}
+.nav-link--account svg {
+  flex-shrink: 0;
+}
+
 .nav-link:hover,
 .secondary-link:hover,
 .ghost-link:hover {
