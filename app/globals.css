@@ -249,9 +249,67 @@ textarea {
   gap: 6px;
   color: var(--text-strong);
   font-weight: 500;
+  cursor: pointer;
+  background: none;
+  font: inherit;
 }
 .nav-link--account svg {
   flex-shrink: 0;
+}
+
+.account-menu {
+  position: relative;
+  display: inline-flex;
+}
+.account-menu__pop {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 60;
+  min-width: 190px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 2px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+}
+.account-menu__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 9px 12px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+.account-menu__item:hover {
+  background: var(--surface-alt);
+  color: var(--text-strong);
+}
+.account-menu__logout {
+  color: var(--danger);
+  margin-top: 2px;
+  border-top: 1px solid var(--line);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+@media (max-width: 760px) {
+  .account-menu {
+    display: block;
+    width: 100%;
+  }
+  .account-menu__pop {
+    position: static;
+    box-shadow: none;
+    border: none;
+    padding: 4px 0 0;
+    min-width: 0;
+  }
 }
 
 .nav-link:hover,
