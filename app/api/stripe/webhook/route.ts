@@ -153,6 +153,26 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
   // The last element of txResults is always the emailReservation updateMany result.
   const emailReservation = txResults[txResults.length - 1] as { count: number };
 
+  // Backfill the customer's default address/VAT from this order's checkout details,
+  // but only when the customer has none yet (never overwrite a saved address).
+  if (order.customerId && order.streetAddress) {
+    try {
+      await prisma.customer.updateMany({
+        where: { id: order.customerId, street: null },
+        data: {
+          street: order.streetAddress,
+          addressLine2: order.addressLine2,
+          postalCode: order.postalCode,
+          city: order.city,
+          country: order.country,
+          ...(order.vatId ? { vatId: order.vatId } : {}),
+        },
+      });
+    } catch (backfillError) {
+      console.error("Customer-Adress-Backfill fehlgeschlagen:", backfillError);
+    }
+  }
+
   const customerEmail = session.customer_details?.email ?? order.customerEmail;
 
   if (emailReservation.count !== 1) {

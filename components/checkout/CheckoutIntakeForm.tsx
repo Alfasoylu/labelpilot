@@ -1,13 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 
+import { getSupabaseBrowserClient } from "@/lib/auth/supabase-browser";
 import type {
   CheckoutAddonInput,
   CheckoutArtworkInputStatus,
 } from "@/lib/checkout/intake";
+
+const PREFILL_FIELDS = [
+  "companyName",
+  "contactName",
+  "email",
+  "phone",
+  "vatId",
+  "streetAddress",
+  "addressLine2",
+  "postalCode",
+  "city",
+] as const;
+type PrefillField = (typeof PREFILL_FIELDS)[number];
 
 type CheckoutIntakeFormProps = {
   packageId: string;
@@ -44,6 +58,62 @@ export function CheckoutIntakeForm({
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedFinishing, setSelectedFinishing] = useState<"MATT" | "GLAENZEND">(initialFinishing ?? "MATT");
+  const [fields, setFields] = useState<Record<PrefillField, string>>({
+    companyName: "",
+    contactName: "",
+    email: "",
+    phone: "",
+    vatId: "",
+    streetAddress: "",
+    addressLine2: "",
+    postalCode: "",
+    city: "",
+  });
+  const bind = (name: PrefillField) => ({
+    value: fields[name],
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+      setFields((f) => ({ ...f, [name]: e.target.value })),
+  });
+
+  // Prefill from the logged-in customer's saved profile — only fills fields the
+  // visitor has not already typed into (never clobbers manual input).
+  useEffect(() => {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    let ignore = false;
+
+    void (async () => {
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token;
+      if (!token || ignore) return;
+      try {
+        const res = await fetch("/api/account/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok || ignore) return;
+        const c = (await res.json()) as Record<string, string | null>;
+        if (ignore) return;
+        setFields((cur) => ({
+          companyName: cur.companyName || (c.companyName ?? ""),
+          contactName: cur.contactName || (c.contactName ?? ""),
+          email: cur.email || (c.email ?? ""),
+          phone: cur.phone || (c.phone ?? ""),
+          vatId: cur.vatId || (c.vatId ?? ""),
+          streetAddress: cur.streetAddress || (c.street ?? ""),
+          addressLine2: cur.addressLine2 || (c.addressLine2 ?? ""),
+          postalCode: cur.postalCode || (c.postalCode ?? ""),
+          city: cur.city || (c.city ?? ""),
+        }));
+      } catch {
+        // Prefill is best-effort; checkout still works without it.
+      }
+    })();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
   // CHK-004: Prevent double-submit with a ref guard that is more reliable than isPending alone.
   const submittedRef = useRef(false);
   const artworkSummary = addons.customerUploadsOwnData
@@ -217,23 +287,23 @@ export function CheckoutIntakeForm({
         </div>
         <div className="field">
           <label htmlFor="companyName">Firmenname</label>
-          <input id="companyName" name="companyName" required />
+          <input id="companyName" name="companyName" required {...bind("companyName")} />
         </div>
         <div className="field">
           <label htmlFor="contactName">Ansprechpartner</label>
-          <input id="contactName" name="contactName" required />
+          <input id="contactName" name="contactName" required {...bind("contactName")} />
         </div>
         <div className="field">
           <label htmlFor="email">E-Mail</label>
-          <input id="email" name="email" type="email" required />
+          <input id="email" name="email" type="email" required {...bind("email")} />
         </div>
         <div className="field">
           <label htmlFor="phone">Telefon</label>
-          <input id="phone" name="phone" type="tel" required />
+          <input id="phone" name="phone" type="tel" required {...bind("phone")} />
         </div>
         <div className="field">
           <label htmlFor="vatId">USt-IdNr. (optional)</label>
-          <input id="vatId" name="vatId" />
+          <input id="vatId" name="vatId" {...bind("vatId")} />
         </div>
 
         <div className="form-group">
@@ -241,19 +311,19 @@ export function CheckoutIntakeForm({
         </div>
         <div className="field-full">
           <label htmlFor="streetAddress">Straße und Hausnummer</label>
-          <input id="streetAddress" name="streetAddress" required />
+          <input id="streetAddress" name="streetAddress" required {...bind("streetAddress")} />
         </div>
         <div className="field-full">
           <label htmlFor="addressLine2">Adresszusatz (optional)</label>
-          <input id="addressLine2" name="addressLine2" />
+          <input id="addressLine2" name="addressLine2" {...bind("addressLine2")} />
         </div>
         <div className="field">
           <label htmlFor="postalCode">PLZ</label>
-          <input id="postalCode" name="postalCode" required />
+          <input id="postalCode" name="postalCode" required {...bind("postalCode")} />
         </div>
         <div className="field">
           <label htmlFor="city">Ort</label>
-          <input id="city" name="city" required />
+          <input id="city" name="city" required {...bind("city")} />
         </div>
         <div className="field">
           <label htmlFor="country">Land</label>
