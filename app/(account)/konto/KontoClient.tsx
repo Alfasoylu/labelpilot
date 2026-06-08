@@ -92,6 +92,32 @@ function formatDate(value: string | null) {
   }).format(new Date(value));
 }
 
+type OrderFilterKey = "all" | "open" | "approval" | "shipped" | "done";
+
+const ORDER_FILTERS: { key: OrderFilterKey; label: string }[] = [
+  { key: "all", label: "Alle" },
+  { key: "open", label: "Offen" },
+  { key: "approval", label: "Wartet auf Freigabe" },
+  { key: "shipped", label: "Versandt" },
+  { key: "done", label: "Abgeschlossen" },
+];
+
+function matchesOrderFilter(order: AccountOrder, filter: OrderFilterKey): boolean {
+  switch (filter) {
+    case "open":
+      return !["DELIVERED", "COMPLETED", "CANCELLED", "PAYMENT_FAILED"].includes(order.status);
+    case "approval":
+      return order.latestProof != null || order.status === "WAITING_CUSTOMER_APPROVAL";
+    case "shipped":
+      return ["READY_TO_SHIP", "SHIPPED", "DELIVERED"].includes(order.status);
+    case "done":
+      return ["DELIVERED", "COMPLETED"].includes(order.status);
+    case "all":
+    default:
+      return true;
+  }
+}
+
 export function KontoClient() {
   const supabase = getSupabaseBrowserClient();
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -102,6 +128,8 @@ export function KontoClient() {
   const [error, setError] = useState("");
   const [mounted, setMounted] = useState(false);
   const [view, setView] = useState<AccountView>("overview");
+  const [orderFilter, setOrderFilter] = useState<"all" | "open" | "approval" | "shipped" | "done">("all");
+  const [orderSearch, setOrderSearch] = useState("");
 
   const [editMode, setEditMode] = useState(false);
   const [profileFields, setProfileFields] = useState({
@@ -614,6 +642,55 @@ export function KontoClient() {
   const customerLabel =
     dashboard?.customer.companyName ?? dashboard?.customer.contactName ?? dashboard?.customer.email;
 
+  const orderSearchQuery = orderSearch.trim().toLowerCase();
+  const filteredOrders = orders.filter((o) => {
+    if (!matchesOrderFilter(o, orderFilter)) return false;
+    if (!orderSearchQuery) return true;
+    const haystack = `${o.orderNumber} ${getMaterialLabel(o.material)}`.toLowerCase();
+    return haystack.includes(orderSearchQuery);
+  });
+
+  type DocumentEntry = {
+    key: string;
+    designId: string;
+    designName: string;
+    versionId: string;
+    versionLabel: string;
+    kind: "artwork" | "proof";
+    fileName: string;
+    approvedAt: string | null;
+  };
+  const documentEntries: DocumentEntry[] = storedDesigns.flatMap((d) =>
+    d.artworkVersions.flatMap((v) => {
+      const rows: DocumentEntry[] = [];
+      if (v.originalArtworkFile) {
+        rows.push({
+          key: `${v.id}-art`,
+          designId: d.id,
+          designName: d.name,
+          versionId: v.id,
+          versionLabel: v.versionLabel,
+          kind: "artwork",
+          fileName: v.originalArtworkFile.fileName,
+          approvedAt: v.approvedAt,
+        });
+      }
+      if (v.proofFile) {
+        rows.push({
+          key: `${v.id}-proof`,
+          designId: d.id,
+          designName: d.name,
+          versionId: v.id,
+          versionLabel: v.versionLabel,
+          kind: "proof",
+          fileName: v.proofFile.fileName,
+          approvedAt: v.approvedAt,
+        });
+      }
+      return rows;
+    }),
+  );
+
   function renderOrderCard(order: AccountOrder) {
     const orderDesc = describeOrderStatus(order.status);
     const artworkDesc = describeArtworkStatus(order.artworkStatus);
@@ -701,7 +778,12 @@ export function KontoClient() {
   function renderDesignCard(design: AccountStoredDesign) {
     return (
       <div key={design.id} className="section-card">
-        <h3>{design.name}</h3>
+        <div className="account-card-head">
+          <h3>{design.name}</h3>
+          <a href={`/konto/designs/${design.id}`} className="secondary-link">
+            Details ansehen →
+          </a>
+        </div>
         <p className="price-note">
           {design.productSlug} - {design.material ? getMaterialLabel(design.material) : "Material offen"} - {design.labelSize ?? "Format offen"}
         </p>
@@ -897,7 +979,7 @@ export function KontoClient() {
         <AccountSidebar
           active={view}
           onSelect={selectView}
-          counts={{ orders: orders.length, designs: storedDesigns.length }}
+          counts={{ orders: orders.length, designs: storedDesigns.length, documents: documentEntries.length }}
           onLogout={handleLogout}
           customerLabel={customerLabel ?? undefined}
         />
@@ -986,7 +1068,41 @@ export function KontoClient() {
                   action={{ label: "Angebot anfordern", href: "/de/angebot-anfordern" }}
                 />
               ) : (
-                <div className="section-stack">{orders.map(renderOrderCard)}</div>
+                <>
+                  <div className="account-filterbar">
+                    <div className="account-filter-chips" role="tablist" aria-label="Bestellungen filtern">
+                      {ORDER_FILTERS.map((f) => (
+                        <button
+                          key={f.key}
+                          type="button"
+                          role="tab"
+                          aria-selected={orderFilter === f.key}
+                          className={`account-chip${orderFilter === f.key ? " account-chip--active" : ""}`}
+                          onClick={() => setOrderFilter(f.key)}
+                        >
+                          {f.label}
+                        </button>
+                      ))}
+                    </div>
+                    <input
+                      type="search"
+                      className="account-search"
+                      placeholder="Bestellnummer oder Material suchen …"
+                      value={orderSearch}
+                      onChange={(e) => setOrderSearch(e.target.value)}
+                      aria-label="Bestellungen durchsuchen"
+                    />
+                  </div>
+                  {filteredOrders.length === 0 ? (
+                    <EmptyState
+                      icon={<Icons.IconOrders size={32} />}
+                      title="Keine Bestellungen gefunden"
+                      description="Für diese Filter- und Suchkombination gibt es keine Treffer."
+                    />
+                  ) : (
+                    <div className="section-stack">{filteredOrders.map(renderOrderCard)}</div>
+                  )}
+                </>
               )}
             </article>
           ) : null}
@@ -1011,11 +1127,40 @@ export function KontoClient() {
           {dashboard && view === "documents" ? (
             <article className="surface-card">
               <h2>Dokumente</h2>
-              <EmptyState
-                icon={<Icons.IconDocuments size={32} />}
-                title="Noch keine Dokumente verfügbar"
-                description="Rechnungen und Korrekturabzüge erscheinen hier, sobald sie bereitstehen."
-              />
+              <p className="field-hint">
+                Freigegebene Druckdaten und Korrekturabzüge aus Ihren gespeicherten Designs.
+              </p>
+              {documentEntries.length === 0 ? (
+                <EmptyState
+                  icon={<Icons.IconDocuments size={32} />}
+                  title="Noch keine Dokumente verfügbar"
+                  description="Druckdaten und Korrekturabzüge erscheinen hier, sobald ein Design freigegeben wurde."
+                />
+              ) : (
+                <ul className="account-doc-list">
+                  {documentEntries.map((doc) => (
+                    <li key={doc.key} className="account-doc-row">
+                      <span className="account-doc-icon">
+                        {doc.kind === "proof" ? <Icons.IconProof size={18} /> : <Icons.IconDocuments size={18} />}
+                      </span>
+                      <span className="account-doc-meta">
+                        <span className="account-doc-name">{doc.fileName}</span>
+                        <span className="account-doc-sub">
+                          {doc.designName} · {doc.versionLabel} ·{" "}
+                          {doc.kind === "proof" ? "Korrekturabzug" : "Druckdatei"}
+                        </span>
+                      </span>
+                      <button
+                        type="button"
+                        className="secondary-link account-doc-action"
+                        onClick={() => handleDownload(doc.designId, doc.versionId, doc.kind)}
+                      >
+                        <Icons.IconDownload size={15} /> Herunterladen
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </article>
           ) : null}
         </div>
