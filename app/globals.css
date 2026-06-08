@@ -2819,6 +2819,56 @@ th {
 .livechat__fab:hover { transform: scale(1.08); }
 .livechat__fab--open { background: #374151; }
 
+.livechat__promo {
+  position: fixed;
+  bottom: 88px;
+  right: 24px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.13);
+  padding: 12px 36px 12px 14px;
+  max-width: 240px;
+  animation: livechat-promo-in .35s cubic-bezier(.34,1.56,.64,1) both;
+  z-index: 9998;
+}
+.livechat__promo::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  right: 28px;
+  width: 14px;
+  height: 8px;
+  background: #fff;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  filter: drop-shadow(0 2px 1px rgba(0,0,0,.08));
+}
+.livechat__promo-text {
+  font-size: .82rem;
+  color: #374151;
+  line-height: 1.4;
+  cursor: pointer;
+  display: block;
+}
+.livechat__promo-text:hover { color: #92763a; }
+.livechat__promo-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: .7rem;
+  color: #9ca3af;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px;
+}
+.livechat__promo-close:hover { color: #374151; }
+@keyframes livechat-promo-in {
+  from { opacity: 0; transform: translateY(10px) scale(.95); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
 .livechat__window {
   position: fixed;
   bottom: 88px;

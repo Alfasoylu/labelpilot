@@ -41,6 +41,7 @@ export function LiveChat() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [started, setStarted] = useState(false);
+  const [showPromo, setShowPromo] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const visitorId = useRef<string>("");
@@ -54,6 +55,13 @@ export function LiveChat() {
       setStarted(true);
     }
   }, []);
+
+  // Show promo bubble after 40s if chat not yet opened and no prior session
+  useEffect(() => {
+    if (started) return;
+    const t = setTimeout(() => setShowPromo(true), 40000);
+    return () => clearTimeout(t);
+  }, [started]);
 
   // Load existing messages + subscribe to realtime when sessionId is known
   useEffect(() => {
@@ -201,10 +209,25 @@ export function LiveChat() {
         </div>
       )}
 
+      {/* Promo bubble */}
+      {showPromo && !open && (
+        <div className="livechat__promo" role="status">
+          <button
+            className="livechat__promo-close"
+            onClick={(e) => { e.stopPropagation(); setShowPromo(false); }}
+            aria-label="Schließen"
+          >✕</button>
+          <span
+            className="livechat__promo-text"
+            onClick={() => { setShowPromo(false); setOpen(true); }}
+          >Nicht gefunden, was Sie suchen? Wir helfen gerne.</span>
+        </div>
+      )}
+
       {/* Floating button */}
       <button
         className={`livechat__fab${open ? " livechat__fab--open" : ""}`}
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => { setShowPromo(false); setOpen((v) => !v); }}
         aria-label={open ? "Chat schließen" : "Chat öffnen"}
       >
         {open ? (
