@@ -75,6 +75,21 @@ export function CheckoutIntakeForm({
       setFields((f) => ({ ...f, [name]: e.target.value })),
   });
 
+  const [billingDiffers, setBillingDiffers] = useState(false);
+  const [billing, setBilling] = useState({
+    billingCompanyName: "",
+    billingStreetAddress: "",
+    billingAddressLine2: "",
+    billingPostalCode: "",
+    billingCity: "",
+    billingCountry: "",
+  });
+  const bindBilling = (name: keyof typeof billing) => ({
+    value: billing[name],
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+      setBilling((b) => ({ ...b, [name]: e.target.value })),
+  });
+
   // Prefill from the logged-in customer's saved profile — only fills fields the
   // visitor has not already typed into (never clobbers manual input).
   useEffect(() => {
@@ -104,6 +119,18 @@ export function CheckoutIntakeForm({
           postalCode: cur.postalCode || (c.postalCode ?? ""),
           city: cur.city || (c.city ?? ""),
         }));
+        // Prefill a separate billing address if the customer saved one.
+        if (c.billingStreet) {
+          setBilling((cur) => ({
+            billingCompanyName: cur.billingCompanyName || (c.billingCompanyName ?? ""),
+            billingStreetAddress: cur.billingStreetAddress || (c.billingStreet ?? ""),
+            billingAddressLine2: cur.billingAddressLine2 || (c.billingAddressLine2 ?? ""),
+            billingPostalCode: cur.billingPostalCode || (c.billingPostalCode ?? ""),
+            billingCity: cur.billingCity || (c.billingCity ?? ""),
+            billingCountry: cur.billingCountry || (c.billingCountry ?? ""),
+          }));
+          setBillingDiffers((prev) => prev || true);
+        }
       } catch {
         // Prefill is best-effort; checkout still works without it.
       }
@@ -156,6 +183,13 @@ export function CheckoutIntakeForm({
           formData.get("artworkStatus") ?? "upload_after_order",
         ) as CheckoutArtworkInputStatus,
         addons,
+        billingDiffers,
+        billingCompanyName: billingDiffers ? billing.billingCompanyName : "",
+        billingStreetAddress: billingDiffers ? billing.billingStreetAddress : "",
+        billingAddressLine2: billingDiffers ? billing.billingAddressLine2 : "",
+        billingPostalCode: billingDiffers ? billing.billingPostalCode : "",
+        billingCity: billingDiffers ? billing.billingCity : "",
+        billingCountry: billingDiffers ? billing.billingCountry : "",
       };
 
       try {
@@ -331,6 +365,48 @@ export function CheckoutIntakeForm({
             <option value="DE">Deutschland (DE)</option>
           </select>
         </div>
+
+        <div className="form-group">
+          <span className="form-group-title">Rechnungsadresse</span>
+        </div>
+        <div className="field-full">
+          <label className="checkbox-field">
+            <input
+              type="checkbox"
+              checked={billingDiffers}
+              onChange={(e) => setBillingDiffers(e.target.checked)}
+            />
+            <span>Rechnungsadresse weicht von der Lieferadresse ab</span>
+          </label>
+        </div>
+        {billingDiffers ? (
+          <>
+            <div className="field-full">
+              <label htmlFor="billingCompanyName">Firma / Rechnungsempfänger</label>
+              <input id="billingCompanyName" {...bindBilling("billingCompanyName")} />
+            </div>
+            <div className="field-full">
+              <label htmlFor="billingStreetAddress">Straße und Hausnummer</label>
+              <input id="billingStreetAddress" required {...bindBilling("billingStreetAddress")} />
+            </div>
+            <div className="field-full">
+              <label htmlFor="billingAddressLine2">Adresszusatz (optional)</label>
+              <input id="billingAddressLine2" {...bindBilling("billingAddressLine2")} />
+            </div>
+            <div className="field">
+              <label htmlFor="billingPostalCode">PLZ</label>
+              <input id="billingPostalCode" required {...bindBilling("billingPostalCode")} />
+            </div>
+            <div className="field">
+              <label htmlFor="billingCity">Ort</label>
+              <input id="billingCity" required {...bindBilling("billingCity")} />
+            </div>
+            <div className="field">
+              <label htmlFor="billingCountry">Land</label>
+              <input id="billingCountry" placeholder="z. B. Deutschland" {...bindBilling("billingCountry")} />
+            </div>
+          </>
+        ) : null}
 
         <div className="form-group">
           <span className="form-group-title">Rollenspezifikationen</span>

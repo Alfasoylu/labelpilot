@@ -2,6 +2,40 @@ import { z } from "zod";
 
 import type { PackageMaterial, ProductSlug } from "@/lib/commerce/packages";
 
+// Optional separate billing address (Rechnungsadresse). When billingDiffers is
+// true the billing fields are required; otherwise billing equals the delivery
+// address and the fields are ignored.
+const billingAddressFields = {
+  billingDiffers: z.boolean().optional(),
+  billingCompanyName: z.string().trim().max(160).optional().or(z.literal("")),
+  billingStreetAddress: z.string().trim().max(160).optional().or(z.literal("")),
+  billingAddressLine2: z.string().trim().max(160).optional().or(z.literal("")),
+  billingPostalCode: z.string().trim().max(20).optional().or(z.literal("")),
+  billingCity: z.string().trim().max(120).optional().or(z.literal("")),
+  billingCountry: z.string().trim().max(60).optional().or(z.literal("")),
+} as const;
+
+function requireBillingWhenDiffering(
+  data: {
+    billingDiffers?: boolean;
+    billingStreetAddress?: string;
+    billingPostalCode?: string;
+    billingCity?: string;
+  },
+  ctx: z.RefinementCtx,
+) {
+  if (!data.billingDiffers) return;
+  if (!data.billingStreetAddress) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["billingStreetAddress"], message: "Rechnungsadresse: Straße erforderlich." });
+  }
+  if (!data.billingCity) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["billingCity"], message: "Rechnungsadresse: Stadt erforderlich." });
+  }
+  if (!data.billingPostalCode || !/^\d{5}$/.test(data.billingPostalCode)) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["billingPostalCode"], message: "Rechnungsadresse: gültige 5-stellige PLZ erforderlich." });
+  }
+}
+
 export const checkoutAddonSchema = z.object({
   designService: z.boolean().optional(),
   physicalProof: z.boolean().optional(),
@@ -41,7 +75,8 @@ export const checkoutIntakeSchema = z.object({
   maschineName: z.string().trim().max(200).optional().or(z.literal("")),
   artworkStatus: checkoutArtworkInputStatusSchema,
   addons: checkoutAddonSchema.optional(),
-});
+  ...billingAddressFields,
+}).superRefine(requireBillingWhenDiffering);
 
 export type CheckoutIntakeInput = z.infer<typeof checkoutIntakeSchema>;
 export type CheckoutAddonInput = z.infer<typeof checkoutAddonSchema>;
@@ -82,7 +117,8 @@ export const customSizeCheckoutIntakeSchema = z.object({
   weissunterdruck: z.boolean().optional(),
   anzahlSorten: z.number().int().min(1).max(20).optional(),
   ...contactAddressFields,
-});
+  ...billingAddressFields,
+}).superRefine(requireBillingWhenDiffering);
 
 export type CustomSizeCheckoutIntakeInput = z.infer<typeof customSizeCheckoutIntakeSchema>;
 

@@ -173,6 +173,25 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
     }
   }
 
+  // Backfill a separate billing address too, only when the customer has none yet.
+  if (order.customerId && order.billingStreetAddress) {
+    try {
+      await prisma.customer.updateMany({
+        where: { id: order.customerId, billingStreet: null },
+        data: {
+          billingCompanyName: order.billingCompanyName,
+          billingStreet: order.billingStreetAddress,
+          billingAddressLine2: order.billingAddressLine2,
+          billingPostalCode: order.billingPostalCode,
+          billingCity: order.billingCity,
+          billingCountry: order.billingCountry,
+        },
+      });
+    } catch (backfillError) {
+      console.error("Customer-Rechnungsadress-Backfill fehlgeschlagen:", backfillError);
+    }
+  }
+
   const customerEmail = session.customer_details?.email ?? order.customerEmail;
 
   if (emailReservation.count !== 1) {

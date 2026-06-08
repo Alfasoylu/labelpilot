@@ -213,6 +213,12 @@ model Customer {
   city                 String?
   country              String?
   vatId                String?
+  billingCompanyName   String?
+  billingStreet        String?
+  billingAddressLine2  String?
+  billingPostalCode    String?
+  billingCity          String?
+  billingCountry       String?
   notificationPrefs    Json?
   paymentTermsApproved Boolean  @default(false)
   paymentTermsNetDays  Int?
@@ -273,6 +279,12 @@ model Order {
   addressLine2            String?
   postalCode              String?
   city                    String?
+  billingCompanyName      String?
+  billingStreetAddress    String?
+  billingAddressLine2     String?
+  billingPostalCode       String?
+  billingCity             String?
+  billingCountry          String?
   customerNote            String?
   artworkInputStatus      String?
   selectedAddons          Json?

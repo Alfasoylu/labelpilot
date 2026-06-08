@@ -89,6 +89,12 @@ type AccountCustomer = {
   city: string | null;
   country: string | null;
   vatId: string | null;
+  billingCompanyName: string | null;
+  billingStreet: string | null;
+  billingAddressLine2: string | null;
+  billingPostalCode: string | null;
+  billingCity: string | null;
+  billingCountry: string | null;
   notificationPrefs: NotificationPrefs | null;
   paymentTermsApproved: boolean;
   paymentTermsNetDays: number | null;
@@ -232,6 +238,18 @@ export function KontoClient() {
   });
   const [addressSaving, setAddressSaving] = useState(false);
   const [addressMsg, setAddressMsg] = useState("");
+
+  const [billingEdit, setBillingEdit] = useState(false);
+  const [billingFields, setBillingFields] = useState({
+    billingCompanyName: "",
+    billingStreet: "",
+    billingAddressLine2: "",
+    billingPostalCode: "",
+    billingCity: "",
+    billingCountry: "",
+  });
+  const [billingSaving, setBillingSaving] = useState(false);
+  const [billingMsg, setBillingMsg] = useState("");
 
   const [notifSaving, setNotifSaving] = useState<keyof NotificationPrefs | null>(null);
   const [notifSavedKey, setNotifSavedKey] = useState<keyof NotificationPrefs | null>(null);
@@ -729,6 +747,72 @@ export function KontoClient() {
       setAddressMsg("Speichern fehlgeschlagen.");
     } finally {
       setAddressSaving(false);
+    }
+  }
+
+  function handleBillingEditStart(copyFromDelivery = false) {
+    if (!dashboard) return;
+    const c = dashboard.customer;
+    if (copyFromDelivery) {
+      setBillingFields({
+        billingCompanyName: c.companyName ?? "",
+        billingStreet: c.street ?? "",
+        billingAddressLine2: c.addressLine2 ?? "",
+        billingPostalCode: c.postalCode ?? "",
+        billingCity: c.city ?? "",
+        billingCountry: c.country ?? "",
+      });
+    } else {
+      setBillingFields({
+        billingCompanyName: c.billingCompanyName ?? "",
+        billingStreet: c.billingStreet ?? "",
+        billingAddressLine2: c.billingAddressLine2 ?? "",
+        billingPostalCode: c.billingPostalCode ?? "",
+        billingCity: c.billingCity ?? "",
+        billingCountry: c.billingCountry ?? "",
+      });
+    }
+    setBillingMsg("");
+    setBillingEdit(true);
+  }
+
+  async function handleBillingSave() {
+    if (!accessToken) return;
+    setBillingSaving(true);
+    setBillingMsg("");
+    try {
+      const res = await fetch("/api/account/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify(billingFields),
+      });
+      const data = (await res.json()) as Partial<AccountCustomer> & { error?: string };
+      if (!res.ok) {
+        setBillingMsg(data.error ?? "Speichern fehlgeschlagen.");
+        return;
+      }
+      setDashboard((prev) =>
+        prev
+          ? {
+              ...prev,
+              customer: {
+                ...prev.customer,
+                billingCompanyName: data.billingCompanyName ?? null,
+                billingStreet: data.billingStreet ?? null,
+                billingAddressLine2: data.billingAddressLine2 ?? null,
+                billingPostalCode: data.billingPostalCode ?? null,
+                billingCity: data.billingCity ?? null,
+                billingCountry: data.billingCountry ?? null,
+              },
+            }
+          : prev,
+      );
+      setBillingEdit(false);
+      setBillingMsg("Rechnungsadresse gespeichert.");
+    } catch {
+      setBillingMsg("Speichern fehlgeschlagen.");
+    } finally {
+      setBillingSaving(false);
     }
   }
 
@@ -1288,7 +1372,7 @@ export function KontoClient() {
 
           <article className="surface-card">
             <div className="account-card-head">
-              <h2>Adresse & USt-IdNr.</h2>
+              <h2>Lieferadresse & USt-IdNr.</h2>
               <span className="account-section-icon"><Icons.IconProfile size={20} /></span>
             </div>
             {addressEdit ? (
@@ -1351,6 +1435,89 @@ export function KontoClient() {
                 <div className="cta-row">
                   <button type="button" className="secondary-link" onClick={handleAddressEditStart}>
                     Adresse bearbeiten
+                  </button>
+                </div>
+              </>
+            )}
+          </article>
+
+          <article className="surface-card">
+            <div className="account-card-head">
+              <h2>Rechnungsadresse</h2>
+              <span className="account-section-icon"><Icons.IconDocuments size={20} /></span>
+            </div>
+            {billingEdit ? (
+              <div className="section-stack">
+                <div className="form-grid">
+                  <div className="field field-full">
+                    <label htmlFor="bill-company">Firma / Rechnungsempfänger</label>
+                    <input id="bill-company" value={billingFields.billingCompanyName}
+                      onChange={(e) => setBillingFields((p) => ({ ...p, billingCompanyName: e.target.value }))} />
+                  </div>
+                  <div className="field field-full">
+                    <label htmlFor="bill-street">Straße und Hausnummer</label>
+                    <input id="bill-street" value={billingFields.billingStreet}
+                      onChange={(e) => setBillingFields((p) => ({ ...p, billingStreet: e.target.value }))} />
+                  </div>
+                  <div className="field field-full">
+                    <label htmlFor="bill-line2">Adresszusatz (optional)</label>
+                    <input id="bill-line2" value={billingFields.billingAddressLine2}
+                      onChange={(e) => setBillingFields((p) => ({ ...p, billingAddressLine2: e.target.value }))} />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="bill-plz">PLZ</label>
+                    <input id="bill-plz" value={billingFields.billingPostalCode}
+                      onChange={(e) => setBillingFields((p) => ({ ...p, billingPostalCode: e.target.value }))} />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="bill-city">Stadt</label>
+                    <input id="bill-city" value={billingFields.billingCity}
+                      onChange={(e) => setBillingFields((p) => ({ ...p, billingCity: e.target.value }))} />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="bill-country">Land</label>
+                    <input id="bill-country" placeholder="z. B. Deutschland" value={billingFields.billingCountry}
+                      onChange={(e) => setBillingFields((p) => ({ ...p, billingCountry: e.target.value }))} />
+                  </div>
+                </div>
+                {billingMsg ? <p className="form-status error">{billingMsg}</p> : null}
+                <div className="inline-actions">
+                  <button type="button" className="cta-button" disabled={billingSaving} onClick={handleBillingSave}>
+                    {billingSaving ? "Wird gespeichert …" : "Speichern"}
+                  </button>
+                  <button type="button" className="secondary-link" disabled={billingSaving}
+                    onClick={() => handleBillingEditStart(true)}>
+                    Aus Lieferadresse übernehmen
+                  </button>
+                  <button type="button" className="secondary-link" disabled={billingSaving}
+                    onClick={() => { setBillingEdit(false); setBillingMsg(""); }}>
+                    Abbrechen
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                {dashboard.customer.billingStreet ? (
+                  <ul className="simple-list">
+                    {dashboard.customer.billingCompanyName ? (
+                      <li>Rechnungsempfänger: {dashboard.customer.billingCompanyName}</li>
+                    ) : null}
+                    <li>
+                      Anschrift: {dashboard.customer.billingStreet}
+                      {dashboard.customer.billingAddressLine2 ? `, ${dashboard.customer.billingAddressLine2}` : ""},{" "}
+                      {dashboard.customer.billingPostalCode ?? ""} {dashboard.customer.billingCity ?? ""}
+                      {dashboard.customer.billingCountry ? `, ${dashboard.customer.billingCountry}` : ""}
+                    </li>
+                  </ul>
+                ) : (
+                  <p className="field-hint">
+                    Keine separate Rechnungsadresse hinterlegt – es gilt die Lieferadresse.
+                  </p>
+                )}
+                {billingMsg ? <p className="form-status success">{billingMsg}</p> : null}
+                <div className="cta-row">
+                  <button type="button" className="secondary-link" onClick={() => handleBillingEditStart(false)}>
+                    {dashboard.customer.billingStreet ? "Rechnungsadresse bearbeiten" : "Rechnungsadresse hinzufügen"}
                   </button>
                 </div>
               </>

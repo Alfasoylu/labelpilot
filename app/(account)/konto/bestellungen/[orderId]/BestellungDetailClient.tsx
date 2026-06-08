@@ -41,6 +41,16 @@ type OrderDetail = {
   rollKern: string | null;
   abrollrichtung: string | null;
   maxRollendurchmesser: string | null;
+  streetAddress: string | null;
+  addressLine2: string | null;
+  postalCode: string | null;
+  city: string | null;
+  billingCompanyName: string | null;
+  billingStreetAddress: string | null;
+  billingAddressLine2: string | null;
+  billingPostalCode: string | null;
+  billingCity: string | null;
+  billingCountry: string | null;
   amountLabel: string;
   createdAt: string;
   uploadHref: string | null;
@@ -245,6 +255,41 @@ export function BestellungDetailClient({ orderId }: { orderId: string }) {
           ) : null}
         </article>
       </div>
+
+      {order.streetAddress || order.billingStreetAddress ? (
+        <article className="surface-card">
+          <div className="account-card-head">
+            <h2>Adressen</h2>
+            <span className="account-section-icon"><Icons.IconProfile size={20} /></span>
+          </div>
+          <div className="two-column">
+            {order.streetAddress ? (
+              <div>
+                <p className="eyebrow">Lieferadresse</p>
+                <p className="account-address-block">
+                  {order.streetAddress}
+                  {order.addressLine2 ? `\n${order.addressLine2}` : ""}
+                  {`\n${order.postalCode ?? ""} ${order.city ?? ""}`}
+                </p>
+              </div>
+            ) : null}
+            <div>
+              <p className="eyebrow">Rechnungsadresse</p>
+              {order.billingStreetAddress ? (
+                <p className="account-address-block">
+                  {order.billingCompanyName ? `${order.billingCompanyName}\n` : ""}
+                  {order.billingStreetAddress}
+                  {order.billingAddressLine2 ? `\n${order.billingAddressLine2}` : ""}
+                  {`\n${order.billingPostalCode ?? ""} ${order.billingCity ?? ""}`}
+                  {order.billingCountry ? `\n${order.billingCountry}` : ""}
+                </p>
+              ) : (
+                <p className="field-hint">Wie Lieferadresse</p>
+              )}
+            </div>
+          </div>
+        </article>
+      ) : null}
 
       {order.proofFiles.filter((p) => p.status === "WAITING_CUSTOMER_APPROVAL").map((proof) => (
         <article key={proof.id} className="surface-card">
