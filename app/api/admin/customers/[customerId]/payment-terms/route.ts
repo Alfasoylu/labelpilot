@@ -6,9 +6,9 @@ import { getPrismaClient } from "@/lib/db/prisma";
 const schema = z.object({
   paymentTermsApproved: z.enum(["true", "false"]),
   paymentTermsNetDays: z
-    .union([z.literal(""), z.string().trim()])
+    .union([z.literal(""), z.string().trim().regex(/^\d{1,3}$/, "Ungültiges Zahlungsziel.")])
     .transform((v) => (v === "" ? null : Number.parseInt(v, 10)))
-    .refine((v) => v === null || (Number.isInteger(v) && v >= 0 && v <= 120), {
+    .refine((v) => v === null || (v >= 0 && v <= 120), {
       message: "Ungültiges Zahlungsziel.",
     }),
 });

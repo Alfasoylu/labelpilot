@@ -20,6 +20,12 @@ const TYPE_LABELS: Record<string, string> = {
 
 const STATUS_FILTERS = ["all", "OPEN", "IN_REVIEW", "RESOLVED"] as const;
 
+const STATUS_PILL_CLASS: Record<string, string> = {
+  OPEN: "admin-status admin-status--open",
+  IN_REVIEW: "admin-status admin-status--review",
+  RESOLVED: "admin-status admin-status--resolved",
+};
+
 function formatDate(value: Date) {
   return new Intl.DateTimeFormat("de-DE", { dateStyle: "medium", timeStyle: "short" }).format(value);
 }
@@ -107,34 +113,36 @@ export default async function AdminSupportPage({ searchParams }: SupportListPage
           <p className="price-note">Keine Support-Anfragen gefunden.</p>
         ) : (
           <div style={{ overflowX: "auto" }}>
-            <table style={{ borderCollapse: "collapse", width: "100%", fontSize: "0.875rem" }}>
+            <table className="admin-table">
               <thead>
-                <tr style={{ borderBottom: "2px solid var(--color-border, #e5e5e5)", textAlign: "left" }}>
-                  <th style={{ padding: "0.5rem 1rem 0.5rem 0" }}>Datum</th>
-                  <th style={{ padding: "0.5rem 1rem 0.5rem 0" }}>Kunde</th>
-                  <th style={{ padding: "0.5rem 1rem 0.5rem 0" }}>Typ</th>
-                  <th style={{ padding: "0.5rem 1rem 0.5rem 0" }}>Betreff</th>
-                  <th style={{ padding: "0.5rem 1rem 0.5rem 0" }}>Status</th>
-                  <th style={{ padding: "0.5rem 0" }}></th>
+                <tr>
+                  <th>Datum</th>
+                  <th>Kunde</th>
+                  <th>Typ</th>
+                  <th>Betreff</th>
+                  <th>Status</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 {requests.map((r) => {
                   const attachmentCount = Array.isArray(r.attachments) ? r.attachments.length : 0;
                   return (
-                    <tr key={r.id} style={{ borderBottom: "1px solid var(--color-border, #e5e5e5)" }}>
-                      <td style={{ padding: "0.6rem 1rem 0.6rem 0", whiteSpace: "nowrap" }}>{formatDate(r.createdAt)}</td>
-                      <td style={{ padding: "0.6rem 1rem 0.6rem 0" }}>
-                        {r.customer?.companyName || r.customer?.contactName || r.customer?.email || "—"}
-                      </td>
-                      <td style={{ padding: "0.6rem 1rem 0.6rem 0" }}>{TYPE_LABELS[r.type] ?? r.type}</td>
-                      <td style={{ padding: "0.6rem 1rem 0.6rem 0" }}>
+                    <tr key={r.id}>
+                      <td style={{ whiteSpace: "nowrap" }}>{formatDate(r.createdAt)}</td>
+                      <td>{r.customer?.companyName || r.customer?.contactName || r.customer?.email || "—"}</td>
+                      <td>{TYPE_LABELS[r.type] ?? r.type}</td>
+                      <td>
                         {r.subject}
                         {attachmentCount > 0 ? <span className="price-note"> · {attachmentCount} Anhang</span> : null}
                         {r.order?.orderNumber ? <span className="price-note"> · {r.order.orderNumber}</span> : null}
                       </td>
-                      <td style={{ padding: "0.6rem 1rem 0.6rem 0" }}>{STATUS_LABELS[r.status] ?? r.status}</td>
-                      <td style={{ padding: "0.6rem 0" }}>
+                      <td>
+                        <span className={STATUS_PILL_CLASS[r.status] ?? "admin-status"}>
+                          {STATUS_LABELS[r.status] ?? r.status}
+                        </span>
+                      </td>
+                      <td>
                         <Link href={`/admin/support/${r.id}`} className="secondary-link">Öffnen →</Link>
                       </td>
                     </tr>

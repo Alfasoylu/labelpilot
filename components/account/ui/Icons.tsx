@@ -166,6 +166,16 @@ export function IconDownload(props: IconProps) {
   );
 }
 
+export function IconLock(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <rect x="4" y="10" width="16" height="11" rx="2" />
+      <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+      <path d="M12 14v3" />
+    </svg>
+  );
+}
+
 export function IconSupport(props: IconProps) {
   return (
     <svg {...base(props)}>

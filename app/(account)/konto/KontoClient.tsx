@@ -1305,7 +1305,10 @@ export function KontoClient() {
   const profileArticle = dashboard ? (
     <>
     <article className="surface-card">
-      <h2>Kontodaten</h2>
+      <div className="account-card-head">
+        <h2>Kontodaten</h2>
+        <span className="account-section-icon"><Icons.IconProfile size={20} /></span>
+      </div>
       {editMode ? (
               <div className="section-stack">
                 <div className="form-grid">
@@ -1385,7 +1388,10 @@ export function KontoClient() {
           </article>
 
           <article className="surface-card">
-            <h2>Passwort</h2>
+            <div className="account-card-head">
+              <h2>Passwort</h2>
+              <span className="account-section-icon"><Icons.IconLock size={20} /></span>
+            </div>
             {changePasswordMode ? (
               <form action={handleChangePassword} className="section-stack">
                 <div className="form-grid">
@@ -2062,7 +2068,7 @@ export function KontoClient() {
                         }
                       />
                       <p className="field-hint">
-                        PDF, AI, EPS, SVG, PNG, JPG, TIFF oder ZIP. Bis zu 3 Dateien.
+                        PDF, AI, EPS, SVG, PNG, JPG, TIFF oder ZIP. Bis zu 3 Dateien, je max. 50 MB.
                       </p>
                       {supportFileNames.length > 0 ? (
                         <ul className="account-attach-list">
