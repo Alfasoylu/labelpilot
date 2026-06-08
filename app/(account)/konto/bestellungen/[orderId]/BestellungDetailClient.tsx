@@ -4,13 +4,18 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { ProofApprovalForm } from "@/components/account/ProofApprovalForm";
+import { Icons, SkeletonCard, StatusBadge, StatusTimeline } from "@/components/account/ui";
 import { getSupabaseBrowserClient } from "@/lib/auth/supabase-browser";
 import {
   formatFinishing,
   getArtworkStatusLabel,
   getMaterialLabel,
-  getOrderStatusLabel,
 } from "@/lib/orders/artwork";
+import {
+  buildOrderTimeline,
+  describeArtworkStatus,
+  describeOrderStatus,
+} from "@/lib/orders/status-style";
 
 type ProofFileDetail = {
   id: string;
@@ -137,6 +142,10 @@ export function BestellungDetailClient({ orderId }: { orderId: string }) {
           <span className="eyebrow">Bestelldetails</span>
           <h1>Bestellung wird geladen …</h1>
         </article>
+        <div className="two-column">
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
       </div>
     );
   }
@@ -169,6 +178,9 @@ export function BestellungDetailClient({ orderId }: { orderId: string }) {
 
   const reorderUrl = buildReorderUrl(order);
   const isCustomSize = Boolean(order.widthMm && order.heightMm);
+  const orderDesc = describeOrderStatus(order.status);
+  const artworkDesc = describeArtworkStatus(order.artworkStatus);
+  const timelineSteps = buildOrderTimeline({ status: order.status });
 
   return (
     <div className="container section-stack">
@@ -186,7 +198,10 @@ export function BestellungDetailClient({ orderId }: { orderId: string }) {
 
       <div className="two-column">
         <article className="surface-card">
-          <h2>Spezifikation</h2>
+          <div className="account-card-head">
+            <h2>Spezifikation</h2>
+            <span className="account-section-icon"><Icons.IconBox size={20} /></span>
+          </div>
           <ul className="simple-list">
             {isCustomSize ? (
               <li>Format: {order.widthMm} × {order.heightMm} mm (Wunschformat)</li>
@@ -203,10 +218,18 @@ export function BestellungDetailClient({ orderId }: { orderId: string }) {
         </article>
 
         <article className="surface-card">
-          <h2>Status & Betrag</h2>
-          <ul className="simple-list">
-            <li>Bestellstatus: {getOrderStatusLabel(order.status)}</li>
-            <li>Druckdaten: {getArtworkStatusLabel(order.artworkStatus as Parameters<typeof getArtworkStatusLabel>[0])}</li>
+          <div className="account-card-head">
+            <h2>Status & Betrag</h2>
+            <StatusBadge tone={orderDesc.tone}>{orderDesc.label}</StatusBadge>
+          </div>
+          <StatusTimeline steps={timelineSteps} />
+          <ul className="simple-list account-status-meta">
+            <li>
+              Druckdaten:{" "}
+              <StatusBadge tone={artworkDesc.tone} size="sm">
+                {getArtworkStatusLabel(order.artworkStatus as Parameters<typeof getArtworkStatusLabel>[0])}
+              </StatusBadge>
+            </li>
             <li>Betrag: {order.amountLabel}</li>
           </ul>
           {order.uploadHref ? (
@@ -260,7 +283,10 @@ export function BestellungDetailClient({ orderId }: { orderId: string }) {
 
       {(order.status === "SHIPPED" || order.status === "DELIVERED") && (
         <article className="surface-card">
-          <h2>Versandinformationen</h2>
+          <div className="account-card-head">
+            <h2>Versandinformationen</h2>
+            <span className="account-section-icon"><Icons.IconTruck size={20} /></span>
+          </div>
           <ul className="simple-list">
             {order.shippedAt ? (
               <li>Versanddatum: {formatDate(order.shippedAt)}</li>
@@ -301,7 +327,10 @@ export function BestellungDetailClient({ orderId }: { orderId: string }) {
       )}
 
       <article className="surface-card">
-        <h2>Nachbestellen</h2>
+        <div className="account-card-head">
+          <h2>Nachbestellen</h2>
+          <span className="account-section-icon"><Icons.IconRepeat size={20} /></span>
+        </div>
         <p>
           {isCustomSize
             ? `Format ${order.widthMm} × ${order.heightMm} mm, ${getMaterialLabel(order.material)}, ${order.quantity.toLocaleString("de-DE")} Stück – im Kalkulator vorausgefüllt.`

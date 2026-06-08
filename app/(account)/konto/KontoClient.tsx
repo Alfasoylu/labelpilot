@@ -3,13 +3,22 @@
 import { useEffect, useState } from "react";
 
 import { ProofApprovalForm } from "@/components/account/ProofApprovalForm";
+import {
+  AccountSidebar,
+  EmptyState,
+  Icons,
+  SkeletonCard,
+  StatCard,
+  StatusBadge,
+} from "@/components/account/ui";
+import type { AccountView } from "@/components/account/ui";
 import { ReorderStartForm } from "@/components/reorder-start-form";
 import { getSupabaseBrowserClient } from "@/lib/auth/supabase-browser";
 import {
   getArtworkStatusLabel,
   getMaterialLabel,
-  getOrderStatusLabel,
 } from "@/lib/orders/artwork";
+import { describeArtworkStatus, describeOrderStatus } from "@/lib/orders/status-style";
 
 type AccountOrder = {
   id: string;
@@ -19,6 +28,8 @@ type AccountOrder = {
   productSlug: string;
   material: string;
   quantity: number;
+  amountCents: number;
+  currency: string;
   amountLabel: string;
   createdAt: string;
   uploadHref: string | null;
@@ -90,6 +101,7 @@ export function KontoClient() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [mounted, setMounted] = useState(false);
+  const [view, setView] = useState<AccountView>("overview");
 
   const [editMode, setEditMode] = useState(false);
   const [profileFields, setProfileFields] = useState({
@@ -109,9 +121,29 @@ export function KontoClient() {
   const [changePasswordMode, setChangePasswordMode] = useState(false);
   const [changePasswordMsg, setChangePasswordMsg] = useState("");
 
+  const VALID_VIEWS: AccountView[] = ["overview", "orders", "designs", "profile", "documents"];
+
   useEffect(() => {
     setMounted(true);
+    const fromHash = window.location.hash.replace("#", "") as AccountView;
+    if (VALID_VIEWS.includes(fromHash)) {
+      setView(fromHash);
+    }
+    const onHashChange = () => {
+      const next = window.location.hash.replace("#", "") as AccountView;
+      setView(VALID_VIEWS.includes(next) ? next : "overview");
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function selectView(next: AccountView) {
+    setView(next);
+    if (typeof window !== "undefined") {
+      window.history.pushState(null, "", `#${next}`);
+    }
+  }
 
   useEffect(() => {
     const client = supabase;
@@ -564,35 +596,159 @@ export function KontoClient() {
     );
   }
 
-  return (
-    <AccountShell>
-      <article className="legal-card">
-        <span className="eyebrow">Kundenkonto</span>
-        <h1>Meine Bestellungen und gespeicherten Druckdaten</h1>
-        <p>
-          Ihr Konto verknüpft Bestellungen über die verifizierte E-Mail-Adresse. Die
-          Nachbestellung nutzt gespeicherte Spezifikation und freigegebene Druckdaten; bei
-          20.000+ Stück oder Sonderwünschen geht der Vorgang ins Angebot.
+  const ACTIVE_ORDER_DONE = ["DELIVERED", "COMPLETED", "CANCELLED", "PAYMENT_FAILED"];
+  const orders = dashboard?.orders ?? [];
+  const storedDesigns = dashboard?.storedDesigns ?? [];
+  const openOrdersCount = orders.filter((o) => !ACTIVE_ORDER_DONE.includes(o.status)).length;
+  const awaitingApprovalCount = orders.filter(
+    (o) => o.latestProof != null || o.status === "WAITING_CUSTOMER_APPROVAL",
+  ).length;
+  const totalSpentCents = orders
+    .filter((o) => o.status !== "CANCELLED" && o.status !== "PAYMENT_FAILED")
+    .reduce((sum, o) => sum + (o.amountCents ?? 0), 0);
+  const totalSpentLabel = new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
+  }).format(totalSpentCents / 100);
+
+  const customerLabel =
+    dashboard?.customer.companyName ?? dashboard?.customer.contactName ?? dashboard?.customer.email;
+
+  function renderOrderCard(order: AccountOrder) {
+    const orderDesc = describeOrderStatus(order.status);
+    const artworkDesc = describeArtworkStatus(order.artworkStatus);
+    return (
+      <div key={order.id} className="section-card">
+        <div className="account-card-head">
+          <h3>{order.orderNumber}</h3>
+          <StatusBadge tone={orderDesc.tone}>{orderDesc.label}</StatusBadge>
+        </div>
+        <p className="price-note">
+          {order.quantity.toLocaleString("de-DE")} Stück – {getMaterialLabel(order.material)} – {order.amountLabel}
         </p>
+        <ul className="simple-list">
+          <li>
+            Druckdaten:{" "}
+            <StatusBadge tone={artworkDesc.tone} size="sm">
+              {getArtworkStatusLabel(order.artworkStatus)}
+            </StatusBadge>
+          </li>
+          <li>Bestelldatum: {formatDate(order.createdAt)}</li>
+        </ul>
+        {order.latestProof ? (
+          <div className="proof-banner">
+            <p>
+              <strong>Korrekturabzug wartet auf Ihre Freigabe.</strong>
+            </p>
+            {order.latestProof.adminNote ? (
+              <p className="field-hint">{order.latestProof.adminNote}</p>
+            ) : null}
+            <ProofApprovalForm
+              orderId={order.id}
+              proofFileId={order.latestProof.id}
+              accessToken={accessToken!}
+              onSuccess={() => {
+                setDashboard((prev) =>
+                  prev
+                    ? {
+                        ...prev,
+                        orders: prev.orders.map((o) =>
+                          o.id === order.id
+                            ? { ...o, latestProof: null, status: "APPROVED_FOR_PRODUCTION" }
+                            : o,
+                        ),
+                      }
+                    : prev,
+                );
+              }}
+            />
+            <a
+              href={`/api/account/orders/${order.id}/proof-file/${order.latestProof.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="secondary-link"
+            >
+              Korrekturabzug öffnen →
+            </a>
+          </div>
+        ) : null}
         <div className="cta-row">
-          <button type="button" className="secondary-link" onClick={handleLogout}>
-            Abmelden
-          </button>
-          <a href="/de/angebot-anfordern" className="secondary-link">
-            Angebot anfordern
+          {order.uploadHref && !order.latestProof ? (
+            <a href={order.uploadHref} className="cta-link">
+              {order.artworkStatus === "AWAITING_ARTWORK"
+                ? "Druckdaten hochladen"
+                : "Auftrag & Druckdaten öffnen"}
+            </a>
+          ) : null}
+          {order.trackingUrl && (order.status === "SHIPPED" || order.status === "DELIVERED") ? (
+            <a
+              href={order.trackingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cta-link"
+            >
+              Sendung verfolgen →
+            </a>
+          ) : null}
+          <a href={`/konto/bestellungen/${order.id}`} className="secondary-link">
+            Details &amp; Nachbestellen
           </a>
         </div>
-      </article>
+      </div>
+    );
+  }
 
-      <StatusMessage message={message} error={error} />
+  function renderDesignCard(design: AccountStoredDesign) {
+    return (
+      <div key={design.id} className="section-card">
+        <h3>{design.name}</h3>
+        <p className="price-note">
+          {design.productSlug} - {design.material ? getMaterialLabel(design.material) : "Material offen"} - {design.labelSize ?? "Format offen"}
+        </p>
+        <ul className="simple-list">
+          <li>Letzte Bestellung: {design.lastOrder?.orderNumber ?? "Nicht vorhanden"}</li>
+          <li>Letzte Freigabe: {formatDate(design.currentArtworkVersion?.approvedAt ?? null)}</li>
+          <li>Bisherige Nachbestellungen: {design.totalOrders.toLocaleString("de-DE")}</li>
+        </ul>
 
-      {loading ? <p className="price-note">Kundenkonto wird geladen...</p> : null}
+        {design.currentArtworkVersion ? (
+          <div className="cta-row">
+            {design.currentArtworkVersion.originalArtworkFile ? (
+              <button
+                type="button"
+                className="secondary-link"
+                onClick={() => handleDownload(design.id, design.currentArtworkVersion!.id, "artwork")}
+              >
+                Druckdatei herunterladen
+              </button>
+            ) : null}
+            {design.currentArtworkVersion.proofFile ? (
+              <button
+                type="button"
+                className="secondary-link"
+                onClick={() => handleDownload(design.id, design.currentArtworkVersion!.id, "proof")}
+              >
+                Proof herunterladen
+              </button>
+            ) : null}
+          </div>
+        ) : null}
 
-      {dashboard ? (
-        <>
-          <article className="surface-card">
-            <h2>Kontodaten</h2>
-            {editMode ? (
+        <ReorderStartForm
+          designId={design.id}
+          accessToken={accessToken}
+          defaultQuantity={design.defaultQuantity}
+          currentArtworkVersionId={design.currentArtworkVersionId}
+        />
+      </div>
+    );
+  }
+
+  const profileArticle = dashboard ? (
+    <>
+    <article className="surface-card">
+      <h2>Kontodaten</h2>
+      {editMode ? (
               <div className="section-stack">
                 <div className="form-grid">
                   <div className="field">
@@ -731,155 +887,140 @@ export function KontoClient() {
               </>
             )}
           </article>
+    </>
+  ) : null;
 
-          <article className="surface-card">
-            <h2>Meine Bestellungen</h2>
-            {dashboard.orders.length === 0 ? (
-              <p className="price-note">
-                Noch keine verknüpften Bestellungen. Sobald eine Bestellung mit dieser E-Mail
-                vorliegt, erscheint sie hier.
-              </p>
-            ) : (
-              <div className="section-stack">
-                {dashboard.orders.map((order) => (
-                  <div key={order.id} className="section-card">
-                    <h3>{order.orderNumber}</h3>
-                    <p className="price-note">
-                      {order.quantity.toLocaleString("de-DE")} Stück – {getMaterialLabel(order.material)} – {order.amountLabel}
-                    </p>
-                    <ul className="simple-list">
-                      <li>Status: {getOrderStatusLabel(order.status)}</li>
-                      <li>Druckdaten: {getArtworkStatusLabel(order.artworkStatus)}</li>
-                      <li>Bestelldatum: {formatDate(order.createdAt)}</li>
-                    </ul>
-                    {order.latestProof ? (
-                      <div className="proof-banner">
-                        <p>
-                          <strong>Korrekturabzug wartet auf Ihre Freigabe.</strong>
-                        </p>
-                        {order.latestProof.adminNote ? (
-                          <p className="field-hint">{order.latestProof.adminNote}</p>
-                        ) : null}
-                        <ProofApprovalForm
-                          orderId={order.id}
-                          proofFileId={order.latestProof.id}
-                          accessToken={accessToken!}
-                          onSuccess={() => {
-                            setDashboard((prev) =>
-                              prev
-                                ? {
-                                    ...prev,
-                                    orders: prev.orders.map((o) =>
-                                      o.id === order.id
-                                        ? { ...o, latestProof: null, status: "APPROVED_FOR_PRODUCTION" }
-                                        : o,
-                                    ),
-                                  }
-                                : prev,
-                            );
-                          }}
-                        />
-                        <a
-                          href={`/api/account/orders/${order.id}/proof-file/${order.latestProof.id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="secondary-link"
-                        >
-                          Korrekturabzug öffnen →
-                        </a>
-                      </div>
-                    ) : null}
-                    <div className="cta-row">
-                      {order.uploadHref && !order.latestProof ? (
-                        <a href={order.uploadHref} className="cta-link">
-                          {order.artworkStatus === "AWAITING_ARTWORK"
-                            ? "Druckdaten hochladen"
-                            : "Auftrag & Druckdaten öffnen"}
-                        </a>
-                      ) : null}
-                      {order.trackingUrl &&
-                      (order.status === "SHIPPED" || order.status === "DELIVERED") ? (
-                        <a
-                          href={order.trackingUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="cta-link"
-                        >
-                          Sendung verfolgen →
-                        </a>
-                      ) : null}
-                      <a href={`/konto/bestellungen/${order.id}`} className="secondary-link">
-                        Details &amp; Nachbestellen
-                      </a>
-                    </div>
-                  </div>
-                ))}
+  return (
+    <div className="container">
+      <StatusMessage message={message} error={error} />
+      <div className="account-shell">
+        <AccountSidebar
+          active={view}
+          onSelect={selectView}
+          counts={{ orders: orders.length, designs: storedDesigns.length }}
+          onLogout={handleLogout}
+          customerLabel={customerLabel ?? undefined}
+        />
+        <div className="account-main section-stack">
+          {loading && !dashboard ? (
+            <div className="section-stack">
+              <div className="account-stat-grid">
+                <SkeletonCard />
+                <SkeletonCard />
+                <SkeletonCard />
+                <SkeletonCard />
               </div>
-            )}
-          </article>
+              <SkeletonCard />
+              <SkeletonCard />
+            </div>
+          ) : null}
 
-          <article className="surface-card">
-            <h2>Gespeicherte Designs</h2>
-            {dashboard.storedDesigns.length === 0 ? (
-              <p className="price-note">
-                Noch keine freigegebenen Designs gespeichert. Nach Freigabe eines Auftrags wird
-                die Spezifikation für spätere Nachbestellungen vorbereitet.
-              </p>
-            ) : (
-              <div className="section-stack">
-                {dashboard.storedDesigns.map((design) => (
-                  <div key={design.id} className="section-card">
-                    <h3>{design.name}</h3>
-                    <p className="price-note">
-                      {design.productSlug} - {design.material ? getMaterialLabel(design.material) : "Material offen"} - {design.labelSize ?? "Format offen"}
-                    </p>
-                    <ul className="simple-list">
-                      <li>Letzte Bestellung: {design.lastOrder?.orderNumber ?? "Nicht vorhanden"}</li>
-                      <li>Letzte Freigabe: {formatDate(design.currentArtworkVersion?.approvedAt ?? null)}</li>
-                      <li>Bisherige Nachbestellungen: {design.totalOrders.toLocaleString("de-DE")}</li>
-                    </ul>
-
-                    {design.currentArtworkVersion ? (
-                      <div className="cta-row">
-                        {design.currentArtworkVersion.originalArtworkFile ? (
-                          <button
-                            type="button"
-                            className="secondary-link"
-                            onClick={() =>
-                              handleDownload(design.id, design.currentArtworkVersion!.id, "artwork")
-                            }
-                          >
-                            Druckdatei herunterladen
-                          </button>
-                        ) : null}
-                        {design.currentArtworkVersion.proofFile ? (
-                          <button
-                            type="button"
-                            className="secondary-link"
-                            onClick={() =>
-                              handleDownload(design.id, design.currentArtworkVersion!.id, "proof")
-                            }
-                          >
-                            Proof herunterladen
-                          </button>
-                        ) : null}
-                      </div>
-                    ) : null}
-
-                    <ReorderStartForm
-                      designId={design.id}
-                      accessToken={accessToken}
-                      defaultQuantity={design.defaultQuantity}
-                      currentArtworkVersionId={design.currentArtworkVersionId}
-                    />
-                  </div>
-                ))}
+          {dashboard && view === "overview" ? (
+            <>
+              <div className="account-stat-grid">
+                <StatCard
+                  label="Offene Bestellungen"
+                  value={openOrdersCount}
+                  tone="neutral"
+                  icon={<Icons.IconBox size={20} />}
+                  onActivate={() => selectView("orders")}
+                />
+                <StatCard
+                  label="Wartet auf Freigabe"
+                  value={awaitingApprovalCount}
+                  tone="proof"
+                  icon={<Icons.IconProof size={20} />}
+                  onActivate={() => selectView("orders")}
+                />
+                <StatCard
+                  label="Gespeicherte Designs"
+                  value={storedDesigns.length}
+                  tone="accent"
+                  icon={<Icons.IconDesigns size={20} />}
+                  onActivate={() => selectView("designs")}
+                />
+                <StatCard
+                  label="Gesamtausgaben"
+                  value={totalSpentLabel}
+                  tone="success"
+                  icon={<Icons.IconEuro size={20} />}
+                  hint="Ohne stornierte Bestellungen"
+                />
               </div>
-            )}
-          </article>
-        </>
-      ) : null}
-    </AccountShell>
+
+              <article className="surface-card">
+                <div className="account-card-head">
+                  <h2>Letzte Bestellungen</h2>
+                  {orders.length > 3 ? (
+                    <button
+                      type="button"
+                      className="secondary-link"
+                      onClick={() => selectView("orders")}
+                    >
+                      Alle anzeigen
+                    </button>
+                  ) : null}
+                </div>
+                {orders.length === 0 ? (
+                  <EmptyState
+                    icon={<Icons.IconOrders size={32} />}
+                    title="Noch keine Bestellungen"
+                    description="Sobald eine Bestellung mit dieser E-Mail vorliegt, erscheint sie hier."
+                    action={{ label: "Angebot anfordern", href: "/de/angebot-anfordern" }}
+                  />
+                ) : (
+                  <div className="section-stack">{orders.slice(0, 3).map(renderOrderCard)}</div>
+                )}
+              </article>
+            </>
+          ) : null}
+
+          {dashboard && view === "orders" ? (
+            <article className="surface-card">
+              <h2>Meine Bestellungen</h2>
+              {orders.length === 0 ? (
+                <EmptyState
+                  icon={<Icons.IconOrders size={32} />}
+                  title="Noch keine verknüpften Bestellungen"
+                  description="Sobald eine Bestellung mit dieser E-Mail vorliegt, erscheint sie hier."
+                  action={{ label: "Angebot anfordern", href: "/de/angebot-anfordern" }}
+                />
+              ) : (
+                <div className="section-stack">{orders.map(renderOrderCard)}</div>
+              )}
+            </article>
+          ) : null}
+
+          {dashboard && view === "designs" ? (
+            <article className="surface-card">
+              <h2>Gespeicherte Designs</h2>
+              {storedDesigns.length === 0 ? (
+                <EmptyState
+                  icon={<Icons.IconDesigns size={32} />}
+                  title="Noch keine gespeicherten Designs"
+                  description="Nach Freigabe eines Auftrags wird die Spezifikation für spätere Nachbestellungen vorbereitet."
+                />
+              ) : (
+                <div className="section-stack">{storedDesigns.map(renderDesignCard)}</div>
+              )}
+            </article>
+          ) : null}
+
+          {dashboard && view === "profile" ? profileArticle : null}
+
+          {dashboard && view === "documents" ? (
+            <article className="surface-card">
+              <h2>Dokumente</h2>
+              <EmptyState
+                icon={<Icons.IconDocuments size={32} />}
+                title="Noch keine Dokumente verfügbar"
+                description="Rechnungen und Korrekturabzüge erscheinen hier, sobald sie bereitstehen."
+              />
+            </article>
+          ) : null}
+        </div>
+      </div>
+    </div>
   );
 }
 

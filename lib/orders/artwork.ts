@@ -89,6 +89,20 @@ export function getOrderStatusLabel(status: string) {
       return "Proof wird vorbereitet";
     case "WAITING_CUSTOMER_APPROVAL":
       return "Proof wartet auf Freigabe";
+    case "IN_PRODUCTION":
+      return "In Produktion";
+    case "READY_TO_SHIP":
+      return "Versandbereit";
+    case "SHIPPED":
+      return "Versandt";
+    case "DELIVERED":
+      return "Zugestellt";
+    case "COMPLETED":
+      return "Abgeschlossen";
+    case "CANCELLED":
+      return "Storniert";
+    case "PAYMENT_FAILED":
+      return "Zahlung fehlgeschlagen";
     default:
       return status;
   }
