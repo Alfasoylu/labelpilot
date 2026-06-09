@@ -1403,6 +1403,410 @@ const topLevelPages: PublicPageData[] = [
     ],
   },
   {
+    path: "/de/flaschenetiketten-drucken",
+    slug: "flaschenetiketten-drucken",
+    kind: "collection",
+    title: "Flaschenetiketten drucken lassen",
+    eyebrow: "Getränke",
+    lead:
+      "Flaschenetiketten drucken lassen – transparent oder opak auf PP-Rolle. Für Getränke, Spirituosen, Öle und Sirup. Mit geprüften Druckdaten und einfacher Nachbestellung, geliefert DDP nach Deutschland.",
+    heroBullets: [
+      "Feste Pakete ab 179 € netto (1.000 Stück), 5.000 Stück für 479 € netto – inkl. Versand.",
+      "Transparentes PP für den No-Label-Look auf Glas, opakes PP für kontraststarke Etiketten.",
+      "Permanenter Klebstoff, der auch bei Kondenswasser zuverlässig haftet.",
+    ],
+    sidebarTitle: "Typische Anwendungen",
+    sidebarBullets: [
+      "Glas- und PET-Flaschen für Getränke",
+      "Spirituosen, Öle, Sirup und Essig",
+      "Wiederkehrende Auflagen mit gleicher Spezifikation",
+    ],
+    primaryCta: {
+      label: "Jetzt konfigurieren",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: {
+      label: "Musterbox anfordern",
+      href: "/de/musterbox",
+    },
+    sections: [
+      {
+        title: "Transparent oder opak für Flaschen",
+        body: [
+          "Transparentes PP erzeugt den No-Label-Look – das Etikett verschmilzt optisch mit der Flasche, Glas und Inhalt bleiben sichtbar.",
+          "Opakes PP deckt vollständig ab und sorgt für kräftige Farben und klare Pflichtangaben auf farbigem oder ungleichmäßigem Glas.",
+        ],
+      },
+      {
+        title: "Haftung bei Feuchtigkeit",
+        body: [
+          "PP-Folie ist wasserfest und reißt nicht – im Gegensatz zu Papieretiketten, die bei Kondenswasser aufweichen.",
+          "Der permanente Klebstoff hält auf Glas, PET und beschichteten Oberflächen, auch im gekühlten Bereich.",
+        ],
+      },
+      {
+        title: "Einmal freigegeben, immer nachbestellbar",
+        body: [
+          "Nach Ihrer Freigabe bleiben Druckdaten, Material und Format gespeichert.",
+          "Die nächste Flaschenauflage starten Sie ohne neue Abstimmung zum gleichen Paketpreis.",
+        ],
+      },
+    ],
+    table: {
+      title: "Material für Flaschenetiketten",
+      lead: "Welche PP-Variante zu welcher Flasche passt.",
+      columns: ["Material", "Wirkung", "Typische Flasche"],
+      rows: [
+        ["Transparentes PP", "No-Label-Look, Glas sichtbar", "Klarglas, Premium-Spirituosen, Öl"],
+        ["Opakes PP", "deckend, kontraststark", "Farbglas, PET, kräftige Designs"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Welches Etikett haftet auf Flaschen im Kühlschrank?",
+        answer:
+          "PP-Folie mit permanentem Klebstoff hält auch bei Kondenswasser und im gekühlten Bereich zuverlässig. Papieretiketten weichen bei Feuchtigkeit auf – PP nicht.",
+      },
+      {
+        question: "Was ist der No-Label-Look?",
+        answer:
+          "Transparentes PP lässt Glas und Inhalt sichtbar, sodass das Etikett kaum als Aufkleber wahrnehmbar ist. Das wirkt hochwertig und reduziert – typisch für Spirituosen und Premium-Getränke.",
+      },
+      {
+        question: "Eignen sich die Etiketten für runde Flaschen?",
+        answer:
+          "Ja. Auf Rolle gelieferte Etiketten lassen sich über Spender oder Etikettiermaschine sauber um runde Flaschen wickeln. Das Standardformat ist 100×200 mm, andere Maße sind frei wählbar.",
+      },
+      {
+        question: "Brauche ich Weißunterdruck auf transparentem Material?",
+        answer:
+          "Für deckende Farben auf transparentem PP ist Weißunterdruck nötig. Das ist ein kostenpflichtiger Zusatz und läuft über ein individuelles Angebot.",
+      },
+      {
+        question: "Wie lange dauert die Lieferung?",
+        answer:
+          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland. Die Lieferung erfolgt DDP – Zoll und Einfuhr sind inklusive.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Weinetiketten drucken",
+        href: "/de/weinetiketten-drucken",
+        description: "PP-Etiketten für Wein-, Sekt- und Spirituosenflaschen.",
+      },
+      {
+        label: "Getränke-Etiketten",
+        href: "/de/getraenke-etiketten",
+        description: "Branchenseite für Getränke- und Flaschenmarken.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/weinetiketten-drucken",
+    slug: "weinetiketten-drucken",
+    kind: "collection",
+    title: "Weinetiketten drucken lassen",
+    eyebrow: "Wein & Spirituosen",
+    lead:
+      "Weinetiketten drucken lassen – auf PP-Rolle, transparent oder opak, für Wein-, Sekt- und Spirituosenflaschen. Feuchtigkeitsbeständig, mit geprüften Druckdaten und einfacher Nachbestellung.",
+    heroBullets: [
+      "Feste Pakete ab 179 € netto (1.000 Stück), 5.000 Stück für 479 € netto – inkl. Versand.",
+      "Feuchtigkeitsbeständiges PP – hält im Weinkühler und bei Kondenswasser.",
+      "Transparent für klare Glasoptik, opak für klassische Weinetiketten.",
+    ],
+    sidebarTitle: "Typische Anwendungen",
+    sidebarBullets: [
+      "Wein-, Sekt- und Schaumweinflaschen",
+      "Spirituosen, Likör und Brände",
+      "Kleine Weingüter und Manufakturen mit Wiederholauflagen",
+    ],
+    primaryCta: {
+      label: "Jetzt konfigurieren",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: {
+      label: "Musterbox anfordern",
+      href: "/de/musterbox",
+    },
+    sections: [
+      {
+        title: "PP statt Papier für Weinflaschen",
+        body: [
+          "Weinflaschen stehen oft im Kühler oder Eiseimer – Papieretiketten weichen dann auf und lösen sich.",
+          "PP-Folie ist wasserfest und behält Form und Druckbild auch bei dauerhafter Feuchtigkeit.",
+        ],
+      },
+      {
+        title: "Optik: transparent oder klassisch deckend",
+        body: [
+          "Transparentes PP wirkt modern und lässt das Glas sichtbar – passend für reduzierte Designs.",
+          "Opakes PP bildet die klassische Weinetiketten-Optik mit deckenden Flächen und feinen Typo-Details ab.",
+        ],
+      },
+      {
+        title: "Pflichtangaben bleiben in Ihrer Verantwortung",
+        body: [
+          "Wein unterliegt eigenen Kennzeichnungsregeln (u. a. Allergene, Alkoholgehalt, Abfüller, neuerdings Zutaten und Nährwerte).",
+          "Wir drucken Ihr fertiges Layout – die inhaltliche und rechtliche Prüfung der Pflichtangaben liegt bei Ihnen.",
+        ],
+      },
+    ],
+    table: {
+      title: "Material für Weinetiketten",
+      lead: "Welche PP-Variante zu welchem Auftritt passt.",
+      columns: ["Material", "Wirkung", "Passend für"],
+      rows: [
+        ["Opakes PP", "deckend, klassisch", "Traditionelle Weingüter, kräftige Designs"],
+        ["Transparentes PP", "klar, modern", "Reduzierte Etiketten, sichtbares Glas"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Halten die Etiketten im Weinkühler?",
+        answer:
+          "Ja. PP-Folie ist wasserfest und der permanente Klebstoff hält auch bei Kondenswasser und im Eiseimer. Das Druckbild bleibt erhalten.",
+      },
+      {
+        question: "Welche Angaben müssen auf ein Weinetikett?",
+        answer:
+          "Dafür gelten weinrechtliche Vorgaben (z. B. Bezeichnung, Alkoholgehalt, Abfüller, Allergene und zunehmend Zutaten/Nährwerte). Die inhaltliche Verantwortung liegt bei Ihnen – wir übernehmen den Druck, nicht die rechtliche Prüfung.",
+      },
+      {
+        question: "Kann ich kleine Auflagen für ein Weingut bestellen?",
+        answer:
+          "Ja. Die Pilotauflage beginnt bei 1.000 Stück. Für mehrere Sorten oder Jahrgänge in einem Auftrag erstellen wir ein individuelles Angebot.",
+      },
+      {
+        question: "Geht auch eine transparente Weinetikette?",
+        answer:
+          "Ja. Transparentes PP erzeugt den No-Label-Look. Für deckende Farben auf transparentem Material ist Weißunterdruck nötig (kostenpflichtiger Zusatz über Angebot).",
+      },
+      {
+        question: "Wie lange dauert die Lieferung?",
+        answer:
+          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland, DDP – Zoll und Einfuhr inklusive.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Flaschenetiketten drucken",
+        href: "/de/flaschenetiketten-drucken",
+        description: "PP-Etiketten für Getränke-, Öl- und Sirupflaschen.",
+      },
+      {
+        label: "Getränke-Etiketten",
+        href: "/de/getraenke-etiketten",
+        description: "Branchenseite für Getränke- und Flaschenmarken.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/barcode-etiketten",
+    slug: "barcode-etiketten",
+    kind: "collection",
+    title: "Barcode-Etiketten drucken lassen",
+    eyebrow: "Kennzeichnung",
+    lead:
+      "Barcode-Etiketten auf PP-Rolle für Produkt- und Handelskennzeichnung. EAN, GTIN, Code 128 und 2D-Codes wie QR oder GS1 DataMatrix – als fester Bestandteil Ihres Produktetiketts oder als separates Kennzeichnungsetikett.",
+    heroBullets: [
+      "Feste Pakete ab 179 € netto (1.000 Stück), 5.000 Stück für 479 € netto – inkl. Versand.",
+      "EAN/GTIN, Code 128, QR-Code und GS1 DataMatrix in scharfer Druckauflösung.",
+      "Für Handel, Lebensmittel und Produktmarken mit Rückverfolgbarkeit.",
+    ],
+    sidebarTitle: "Typische Codes",
+    sidebarBullets: [
+      "EAN-13 / GTIN für den Handel",
+      "Code 128 für Logistik und Lager",
+      "QR-Code und GS1 DataMatrix für Rückverfolgung",
+    ],
+    primaryCta: {
+      label: "Jetzt konfigurieren",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: {
+      label: "Angebot anfordern",
+      href: "/de/angebot-anfordern",
+    },
+    sections: [
+      {
+        title: "Barcode als Teil des Produktetiketts",
+        body: [
+          "Ein EAN- oder GTIN-Code lässt sich direkt in Ihr Produktetikett integrieren – ein Etikett statt zwei.",
+          "Wir drucken den Code in ausreichender Auflösung und mit korrektem Kontrast für eine zuverlässige Scanbarkeit.",
+        ],
+      },
+      {
+        title: "Codes und Rückverfolgbarkeit",
+        body: [
+          "Für Handel und Logistik sind EAN-13, GTIN und Code 128 die gängigen Standards.",
+          "QR-Codes und GS1 DataMatrix transportieren zusätzlich Chargen-, MHD- oder Linkdaten für die Rückverfolgung.",
+        ],
+      },
+      {
+        title: "Variable Codes pro Etikett",
+        body: [
+          "Fortlaufende Seriennummern, Chargen oder individuelle Codes pro Etikett laufen über variable Daten.",
+          "Diese strukturierten Aufträge kalkulieren wir über ein individuelles Angebot.",
+        ],
+      },
+    ],
+    table: {
+      title: "Barcode-Typen im Überblick",
+      lead: "Welcher Code für welchen Zweck.",
+      columns: ["Code", "Einsatz", "Hinweis"],
+      rows: [
+        ["EAN-13 / GTIN", "Handel, Kasse", "Vergabe der Nummer über GS1"],
+        ["Code 128", "Logistik, Lager", "Kompakt, alphanumerisch"],
+        ["QR-Code", "Konsument, Link", "Verknüpft Produkt mit Online-Inhalt"],
+        ["GS1 DataMatrix", "Rückverfolgung", "Charge, MHD, Seriennummer"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Kann der Barcode Teil meines Produktetiketts sein?",
+        answer:
+          "Ja. EAN, GTIN oder ein 2D-Code wird direkt in Ihr Etikettenlayout integriert. Sie brauchen kein separates Kennzeichnungsetikett.",
+      },
+      {
+        question: "Vergeben Sie die Barcode-Nummern?",
+        answer:
+          "Nein. EAN-/GTIN-Nummern erhalten Sie über GS1. Sie liefern uns die Nummer oder den fertigen Code im Layout – wir drucken ihn scanbar.",
+      },
+      {
+        question: "Sind variable oder fortlaufende Codes möglich?",
+        answer:
+          "Ja, über variable Daten (z. B. fortlaufende Seriennummern oder Chargencodes pro Etikett). Solche Aufträge laufen über ein individuelles Angebot.",
+      },
+      {
+        question: "Sind die gedruckten Codes zuverlässig scanbar?",
+        answer:
+          "Wir achten auf ausreichende Größe, Ruhezonen und Kontrast. Bei sehr kleinen Codes oder transparentem Material prüfen wir die Scanbarkeit im Vorfeld.",
+      },
+      {
+        question: "Wie lange dauert die Lieferung?",
+        answer:
+          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland, DDP – Zoll und Einfuhr inklusive.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Supplement-Etiketten",
+        href: "/de/supplement-etiketten",
+        description: "Etiketten mit Chargennummer und variabler Datenzone.",
+      },
+      {
+        label: "Lebensmittel-Etiketten",
+        href: "/de/lebensmittel-etiketten",
+        description: "Produktetiketten mit integriertem EAN-Code.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/folienetiketten",
+    slug: "folienetiketten",
+    kind: "collection",
+    title: "Folienetiketten drucken lassen",
+    eyebrow: "Material",
+    lead:
+      "Folienetiketten aus PP auf Rolle – wasserfest, reißfest und beständiger als Papier. Opak oder transparent, für Produkte, die Feuchtigkeit, Abrieb oder Kühlung ausgesetzt sind.",
+    heroBullets: [
+      "Feste Pakete ab 179 € netto (1.000 Stück), 5.000 Stück für 479 € netto – inkl. Versand.",
+      "Wasserfest und reißfest – PP-Folie statt aufweichendem Papier.",
+      "Opak für Deckkraft, transparent für sichtbare Verpackung.",
+    ],
+    sidebarTitle: "Warum Folie",
+    sidebarBullets: [
+      "Wasser-, fett- und abriebbeständig",
+      "Formstabil bei Kühlung und Feuchtigkeit",
+      "Für Flaschen, Dosen, Tiegel und Beutel",
+    ],
+    primaryCta: {
+      label: "Jetzt konfigurieren",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: {
+      label: "Musterbox anfordern",
+      href: "/de/musterbox",
+    },
+    sections: [
+      {
+        title: "Folienetiketten gegen Papieretiketten",
+        body: [
+          "Folienetiketten aus PP bleiben bei Feuchtigkeit, Fett und Abrieb stabil – Papier weicht auf und reißt.",
+          "Für Kühlschrank, Tiefkühlrand, Kosmetik und feuchte Lager sind Folienetiketten die robustere Wahl.",
+        ],
+      },
+      {
+        title: "Welche Folie wir einsetzen",
+        body: [
+          "Wir produzieren auf PP-Folie (Polypropylen) – prozesssicher für die Rollenverarbeitung und gut zu bedrucken.",
+          "Opakes PP deckt vollständig ab, transparentes PP lässt die Verpackung sichtbar.",
+        ],
+      },
+      {
+        title: "Gestanzt auf Rolle",
+        body: [
+          "Die Folienetiketten werden gestanzt auf Rolle geliefert – für Spender und Etikettiermaschine.",
+          "Standardformat 100×200 mm, andere Maße im Kalkulator frei wählbar.",
+        ],
+      },
+    ],
+    table: {
+      title: "Folienmaterial im Überblick",
+      lead: "Eigenschaften der PP-Folienetiketten.",
+      columns: ["Eigenschaft", "PP-Folie", "Hinweis"],
+      rows: [
+        ["Wasserbeständig", "ja", "Auch bei Kondenswasser"],
+        ["Reißfestigkeit", "hoch", "Formstabil in der Verarbeitung"],
+        ["Optik", "opak oder transparent", "Matt oder glänzend, kein Aufpreis"],
+        ["Lieferform", "gestanzt auf Rolle", "76-mm-Kern, Standardwicklung"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Was sind Folienetiketten?",
+        answer:
+          "Folienetiketten bestehen aus Kunststofffolie statt Papier. Wir setzen PP-Folie ein – wasserfest, reißfest und beständig gegen Fett und Abrieb.",
+      },
+      {
+        question: "Was ist der Unterschied zu Papieretiketten?",
+        answer:
+          "Papier weicht bei Feuchtigkeit auf und reißt leichter. PP-Folie bleibt formstabil, auch im gekühlten oder feuchten Bereich – die robustere Wahl für viele Produktverpackungen.",
+      },
+      {
+        question: "Gibt es Folienetiketten transparent und opak?",
+        answer:
+          "Ja. Opakes PP deckt vollständig ab, transparentes PP lässt die Verpackung sichtbar. Beide wählen Sie direkt im Kalkulator.",
+      },
+      {
+        question: "Sind die Etiketten für Tiefkühlprodukte geeignet?",
+        answer:
+          "PP-Folie ist für übliche Kühl- und Lagerbedingungen geeignet. Für dauerhaften Tiefkühlbereich oder Spezialklebstoffe prüfen wir die Anwendung über ein Angebot.",
+      },
+      {
+        question: "Wie lange dauert die Lieferung?",
+        answer:
+          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland, DDP – Zoll und Einfuhr inklusive.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "PP vs. Papieretiketten",
+        href: "/de/ratgeber/pp-etiketten-vs-papieretiketten",
+        description: "Materialvergleich: wann Folie die robustere Wahl ist.",
+      },
+      {
+        label: "Lebensmittel-Etiketten",
+        href: "/de/lebensmittel-etiketten",
+        description: "Wasserfeste Folienetiketten für Lebensmittelverpackungen.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
     path: "/de/etiketten-100x200",
     slug: "etiketten-100x200",
     kind: "product",
@@ -3316,6 +3720,10 @@ export const sitemapEntries: SitemapEntry[] = [
   { path: "/de/rollenetiketten", priority: 0.9, changeFrequency: "weekly" },
   { path: "/de/rollenetiketten-drucken", priority: 0.9, changeFrequency: "weekly" },
   { path: "/de/etiketten-auf-rolle", priority: 0.9, changeFrequency: "weekly" },
+  { path: "/de/flaschenetiketten-drucken", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/de/weinetiketten-drucken", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/de/barcode-etiketten", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/de/folienetiketten", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/etiketten-100x200", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/thermo-versandetiketten", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/musterbox", priority: 0.8, changeFrequency: "weekly" },

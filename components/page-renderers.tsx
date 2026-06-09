@@ -1461,7 +1461,10 @@ function buildSpecRows(page: PublicPageData) {
   } else if (
     page.path === "/de/rollenetiketten" ||
     page.path === "/de/rollenetiketten-drucken" ||
-    page.path === "/de/etiketten-auf-rolle"
+    page.path === "/de/etiketten-auf-rolle" ||
+    page.path === "/de/flaschenetiketten-drucken" ||
+    page.path === "/de/weinetiketten-drucken" ||
+    page.path === "/de/folienetiketten"
   ) {
     rows.push(
       { label: "Format", value: "100×200 mm Standard; Wunschformat bis 320 mm Breite, Höhe frei" },
@@ -1474,6 +1477,17 @@ function buildSpecRows(page: PublicPageData) {
       { label: "Prüfung", value: "Kostenlose Druckdatenprüfung plus 1 Proof" },
       { label: "Lieferung", value: "DDP nach Deutschland – Zoll und Einfuhr inklusive" },
       { label: "Nachbestellung", value: "Gespeicherte Spezifikation zum gleichen Paketpreis" },
+    );
+  } else if (page.path === "/de/barcode-etiketten") {
+    rows.push(
+      { label: "Format", value: "100×200 mm Standard; Wunschformat bis 320 mm Breite, Höhe frei" },
+      { label: "Material", value: "PP opak oder transparent" },
+      { label: "Codes", value: "EAN-13, GTIN, Code 128, QR-Code, GS1 DataMatrix" },
+      { label: "Druck", value: "4/0-farbig CMYK Digital, scanbare Auflösung" },
+      { label: "Integration", value: "Im Produktetikett oder als separates Kennzeichnungsetikett" },
+      { label: "Variable Codes", value: "Seriennummer / Charge pro Etikett über Angebot" },
+      { label: "Lieferung", value: "Auf Rolle, DDP nach Deutschland – Zoll inklusive" },
+      { label: "Nummernvergabe", value: "EAN/GTIN über GS1; Code wird von Ihnen geliefert" },
     );
   } else {
     rows.push(
@@ -1504,6 +1518,8 @@ function shouldShowRegulatoryDisclaimer(path: string) {
     "/de/rollenetiketten",
     "/de/rollenetiketten-drucken",
     "/de/etiketten-auf-rolle",
+    "/de/flaschenetiketten-drucken",
+    "/de/weinetiketten-drucken",
   ].includes(path);
 }
 

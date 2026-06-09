@@ -151,6 +151,62 @@ export const metadataMap: Record<string, MetadataEntry> = {
       "Etiketten Rolle 100x200",
     ],
   },
+  "/de/flaschenetiketten-drucken": {
+    title: "Flaschenetiketten drucken lassen – PP auf Rolle | Labelpilot.de",
+    description:
+      "Flaschenetiketten drucken lassen: transparentes oder opakes PP auf Rolle für Getränke, Spirituosen und Öle. Wasserfest, mit geprüften Druckdaten. Lieferung DDP nach Deutschland.",
+    openGraphTitle: "Flaschenetiketten drucken lassen",
+    openGraphDescription:
+      "No-Label-Look oder deckend – PP-Etiketten für Flaschen, wasserfest.",
+    keywords: [
+      "Flaschenetiketten drucken",
+      "Flaschenetiketten drucken lassen",
+      "Getränkeetiketten PP",
+      "transparente Flaschenetiketten",
+    ],
+  },
+  "/de/weinetiketten-drucken": {
+    title: "Weinetiketten drucken lassen – PP auf Rolle | Labelpilot.de",
+    description:
+      "Weinetiketten drucken lassen auf wasserfestem PP, transparent oder opak. Für Wein, Sekt und Spirituosen – hält im Weinkühler. Mit geprüften Druckdaten und Nachbestellung.",
+    openGraphTitle: "Weinetiketten drucken lassen",
+    openGraphDescription:
+      "Wasserfeste PP-Weinetiketten – hält im Kühler, transparent oder opak.",
+    keywords: [
+      "Weinetiketten drucken",
+      "Weinetiketten drucken lassen",
+      "Weinflaschen Etiketten",
+      "Spirituosen Etiketten",
+    ],
+  },
+  "/de/barcode-etiketten": {
+    title: "Barcode-Etiketten drucken lassen – EAN, GTIN, GS1 | Labelpilot.de",
+    description:
+      "Barcode-Etiketten auf PP-Rolle: EAN-13, GTIN, Code 128, QR-Code und GS1 DataMatrix – integriert ins Produktetikett oder separat. Für Handel, Lebensmittel und Rückverfolgbarkeit.",
+    openGraphTitle: "Barcode-Etiketten drucken lassen",
+    openGraphDescription:
+      "EAN, GTIN, Code 128, QR & GS1 DataMatrix – scanbar auf PP-Rolle.",
+    keywords: [
+      "Barcode-Etiketten",
+      "EAN Etiketten drucken",
+      "GTIN Etiketten",
+      "GS1 DataMatrix Etiketten",
+    ],
+  },
+  "/de/folienetiketten": {
+    title: "Folienetiketten drucken lassen – PP, wasserfest | Labelpilot.de",
+    description:
+      "Folienetiketten aus PP auf Rolle – wasserfest, reißfest und beständiger als Papier. Opak oder transparent, für Flaschen, Dosen, Tiegel und Beutel. Lieferung DDP nach Deutschland.",
+    openGraphTitle: "Folienetiketten drucken lassen",
+    openGraphDescription:
+      "Wasserfeste PP-Folienetiketten – robuster als Papier, opak oder transparent.",
+    keywords: [
+      "Folienetiketten",
+      "Folienetiketten drucken",
+      "PP-Folienetiketten",
+      "wasserfeste Etiketten",
+    ],
+  },
   "/de/etiketten-100x200": {
     title: "Etiketten 100×200 mm drucken | Labelpilot.de",
     description:
