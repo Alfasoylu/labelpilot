@@ -390,6 +390,7 @@ export const footerLinks: FooterGroup[] = [
       { label: "Kalkulator", href: "/de/kalkulator" },
       { label: "Ratgeber", href: "/de/ratgeber" },
       { label: "Glossar", href: "/de/glossar" },
+      { label: "Über uns", href: "/de/unternehmen" },
       { label: "Kundenkonto", href: "/konto" },
     ],
   },
@@ -492,10 +493,13 @@ const topLevelPages: PublicPageData[] = [
       "Honig, Gewürze, Marmelade und Feinkost",
       "Wiederkehrende Sortimente mit identischer Etikettengröße",
     ],
-    primaryCta: quoteLink,
+    primaryCta: {
+      label: "Jetzt konfigurieren",
+      href: "/de/kalkulator",
+    },
     secondaryCta: {
-      label: "Opake PP ansehen",
-      href: "/de/opake-pp-etiketten",
+      label: "Musterbox anfordern",
+      href: "/de/musterbox",
     },
     sections: [
       {
@@ -503,6 +507,20 @@ const topLevelPages: PublicPageData[] = [
         body: [
           "PP-Rollenetiketten sind für Lebensmittelmarken sinnvoll, wenn Material, Druckdaten und Etikettengröße reproduzierbar bleiben sollen.",
           "Bei wiederkehrenden Chargen zählt nicht nur der Stückpreis, sondern ob Sie dieselbe Spezifikation später verlässlich wieder bestellen können.",
+        ],
+      },
+      {
+        title: "Feuchtigkeits- und fettbeständig",
+        body: [
+          "PP-Folie weicht nicht auf wie Papier – wichtig bei Kühlung, Kondenswasser, Fett und feuchten Lagerbedingungen.",
+          "Das Druckbild bleibt auch bei Gläsern aus dem Kühlregal und fetthaltigen Produkten stabil.",
+        ],
+      },
+      {
+        title: "Platz für LMIV-Pflichtangaben",
+        body: [
+          "Die LMIV verlangt u. a. Bezeichnung, Zutaten, Allergene (hervorgehoben), Nährwerttabelle, Füllmenge, MHD und Verantwortlichen.",
+          "Opakes PP mit deckender Fläche schafft die nötige Lesbarkeit für dichte Pflichtangaben bei kleiner Schriftgröße.",
         ],
       },
       {
@@ -515,14 +533,29 @@ const topLevelPages: PublicPageData[] = [
     ],
     faqs: [
       {
-        question: "Welche Lebensmittelverpackungen passen zum Standardformat 100×200 mm?",
+        question: "Sind PP-Etiketten für Lebensmittel geeignet?",
         answer:
-          "Das Format 100×200 mm eignet sich für viele Produktetiketten auf Gläsern, Beuteln und Flaschen. Für Sondermaße ist das Angebotsformular der richtige Einstieg.",
+          "Ja. PP-Folie ist für Etiketten auf Lebensmittelverpackungen verbreitet und beständig gegen Feuchtigkeit und Fett. Das Etikett sitzt außen auf der Verpackung, nicht im direkten Lebensmittelkontakt. Spezielle Anforderungen an Direktkontakt klären wir über ein Angebot.",
       },
       {
-        question: "Kann ich bei wiederkehrenden Sorten dieselbe Spezifikation erneut anfragen?",
+        question: "Welche Pflichtangaben muss mein Lebensmitteletikett enthalten?",
         answer:
-          "Ja. Unser Angebot ist bewusst auf wiederholbare Größen, Materialien und Nachbestellungen ausgerichtet.",
+          "Nach LMIV u. a.: Bezeichnung des Lebensmittels, Zutatenverzeichnis, hervorgehobene Allergene, Nettofüllmenge, Mindesthaltbarkeit, Name/Anschrift des Verantwortlichen und – bei den meisten verpackten Lebensmitteln – eine Nährwerttabelle. Die inhaltliche und rechtliche Verantwortung liegt bei Ihnen; wir übernehmen den Druck, keine rechtliche Prüfung.",
+      },
+      {
+        question: "Halten die Etiketten im Kühlschrank und auf feuchten Gläsern?",
+        answer:
+          "Ja. PP-Folie mit permanentem Klebstoff hält auch bei Kondenswasser und im gekühlten Bereich. Papieretiketten weichen bei Feuchtigkeit auf – PP nicht.",
+      },
+      {
+        question: "Welche Lebensmittelverpackungen passen zum Standardformat 100×200 mm?",
+        answer:
+          "Das Format 100×200 mm eignet sich für viele Produktetiketten auf Gläsern, Beuteln und Flaschen. Andere Maße wählen Sie im Kalkulator frei, Breite bis 320 mm.",
+      },
+      {
+        question: "Kann ich bei wiederkehrenden Sorten dieselbe Spezifikation erneut bestellen?",
+        answer:
+          "Ja. Nach der Freigabe bleiben Material, Maß und Druckdaten gespeichert – die Nachbestellung startet ohne neue Abstimmung zum gleichen Paketpreis.",
       },
     ],
     relatedLinks: [
@@ -566,10 +599,13 @@ const topLevelPages: PublicPageData[] = [
       "Hohe Wiederholungsrate bei identischen Spezifikationen",
       "Transparente oder opake Optik je nach Verpackung",
     ],
-    primaryCta: quoteLink,
+    primaryCta: {
+      label: "Jetzt konfigurieren",
+      href: "/de/kalkulator",
+    },
     secondaryCta: {
-      label: "Transparente PP ansehen",
-      href: "/de/transparente-pp-etiketten",
+      label: "Musterbox anfordern",
+      href: "/de/musterbox",
     },
     sections: [
       {
@@ -577,6 +613,20 @@ const topLevelPages: PublicPageData[] = [
         body: [
           "Supplement-Marken brauchen wiederkehrende Etiketten mit fest dokumentierter Spezifikation – nicht ständig neue Online-Konfigurationen.",
           "Darum konzentrieren wir uns auf einen klaren Kern aus PP-Material, Standardformat und Nachbestellung.",
+        ],
+      },
+      {
+        title: "Chargennummer und MHD pro Auflage",
+        body: [
+          "Nahrungsergänzungsmittel brauchen je Charge eine Chargennummer und ein Mindesthaltbarkeitsdatum.",
+          "Für variable Daten pro Etikett (Lot/MHD) erstellen wir ein strukturiertes Angebot – das Layout bleibt sonst identisch zur gespeicherten Spezifikation.",
+        ],
+      },
+      {
+        title: "Pflichtangaben für Nahrungsergänzungsmittel",
+        body: [
+          "NEM unterliegen eigenen Vorgaben: Bezeichnung, empfohlene Tagesdosis, Warnhinweise, Nährstoffmengen je Portion und Verantwortlicher.",
+          "Wir drucken Ihr freigegebenes Layout – die inhaltliche und rechtliche Prüfung der Angaben liegt bei Ihnen.",
         ],
       },
       {
@@ -589,14 +639,29 @@ const topLevelPages: PublicPageData[] = [
     ],
     faqs: [
       {
+        question: "Kann ich Chargennummer und MHD auf die Etiketten drucken?",
+        answer:
+          "Ja. Feste Angaben sind Teil des Layouts. Wechselnde Chargennummern oder MHD pro Etikett laufen über variable Daten und werden als strukturiertes Angebot kalkuliert.",
+      },
+      {
+        question: "Welche Angaben gehören auf ein Supplement-Etikett?",
+        answer:
+          "Für Nahrungsergänzungsmittel u. a. Bezeichnung, empfohlene tägliche Verzehrmenge, Warnhinweis vor Überschreitung, Hinweis zur Aufbewahrung und der Verantwortliche. Die rechtliche Verantwortung liegt bei Ihnen – wir übernehmen den Druck.",
+      },
+      {
         question: "Sind Supplement-Etiketten nur für Dosen gedacht?",
         answer:
-          "Nein. Supplement-Etiketten decken auch Beutel und Flaschen ab, solange Material und Etikettengröße klar beschrieben werden.",
+          "Nein. Sie decken auch Beutel und Flaschen ab, solange Material und Etikettengröße klar beschrieben sind. Das Standardformat ist 100×200 mm.",
+      },
+      {
+        question: "Halten die Etiketten auf glänzenden Supplement-Dosen?",
+        answer:
+          "Ja. PP-Folie mit permanentem Klebstoff haftet auf beschichteten und glänzenden Dosen sowie auf PET-Flaschen zuverlässig.",
       },
       {
         question: "Kann ich zuerst Material vergleichen?",
         answer:
-          "Ja. Dafür dient die Musterbox mit opaken, transparenten und Thermo-Beispielen als Orientierung vor größeren Mengen.",
+          "Ja. Die Musterbox enthält opake und transparente PP-Beispiele als Orientierung vor größeren Mengen.",
       },
     ],
     relatedLinks: [
@@ -2291,6 +2356,119 @@ const topLevelPages: PublicPageData[] = [
     },
   },
   {
+    path: "/de/unternehmen",
+    slug: "unternehmen",
+    kind: "service",
+    title: "Über Labelpilot.de",
+    eyebrow: "Unternehmen",
+    lead:
+      "Labelpilot.de ist eine auf Deutschland fokussierte B2B-Plattform für PP-Rollenetiketten. Wir verbinden kosteneffiziente Produktion mit einem klaren Nachbestellsystem – offen über Produktion, Lieferung und Vertragspartner.",
+    heroBullets: [
+      "Spezialisiert auf PP-Rollenetiketten für Lebensmittel, Getränke und Supplemente.",
+      "Produktion in der Türkei, Lieferung DDP nach Deutschland – Zoll und Einfuhr inklusive.",
+      "Gespeicherte Druckdaten für Nachbestellungen ohne neue Abstimmung.",
+    ],
+    sidebarTitle: "Auf einen Blick",
+    sidebarBullets: [
+      "Fokus: PP-Rollenetiketten für Produktmarken",
+      "Lieferung: DDP nach Deutschland",
+      "Vertragspartner: Zhenkai Global Trading Limited",
+    ],
+    primaryCta: {
+      label: "Jetzt konfigurieren",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: {
+      label: "Musterbox anfordern",
+      href: "/de/musterbox",
+    },
+    sections: [
+      {
+        title: "Worauf wir uns konzentrieren",
+        body: [
+          "Wir sind kein breiter Online-Druckshop, sondern auf bedruckte PP-Rollenetiketten für Produktmarken spezialisiert.",
+          "Dieser schmale Fokus hält Material, Qualität und Nachbestellung überschaubar – statt eines unübersichtlichen Sortiments.",
+        ],
+      },
+      {
+        title: "Wo produziert wird",
+        body: [
+          "Die Produktion erfolgt über unseren Export- und Logistikpartner in der Türkei (Alfa Soylu Elektronik, Istanbul).",
+          "Wir machen daraus kein Geheimnis und werben nicht mit einer deutschen Produktion – die Lieferung erfolgt transparent DDP nach Deutschland.",
+        ],
+      },
+      {
+        title: "Wie geliefert wird",
+        body: [
+          "Versand per Luftfracht mit DHL oder UPS, Lieferung DDP (Delivered Duty Paid).",
+          "Zoll, Einfuhrumsatzsteuer und Importabwicklung sind im Preis enthalten – für Sie entstehen bei der Zustellung keine zusätzlichen Kosten.",
+        ],
+      },
+      {
+        title: "Warum ein Nachbestellsystem",
+        body: [
+          "Produktmarken bestellen dieselben Etiketten immer wieder. Genau dafür speichern wir freigegebene Druckdaten, Material und Format.",
+          "Die nächste Auflage startet ohne neues Briefing und ohne erneutes Hochladen – das ist der Kern unseres Angebots.",
+        ],
+      },
+      {
+        title: "Wer der Vertragspartner ist",
+        body: [
+          "Vertragspartnerin ist die Zhenkai Global Trading Limited mit Sitz in Hongkong (Anschrift siehe Impressum).",
+          "Zahlungen werden über Stripe abgewickelt. Anwendbares Recht für Bestellungen ist Deutschland.",
+        ],
+      },
+    ],
+    table: {
+      title: "Transparenz auf einen Blick",
+      lead: "Die wichtigsten Fakten ohne Beschönigung.",
+      columns: ["Thema", "Stand"],
+      rows: [
+        ["Produktion", "Türkei (Partner: Alfa Soylu Elektronik, Istanbul)"],
+        ["Lieferung", "DDP nach Deutschland, Zoll & Einfuhr inklusive"],
+        ["Versand", "Luftfracht DHL / UPS mit Sendungsverfolgung"],
+        ["Zahlung", "Stripe (Karte, SEPA); Rechnung auf Anfrage"],
+        ["Vertragspartner", "Zhenkai Global Trading Limited, Hongkong"],
+        ["Anwendbares Recht", "Deutschland"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Wo werden die Etiketten produziert?",
+        answer:
+          "Die Produktion erfolgt in der Türkei über unseren Logistikpartner Alfa Soylu Elektronik in Istanbul. Wir liefern DDP nach Deutschland – Zoll und Einfuhr sind inklusive.",
+      },
+      {
+        question: "Werben Sie mit „Made in Germany“?",
+        answer:
+          "Nein. Wir produzieren in der Türkei und stellen das offen dar. Eine deutsche Produktion behaupten wir nicht.",
+      },
+      {
+        question: "Wer ist mein Vertragspartner?",
+        answer:
+          "Vertragspartnerin ist die Zhenkai Global Trading Limited mit Sitz in Hongkong (Anschrift im Impressum). Zahlungen laufen über Stripe, anwendbares Recht ist Deutschland.",
+      },
+      {
+        question: "Entstehen bei der Lieferung Zusatzkosten?",
+        answer:
+          "Nein. Die Lieferung erfolgt DDP – Zoll, Einfuhrumsatzsteuer und Importabwicklung sind bereits im Preis enthalten und entrichtet.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Versand & Lieferung",
+        href: "/de/versand",
+        description: "DDP-Lieferung, Carrier und Lieferzeit im Detail.",
+      },
+      {
+        label: "Impressum",
+        href: "/de/impressum",
+        description: "Vollständige Anbieterangaben und Vertragspartner.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
     path: "/de/kaffee-etiketten",
     slug: "kaffee-etiketten",
     kind: "industry",
@@ -3732,6 +3910,7 @@ export const sitemapEntries: SitemapEntry[] = [
   { path: "/de/druckdaten", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/produktion-versand", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/kontakt", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/de/unternehmen", priority: 0.6, changeFrequency: "monthly" },
   { path: "/de/auf-rechnung-beantragen", priority: 0.6, changeFrequency: "monthly" },
   { path: "/de/kaffee-etiketten", priority: 0.7, changeFrequency: "weekly" },
   { path: "/de/gewuerz-etiketten", priority: 0.7, changeFrequency: "weekly" },

@@ -301,6 +301,20 @@ export const metadataMap: Record<string, MetadataEntry> = {
       "B2B Etiketten Lieferzeit",
     ],
   },
+  "/de/unternehmen": {
+    title: "Über uns – PP-Rollenetiketten aus Überzeugung | Labelpilot.de",
+    description:
+      "Labelpilot.de: B2B-Plattform für PP-Rollenetiketten mit Nachbestellsystem. Offen über Produktion in der Türkei, DDP-Lieferung nach Deutschland und Vertragspartner.",
+    openGraphTitle: "Über Labelpilot.de",
+    openGraphDescription:
+      "PP-Rollenetiketten-Spezialist – transparent über Produktion, Lieferung & Partner.",
+    keywords: [
+      "Labelpilot über uns",
+      "Etiketten Hersteller Deutschland",
+      "PP-Etiketten Anbieter",
+      "DDP Lieferung Etiketten",
+    ],
+  },
   "/de/kontakt": {
     title: "Kontakt | Labelpilot.de",
     description:

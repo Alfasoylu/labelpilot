@@ -842,6 +842,8 @@ function IndustryPage({ page, canonicalPath }: DynamicPageProps) {
 
       {page.path === "/de/supplement-etiketten" ? <VariableDataBlock /> : null}
 
+      <SellerTrustBlock />
+
       {page.faqs?.length ? (
         <Section
           eyebrow="FAQ"
