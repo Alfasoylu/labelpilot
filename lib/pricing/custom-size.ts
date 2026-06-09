@@ -278,3 +278,121 @@ export function computeCustomSizePrice(
     },
   };
 }
+
+// ── Transparent breakdown for the admin price tester ──────────────────────────
+// Display-only: exposes every intermediate term for BOTH methods so the operator
+// can see exactly how a price is reached. The authoritative net/gross/method come
+// from computeCustomSizePrice; the per-method terms below use the same formulas.
+export type CustomSizePriceExplanation = {
+  quoteRequired: boolean;
+  labelAreaM2: number;
+  wasteFactorPct: number;
+  totalAreaM2: number;
+  materialRatePerM2: number;
+  shippingWeightKg: number;
+  shippingCost: number;
+  isHeavyShipment: boolean;
+  flexo: {
+    materialCost: number;
+    inkCostPerM2PerColor: number;
+    inkCost: number;
+    platePerColor: number;
+    plateCost: number;
+    productionCost: number;
+    multiplier: number;
+    sellingPrice: number;
+  };
+  digital: {
+    costPerM2: number;
+    sellingPricePerM2: number;
+    printingCost: number;
+    cost: number;
+    sellingPrice: number;
+  };
+  chosenMethod: "DIGITAL" | "FLEXO";
+  baseSellingPrice: number;
+  freezerApplied: boolean;
+  freezerRatePerM2: number | null;
+  freezerPremiumPerM2: number;
+  freezerPremium: number;
+  minOrderValueNet: number;
+  roundingStepNet: number;
+  netPrice: number;
+  vatPct: number;
+  grossPrice: number;
+};
+
+export function explainCustomSizePrice(input: CustomSizePriceInput): CustomSizePriceExplanation {
+  const { widthMm, heightMm, quantity, colorCount, anzahlSorten, params, settings, finishing } = input;
+  const authoritative = computeCustomSizePrice(input);
+
+  const labelAreaM2 = (widthMm * heightMm) / 1_000_000;
+  const totalAreaM2 = labelAreaM2 * quantity * (1 + params.wasteFactorPct / 100);
+  const materialRatePerM2 =
+    finishing === "MATT" && params.mattMaterialCostPerM2 != null
+      ? params.mattMaterialCostPerM2
+      : params.materialCostPerM2;
+  const shippingWeightKg = (labelAreaM2 * quantity * settings.labelWeightPerM2Grams) / 1000;
+  const shippingCost = computeShippingCost(shippingWeightKg, settings);
+
+  const materialCost = materialRatePerM2 * totalAreaM2;
+  const inkCost = settings.inkCostPerM2PerColorNet * colorCount * totalAreaM2;
+  const plateCost = colorCount * settings.platePerColorCostNet * anzahlSorten;
+  const flexoProduction = materialCost + inkCost + plateCost + shippingCost;
+  const multiplier = computeMarkupMultiplier(quantity, settings);
+  const flexoSelling = flexoProduction * multiplier;
+
+  const digitalCost = settings.digitalCostPerM2Net * totalAreaM2 + shippingCost;
+  const digitalPrinting = settings.digitalSellingPricePerM2Net * totalAreaM2;
+  const digitalSelling = digitalPrinting + shippingCost;
+
+  const chosenMethod = authoritative.method;
+  const baseSellingPrice = chosenMethod === "DIGITAL" ? digitalSelling : flexoSelling;
+
+  const freezerApplied = Boolean(input.tiefkuehlgeeignet && params.freezerMaterialCostPerM2 != null);
+  const freezerRatePerM2 = params.freezerMaterialCostPerM2 ?? null;
+  const freezerPremiumPerM2 = freezerApplied
+    ? Math.max(0, (params.freezerMaterialCostPerM2 as number) - materialRatePerM2)
+    : 0;
+  const methodMultiplierForFreezer = chosenMethod === "DIGITAL" ? 1 : multiplier;
+  const freezerPremium = freezerPremiumPerM2 * totalAreaM2 * methodMultiplierForFreezer;
+
+  return {
+    quoteRequired: authoritative.quoteRequired,
+    labelAreaM2,
+    wasteFactorPct: params.wasteFactorPct,
+    totalAreaM2,
+    materialRatePerM2,
+    shippingWeightKg,
+    shippingCost,
+    isHeavyShipment: authoritative.isHeavyShipment,
+    flexo: {
+      materialCost,
+      inkCostPerM2PerColor: settings.inkCostPerM2PerColorNet,
+      inkCost,
+      platePerColor: settings.platePerColorCostNet,
+      plateCost,
+      productionCost: flexoProduction,
+      multiplier,
+      sellingPrice: flexoSelling,
+    },
+    digital: {
+      costPerM2: settings.digitalCostPerM2Net,
+      sellingPricePerM2: settings.digitalSellingPricePerM2Net,
+      printingCost: digitalPrinting,
+      cost: digitalCost,
+      sellingPrice: digitalSelling,
+    },
+    chosenMethod,
+    baseSellingPrice,
+    freezerApplied,
+    freezerRatePerM2,
+    freezerPremiumPerM2,
+    freezerPremium,
+    minOrderValueNet: params.minOrderValueNet,
+    roundingStepNet: settings.roundingStepNet,
+    netPrice: authoritative.netPrice,
+    vatPct: settings.vatPct,
+    grossPrice: authoritative.grossPrice,
+  };
+}

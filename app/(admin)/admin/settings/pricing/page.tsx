@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 import {
   formatPricingDate,
@@ -9,6 +10,17 @@ import {
   getPricingAdminSnapshot,
   PRICING_MATERIAL_KEYS,
 } from "@/lib/admin/pricing";
+import { explainCustomSizePrice } from "@/lib/pricing/custom-size";
+
+// Oval/round form surcharge per label (mirrors checkout create-custom-session).
+const OVAL_SURCHARGE_NET_PER_LABEL = 0.03;
+
+function eur(value: number) {
+  return value.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function num(value: number, digits = 2) {
+  return value.toLocaleString("de-DE", { minimumFractionDigits: digits, maximumFractionDigits: digits });
+}
 
 export const dynamic = "force-dynamic";
 
@@ -28,14 +40,22 @@ const MATERIAL_LABELS: Record<(typeof PRICING_MATERIAL_KEYS)[number], string> = 
 
 // ─── tiny helpers ────────────────────────────────────────────────────────────
 
-function Row({ label, value, unit }: { label: string; value: string | undefined; unit?: string }) {
+function FormulaBlock({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <tr>
-      <td style={{ color: "var(--color-muted, #888)", paddingRight: "1.5rem", whiteSpace: "nowrap" }}>{label}</td>
-      <td style={{ fontVariantNumeric: "tabular-nums" }}>
-        {unit ? <><strong>{value}</strong> <span style={{ color: "var(--color-muted, #888)" }}>{unit}</span></> : <strong>{value}</strong>}
-      </td>
-    </tr>
+    <div style={{ marginBottom: "0.85rem" }}>
+      <p style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--color-muted, #888)", margin: "0 0 0.35rem" }}>
+        {title}
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>{children}</div>
+    </div>
+  );
+}
+
+function FLine({ children }: { children: ReactNode }) {
+  return (
+    <div style={{ fontFamily: "var(--font-mono-stack, ui-monospace, monospace)", fontSize: "0.8rem", lineHeight: 1.55, color: "var(--color-text, #222)", wordBreak: "break-word" }}>
+      {children}
+    </div>
   );
 }
 
@@ -74,28 +94,53 @@ export default async function PricingSettingsPage({ searchParams }: PricingSetti
 
   const settings = snapshot.settings ?? getDefaultPricingSettings();
 
-  const calcResult = feedback.calcNet
-    ? {
-        matKey: feedback.calcMatKey ?? "",
-        widthMm: feedback.calcWidthMm ?? "",
-        heightMm: feedback.calcHeightMm ?? "",
-        quantity: feedback.calcQuantity ?? "",
-        colorCount: feedback.calcColorCount ?? "",
-        sorten: feedback.calcSorten ?? "1",
-        quoteRequired: feedback.calcQuoteRequired === "true",
-        method: feedback.calcMethod ?? "",
-        net: feedback.calcNet,
-        gross: feedback.calcGross,
-        materialCost: feedback.calcMaterialCost,
-        ink: feedback.calcInk,
-        plate: feedback.calcPlate,
-        digital: feedback.calcDigital,
-        multiplier: feedback.calcMultiplier,
-        production: feedback.calcProduction,
-        labelArea: feedback.calcLabelArea,
-        totalArea: feedback.calcTotalArea,
-      }
-    : null;
+  // ── Price tester (GET form → in-page computation) ──
+  const t = {
+    material: feedback.t_material === "TRANSPARENT_PP" ? "TRANSPARENT_PP" : "OPAQUE_PP",
+    w: Number(feedback.t_w ?? 100),
+    h: Number(feedback.t_h ?? 200),
+    qty: Number(feedback.t_qty ?? 1000),
+    colors: Number(feedback.t_colors ?? 4),
+    weiss: feedback.t_weiss === "1",
+    sorten: Number(feedback.t_sorten ?? 1),
+    finishing: feedback.t_finishing === "MATT" ? "MATT" : "GLAENZEND",
+    tiefkuehl: feedback.t_tiefkuehl === "1",
+    form: feedback.t_form === "OVAL" ? "OVAL" : "RECHTECKIG",
+  } as const;
+
+  const testInputsValid =
+    Number.isFinite(t.w) && t.w > 0 &&
+    Number.isFinite(t.h) && t.h > 0 &&
+    Number.isFinite(t.qty) && t.qty > 0 &&
+    Number.isFinite(t.colors) && t.colors >= 1 &&
+    Number.isFinite(t.sorten) && t.sorten >= 1;
+
+  const effColors = Math.min(12, Math.round(t.colors) + (t.weiss ? 1 : 0));
+  const testMaterial = snapshot.materials[t.material] ?? getDefaultPricingMaterial(t.material);
+
+  let explanation: ReturnType<typeof explainCustomSizePrice> | null = null;
+  if (testInputsValid) {
+    try {
+      explanation = explainCustomSizePrice({
+        materialKey: t.material,
+        widthMm: Math.round(t.w),
+        heightMm: Math.round(t.h),
+        quantity: Math.round(t.qty),
+        colorCount: effColors,
+        anzahlSorten: Math.round(t.sorten),
+        finishing: t.finishing,
+        tiefkuehlgeeignet: t.tiefkuehl,
+        params: testMaterial,
+        settings,
+      });
+    } catch {
+      explanation = null;
+    }
+  }
+
+  const ovalSurchargeNet = t.form === "OVAL" ? OVAL_SURCHARGE_NET_PER_LABEL * Math.round(t.qty) : 0;
+  const finalNet = explanation && !explanation.quoteRequired ? explanation.netPrice + ovalSurchargeNet : 0;
+  const finalGross = explanation ? finalNet * (1 + explanation.vatPct / 100) : 0;
 
   const divider = (
     <hr style={{ border: "none", borderTop: "1px solid var(--color-border, #e5e5e5)", margin: "1.25rem 0" }} />
@@ -116,47 +161,64 @@ export default async function PricingSettingsPage({ searchParams }: PricingSetti
         {feedback.error   && <p className="form-status error"   style={{ marginTop: "0.75rem", marginBottom: 0 }}>{feedback.error}</p>}
       </article>
 
-      {/* ── Test-Rechner ── */}
+      {/* ── Test-Rechner + Formel-Aufschlüsselung ── */}
       <article className="surface-card">
-        <h3 style={{ marginTop: 0 }}>Preisrechner</h3>
-        <form action="/api/admin/settings/pricing/test" method="post" className="quote-form">
+        <h3 style={{ marginTop: 0 }}>Preisrechner & Formel-Aufschlüsselung</h3>
+        <p className="field-hint" style={{ marginTop: 0 }}>
+          Alle Optionen wie im Kalkulator. Unten steht die vollständige Berechnung für Flexo- und Digitaldruck.
+        </p>
+        <form method="get" className="quote-form">
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "0.75rem 1rem" }}>
             <div>
-              <label htmlFor="materialKey">Material</label>
-              <select id="materialKey" name="materialKey" defaultValue="OPAQUE_PP">
+              <label htmlFor="t_material">Material</label>
+              <select id="t_material" name="t_material" defaultValue={t.material}>
                 <option value="OPAQUE_PP">PP opak</option>
                 <option value="TRANSPARENT_PP">PP transparent</option>
               </select>
             </div>
+            <div><label htmlFor="t_w">Breite (mm)</label><input id="t_w" name="t_w" type="number" min="1" defaultValue={t.w} /></div>
+            <div><label htmlFor="t_h">Höhe (mm)</label><input id="t_h" name="t_h" type="number" min="1" defaultValue={t.h} /></div>
+            <div><label htmlFor="t_qty">Menge</label><input id="t_qty" name="t_qty" type="number" min="1" defaultValue={t.qty} /></div>
             <div>
-              <label htmlFor="widthMm">Breite (mm)</label>
-              <input id="widthMm" name="widthMm" type="number" min="1" defaultValue="100" />
+              <label htmlFor="t_colors">Farben</label>
+              <input id="t_colors" name="t_colors" type="number" min="1" max="11" defaultValue={t.colors} />
             </div>
             <div>
-              <label htmlFor="heightMm">Höhe (mm)</label>
-              <input id="heightMm" name="heightMm" type="number" min="1" defaultValue="200" />
-            </div>
-            <div>
-              <label htmlFor="quantity">Menge</label>
-              <input id="quantity" name="quantity" type="number" min="1" defaultValue="1000" />
-            </div>
-            <div>
-              <label htmlFor="colorCount">Farben</label>
-              <input id="colorCount" name="colorCount" type="number" min="1" max="12" defaultValue="4" />
-              <p className="field-hint">+1 bei Weißunterdruck</p>
-            </div>
-            <div>
-              <label htmlFor="anzahlSorten">Sorten</label>
-              <input id="anzahlSorten" name="anzahlSorten" type="number" min="1" max="20" defaultValue="1" />
+              <label htmlFor="t_sorten">Sorten</label>
+              <input id="t_sorten" name="t_sorten" type="number" min="1" max="20" defaultValue={t.sorten} />
               <p className="field-hint">Verschiedene Motive</p>
             </div>
+            <div>
+              <label htmlFor="t_finishing">Oberfläche</label>
+              <select id="t_finishing" name="t_finishing" defaultValue={t.finishing}>
+                <option value="GLAENZEND">Glänzend</option>
+                <option value="MATT">Matt</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="t_form">Form</label>
+              <select id="t_form" name="t_form" defaultValue={t.form}>
+                <option value="RECHTECKIG">Rechteckig</option>
+                <option value="OVAL">Oval / Rund</option>
+              </select>
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", marginTop: "0.85rem" }}>
+            <label className="checkbox-field" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <input type="checkbox" name="t_weiss" value="1" defaultChecked={t.weiss} />
+              <span>Weißunterdruck (+1 Farbe)</span>
+            </label>
+            <label className="checkbox-field" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <input type="checkbox" name="t_tiefkuehl" value="1" defaultChecked={t.tiefkuehl} />
+              <span>Tiefkühlgeeignet (−20 °C)</span>
+            </label>
           </div>
           <div className="inline-actions" style={{ marginTop: "1rem" }}>
             <button type="submit" className="cta-button">Preis berechnen</button>
           </div>
         </form>
 
-        {calcResult && (
+        {explanation && (
           <div style={{
             marginTop: "1.25rem",
             background: "var(--color-surface-alt, #f7f6f3)",
@@ -164,44 +226,73 @@ export default async function PricingSettingsPage({ searchParams }: PricingSetti
             borderRadius: "0.625rem",
             padding: "1rem 1.25rem",
           }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.75rem" }}>
-              <strong style={{ fontSize: "0.9rem" }}>
-                {calcResult.quoteRequired ? "⚠ Angebotsanfrage erforderlich" : `Methode: ${calcResult.method}`}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.75rem", flexWrap: "wrap" }}>
+              <strong style={{ fontSize: "0.95rem" }}>
+                {explanation.quoteRequired ? "⚠ Angebotsanfrage erforderlich (Maße/Menge über Limit)" : `Gewählte Methode: ${explanation.chosenMethod === "DIGITAL" ? "Digitaldruck" : "Flexodruck"}`}
               </strong>
               <span style={{ fontSize: "0.8rem", color: "var(--color-muted, #888)" }}>
-                {calcResult.widthMm} × {calcResult.heightMm} mm · {Number(calcResult.quantity).toLocaleString("de-DE")} Stk · {calcResult.colorCount} Farben · {calcResult.sorten} Sorte(n) · {calcResult.matKey}
+                {Math.round(t.w)} × {Math.round(t.h)} mm · {Math.round(t.qty).toLocaleString("de-DE")} Stk · {effColors} Farben{t.weiss ? " (inkl. Weiß)" : ""} · {t.sorten} Sorte(n) · {t.finishing === "MATT" ? "Matt" : "Glanz"} · {t.form === "OVAL" ? "Oval" : "Rechteckig"}{t.tiefkuehl ? " · Tiefkühl" : ""}
               </span>
             </div>
-            {!calcResult.quoteRequired && (
-              <table style={{ fontSize: "0.875rem", borderCollapse: "collapse", width: "100%" }}>
-                <tbody>
-                  <Row label="Labelfläche" value={calcResult.labelArea} unit="m²/Stk" />
-                  <Row label="Gesamtfläche (inkl. Ausschuss)" value={calcResult.totalArea} unit="m²" />
-                  {calcResult.method === "DIGITAL" ? (
-                    <Row label="Digitaldruck" value={`€ ${calcResult.digital}`} />
-                  ) : (
-                    <>
-                      <Row label="Materialkosten" value={`€ ${calcResult.materialCost}`} />
-                      <Row label="Farbenkosten (Flexo)" value={`€ ${calcResult.ink}`} />
-                      <Row label="Plattenkosten" value={`€ ${calcResult.plate}`} />
-                      <Row label="Aufschlagsfaktor" value={`× ${calcResult.multiplier}`} />
-                      <Row label="Produktionskosten" value={`€ ${calcResult.production}`} />
-                    </>
-                  )}
-                </tbody>
-                <tfoot>
-                  <tr style={{ borderTop: "1px solid var(--color-border, #e5e5e5)" }}>
-                    <td style={{ paddingTop: "0.5rem", color: "var(--color-muted, #888)" }}>Netto</td>
-                    <td style={{ paddingTop: "0.5rem", fontSize: "1.05rem", fontVariantNumeric: "tabular-nums" }}>
-                      <strong>€ {calcResult.net}</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={{ color: "var(--color-muted, #888)" }}>Brutto (inkl. {settings.vatPct}% MwSt.)</td>
-                    <td style={{ fontVariantNumeric: "tabular-nums" }}><strong>€ {calcResult.gross}</strong></td>
-                  </tr>
-                </tfoot>
-              </table>
+
+            {!explanation.quoteRequired && (
+              <>
+                {/* Gemeinsame Größen */}
+                <FormulaBlock title="Flächen">
+                  <FLine>Labelfläche = (Breite × Höhe) / 1.000.000 = ({Math.round(t.w)} × {Math.round(t.h)}) / 1.000.000 = <b>{num(explanation.labelAreaM2, 6)} m²/Stk</b></FLine>
+                  <FLine>Gesamtfläche = Labelfläche × Menge × (1 + Ausschuss%) = {num(explanation.labelAreaM2, 6)} × {Math.round(t.qty).toLocaleString("de-DE")} × (1 + {num(explanation.wasteFactorPct, 0)}%) = <b>{num(explanation.totalAreaM2, 3)} m²</b></FLine>
+                  <FLine>Versand = Gewichts-Staffel({num(explanation.shippingWeightKg, 3)} kg) = <b>{eur(explanation.shippingCost)} €</b></FLine>
+                </FormulaBlock>
+
+                {/* Flexo */}
+                <FormulaBlock title={`Flexodruck${explanation.chosenMethod === "FLEXO" ? " ✓ gewählt" : ""}`}>
+                  <FLine>Material = Materialrate ({t.finishing === "MATT" ? "Matt" : "Glanz"}) × Gesamtfläche = {num(explanation.materialRatePerM2, 4)} × {num(explanation.totalAreaM2, 3)} = <b>{eur(explanation.flexo.materialCost)} €</b></FLine>
+                  <FLine>Farben = Farbkosten/m²/Farbe × Farben × Gesamtfläche = {num(explanation.flexo.inkCostPerM2PerColor, 4)} × {effColors} × {num(explanation.totalAreaM2, 3)} = <b>{eur(explanation.flexo.inkCost)} €</b></FLine>
+                  <FLine>Platten = Farben × Plattenkosten/Farbe × Sorten = {effColors} × {num(explanation.flexo.platePerColor, 2)} × {t.sorten} = <b>{eur(explanation.flexo.plateCost)} €</b></FLine>
+                  <FLine>Produktionskosten = Material + Farben + Platten + Versand = <b>{eur(explanation.flexo.productionCost)} €</b></FLine>
+                  <FLine>Aufschlag (Mengenstaffel) = <b>× {num(explanation.flexo.multiplier, 2)}</b></FLine>
+                  <FLine>Flexo-Verkaufspreis = Produktionskosten × Aufschlag = {eur(explanation.flexo.productionCost)} × {num(explanation.flexo.multiplier, 2)} = <b>{eur(explanation.flexo.sellingPrice)} €</b></FLine>
+                </FormulaBlock>
+
+                {/* Digital */}
+                <FormulaBlock title={`Digitaldruck${explanation.chosenMethod === "DIGITAL" ? " ✓ gewählt" : ""}`}>
+                  <FLine>Digital-Kosten (intern) = Kosten/m² × Gesamtfläche + Versand = {num(explanation.digital.costPerM2, 4)} × {num(explanation.totalAreaM2, 3)} + {eur(explanation.shippingCost)} = <b>{eur(explanation.digital.cost)} €</b></FLine>
+                  <FLine>Digital-Verkaufspreis = Preis/m² × Gesamtfläche + Versand = {num(explanation.digital.sellingPricePerM2, 4)} × {num(explanation.totalAreaM2, 3)} + {eur(explanation.shippingCost)} = <b>{eur(explanation.digital.sellingPrice)} €</b></FLine>
+                </FormulaBlock>
+
+                {/* Auswahl & Aufschläge */}
+                <FormulaBlock title="Methodenwahl & Aufschläge">
+                  <FLine>Gewählt wird die Methode mit den niedrigeren Produktionskosten → <b>{explanation.chosenMethod === "DIGITAL" ? "Digitaldruck" : "Flexodruck"}</b></FLine>
+                  <FLine>Basis-Verkaufspreis = <b>{eur(explanation.baseSellingPrice)} €</b></FLine>
+                  {t.tiefkuehl && explanation.freezerApplied ? (
+                    <FLine>Tiefkühl-Aufpreis = (Tiefkühlrate − Standardrate) × Gesamtfläche × Aufschlag = ({num(explanation.freezerRatePerM2 ?? 0, 4)} − {num(explanation.materialRatePerM2, 4)}) × {num(explanation.totalAreaM2, 3)} × {num(explanation.chosenMethod === "DIGITAL" ? 1 : explanation.flexo.multiplier, 2)} = <b>{eur(explanation.freezerPremium)} €</b></FLine>
+                  ) : t.tiefkuehl ? (
+                    <FLine>Tiefkühl gewählt, aber keine Tiefkühlrate für dieses Material hinterlegt → kein Aufpreis.</FLine>
+                  ) : null}
+                  {ovalSurchargeNet > 0 ? (
+                    <FLine>Sonderform (Oval/Rund) = {num(OVAL_SURCHARGE_NET_PER_LABEL, 2)} €/Stk × Menge = {num(OVAL_SURCHARGE_NET_PER_LABEL, 2)} × {Math.round(t.qty).toLocaleString("de-DE")} = <b>{eur(ovalSurchargeNet)} €</b></FLine>
+                  ) : null}
+                  <FLine>Mindestauftragswert = {eur(explanation.minOrderValueNet)} € · Rundungsschritt = {num(explanation.roundingStepNet, 2)} €</FLine>
+                </FormulaBlock>
+
+                {/* Ergebnis */}
+                <table style={{ fontSize: "0.9rem", borderCollapse: "collapse", width: "100%", marginTop: "0.5rem" }}>
+                  <tfoot>
+                    <tr style={{ borderTop: "1px solid var(--color-border, #e5e5e5)" }}>
+                      <td style={{ paddingTop: "0.5rem", color: "var(--color-muted, #888)" }}>
+                        Netto{ovalSurchargeNet > 0 ? " (inkl. Sonderform)" : ""}
+                      </td>
+                      <td style={{ paddingTop: "0.5rem", fontSize: "1.1rem", fontVariantNumeric: "tabular-nums", textAlign: "right" }}>
+                        <strong>{eur(finalNet)} €</strong>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style={{ color: "var(--color-muted, #888)" }}>Brutto (inkl. {num(explanation.vatPct, 0)}% MwSt.)</td>
+                      <td style={{ fontVariantNumeric: "tabular-nums", textAlign: "right" }}><strong>{eur(finalGross)} €</strong></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </>
             )}
           </div>
         )}
