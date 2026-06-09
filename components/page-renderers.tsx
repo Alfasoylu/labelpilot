@@ -1144,6 +1144,17 @@ function GuidePage({ page, canonicalPath }: DynamicPageProps) {
         <FeatureGrid items={buildFeatureItemsFromSections(page)} />
       </Section>
 
+      {page.table ? (
+        <Section eyebrow="Vergleich" title={page.table.title} lead={page.table.lead}>
+          <ComparisonTable
+            title={page.table.title}
+            lead={page.table.lead}
+            columns={page.table.columns}
+            rows={page.table.rows}
+          />
+        </Section>
+      ) : null}
+
       {page.faqs?.length ? (
         <Section eyebrow="Kurzantworten" title="Häufige Rückfragen zum Thema" lead="Die Antworten bleiben sichtbar und unterstützen weiterhin FAQ-Schema und Suchintention.">
           <FaqAccordion faqs={page.faqs} />

@@ -453,6 +453,36 @@ export const metadataMap: Record<string, MetadataEntry> = {
       "PP oder Papier Etiketten",
     ],
   },
+  "/de/ratgeber/lebensmittelkennzeichnung-pflichtangaben": {
+    title: "Lebensmittelkennzeichnung: Pflichtangaben nach LMIV | Labelpilot.de",
+    description:
+      "Welche Pflichtangaben nach LMIV auf ein Lebensmitteletikett gehören: Bezeichnung, Zutaten, Allergene, Nährwerte, MHD und Mindestschriftgröße – als praktische Checkliste.",
+    openGraphTitle: "LMIV-Pflichtangaben für Lebensmitteletiketten",
+    openGraphDescription:
+      "Checkliste: Zutaten, Allergene, Nährwerte, MHD & Schriftgröße nach LMIV.",
+    openGraphType: "article",
+    keywords: [
+      "Lebensmittelkennzeichnung Pflichtangaben",
+      "LMIV Etiketten",
+      "LMIV Pflichtangaben",
+      "Allergenkennzeichnung Etikett",
+    ],
+  },
+  "/de/ratgeber/pp-etiketten-materialvergleich": {
+    title: "PP, PE und PET: Etikettenfolien im Vergleich | Labelpilot.de",
+    description:
+      "PP, PE und PET im Vergleich: Beständigkeit, Flexibilität und Einsatz der Folienmaterialien für Etiketten – und warum PP für die meisten Produktverpackungen die beste Wahl ist.",
+    openGraphTitle: "PP vs. PE vs. PET – Etikettenfolien im Vergleich",
+    openGraphDescription:
+      "Folienmaterialien für Etiketten: Eigenschaften und Einsatz von PP, PE & PET.",
+    openGraphType: "article",
+    keywords: [
+      "PP PE PET Vergleich",
+      "Etiketten Folienmaterial",
+      "pp etiketten material",
+      "Folienetiketten Material",
+    ],
+  },
   "/de/ratgeber/transparente-vs-opake-etiketten": {
     title: "Transparente vs. opake Etiketten | Labelpilot.de",
     description:

@@ -3192,6 +3192,215 @@ const guidePages: PublicPageData[] = [
     ],
   },
   {
+    path: "/de/ratgeber/lebensmittelkennzeichnung-pflichtangaben",
+    slug: "lebensmittelkennzeichnung-pflichtangaben",
+    kind: "guide",
+    title: "Lebensmittelkennzeichnung: Pflichtangaben nach LMIV",
+    eyebrow: "Ratgeber",
+    lead:
+      "Welche Pflichtangaben nach der LMIV (Lebensmittelinformationsverordnung) auf ein Lebensmitteletikett gehören – als praktische Checkliste für Produktmarken, bevor die Druckdaten in Produktion gehen.",
+    heroBullets: [
+      "Die wichtigsten LMIV-Pflichtangaben kompakt und in der richtigen Reihenfolge.",
+      "Mit Hinweisen zu Allergenkennzeichnung, Nährwerttabelle und Schriftgröße.",
+      "Kein Rechtsrat: Die inhaltliche Verantwortung bleibt bei Ihnen, wir übernehmen den Druck.",
+    ],
+    sidebarTitle: "Dieser Guide hilft bei",
+    sidebarBullets: [
+      "Vollständigkeit der Pflichtangaben vor dem Druck",
+      "Allergene, Nährwerte und Mindesthaltbarkeit",
+      "Lesbarkeit und Mindestschriftgröße",
+    ],
+    primaryCta: {
+      label: "Jetzt konfigurieren",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: sampleLink,
+    howToSteps: [
+      "Bezeichnung des Lebensmittels festlegen – die rechtlich vorgeschriebene oder verkehrsübliche Bezeichnung, nicht nur den Markennamen.",
+      "Zutatenverzeichnis in absteigender Reihenfolge der Menge anführen, eingeleitet mit dem Wort „Zutaten“.",
+      "Allergene innerhalb des Zutatenverzeichnisses hervorheben (z. B. fett oder in Großbuchstaben).",
+      "Nettofüllmenge angeben (Gewicht oder Volumen).",
+      "Mindesthaltbarkeitsdatum oder Verbrauchsdatum platzieren.",
+      "Name und Anschrift des verantwortlichen Lebensmittelunternehmers ergänzen.",
+      "Nährwertdeklaration als Tabelle je 100 g/100 ml aufnehmen (mit den Ausnahmen der LMIV).",
+      "Gegebenenfalls Aufbewahrungs- und Verwendungshinweise sowie Alkoholgehalt ergänzen.",
+    ],
+    sections: [
+      {
+        title: "Die Pflichtangaben im Überblick",
+        body: [
+          "Die LMIV legt fest, welche Informationen verpflichtend auf vorverpackten Lebensmitteln stehen müssen – von der Bezeichnung über Zutaten und Allergene bis zur Nährwerttabelle.",
+          "Die Angaben müssen an einer gut sichtbaren Stelle, leicht lesbar und unverwischbar angebracht sein.",
+        ],
+      },
+      {
+        title: "Allergene richtig hervorheben",
+        body: [
+          "Die 14 Hauptallergene (u. a. glutenhaltiges Getreide, Milch, Eier, Nüsse, Soja) müssen im Zutatenverzeichnis optisch hervorgehoben werden.",
+          "Üblich ist Fettdruck oder Großschreibung, damit die Allergene sich vom übrigen Text abheben.",
+        ],
+      },
+      {
+        title: "Mindestschriftgröße beachten",
+        body: [
+          "Die LMIV schreibt eine Mindestschriftgröße vor: Bei einer x-Höhe ist mindestens 1,2 mm einzuhalten, bei sehr kleinen Verpackungen mindestens 0,9 mm.",
+          "Das hat direkte Folgen für das Etikettenlayout – gerade bei kleinen Gläsern und Dosen wird der Platz schnell knapp.",
+        ],
+      },
+      {
+        title: "Wo der Druck endet und Ihre Verantwortung beginnt",
+        body: [
+          "Wir drucken Ihr freigegebenes Layout exakt so, wie Sie es liefern – inklusive aller Pflichtangaben.",
+          "Die inhaltliche Richtigkeit und rechtliche Vollständigkeit der Angaben liegt bei Ihnen; eine rechtliche Prüfung übernehmen wir nicht.",
+        ],
+      },
+    ],
+    table: {
+      title: "LMIV-Pflichtangaben auf einen Blick",
+      lead: "Die zentralen Pflichtangaben und worauf zu achten ist.",
+      columns: ["Pflichtangabe", "Worauf achten"],
+      rows: [
+        ["Bezeichnung des Lebensmittels", "Verkehrsübliche Bezeichnung, nicht nur Markenname"],
+        ["Zutatenverzeichnis", "Absteigend nach Menge, mit „Zutaten“ eingeleitet"],
+        ["Allergene", "Im Zutatenverzeichnis hervorgehoben (fett/Großbuchstaben)"],
+        ["Nettofüllmenge", "Gewicht oder Volumen"],
+        ["Mindesthaltbarkeit", "MHD oder Verbrauchsdatum"],
+        ["Verantwortlicher", "Name und Anschrift des Unternehmers"],
+        ["Nährwerttabelle", "Je 100 g/100 ml, mit LMIV-Ausnahmen"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Was ist die LMIV?",
+        answer:
+          "Die LMIV ist die EU-Lebensmittelinformationsverordnung (Verordnung (EU) Nr. 1169/2011). Sie regelt, welche Informationen auf vorverpackten Lebensmitteln verpflichtend angegeben werden müssen.",
+      },
+      {
+        question: "Müssen Allergene besonders gekennzeichnet werden?",
+        answer:
+          "Ja. Die 14 Hauptallergene müssen im Zutatenverzeichnis optisch hervorgehoben werden, üblicherweise durch Fettdruck oder Großschreibung.",
+      },
+      {
+        question: "Gibt es eine vorgeschriebene Mindestschriftgröße?",
+        answer:
+          "Ja. Die x-Höhe der Schrift muss mindestens 1,2 mm betragen; bei Verpackungen mit einer größten Oberfläche unter 80 cm² mindestens 0,9 mm.",
+      },
+      {
+        question: "Prüft Labelpilot meine Pflichtangaben?",
+        answer:
+          "Nein. Wir übernehmen die Druckproduktion und die technische Dateiprüfung. Die inhaltliche und rechtliche Verantwortung für die Pflichtangaben bleibt bei Ihnen.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Lebensmittel-Etiketten",
+        href: "/de/lebensmittel-etiketten",
+        description: "PP-Rollenetiketten für Lebensmittelverpackungen mit Platz für Pflichtangaben.",
+      },
+      {
+        label: "Druckdaten vorbereiten",
+        href: "/de/ratgeber/druckdaten-vorbereiten",
+        description: "Wie Sie Ihr Etikettenlayout technisch sauber für den Druck aufbereiten.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/ratgeber/pp-etiketten-materialvergleich",
+    slug: "pp-etiketten-materialvergleich",
+    kind: "guide",
+    title: "PP, PE und PET: Folienmaterialien für Etiketten im Vergleich",
+    eyebrow: "Ratgeber",
+    lead:
+      "PP, PE und PET sind die gängigen Kunststofffolien für Etiketten. Dieser Guide erklärt die Unterschiede in Beständigkeit, Flexibilität und Optik – und warum Labelpilot auf PP setzt.",
+    heroBullets: [
+      "Drei Folienmaterialien, drei Charaktere: PP als robuster Allrounder, PE flexibel, PET besonders fest.",
+      "Mit klaren Einsatzempfehlungen für Produktverpackungen.",
+      "Warum PP für die meisten Lebensmittel-, Getränke- und Supplement-Etiketten die pragmatische Wahl ist.",
+    ],
+    sidebarTitle: "Dieser Guide hilft bei",
+    sidebarBullets: [
+      "Materialwahl zwischen PP, PE und PET",
+      "Einordnung von Beständigkeit und Flexibilität",
+      "Verständnis, warum PP der Standard ist",
+    ],
+    primaryCta: {
+      label: "Jetzt konfigurieren",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: sampleLink,
+    sections: [
+      {
+        title: "PP – der robuste Standard",
+        body: [
+          "Polypropylen (PP) ist reißfest, wasserbeständig und gut zu bedrucken – die pragmatische Wahl für die meisten Produktetiketten.",
+          "PP gibt es opak (deckend) und transparent und läuft prozesssicher von der Rolle.",
+        ],
+      },
+      {
+        title: "PE – das flexible Material",
+        body: [
+          "Polyethylen (PE) ist weicher und dehnbarer als PP und eignet sich für stark verformbare Verpackungen wie Quetschflaschen und Tuben.",
+          "Die Flexibilität geht zulasten der Formstabilität, was die Verarbeitung anspruchsvoller macht.",
+        ],
+      },
+      {
+        title: "PET – die besonders feste Folie",
+        body: [
+          "Polyester (PET) ist sehr fest, temperaturstabil und chemisch beständig – oft für anspruchsvolle technische oder industrielle Etiketten.",
+          "Für klassische Produktverpackungen im Lebensmittel- und Getränkebereich ist PET meist überdimensioniert.",
+        ],
+      },
+      {
+        title: "Warum Labelpilot auf PP setzt",
+        body: [
+          "PP deckt die Anforderungen von Lebensmittel-, Getränke- und Supplement-Marken zuverlässig ab: feuchtigkeitsbeständig, gut bedruckbar und in opak wie transparent verfügbar.",
+          "Ein klarer Materialkern hält Qualität, Preis und Nachbestellung überschaubar – statt jede Folienvariante anzubieten.",
+        ],
+      },
+    ],
+    table: {
+      title: "PP, PE und PET im direkten Vergleich",
+      lead: "Eigenschaften und typische Einsätze der drei Folienmaterialien.",
+      columns: ["Material", "Eigenschaften", "Typischer Einsatz"],
+      rows: [
+        ["PP (Polypropylen)", "reißfest, wasserbeständig, gut bedruckbar", "Lebensmittel, Getränke, Supplemente"],
+        ["PE (Polyethylen)", "weich, dehnbar, flexibel", "Quetschflaschen, Tuben, verformbare Verpackungen"],
+        ["PET (Polyester)", "sehr fest, temperatur- und chemikalienbeständig", "technische und industrielle Etiketten"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Was ist der Unterschied zwischen PP, PE und PET?",
+        answer:
+          "PP ist ein reißfester, wasserbeständiger Allrounder, PE ist weicher und flexibler für verformbare Verpackungen, PET ist besonders fest und temperaturstabil für technische Anwendungen.",
+      },
+      {
+        question: "Welches Folienmaterial ist für Lebensmitteletiketten am besten?",
+        answer:
+          "Für die meisten Lebensmittel-, Getränke- und Supplement-Verpackungen ist PP die pragmatische Wahl: wasserbeständig, gut bedruckbar und in opak und transparent verfügbar.",
+      },
+      {
+        question: "Bietet Labelpilot auch PE- oder PET-Etiketten an?",
+        answer:
+          "Unser Standard ist PP, weil es die meisten Produktverpackungen optimal abdeckt. Für spezielle PE- oder PET-Anforderungen klären wir die Machbarkeit über ein Angebot.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Folienetiketten",
+        href: "/de/folienetiketten",
+        description: "Wasserfeste PP-Folienetiketten für Produktverpackungen.",
+      },
+      {
+        label: "PP-Etiketten vs. Papieretiketten",
+        href: "/de/ratgeber/pp-etiketten-vs-papieretiketten",
+        description: "Wann Folie die robustere Wahl gegenüber Papier ist.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
     path: "/de/ratgeber/transparente-vs-opake-etiketten",
     slug: "transparente-vs-opake-etiketten",
     kind: "guide",
