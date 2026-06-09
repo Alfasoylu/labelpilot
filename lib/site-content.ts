@@ -2836,7 +2836,7 @@ const topLevelPages: PublicPageData[] = [
         title: "Kontaktangaben",
         body: [
           "E-Mail: kontakt@labelpilot.de",
-          "Telefon: +852 35944334",
+          "Telefon: +90 549 688 51 90",
         ],
       },
       {
@@ -2860,7 +2860,7 @@ const topLevelPages: PublicPageData[] = [
         body: [
           "Verantwortlich für die Datenverarbeitung auf dieser Website ist:",
           "Zhenkai Global Trading Limited, Unit 2A, 17/F, Glenealy Tower, No. 1 Glenealy, Central, Hong Kong",
-          "E-Mail: kontakt@labelpilot.de · Telefon: +852 35944334",
+          "E-Mail: kontakt@labelpilot.de · Telefon: +90 549 688 51 90",
           "Vertreten durch: Alperen Aydin",
         ],
       },

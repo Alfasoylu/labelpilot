@@ -19,6 +19,7 @@ import {
   StoredDesignVisualCard,
 } from "@/components/sections/ReorderWorkflowBlock";
 import { SellerTrustBlock } from "@/components/sections/SellerTrustBlock";
+import { ObfuscatedEmail } from "@/components/utility/ObfuscatedEmail";
 import { TrustBar } from "@/components/sections/TrustBar";
 import { VariableDataBlock } from "@/components/sections/VariableDataBlock";
 import { ComparisonTable } from "@/components/tables/ComparisonTable";
@@ -1048,6 +1049,35 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
                 },
               ]}
             />
+          </div>
+        </Section>
+      ) : null}
+
+      {page.path === "/de/kontakt" ? (
+        <Section eyebrow="Kontaktdaten" title="So erreichen Sie uns">
+          <div className="kontakt-info-card">
+            <dl className="kontakt-info-card__list">
+              <div className="kontakt-info-card__row">
+                <dt>Unternehmen</dt>
+                <dd>Alfa Soylu Elektronik</dd>
+              </div>
+              <div className="kontakt-info-card__row">
+                <dt>Adresse</dt>
+                <dd>Istanbul, Türkei</dd>
+              </div>
+              <div className="kontakt-info-card__row">
+                <dt>Telefon</dt>
+                <dd>
+                  <a href="tel:+905496885190">+90 549 688 51 90</a>
+                </dd>
+              </div>
+              <div className="kontakt-info-card__row">
+                <dt>E-Mail</dt>
+                <dd>
+                  <ObfuscatedEmail />
+                </dd>
+              </div>
+            </dl>
           </div>
         </Section>
       ) : null}
