@@ -2648,14 +2648,16 @@ th {
 
 .kalkulator-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  /* minmax(0, …) lets the column shrink below its content's min-content width
+     so long lines never force horizontal overflow on small screens. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
   align-items: start;
 }
 
 @media (min-width: 768px) {
   .kalkulator-grid {
-    grid-template-columns: 1fr 300px;
+    grid-template-columns: minmax(0, 1fr) 300px;
     gap: 20px;
   }
 }
@@ -2751,6 +2753,13 @@ th {
 .kalkulator-price-shipping {
   color: var(--success, #16a34a);
   font-size: 0.82rem !important;
+}
+
+/* Full-width single-span lines must wrap — the price key/value nowrap rule
+   would otherwise force these long sentences to overflow on mobile. */
+.kalkulator-price-list li.kalkulator-price-shipping span {
+  white-space: normal;
+  text-align: left;
 }
 
 /* Offer card header */
@@ -3440,7 +3449,9 @@ th {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 200;
+  /* Above the live-chat (z 9000–9998): consent is a legal gate and must stay
+     reachable and on top until the visitor decides. */
+  z-index: 10000;
   padding: 16px;
   display: flex;
   justify-content: center;
