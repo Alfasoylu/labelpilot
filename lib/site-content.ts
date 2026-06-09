@@ -2469,7 +2469,7 @@ const guidePages: PublicPageData[] = [
       {
         title: "3. Proof als Freigabeschritt verstehen",
         body: [
-          "Der Proof ist kein optionales Bürodetail, sondern der Moment, in dem Sichtbarkeit, Textlogik und Positionierung noch einmal bewusst geprüft werden.",
+          "Der Proof ist kein optionales Bürodetail, sondern der Moment, in dem Lesbarkeit, Text und Positionierung ein letztes Mal geprüft werden.",
           "Gerade bei wiederkehrenden Bestellungen spart ein freigegebener Proof später Zeit, weil dieselbe Basis weiterverwendet werden kann.",
         ],
       },

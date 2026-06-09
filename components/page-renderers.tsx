@@ -47,25 +47,6 @@ type DynamicPageProps = {
   };
 };
 
-const trustItems = [
-  {
-    title: "Freigegebene Versionen",
-    body: "Nicht nur ein Druckauftrag, sondern eine gespeicherte Version, die später wieder nutzbar bleibt.",
-  },
-  {
-    title: "Klare Materiallogik",
-    body: "Opak, transparent oder Thermo werden als echte Entscheidungsdimensionen kommuniziert.",
-  },
-  {
-    title: "Deutsche B2B-Führung",
-    body: "Produkt, Ratgeber und Glossar sprechen dieselbe Sprache wie ein deutscher Einkäufer.",
-  },
-  {
-    title: "Angebot statt Ratespiel",
-    body: "Sonderfälle und große Mengen laufen kontrolliert über das Angebotsmodell.",
-  },
-];
-
 const productImageAssets = {
   productLine: {
     src: "/images/pp-rollenetiketten-produktlinie.webp",
