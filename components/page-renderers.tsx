@@ -50,7 +50,7 @@ type DynamicPageProps = {
 const trustItems = [
   {
     title: "Freigegebene Versionen",
-    body: "Nicht nur ein Druckauftrag, sondern eine saubere Version, die später wieder nutzbar bleibt.",
+    body: "Nicht nur ein Druckauftrag, sondern eine gespeicherte Version, die später wieder nutzbar bleibt.",
   },
   {
     title: "Klare Materiallogik",
@@ -223,8 +223,8 @@ const productTrustItems = [
     body: "Wenn Materialwirkung oder Haptik noch offen sind, ist die Musterbox der kontrollierte Zwischenschritt.",
   },
   {
-    title: "Sichere Zahlung und sauberer Prozess",
-    body: "Checkout, Zahlungsbestätigung, Auftragsbestätigung und Proof-Freigabe bleiben im sichtbaren B2B-Prozess sauber nachvollziehbar.",
+    title: "Sichere Zahlung, nachvollziehbarer Ablauf",
+    body: "Checkout, Zahlungsbestätigung, Auftragsbestätigung und Proof-Freigabe – jeder Schritt ist einsehbar und dokumentiert.",
   },
 ];
 
@@ -233,7 +233,7 @@ export function HomePage({ page }: HomePageProps) {
     { title: "PP opak & transparent", body: "Zwei Materialien für jede Verpackung." },
     { title: "Druckdaten gespeichert", body: "Freigegebene Version bleibt nutzbar." },
     { title: "Proof vor Produktion", body: "Produktion erst nach Ihrer Freigabe." },
-    { title: "Angebot ab 20.000 Stück", body: "Großmengen sauber kalkuliert." },
+    { title: "Angebot ab 20.000 Stück", body: "Großmengen individuell kalkuliert." },
   ];
 
   return (
@@ -433,12 +433,12 @@ export function HomePage({ page }: HomePageProps) {
                 {
                   label: "Honig & Feinkost",
                   href: "/de/lebensmittel-etiketten",
-                  body: "Honig, Aufstriche und Feinkost im Glas: Etiketten, die Feuchtigkeit vertragen und mit sauberen Kanten am Rundglas sitzen.",
+                  body: "Honig, Aufstriche und Feinkost im Glas: Etiketten, die Feuchtigkeit vertragen und mit präzisen Kanten am Rundglas sitzen.",
                 },
                 {
                   label: "Getränke",
                   href: "/de/getraenke-etiketten",
-                  body: "Getränkeflaschen leben von transparenter Optik – das Etikett muss auch bei Kondenswasser sauber halten und lesbar bleiben.",
+                  body: "Getränkeflaschen leben von transparenter Optik – das Etikett muss auch bei Kondenswasser zuverlässig haften und lesbar bleiben.",
                 },
                 {
                   label: "Nahrungsergänzung",
@@ -448,7 +448,7 @@ export function HomePage({ page }: HomePageProps) {
                 {
                   label: "Kaffee & Tee",
                   href: "/de/kaffee-etiketten",
-                  body: "Kaffee- und Teebeutel wirken mit mattem PP hochwertig und laufen sauber über die gesamte Rolle.",
+                  body: "Kaffee- und Teebeutel wirken mit mattem PP hochwertig und laufen gleichmäßig über die gesamte Rolle.",
                 },
               ].map((item) => (
                 <ProductCard
@@ -668,7 +668,7 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
           <p className="field-hint">
             Daraus leiten wir keine pauschalen Nachhaltigkeits- oder Recyclingversprechen
             ab. Wenn Sie Varianten mit anderem Materialfokus prüfen möchten, klären wir
-            das sauber über Angebot oder Musterbox.
+            das direkt über Angebot oder Musterbox.
           </p>
         </div>
       </Section>
@@ -1315,7 +1315,7 @@ function QuotePage({ page, canonicalPath }: DynamicPageProps) {
             <div className="card-grid">
               <article className="feature-card">
                 <h3>Unternehmen</h3>
-                <p>Kontakt und Branche werden sauber von der Produktanfrage getrennt.</p>
+                <p>Kontaktanfragen und Produktanfragen werden getrennt behandelt.</p>
               </article>
               <article className="feature-card">
                 <h3>Etikettenbedarf</h3>
@@ -1566,7 +1566,7 @@ function getProductPageImage(path: string) {
         alt: "Klare Glasflasche mit transparentem PP-Etikett, Glas und Inhalt durch das Etikett sichtbar",
         title: "Transparentes PP im realen Einsatz",
         lead: "Das transparente Etikett bleibt klar lesbar und lässt Glas und Inhalt sichtbar – die typische Premium-Optik für Flaschen und Gläser.",
-        caption: "Transparentes PP-Etikett auf einer Glasflasche – sichtbares Glas, saubere Kanten.",
+        caption: "Transparentes PP-Etikett auf einer Glasflasche – sichtbares Glas, präzise Kanten.",
       };
     case "/de/opake-pp-etiketten":
       return {
