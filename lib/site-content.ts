@@ -1486,15 +1486,33 @@ const topLevelPages: PublicPageData[] = [
     secondaryCta: quoteLink,
     sections: [
       {
-        title: "Warum wir das offen kommunizieren",
+        title: "Warum wir den Produktionsort offen nennen",
         body: [
-          "Wir ordnen Produktion und Versand transparent für deutsche B2B-Kunden ein, damit die Lieferlogik nicht im Unklaren bleibt.",
+          "Unsere Etiketten werden in der Türkei produziert und an B2B-Kunden in Deutschland geliefert. Wir nennen das offen, weil es Ihre Kalkulation und Ihre Lieferzeit-Erwartung beeinflusst: Der Standort ermöglicht ein gutes Verhältnis aus Materialqualität und Preis, im Gegenzug planen Sie die Lieferung etwas großzügiger als bei einer rein lokalen Druckerei.",
+        ],
+      },
+      {
+        title: "Vor der Produktion: Prüfung und Freigabe",
+        body: [
+          "Bevor ein Auftrag in Produktion geht, prüfen wir Ihre Druckdaten und stellen Ihnen einen digitalen Proof bereit. Produziert wird erst nach Ihrer ausdrücklichen Freigabe – so vermeiden wir Fehldrucke, und die Lieferzeit beginnt mit der Freigabe, nicht schon mit der Bestellung.",
+        ],
+      },
+      {
+        title: "Versand nach Deutschland",
+        body: [
+          "Der Versand erfolgt gebündelt nach Deutschland; den Transport organisieren wir für Sie. Der im Kalkulator angezeigte Preis enthält den Versand innerhalb Deutschlands – besonders schwere oder sehr große Sendungen weisen wir gesondert aus.",
+        ],
+      },
+      {
+        title: "Lieferzeit als ehrliche Orientierung",
+        body: [
+          "Als ehrliche Orientierung gelten ca. 10–14 Werktage nach Ihrer Druckfreigabe (Produktion und Versand nach Deutschland); bei schweren oder sehr großen Sendungen kann es länger dauern. Das ist eine Richtgröße, keine bindende Garantie – ist ein Termin für Sie kritisch, stimmen wir ihn vor der Bestellung gemeinsam ab.",
         ],
       },
       {
         title: "Was wir nicht pauschal zusagen",
         body: [
-          "Konkrete rechtliche oder steuerliche Detailzusagen treffen wir nicht pauschal, sondern klären sie auftragsbezogen.",
+          "Verbindliche rechtliche oder steuerliche Detailzusagen treffen wir nicht pauschal, sondern klären sie auftragsbezogen; Pflichtangaben auf dem Etikett liegen in Ihrer Verantwortung. Bei konkreten Fragen zu Ablauf, Lieferung oder Spezifikation nehmen Sie am besten direkt Kontakt mit uns auf.",
         ],
       },
     ],
