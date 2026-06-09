@@ -19,6 +19,7 @@ export type PublicCustomSizeRequest = {
   colorCount: number;
   anzahlSorten: number;
   finishing?: "MATT" | "GLAENZEND";
+  tiefkuehlgeeignet?: boolean;
 };
 
 export type PublicCustomSizeResponse =
@@ -72,6 +73,7 @@ export function buildPublicCustomSizePriceResponse(input: {
     colorCount: input.request.colorCount,
     anzahlSorten: input.request.anzahlSorten,
     finishing: input.request.finishing,
+    tiefkuehlgeeignet: input.request.tiefkuehlgeeignet,
     params: input.params,
     settings: input.settings,
   } satisfies CustomSizePriceInput);

@@ -70,7 +70,7 @@ export async function POST(request: Request) {
 
     const priceResult = buildPublicCustomSizePriceResponse({
       featureEnabled: true,
-      request: { materialKey, widthMm, heightMm, quantity, colorCount, anzahlSorten },
+      request: { materialKey, widthMm, heightMm, quantity, colorCount, anzahlSorten, tiefkuehlgeeignet: parsed.data.tiefkuehlgeeignet },
       params: mapMaterialCostRecord(materialRow),
       settings: mapPricingSettingsRecord(settingsRow),
     });
@@ -159,6 +159,7 @@ export async function POST(request: Request) {
         billingCountry: parsed.data.billingDiffers ? parsed.data.billingCountry || null : null,
         customerNote: parsed.data.notes || null,
         finishing: parsed.data.finishing || null,
+        tiefkuehlgeeignet: parsed.data.tiefkuehlgeeignet ?? false,
         rollKern: parsed.data.rollKern || null,
         abrollrichtung: parsed.data.abrollrichtung || null,
         maxRollendurchmesser: parsed.data.maxRollendurchmesser || null,

@@ -243,6 +243,16 @@ export default async function PricingSettingsPage({ searchParams }: PricingSetti
                     </div>
                     <div style={{ marginTop: "0.75rem" }}>
                       <Field
+                        id={`${materialKey}-freezerMaterialCostPerM2`}
+                        name={`${materialKey}.freezerMaterialCostPerM2`}
+                        label="Materialkosten (Tiefkühl)"
+                        value={formatPricingNumber(material.freezerMaterialCostPerM2, 4)}
+                        min="0.0001" step="0.0001" suffix="€/m²"
+                        hint="Einkaufspreis der tiefkühlgeeigneten PP-Rolle (Spezialkleber bis −20 °C). Leer = wie Standard."
+                      />
+                    </div>
+                    <div style={{ marginTop: "0.75rem" }}>
+                      <Field
                         id={`${materialKey}-wasteFactorPct`}
                         name={`${materialKey}.wasteFactorPct`}
                         label="Ausschuss"

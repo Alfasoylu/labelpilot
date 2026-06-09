@@ -297,6 +297,7 @@ model Order {
   reorderMode             String?
   reorderStockDuration    String?
   finishing               String?
+  tiefkuehlgeeignet       Boolean  @default(false)
   rollKern                String?
   abrollrichtung          String?
   maxRollendurchmesser    String?
@@ -645,11 +646,12 @@ model ProofFile {
 
 model PricingMaterialCost {
   id                    String   @id @default(cuid())
-  materialKey           String   @unique
-  materialCostPerM2     Decimal  @db.Decimal(10, 4)
-  mattMaterialCostPerM2 Decimal? @db.Decimal(10, 4)
-  wasteFactorPct        Decimal  @db.Decimal(5, 2)
-  minOrderValueNet      Decimal  @db.Decimal(10, 2)
+  materialKey              String   @unique
+  materialCostPerM2        Decimal  @db.Decimal(10, 4)
+  mattMaterialCostPerM2    Decimal? @db.Decimal(10, 4)
+  freezerMaterialCostPerM2 Decimal? @db.Decimal(10, 4)
+  wasteFactorPct           Decimal  @db.Decimal(5, 2)
+  minOrderValueNet         Decimal  @db.Decimal(10, 2)
   updatedAt             DateTime @updatedAt
   updatedBy             String?
 

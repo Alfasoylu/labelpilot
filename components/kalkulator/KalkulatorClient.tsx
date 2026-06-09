@@ -131,6 +131,7 @@ export function KalkulatorClient({
           colorCount,
           anzahlSorten: cfg.anzahlSorten,
           finishing: cfg.finishing,
+          tiefkuehlgeeignet: cfg.tiefkuehlgeeignet,
         }),
       });
       const data = await res.json().catch(() => null);
@@ -150,7 +151,7 @@ export function KalkulatorClient({
       });
       // Funnel signal: which configuration/price the visitor actually saw.
       // De-duplicated so fiddling with one field doesn't flood events.
-      const signature = `${cfg.materialKey}|${cfg.widthMm}x${cfg.heightMm}|${totalQuantity}|${colorCount}|${cfg.finishing}`;
+      const signature = `${cfg.materialKey}|${cfg.widthMm}x${cfg.heightMm}|${totalQuantity}|${colorCount}|${cfg.finishing}|${cfg.tiefkuehlgeeignet}`;
       if (signature !== lastTrackedRef.current) {
         lastTrackedRef.current = signature;
         trackLeadEvent("configurator_price_calculated", {

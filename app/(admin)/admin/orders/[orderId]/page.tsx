@@ -177,6 +177,9 @@ export default async function AdminOrderDetailPage({
             <li>Material: {getMaterialLabel(order.material)}</li>
             <li>Menge: {order.quantity.toLocaleString("de-DE")} Stück</li>
             <li>Oberfläche: {formatFinishing(order.finishing)}</li>
+            {order.tiefkuehlgeeignet ? (
+              <li><strong>Tiefkühlgeeignet: Ja (Spezialkleber bis −20 °C)</strong></li>
+            ) : null}
             <li>
               Format:{" "}
               {order.widthMm && order.heightMm
@@ -221,6 +224,9 @@ export default async function AdminOrderDetailPage({
             <li>Menge: {order.quantity.toLocaleString("de-DE")} Stück</li>
             <li>Anzahl Druckmotive: {order.extraDesignCount + 1}</li>
             <li>Oberfläche: {formatFinishing(order.finishing)}</li>
+            {order.tiefkuehlgeeignet ? (
+              <li><strong>Tiefkühlgeeignet: Ja (Spezialkleber bis −20 °C)</strong></li>
+            ) : null}
             <li>Proof-Typ: {order.physicalProofCents != null ? "Digital + Physischer Andruck" : "Digital (inklusive)"}</li>
             <li>Gesamtbetrag: {formatCurrencyFromCents(order.amountCents, order.currency)} brutto inkl. 19% MwSt.</li>
             <li>Zahlung: {order.payments[0]?.status ?? "PENDING"}</li>

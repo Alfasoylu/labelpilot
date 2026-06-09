@@ -4,6 +4,9 @@ export type PricingMaterialParams = {
   materialKey: PricingMaterialKey;
   materialCostPerM2: number;
   mattMaterialCostPerM2?: number;
+  // Separate per-m² cost for the freezer-suitable PP roll (special cold-resistant
+  // adhesive). Used when tiefkuehlgeeignet is selected; takes precedence over matt.
+  freezerMaterialCostPerM2?: number;
   wasteFactorPct: number;
   minOrderValueNet: number;
 };
@@ -46,6 +49,7 @@ export type CustomSizePriceInput = {
   colorCount: number;
   anzahlSorten: number;
   finishing?: "MATT" | "GLAENZEND";
+  tiefkuehlgeeignet?: boolean;
   params: PricingMaterialParams;
   settings: PricingSettingsInput;
 };
@@ -230,6 +234,21 @@ export function computeCustomSizePrice(
       widthMm, heightMm, settings.markupTier2MaxQty, colorCount, anzahlSorten, params, settings, input.finishing,
     );
     unroundedNetPrice = Math.max(unroundedNetPrice, atBoundary.sellingPrice);
+  }
+
+  // Freezer-suitable roll: add the film premium over the standard material, with the
+  // chosen method's margin. Method-agnostic so the special cold-resistant roll is
+  // always reflected — whether the cheapest method is flexo or digital.
+  if (input.tiefkuehlgeeignet && params.freezerMaterialCostPerM2 != null) {
+    const totalAreaM2 = labelAreaM2 * quantity * (1 + params.wasteFactorPct / 100);
+    const standardRate =
+      input.finishing === "MATT" && params.mattMaterialCostPerM2 != null
+        ? params.mattMaterialCostPerM2
+        : params.materialCostPerM2;
+    const premiumPerM2 = Math.max(0, params.freezerMaterialCostPerM2 - standardRate);
+    const methodMultiplier =
+      best.method === "DIGITAL" ? 1 : computeMarkupMultiplier(quantity, settings);
+    unroundedNetPrice += premiumPerM2 * totalAreaM2 * methodMultiplier;
   }
 
   const flooredNetPrice = Math.max(unroundedNetPrice, params.minOrderValueNet);

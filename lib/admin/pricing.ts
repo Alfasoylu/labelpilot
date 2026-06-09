@@ -12,6 +12,7 @@ type PricingMaterialCostRecord = {
   materialKey: string;
   materialCostPerM2: DecimalLike | number;
   mattMaterialCostPerM2?: DecimalLike | number | null;
+  freezerMaterialCostPerM2?: DecimalLike | number | null;
   wasteFactorPct: DecimalLike | number;
   minOrderValueNet: DecimalLike | number;
   updatedAt: Date;
@@ -164,6 +165,7 @@ export function mapMaterialCostRecord(record: PricingMaterialCostRecord | null |
     materialKey: record.materialKey as PricingMaterialKey,
     materialCostPerM2: decimalToNumber(record.materialCostPerM2) ?? 0,
     mattMaterialCostPerM2: decimalToNumber(record.mattMaterialCostPerM2) ?? undefined,
+    freezerMaterialCostPerM2: decimalToNumber(record.freezerMaterialCostPerM2) ?? undefined,
     wasteFactorPct: decimalToNumber(record.wasteFactorPct) ?? 0,
     minOrderValueNet: decimalToNumber(record.minOrderValueNet) ?? 0,
     updatedAt: record.updatedAt,

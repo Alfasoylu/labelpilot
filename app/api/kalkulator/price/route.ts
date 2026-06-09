@@ -20,6 +20,7 @@ const requestSchema = z.object({
   colorCount: z.coerce.number().int().min(1).max(12),
   anzahlSorten: z.coerce.number().int().min(1).max(20).default(1),
   finishing: z.enum(["MATT", "GLAENZEND"]).optional().default("GLAENZEND"),
+  tiefkuehlgeeignet: z.coerce.boolean().optional().default(false),
 });
 
 export async function POST(request: Request) {

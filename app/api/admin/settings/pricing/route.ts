@@ -16,6 +16,10 @@ const materialSchema = z.object({
     (v) => (v === "" || v === null || v === undefined ? undefined : Number(v)),
     z.number().positive().optional(),
   ),
+  freezerMaterialCostPerM2: z.preprocess(
+    (v) => (v === "" || v === null || v === undefined ? undefined : Number(v)),
+    z.number().positive().optional(),
+  ),
   wasteFactorPct: z.coerce.number().min(0).max(95),
   minOrderValueNet: z.coerce.number().positive(),
 });
@@ -63,6 +67,7 @@ function getMaterialPayload(formData: FormData, materialKey: "OPAQUE_PP" | "TRAN
     materialKey,
     materialCostPerM2: formData.get(`${materialKey}.materialCostPerM2`),
     mattMaterialCostPerM2: formData.get(`${materialKey}.mattMaterialCostPerM2`),
+    freezerMaterialCostPerM2: formData.get(`${materialKey}.freezerMaterialCostPerM2`),
     wasteFactorPct: formData.get(`${materialKey}.wasteFactorPct`),
     minOrderValueNet: formData.get(`${materialKey}.minOrderValueNet`),
   };

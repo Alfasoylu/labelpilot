@@ -113,6 +113,7 @@ export const customSizeCheckoutIntakeSchema = z.object({
   heightMm: z.number().int().min(10).max(1000),
   quantity: z.number().int().positive(),
   finishing: z.enum(["MATT", "GLAENZEND"]).optional(),
+  tiefkuehlgeeignet: z.boolean().optional().default(false),
   farbigkeit: z.number().int().min(1).max(4).optional(),
   weissunterdruck: z.boolean().optional(),
   anzahlSorten: z.number().int().min(1).max(20).optional(),
