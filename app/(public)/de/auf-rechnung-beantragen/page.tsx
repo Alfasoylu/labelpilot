@@ -152,7 +152,7 @@ export default function AufRechnungBeantragenPage() {
             {status === "sending" ? "Wird gesendet …" : "Anfrage absenden"}
           </button>
 
-          <p style={{ fontSize: "0.78rem", color: "#6b7280", marginTop: "0.75rem" }}>
+          <p style={{ fontSize: "var(--fs-caption)", color: "var(--muted)", marginTop: "0.75rem" }}>
             * Pflichtfelder. Ihre Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet.
           </p>
         </form>

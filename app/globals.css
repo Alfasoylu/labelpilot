@@ -72,6 +72,18 @@
   --font-heading-stack: var(--font-heading), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-body-stack: var(--font-body), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono-stack: var(--font-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Zentrale Schriftgrößen-Skala. Neue und aufgeräumte Stile nutzen diese
+     Tokens statt freier rem-Werte (Disziplin gegen Größen-Wildwuchs). */
+  --fs-micro: 0.75rem; /* 12px — Mini-Labels, Badges */
+  --fs-caption: 0.8125rem; /* 13px — Hinweise, Bildunterschriften */
+  --fs-small: 0.875rem; /* 14px — sekundärer UI-Text */
+  --fs-body: 1rem; /* 16px — Fließtext */
+  --fs-body-lg: 1.0625rem; /* 17px — Lead */
+  --fs-h3: clamp(1.25rem, 1.8vw, 1.5rem);
+  --fs-h2: clamp(1.65rem, 2.6vw, 1.9rem);
+  --fs-h1: clamp(2rem, 3.2vw, 2.4rem);
+  --fs-display: clamp(2.15rem, 3.6vw, 2.65rem);
 }
 
 * {
@@ -1547,13 +1559,13 @@ th {
 
 .hero-product-photo__badge-dim {
   font-family: var(--font-mono-stack);
-  font-size: 12px;
+  font-size: var(--fs-micro);
   color: var(--text-strong);
 }
 
 .hero-product-photo__badge-pill {
   font-family: var(--font-mono-stack);
-  font-size: 10.5px;
+  font-size: 0.66rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--accent);
@@ -1588,7 +1600,7 @@ th {
   position: absolute;
   bottom: 12px;
   font-family: var(--font-mono-stack);
-  font-size: 11px;
+  font-size: 0.69rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-strong);
