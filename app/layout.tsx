@@ -30,6 +30,9 @@ const fontMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(buildAbsoluteUrl("/")),
+  verification: {
+    google: "t8dbqo8jhxfTibikBtBbnDObVYA_QN3oa0iySFa8vy8",
+  },
   title: "Labelpilot.de",
   description: "B2B-Etikettenplattform für deutsche Marken.",
   keywords: [
