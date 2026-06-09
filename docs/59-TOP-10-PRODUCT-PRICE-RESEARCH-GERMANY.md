@@ -655,7 +655,20 @@ Vistaprint
 Avery Zweckform
 Sticker Mule
 StickerApp
+labelident.com (newly identified — ~18.9K traffic, must audit before Ads launch)
+etiketten-drucken.de (roll label SEO specialist)
 ```
+
+### Newly Identified Competitors (June 2026 SEMrush Analysis)
+
+The following competitors emerged from SEMrush Organic Competitors reports and were absent from previous SE Ranking analysis:
+
+| Competitor | Traffic | Relevance |
+|---|---|---|
+| labelident.com | ~18.9K/mo | Highest-traffic label specialist found — add to quarterly audit immediately |
+| aufkleberdrucker24.de | ~17.5K/mo | Aufkleber hybrid — price comparison useful |
+| etiketten-drucken.de | ~9K/mo | Owns roll label SERPs despite low authority |
+| typographus.de | ~9.7K/mo | etikett.de competitor cluster |
 
 ---
 

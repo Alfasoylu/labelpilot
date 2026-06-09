@@ -9,6 +9,7 @@ import {
   writeConsent,
   clearVisitorId,
 } from "@/lib/consent/cookie";
+import { gtagConsent } from "@/lib/analytics/gtag";
 
 export const OPEN_CONSENT_EVENT = "lp:open-consent";
 
@@ -45,10 +46,16 @@ export function ConsentBanner() {
     if (choice.analytics) {
       visitorId = ensureVisitorId();
     } else {
-      // Consent withdrawn: drop the visitor id cookie.
       clearVisitorId();
       visitorId = null;
     }
+    // Google Consent Mode v2 — update based on user choice
+    gtagConsent("update", {
+      analytics_storage: choice.analytics ? "granted" : "denied",
+      ad_storage: choice.marketing ? "granted" : "denied",
+      ad_user_data: choice.marketing ? "granted" : "denied",
+      ad_personalization: choice.marketing ? "granted" : "denied",
+    });
     void fetch("/api/consent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

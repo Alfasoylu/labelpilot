@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
 
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { buildAbsoluteUrl } from "@/lib/seo";
 
 const fontHeading = Instrument_Sans({
@@ -81,6 +82,7 @@ export default function RootLayout({
       className={`${fontHeading.variable} ${fontBody.variable} ${fontMono.variable}`}
     >
       <body>
+        <GoogleAnalytics />
         {children}
         <Toaster theme="light" position="bottom-right" richColors />
       </body>

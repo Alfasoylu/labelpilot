@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { PurchaseEvent } from "@/components/analytics/PurchaseEvent";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { getStripeServerClient } from "@/lib/stripe/server";
 
@@ -73,6 +74,7 @@ async function getSuccessPageData(sessionId?: string) {
         order?.uploadToken && order.id
           ? `/de/auftrag/${order.id}/druckdaten?token=${encodeURIComponent(order.uploadToken)}`
           : null,
+      amountEur: session.amount_total ? session.amount_total / 100 : null,
     };
   } catch {
     return null;
@@ -101,6 +103,12 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
 
   return (
     <div className="container section-stack">
+      {successData?.orderNumber && successData.amountEur ? (
+        <PurchaseEvent
+          transactionId={successData.orderNumber}
+          value={successData.amountEur}
+        />
+      ) : null}
       <article className="surface-card">
         <span className="eyebrow">Checkout</span>
         <span className="badge">

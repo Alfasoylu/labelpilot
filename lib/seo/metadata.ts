@@ -109,6 +109,48 @@ export const metadataMap: Record<string, MetadataEntry> = {
       "PP opak transparent",
     ],
   },
+  "/de/rollenetiketten": {
+    title: "Rollenetiketten drucken lassen | Labelpilot.de",
+    description:
+      "Bedruckte Rollenetiketten aus PP für Lebensmittel-, Getränke- und Supplement-Marken. Opak oder transparent, mit geprüften Druckdaten und einfacher Nachbestellung. Lieferung DDP nach Deutschland.",
+    openGraphTitle: "Rollenetiketten drucken lassen",
+    openGraphDescription:
+      "PP-Rollenetiketten opak oder transparent – B2B, mit Nachbestellsystem.",
+    keywords: [
+      "Rollenetiketten",
+      "Rollenetiketten drucken",
+      "Rollenetiketten bestellen",
+      "PP-Rollenetiketten B2B",
+    ],
+  },
+  "/de/rollenetiketten-drucken": {
+    title: "Rollenetiketten drucken lassen – PP für B2B | Labelpilot.de",
+    description:
+      "PP-Rollenetiketten drucken lassen mit technischer Druckdatenprüfung, Proof und gespeicherten Daten für jede Nachbestellung. 4/0-farbig CMYK ohne Einrichtungskosten.",
+    openGraphTitle: "Rollenetiketten drucken lassen",
+    openGraphDescription:
+      "CMYK-Digitaldruck, Datenprüfung & Proof inklusive – DDP nach Deutschland.",
+    keywords: [
+      "Rollenetiketten drucken",
+      "Rollenetiketten drucken lassen",
+      "Etiketten auf Rolle drucken",
+      "PP-Etiketten Druckservice",
+    ],
+  },
+  "/de/etiketten-auf-rolle": {
+    title: "Bedruckte Etiketten auf Rolle – 100×200 mm PP | Labelpilot.de",
+    description:
+      "Bedruckte Etiketten auf Rolle aus PP im Format 100×200 mm, opak oder transparent. Für Spender und Etikettiermaschinen. Lieferung DDP nach Deutschland.",
+    openGraphTitle: "Bedruckte Etiketten auf Rolle",
+    openGraphDescription:
+      "PP-Etiketten auf Rolle, 100×200 mm – für Spender & Etikettiermaschine.",
+    keywords: [
+      "Etiketten auf Rolle",
+      "bedruckte Etiketten auf Rolle",
+      "etiketten bedruckt auf rolle",
+      "Etiketten Rolle 100x200",
+    ],
+  },
   "/de/etiketten-100x200": {
     title: "Etiketten 100×200 mm drucken | Labelpilot.de",
     description:

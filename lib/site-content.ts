@@ -349,26 +349,39 @@ export const homePageData: HomePageData = {
 };
 
 export const siteNavigation: SiteNavigationItem[] = [
+  { label: "Rollenetiketten", href: "/de/pp-rollenetiketten" },
+  { label: "Lebensmittel-Etiketten", href: "/de/lebensmittel-etiketten" },
   { label: "Kalkulator", href: "/de/kalkulator" },
-  { label: "Materialien", href: "/de/pp-rollenetiketten" },
-  { label: "Branchen", href: "/de/lebensmittel-etiketten" },
+  { label: "Musterbox", href: "/de/musterbox" },
   { label: "Druckdaten", href: "/de/druckdaten" },
-  { label: "Kontakt", href: "/de/kontakt" },
+  { label: "Angebot", href: "/de/angebot-anfordern" },
 ];
 
 export const footerLinks: FooterGroup[] = [
   {
     title: "Produkte",
     links: [
+      { label: "PP-Rollenetiketten", href: "/de/pp-rollenetiketten" },
       { label: "Opake PP-Etiketten", href: "/de/opake-pp-etiketten" },
-      {
-        label: "Transparente PP-Etiketten",
-        href: "/de/transparente-pp-etiketten",
-      },
-      {
-        label: "Thermo-Versandetiketten",
-        href: "/de/thermo-versandetiketten",
-      },
+      { label: "Transparente PP-Etiketten", href: "/de/transparente-pp-etiketten" },
+      { label: "Thermo-Versandetiketten", href: "/de/thermo-versandetiketten" },
+    ],
+  },
+  {
+    title: "Branchen",
+    links: [
+      { label: "Lebensmittel-Etiketten", href: "/de/lebensmittel-etiketten" },
+      { label: "Getränke-Etiketten", href: "/de/getraenke-etiketten" },
+      { label: "Supplement-Etiketten", href: "/de/supplement-etiketten" },
+    ],
+  },
+  {
+    title: "Service",
+    links: [
+      { label: "Musterbox", href: "/de/musterbox" },
+      { label: "Nachbestellen", href: "/de/nachbestellen" },
+      { label: "Druckdaten", href: "/de/druckdaten" },
+      { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
     ],
   },
   {
@@ -377,8 +390,6 @@ export const footerLinks: FooterGroup[] = [
       { label: "Kalkulator", href: "/de/kalkulator" },
       { label: "Ratgeber", href: "/de/ratgeber" },
       { label: "Glossar", href: "/de/glossar" },
-      { label: "Druckdaten", href: "/de/druckdaten" },
-      { label: "Nachbestellen", href: "/de/nachbestellen" },
       { label: "Kundenkonto", href: "/konto" },
     ],
   },
@@ -1064,16 +1075,329 @@ const topLevelPages: PublicPageData[] = [
     ],
     relatedLinks: [
       {
+        label: "Rollenetiketten drucken lassen",
+        href: "/de/rollenetiketten-drucken",
+        description:
+          "Druckablauf, Datenprüfung und Proof für bedruckte Rollenetiketten.",
+      },
+      {
+        label: "Etiketten auf Rolle",
+        href: "/de/etiketten-auf-rolle",
+        description:
+          "Bedruckte Etiketten auf Rolle im Standardformat 100×200 mm.",
+      },
+      {
         label: "Ratgeber",
         href: "/de/ratgeber",
         description:
           "Vergleichs- und Erklärseiten zu Material, Menge und Druckdaten.",
       },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/rollenetiketten",
+    slug: "rollenetiketten",
+    kind: "collection",
+    title: "Rollenetiketten für Produktmarken",
+    eyebrow: "Rollenetiketten",
+    lead:
+      "Bedruckte Rollenetiketten aus PP für Lebensmittel-, Getränke- und Supplement-Marken in Deutschland. Opak oder transparent, mit geprüften und gespeicherten Druckdaten für schnelle Nachbestellungen.",
+    heroBullets: [
+      "Feste Pakete ab 179 € netto (1.000 Stück), 5.000 Stück für 479 € netto – inkl. Versand nach Deutschland.",
+      "PP-Rollenetiketten opak oder transparent – ein klarer Materialkern statt unübersichtlicher Varianten.",
+      "Druckdaten werden beim ersten Auftrag geprüft und für jede Nachbestellung gespeichert.",
+      "Lieferung DDP nach Deutschland – Zoll und Einfuhr inklusive.",
+    ],
+    sidebarTitle: "Für wen geeignet",
+    sidebarBullets: [
+      "Produktmarken mit wiederkehrenden Auflagen",
+      "Lebensmittel, Getränke, Supplemente, Kosmetik",
+      "Marken, die dieselbe Spezifikation regelmäßig nachbestellen",
+    ],
+    primaryCta: {
+      label: "Jetzt konfigurieren",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: {
+      label: "Musterbox anfordern",
+      href: "/de/musterbox",
+    },
+    sections: [
       {
-        label: "Glossar",
-        href: "/de/glossar",
-        description:
-          "Kurze Fachbegriffe rund um Material, Druckdaten und Nachbestellung.",
+        title: "Was Rollenetiketten für B2B-Marken bedeuten",
+        body: [
+          "Rollenetiketten laufen automatisiert über Spender oder Etikettiermaschine und eignen sich für wiederkehrende Produktauflagen.",
+          "Wir produzieren sie auf PP-Folie – robust gegen Feuchtigkeit, Abrieb und Kühlschrankkondens.",
+        ],
+      },
+      {
+        title: "Opak oder transparent",
+        body: [
+          "Opakes PP deckt vollständig ab und sorgt für klare Pflichtangaben und kräftige Farbflächen.",
+          "Transparentes PP lässt Glas, Flasche oder Inhalt sichtbar – die typische Premium-Optik für Getränke und Kosmetik.",
+        ],
+      },
+      {
+        title: "Einmal freigegeben, immer nachbestellbar",
+        body: [
+          "Nach Ihrer Freigabe speichern wir Material, Format, Version und Druckdaten.",
+          "Die nächste Auflage starten Sie ohne neue Abstimmung – gleiche Spezifikation, gleicher Paketpreis.",
+        ],
+      },
+    ],
+    table: {
+      title: "Rollenetiketten im Überblick",
+      lead: "Material, Wirkung und typische Nutzung auf einen Blick.",
+      columns: ["Material", "Wirkung", "Typische Nutzung"],
+      rows: [
+        ["Opakes PP", "deckend, kontraststark", "Dosen, Beutel, Gläser, Pflichtangaben"],
+        ["Transparentes PP", "klar, hochwertig", "Flaschen, Gläser, Premium-Verpackungen"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Was kosten Rollenetiketten?",
+        answer:
+          "Im Kalkulator geben Sie Breite, Höhe und Menge ein und sehen den Netto- und Bruttopreis sofort – inklusive Versand nach Deutschland. Feste Pakete gibt es für 1.000 bis 10.000 Stück, ab 20.000 Stück per Angebot.",
+      },
+      {
+        question: "Ab welcher Menge kann ich Rollenetiketten bestellen?",
+        answer:
+          "Ab 1.000 Stück. Das ist die Pilotauflage für den ersten Test einer Spezifikation. Für wiederkehrende B2B-Bestellungen ist die 5.000er-Auflage die empfohlene Menge.",
+      },
+      {
+        question: "Welches Material ist für Rollenetiketten am besten?",
+        answer:
+          "Für die meisten Produktverpackungen ist PP-Folie die robuste Wahl: feuchtigkeitsbeständig, reißfest und prozesssicher für die Rollenverarbeitung. Opak für Deckkraft, transparent für sichtbare Verpackung.",
+      },
+      {
+        question: "Kann ich Rollenetiketten später nachbestellen?",
+        answer:
+          "Ja. Freigegebene Druckdaten, Material und Maß bleiben gespeichert. Die Nachbestellung startet aus dem Kundenkonto ohne neue Abstimmung.",
+      },
+      {
+        question: "Wie lange dauert die Lieferung?",
+        answer:
+          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung an Ihre Adresse in Deutschland (Produktion und Versand). Die Lieferung erfolgt DDP – Zoll und Einfuhr sind inklusive.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Rollenetiketten drucken lassen",
+        href: "/de/rollenetiketten-drucken",
+        description: "Druckablauf, Datenprüfung und Proof für bedruckte Rollenetiketten.",
+      },
+      {
+        label: "Etiketten auf Rolle",
+        href: "/de/etiketten-auf-rolle",
+        description: "Bedruckte Etiketten auf Rolle im Standardformat 100×200 mm.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/rollenetiketten-drucken",
+    slug: "rollenetiketten-drucken",
+    kind: "collection",
+    title: "Rollenetiketten drucken lassen",
+    eyebrow: "Druckservice",
+    lead:
+      "PP-Rollenetiketten drucken lassen – mit technischer Druckdatenprüfung, digitalem Proof und gespeicherten Daten für jede Nachbestellung. Für B2B-Marken in Deutschland, geliefert DDP.",
+    heroBullets: [
+      "Feste Pakete ab 179 € netto (1.000 Stück), 5.000 Stück für 479 € netto – inkl. Versand.",
+      "4/0-farbiger CMYK-Digitaldruck ohne Einrichtungs- oder Klischeekosten.",
+      "Kostenlose Druckdatenprüfung plus ein Proof vor Produktionsstart.",
+      "Freigegebene Druckdaten bleiben gespeichert – Nachbestellung ohne neue Abstimmung.",
+    ],
+    sidebarTitle: "Im Druck enthalten",
+    sidebarBullets: [
+      "CMYK-Digitaldruck ohne Einrichtungskosten",
+      "Druckdatenprüfung und ein Proof",
+      "Versand nach Deutschland, Druckdaten gespeichert",
+    ],
+    primaryCta: {
+      label: "Preis berechnen",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: {
+      label: "Druckdaten-Anforderungen ansehen",
+      href: "/de/druckdaten",
+    },
+    sections: [
+      {
+        title: "So läuft der Druck ab",
+        body: [
+          "Sie konfigurieren Format, Material und Menge im Kalkulator und bezahlen per Karte oder SEPA.",
+          "Anschließend laden Sie Ihre Druckdaten hoch – wir prüfen sie technisch und senden einen Proof zur Freigabe.",
+        ],
+      },
+      {
+        title: "Druckdatenprüfung inklusive",
+        body: [
+          "Die Standard-Datenprüfung fängt typische Format-, Beschnitt- und Versionsfehler vor dem Druck ab.",
+          "Erst nach Ihrer Proof-Freigabe startet die Produktion – keine Überraschungen im Drucklauf.",
+        ],
+      },
+      {
+        title: "Wiederholdruck ohne neue Abstimmung",
+        body: [
+          "Nach der Freigabe sind Druckdaten, Material und Maß gespeichert.",
+          "Der nächste Drucklauf startet mit identischer Spezifikation zum gleichen Paketpreis.",
+        ],
+      },
+    ],
+    table: {
+      title: "Druckspezifikation",
+      lead: "Die wichtigsten Druckparameter im Überblick.",
+      columns: ["Parameter", "Standard", "Hinweis"],
+      rows: [
+        ["Druckverfahren", "4/0-farbig CMYK Digital", "Keine Einrichtungs- oder Klischeekosten"],
+        ["Datenprüfung", "inklusive + 1 Proof", "Produktion erst nach Freigabe"],
+        ["Material", "PP opak oder transparent", "Matt oder glänzend, kein Aufpreis"],
+        ["Datenformate", "PDF, AI, EPS, SVG, PNG, JPG", "Mit 3 mm Beschnitt"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Welche Druckdaten brauche ich?",
+        answer:
+          "PDF, AI, EPS, SVG, PNG oder JPG mit 3 mm Beschnitt. Bevorzugt sind vektorbasierte PDF- oder AI-Dateien. Wir prüfen die Daten vor der Produktion kostenlos.",
+      },
+      {
+        question: "Kann ich Druckdaten nach der Bestellung nachreichen?",
+        answer:
+          "Ja. Nach dem Checkout erhalten Sie einen sicheren Upload-Link. Die Produktion startet erst nach Datenprüfung und Proof-Freigabe.",
+      },
+      {
+        question: "Was kostet der Proof?",
+        answer:
+          "Ein digitaler Proof gehört zum Standardumfang jedes Druckauftrags. Ein zusätzlicher physischer Andruck auf Ihrem Material ist optional gegen Aufpreis möglich.",
+      },
+      {
+        question: "Fallen Einrichtungskosten an?",
+        answer:
+          "Nein. Der 4/0-farbige CMYK-Digitaldruck läuft ohne Einrichtungs- oder Klischeekosten. Der Paketpreis ist der Endpreis inklusive Versand nach Deutschland.",
+      },
+      {
+        question: "Wie lange dauert der Druck bis zur Lieferung?",
+        answer:
+          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland – Produktion und Versand zusammen. Die Lieferung erfolgt DDP, Zoll und Einfuhr inklusive.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Rollenetiketten",
+        href: "/de/rollenetiketten",
+        description: "Produktübersicht für opake und transparente PP-Rollenetiketten.",
+      },
+      {
+        label: "Etiketten auf Rolle",
+        href: "/de/etiketten-auf-rolle",
+        description: "Bedruckte Etiketten auf Rolle im Standardformat 100×200 mm.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/etiketten-auf-rolle",
+    slug: "etiketten-auf-rolle",
+    kind: "collection",
+    title: "Bedruckte Etiketten auf Rolle",
+    eyebrow: "Auf Rolle",
+    lead:
+      "Bedruckte Etiketten auf Rolle aus PP – im Standardformat 100×200 mm, opak oder transparent. Für die automatische Verarbeitung über Spender oder Etikettiermaschine, geliefert DDP nach Deutschland.",
+    heroBullets: [
+      "Feste Pakete ab 179 € netto (1.000 Stück), 5.000 Stück für 479 € netto – inkl. Versand.",
+      "Etiketten auf Rolle für Spender und Etikettiermaschinen statt loser Einzelblätter.",
+      "Standardformat 100×200 mm, opak oder transparent auf robustem PP.",
+      "Druckdaten geprüft und gespeichert – jede Nachbestellung startet ohne neue Abstimmung.",
+    ],
+    sidebarTitle: "Warum auf Rolle",
+    sidebarBullets: [
+      "Automatische Verarbeitung über Spender oder Maschine",
+      "Gleichmäßige Etikettierung über die gesamte Rolle",
+      "Effizient bei wiederkehrenden Produktauflagen",
+    ],
+    primaryCta: {
+      label: "Jetzt konfigurieren",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: {
+      label: "Musterbox anfordern",
+      href: "/de/musterbox",
+    },
+    sections: [
+      {
+        title: "Etiketten auf Rolle statt Bogen",
+        body: [
+          "Auf Rolle gelieferte Etiketten laufen direkt über Spender oder Etikettiermaschine – ohne manuelles Vereinzeln.",
+          "Das spart Zeit bei wiederkehrenden Auflagen und sorgt für ein gleichmäßiges Etikettenbild.",
+        ],
+      },
+      {
+        title: "Standardformat 100×200 mm",
+        body: [
+          "Das Format 100×200 mm bündelt die Nachfrage auf eine gut steuerbare Standardgröße für Produktverpackungen.",
+          "Andere Maße sind im Kalkulator frei wählbar – Breite bis 320 mm, Höhe frei.",
+        ],
+      },
+      {
+        title: "PP-Material für die Rollenverarbeitung",
+        body: [
+          "PP-Folie ist reißfest und prozesssicher für die automatische Verarbeitung von der Rolle.",
+          "Opak für Deckkraft und Pflichtangaben, transparent für sichtbare Verpackungsoptik.",
+        ],
+      },
+    ],
+    table: {
+      title: "Etiketten auf Rolle – Spezifikation",
+      lead: "Format, Material und Lieferform im Überblick.",
+      columns: ["Merkmal", "Standard", "Hinweis"],
+      rows: [
+        ["Format", "100×200 mm", "Wunschformat bis 320 mm Breite möglich"],
+        ["Material", "PP opak oder transparent", "Matt oder glänzend, kein Aufpreis"],
+        ["Lieferform", "auf Rolle", "Für Spender und Etikettiermaschine"],
+        ["Mindestmenge", "1.000 Stück", "Ab 20.000 Stück per Angebot"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Was bedeutet „Etiketten auf Rolle“?",
+        answer:
+          "Die Etiketten werden gestanzt und auf einer Trägerrolle geliefert, statt als einzelne Bögen. So lassen sie sich über Etikettenspender oder Etikettiermaschinen automatisch verarbeiten.",
+      },
+      {
+        question: "Welcher Rollenkern wird verwendet?",
+        answer:
+          "Standardmäßig ein 76-mm-Kern mit Wickelrichtung Standard. Abweichende Kerngrößen oder Wickelrichtungen klären wir über ein Angebot.",
+      },
+      {
+        question: "Welche Formate sind auf Rolle möglich?",
+        answer:
+          "Das Standardformat ist 100×200 mm. Im Kalkulator wählen Sie Breite bis 320 mm und die Höhe frei – der Preis wird sofort berechnet.",
+      },
+      {
+        question: "Sind die Etiketten opak oder transparent?",
+        answer:
+          "Beides. Opakes PP deckt vollständig ab, transparentes PP lässt Glas und Inhalt sichtbar. Im Kalkulator wählen Sie das Material direkt aus.",
+      },
+      {
+        question: "Wie schnell wird geliefert?",
+        answer:
+          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland. Die Lieferung erfolgt DDP – Zoll und Einfuhr sind im Preis enthalten.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Rollenetiketten",
+        href: "/de/rollenetiketten",
+        description: "Produktübersicht für opake und transparente PP-Rollenetiketten.",
+      },
+      {
+        label: "Etiketten 100×200 mm",
+        href: "/de/etiketten-100x200",
+        description: "Das Standardformat für wiederkehrende Produktetiketten.",
       },
       ...guideCommercialLinks,
     ],
@@ -2127,8 +2451,8 @@ const topLevelPages: PublicPageData[] = [
       {
         title: "Hinweise zu Lieferzeiten",
         body: [
-          "Die Lieferzeit beträgt in der Regel ca. 10–14 Werktage nach Ihrer Freigabe (Produktion und Versand nach Deutschland).",
-          "Es handelt sich um eine Orientierungsangabe, nicht um eine verbindliche Zustellgarantie.",
+          "Als Orientierung gilt: typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung an Ihre Adresse in Deutschland (Produktion und Versand zusammen, ohne Zollverzug).",
+          "Maßgeblich für den Produktionsstart ist Ihre Proof-Freigabe. Es handelt sich um eine Orientierungsangabe, nicht um eine verbindliche Zustellgarantie.",
         ],
       },
     ],
@@ -2989,6 +3313,9 @@ export const sitemapEntries: SitemapEntry[] = [
   { path: "/de/transparente-pp-etiketten", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/opake-pp-etiketten", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/pp-rollenetiketten", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/de/rollenetiketten", priority: 0.9, changeFrequency: "weekly" },
+  { path: "/de/rollenetiketten-drucken", priority: 0.9, changeFrequency: "weekly" },
+  { path: "/de/etiketten-auf-rolle", priority: 0.9, changeFrequency: "weekly" },
   { path: "/de/etiketten-100x200", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/thermo-versandetiketten", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/musterbox", priority: 0.8, changeFrequency: "weekly" },

@@ -717,6 +717,54 @@ Google Ads needs a separate document later.
 
 ---
 
+## 17a. SEMrush-Verified Keyword Data — June 2026
+
+The following keyword metrics are derived from SEMrush competitor position data extracted in June 2026. These replace assumed values where they overlap.
+
+### Roll Label Keywords (High CPC — Confirmed)
+
+| Keyword | Vol/mo (DE) | CPC | KD% | Current Leader | Notes |
+|---|---|---|---|---|---|
+| etiketten auf rolle drucken | 320 | €2.71 | 17 | etiketten-drucken.de #1 | Winnable with content |
+| etiketten auf rolle drucken lassen | 260 | €3.53 | 18 | etiketten-drucken.de #1 | High CPC — convert well |
+| rollenetiketten drucken | 480 | €2.02 | 19 | etiketten-drucken.de #2 | Moderate KD |
+| rollenetiketten drucken lassen | ~200 | €3.75 | — | weak competition | Highest CPC found |
+
+These keywords are currently owned by etiketten-drucken.de (Authority Score 25) — low barrier to challenge with a well-structured product page.
+
+### Niche Industry Keywords (Low CPC — SEO-First Priority)
+
+| Keyword | CPC | KD% | Strategy |
+|---|---|---|---|
+| bieretiketten drucken | €0.83 | 5-10 | Content page; craft beer niche |
+| weinetiketten drucken | €1.15 | 5-10 | Content page; winery niche |
+| flaschenetiketten drucken | €1.15 | 5-10 | Bottle label landing page |
+| lebensmitteletiketten drucken | €0.60–1.20 | 5-7 | Core SEO page |
+
+### Competitor Traffic Reality Check (June 2026)
+
+For accurate keyword targeting and volume planning:
+
+| Competitor | Reported Traffic | Actual Label-Related Traffic | Implication |
+|---|---|---|---|
+| labelprint24.com | 59.1K (SEMrush) | ~5-7K (label) | 88% shipping keywords — not label buyers |
+| etikett.de | 7K | ~7K (B2B labels) | Growing +37.2%; B2B only |
+| etiketten-drucken.de | ~9K | ~9K (label-focused) | B2C/hobbyist but owns roll label SERPs |
+| labelident.com | ~18.9K | unknown | Needs full analysis |
+
+### CPC Range Summary for Google Ads Planning
+
+| Keyword Type | CPC Range | Notes |
+|---|---|---|
+| Roll label transactional | €2.02–€3.75 | High value; worth bidding |
+| Niche (bier/wein/flaschen) | €0.60–€1.15 | Low cost; high intent in niche |
+| Generic etiketten | €1.50–€2.50 | Competitive; use exact match |
+| Informational / ratgeber | €0–€0.85 | SEO-first; Ads secondary |
+
+These figures validate the CPC assumption of €2.20–€2.80 used in the revenue model (doc 82). The niche industry keywords at €0.60–€1.15 offer a lower-cost entry point than assumed.
+
+---
+
 ## 18. GEO / AI Search Query Map
 
 AI-search queries to target indirectly:

@@ -166,6 +166,27 @@ The paid-ads GTM docs (docs 53–57) are intentionally deferred per SoT §6 (Mis
 
 **The conservative CPA scenario (~€467) does NOT recover from first-order economics at Starter/Reorder mix. Paid ads only become viable at Growth-package AOV and above [CANONICAL — 04 §18.1: CAC target 5k Growth = €60, 10k Pro = €80]. The CPA of €183 in the base case exceeds canonical CAC targets — this means paid ads alone cannot be the scale channel; SEO-driven organic and repeat-order economics must carry the model.**
 
+#### CPC Update — Sourced from SEMrush (June 2026)
+
+SEMrush position data from competitor sites provides the following verified CPC reference points for the German market:
+
+| Keyword type | CPC range | KD% | Notes |
+|---|---|---|---|
+| Roll label transactional (etiketten auf rolle drucken lassen) | **€2.71–€3.75** | 17–18 | Higher than assumed; validate budget |
+| Roll label informational (rollenetiketten drucken) | **€2.02** | 19 | Good entry keyword |
+| Niche industry (bier/wein/flaschenetiketten) | **€0.60–€1.15** | 5–10 | Significantly lower — use for initial campaigns |
+| Generic/informational (ratgeber) | **€0–€0.85** | 5–7 | SEO-first; minimal Ads value |
+
+**Key revision to base case:** The base case CPC assumption of €2.20 is validated for roll label transactional terms. However, niche industry keywords (beer label, wine label, bottle label) are available at €0.60–€1.15 — these should be the **first Google Ads test campaign**, not the higher-CPC roll label terms. Starting with low-CPC niche terms limits CAC risk during the site's low Quality Score phase.
+
+**Recommended initial Ads keyword set (niche first):**
+- bieretiketten drucken (€0.83 CPC)
+- weinetiketten drucken (€1.15 CPC)
+- lebensmitteletiketten drucken (~€0.80 CPC)
+- flaschenetiketten drucken (€1.15 CPC)
+
+At €0.83–€1.15 CPC and 1.2% CVR (base case): CPA ≈ €69–€96 — within canonical CAC targets for Growth package [SOURCED — SEMrush June 2026 competitor position data].
+
 ### 3.4 Repeat-Order (Retention) Assumptions
 
 Repeat orders are the contribution profit engine per `04 §19` [CANONICAL].

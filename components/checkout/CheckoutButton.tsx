@@ -5,6 +5,7 @@ import { useState, useTransition } from "react";
 
 import type { AddonSettingsInput } from "@/lib/pricing/addons";
 import { addonsFeatureEnabled } from "@/lib/pricing/addons-feature";
+import { gtagEvent } from "@/lib/analytics/gtag";
 import { getPackageById } from "@/lib/commerce/packages";
 import {
   buildCheckoutAddons,
@@ -185,6 +186,18 @@ export function CheckoutButton({
         className="pricing-card__action pricing-card__action--primary"
         onClick={() => {
           setNavError("");
+          gtagEvent("begin_checkout", {
+            currency: "EUR",
+            value: pkg ? pkg.grossAmountCents / 100 : undefined,
+            items: [
+              {
+                item_id: packageId,
+                item_name: productSlug,
+                item_variant: material,
+                quantity,
+              },
+            ],
+          });
           startTransition(() => {
             const params = new URLSearchParams({
               packageId,

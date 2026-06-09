@@ -119,14 +119,12 @@ export function HeroKalkulator() {
       <section className="hero-kalk-split container">
         {/* LEFT: Calculator */}
         <div className="hero-kalk__left">
-          <span className="eyebrow">PP-Rollenetiketten für Produktmarken</span>
-          <h1 className="hero-kalk__h1">PP-Rollenetiketten nach Maß</h1>
+          <span className="eyebrow mono-eyebrow">LEBENSMITTEL · GETRÄNKE · SUPPLEMENTE</span>
+          <h1 className="hero-kalk__h1">PP-Rollenetiketten für Marken mit wiederkehrenden Auflagen.</h1>
           <p className="hero-kalk__sub">
-            Sofortpreis für Produktetiketten auf Flaschen, Gläsern, Dosen, Beuteln und
-            Supplement-Verpackungen.
-          </p>
-          <p className="hero-kalk__usecases">
-            Flaschen · Gläser · Dosen · Beutel · Kosmetik · Supplements · Honig · Kaffee · Saucen · Private&nbsp;Label
+            Opake und transparente PP-Rollenetiketten für Lebensmittel, Getränke und Supplemente.
+            Druckdaten werden beim ersten Auftrag geprüft und gespeichert — jede Nachbestellung
+            startet ohne neue Abstimmung.
           </p>
 
           <div className="hero-kalk__mobile-banner">
@@ -284,7 +282,7 @@ export function HeroKalkulator() {
                 onClick={handleConfigure}
                 disabled={!isValid}
               >
-                Weiter konfigurieren
+                Jetzt konfigurieren
               </button>
               <button
                 type="button"
@@ -310,8 +308,8 @@ export function HeroKalkulator() {
               className="hero-product-photo__img"
             />
             <div className="hero-product-photo__badge hero-kalk__badge-row">
-              <span className="hero-product-photo__badge-pill">Wunschformat</span>
-              <span className="hero-product-photo__badge-pill">Sofortpreis</span>
+              <span className="hero-product-photo__badge-pill">Proof inklusive</span>
+              <span className="hero-product-photo__badge-pill">DDP nach DE</span>
               <span className="hero-product-photo__badge-pill">Nachbestellbar</span>
             </div>
           </figure>
@@ -321,9 +319,10 @@ export function HeroKalkulator() {
       {/* ── Below hero: trust strip ── */}
       <div className="hero-kalk__below container">
         <ul className="hero-kalk__trust-row">
-          <li>Maßanfertigung bis 320 mm Breite</li>
-          <li>Druckdatenprüfung &amp; Proof möglich</li>
-          <li>Nachbestellung ohne neue Abstimmung</li>
+          <li>Einmal freigegeben — immer nachbestellbar</li>
+          <li>Druckdatenprüfung &amp; Proof inklusive</li>
+          <li>Lieferung DDP nach Deutschland</li>
+          <li>Opak &amp; transparent — 100×200 mm Standard</li>
         </ul>
       </div>
     </>

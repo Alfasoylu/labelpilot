@@ -192,6 +192,16 @@ other custom sticker players
 
 Labelprint24 is the strongest direct strategic benchmark because it is not just a generic print shop. It positions itself as a manufacturer for labels and packaging, highlights “Made in Germany,” more than 60 years of quality and more than 30,000 satisfied European customers. Its site shows categories including labels, folding cartons, shipping cartons, flexible packaging, inserts, tubes, booklet labels and sandwich labels.
 
+### SEMrush Traffic Decomposition (June 2026)
+
+SEMrush Domain Overview shows ~59K total monthly traffic for labelprint24.com — but **88% of that comes from shipping/logistics keywords** (büwa, warensendung, großbrief, DHL) unrelated to label printing. Actual label-related traffic is estimated at **~5,000–7,000/month**, consistent with the SE Ranking figure of 8.4K.
+
+Additional SEMrush data (June 8, 2026):
+- Authority Score: 38 (moderate; SE Ranking Domain Trust was reported as 62)
+- AI Visibility: 33 (14 AI mentions, 308 cited pages)
+
+**Strategic implication:** Labelprint24 is weaker as a label SEO competitor than raw traffic numbers suggest. The shipping-keyword traffic is irrelevant noise. Their true organic label footprint is comparable to etikett.de.
+
 ### Observed strengths
 
 Labelprint24 publicly emphasizes:
@@ -688,9 +698,18 @@ refill reminders
 micro-brand supplement/food focus
 ```
 
+### SEMrush Growth Data (June 2026)
+
+- Organic traffic growth: **+37.2%** (H2 2025 → H1 2026)
+- Paid traffic growth: **+257.6%** — aggressively ramping Google Ads spend
+- Active paid keywords: **44 keywords** currently being bid on
+- Authority Score: 28
+
+**Strategic implication:** etikett.de is not standing still. It is actively investing in both SEO and paid acquisition. Despite being B2B-only (locking out the B2C segment), it is growing fast. Monitor quarterly. The B2C gap they leave remains open for Labelpilot.
+
 ### Verdict
 
-Highest structural similarity to Labelpilot. The most important online competitor to track. Study their calculator UX and material page structure.
+Highest structural similarity to Labelpilot. The most important online competitor to track. Study their calculator UX and material page structure. Note that their paid traffic grew 258% — they are now an active Google Ads competitor in the label space.
 
 ---
 
@@ -752,6 +771,176 @@ saved artwork and one-click reorder
 ### Verdict
 
 Not a direct competitor for Labelpilot's target segment. Useful as a credibility reference point: if a customer needs TISAX-cert or industrial RFID, redirect. If a customer needs PP roll labels for their food or supplement brand, that is Labelpilot's territory.
+
+---
+
+## 5.11 labelident.com — NOT a Printing Competitor (Label Hardware Company)
+
+### What they are
+
+labelident.com sells label printing **hardware and consumables** — Etikettendrucker devices (Zebra, thermal transfer printers), barcode scanners, Prüfplaketten (safety/inspection compliance stickers), Versandetiketten (shipping labels), and DHL-compatible blank label rolls. They are an industrial B2B supplier of label printing equipment.
+
+They are **not** a custom label printing service and **not** a competitor for Labelpilot's custom PP roll label printing service for food, beverage, and supplement brands.
+
+### SEMrush Analysis (June 2026)
+
+**Authority Score:** 32 | **Traffic:** 18.9K worldwide (-7.8% trend) | **Paid:** 499 keywords (+9%), ~$22.1K/mo estimated ad spend
+
+**Top keywords (hardware, not label printing):**
+
+| Keyword | Position | Volume | Notes |
+|---|---|---|---|
+| etikettendrucker | 1 | 14,800 | Printer hardware |
+| klebeetiketten | 1 | 3,600 | Blank supply rolls |
+| labeldrucker | 1 | 2,900 | Printer hardware |
+| prüfplakette | 1 | 1,900 | Safety compliance stickers |
+| thermotransferdrucker | 1 | 1,300 | Printer hardware |
+| verbotszeichen | 1 | 3,600 | Safety signs |
+
+**Zero keyword overlap** with Labelpilot's custom-printed food/supplement label service.
+
+### Why they appeared in competitor lists
+
+labelident.com appears in SEMrush Organic Competitors reports because SEMrush uses keyword co-occurrence — any domain ranking for the word "etiketten" shows up as a "competitor." This is a false positive. Their traffic is industrial hardware purchasing intent; Labelpilot's is custom print ordering intent.
+
+### Strategic value (backlinks only)
+
+- **labelfox.com** is their #1 referring domain (1,062 backlinks) — a label industry link hub worth investigating for Labelpilot backlink acquisition
+- **shopvote.de** has 235 links to labelident — a German shop trust/review platform worth registering on
+
+**Competitive threat: NONE**
+
+---
+
+## 5.12 etiketten-drucken.de — Roll Label SEO Specialist (Newly Identified, June 2026)
+
+### What they are
+
+etiketten-drucken.de is a B2C/hobbyist-oriented label printing site with Authority Score 25 and ~9,000 monthly visits. Despite low authority, it dominates several high-CPC roll label keywords.
+
+### SEMrush data (June 2026)
+
+| Keyword | Volume/mo | CPC | KD | Position |
+|---|---|---|---|---|
+| etiketten auf rolle drucken | 320 | €2.71 | 17 | #1 |
+| etiketten auf rolle drucken lassen | 260 | €3.53 | 18 | #1 |
+| rollenetiketten drucken | 480 | €2.02 | 19 | #2 |
+
+Also ranks for niche industry terms: bieretiketten (CPC €0.83), weinetiketten (CPC €1.15), flaschenetiketten (CPC €1.15).
+
+### Strategic read
+
+etiketten-drucken.de proves that low authority does not prevent ranking for niche roll label terms with KD 17-19. Labelpilot — with focused content and correct page structure — can target these exact keywords. The site is B2C/hobbyist-focused, so B2B roll label positioning is unchallenged.
+
+---
+
+## 5.13 typographus.de — Berlin Sticker Shop, Rollenetiketten #1 (Tier 1 SEO Threat)
+
+### What they are
+
+Berlin-based sticker and label printing shop. Core business is consumer/SMB custom stickers. Secondary product lines include Rollenetiketten, Flaschenetiketten, Barcode-Etiketten. SEMrush June 2026 data confirmed as the primary organic SERP competitor for Labelpilot's core keywords.
+
+### Authority: AS 27 | Traffic: 9.7K (DE: 3,500, +18%) | Paid: 0
+
+### Keyword positions (verified June 2026)
+
+| Keyword | Pos | Vol | CPC | KD |
+|---|---|---|---|---|
+| rollenetiketten | **1** | 1,000 | €1.15 | 21 |
+| rollenetiketten drucken | **2** | 1,000 | €2.37 | 25 |
+| flaschenetiketten drucken | **2** | 390 | €1.39 | 22 |
+| etiketten drucken lassen | 3 | 1,900 | €1.35 | 25 |
+| barcode etiketten | 8 | 1,000 | **€5.65** | 21 |
+
+The rollenetiketten-drucken.html page grew +270 visits in the last 28 days — the label sub-section is gaining momentum.
+
+### Strategic read
+
+With AS 27 and 686 referring domains, typographus.de is beatable. Their label pages are secondary products in a sticker shop — no B2B food/supplement positioning, no technical depth, no food-contact material specs. A dedicated Labelpilot specialist page with correct content structure should outrank positions 1 and 2 for rollenetiketten within 3–6 months of publication.
+
+**Barcode etiketten at CPC €5.65 is the highest-CPC keyword found across all 57 PDFs analyzed.**
+
+---
+
+## 5.14 aufkleberdrucker24.de — Sticker Shop with Label Pages (Tier 2 Threat)
+
+### What they are
+
+Sticker/decal specialist with secondary label product pages. Decorative and promotional print core. Has dedicated pages for lebensmitteletiketten, flaschenetiketten, weinetiketten, papieretiketten, transparente etiketten.
+
+### Authority: AS 33 | Traffic: 17.5K (+7.8%) | Paid: 72 keywords (declining -12%)
+
+### Label keyword positions (verified June 2026)
+
+| Keyword | Pos | Vol | CPC | KD |
+|---|---|---|---|---|
+| lebensmitteletiketten | **2** | 390 | $1.63 | **10** |
+| flaschenetiketten drucken | 4 | 1,000 | $1.15 | 21 |
+| weinetiketten drucken | 3 | 480 | $1.15 | **10** |
+| papieretiketten | **1** | 480 | $1.33 | **9** |
+| transparente etiketten drucken lassen | **1** | 260 | $1.06 | 15 |
+| etiketten selbst gestalten | 3 | 2,900 | $0.81 | 30 |
+| siegeletiketten selbst gestalten | **1** | 170 | $1.25 | **5** |
+
+Their entire etiketten topic cluster drives only **285 traffic across 135 keywords** — minimal investment. B2C decorative sticker orientation undermines B2B food brand credibility on all label pages.
+
+---
+
+## 5.15 herma.de — Major Label Brand, Rising Paid Threat (Tier 1 — Emerging)
+
+### What they are
+
+Germany's most recognized label brand. Consumer-facing: office/home Etiketten for Word and printers (white self-adhesive A4/letter labels). Industrial: labeling machines and custom label production. The brand most Germans know as "Etiketten" in the office supply sense.
+
+### Authority: AS 72 | Traffic: 36.5K (DE 86.28%) | Keywords: 39.3K | Backlinks: 594.1K
+
+### SEMrush June 2026 findings
+
+**Top organic keywords:**
+- herma etiketten: P1 (2,400 vol)
+- **etiketten: P4 NEW ENTRY (27,100 vol, KD 36)** — just entered top 10 for the broadest label term
+- herma etiketten-vorlagen word: P1 (590 vol)
+
+**Newly launched paid campaigns (June 2026 — 8 new keywords):**
+
+| Keyword | Vol | CPC | Competition Score |
+|---|---|---|---|
+| etiketten bedruckt auf rolle | 70 | ~€0.79 | **1.0** |
+| bedruckte etiketten auf rolle | 70 | ~€0.79 | **1.0** |
+
+HERMA has an existing `/etikett/produkte/rollen-etiketten/` product page that gets zero organic traffic but is now being promoted via paid ads. Competition score 1.0 means maximum advertiser competition.
+
+**AI Visibility:** 944 AI Overview appearances — driven by structured template/software download pages. A replicable model for Labelpilot.
+
+### Strategic read
+
+AS 72 with 594K backlinks means any page HERMA publishes ranks fast. Currently their custom roll label page gets zero organic traffic because they haven't invested in content for it. The new paid campaigns are a warning signal: HERMA is testing commercial demand for printed roll labels in the paid channel. If the test proves out, they could push their label pages into organic dominance overnight.
+
+**Action required:** Establish Labelpilot's paid presence on "etiketten bedruckt auf rolle" and "bedruckte etiketten auf rolle" before HERMA scales their campaign.
+
+**Competitive threat: MEDIUM-HIGH (Rising) — monitor monthly.**
+
+---
+
+## 5.16 Competitor Status Summary (Updated June 2026)
+
+After SEMrush analysis of 57 PDF exports across 12–15 domains:
+
+| Competitor | Est. Traffic | Status | Priority |
+|---|---|---|---|
+| typographus.de | ~9.7K | **Active SERP competitor** — rollenetiketten #1, flaschenetiketten #2 | Beat immediately |
+| etikett.de | ~7K | **Active label specialist** — organic +37.2%, paid +257.6% | Watch closely |
+| etiketten-drucken.de | ~9K | **Roll label SEO specialist** — owns €2.71–€3.75 CPC terms | Beat with content |
+| wir-machen-druck.de | ~200K+ | **Latent threat** — etiketten auf rolle #1, AS 48 | Monitor expansion |
+| herma.de | ~36.5K | **Rising paid threat** — just launched roll label paid ads | Bid immediately |
+| aufkleberdrucker24.de | ~17.5K | **Label pages competitor** — lebensmitteletiketten P2 | Outrank with depth |
+| aufkleberdrucker.de | ~9.5K | Aufkleber-focused — low label relevance | Monitor only |
+| labelident.com | ~18.9K | **NOT a competitor** — label hardware (printers), zero printing overlap | Ignore for SEO |
+| labelexpress.eu | ~1.8K DE | Link farm + primarily Polish market | Removed from tracking |
+| rossmann-fotowelt.de | ~210K | Consumer photo printing — zero relevance | Removed from tracking |
+| cewe-print.de | 5 clicks/mo | Dormant legacy domain | Removed from tracking |
+
+Comprehensive data, keyword tables, Google Ads intelligence, and action priorities: see [87-SEMRUSH-COMPETITIVE-INTELLIGENCE-2026.md](87-SEMRUSH-COMPETITIVE-INTELLIGENCE-2026.md).
 
 ---
 

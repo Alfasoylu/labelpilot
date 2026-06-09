@@ -4170,3 +4170,62 @@ th {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── SellerTrustBlock ── */
+.seller-trust-block {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 40px 0;
+}
+.seller-trust-block__inner {
+  max-width: 760px;
+}
+.seller-trust-block__heading {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted, #6b6860);
+  margin-bottom: 24px;
+}
+.seller-trust-block__list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 32px;
+  margin: 0;
+}
+.seller-trust-block__item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.seller-trust-block__item dt {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted, #6b6860);
+}
+.seller-trust-block__item dd {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--text, #11100e);
+}
+.seller-trust-block__link {
+  color: var(--accent, #b08a45);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+@media (max-width: 640px) {
+  .seller-trust-block__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Mono eyebrow (hero) ── */
+.mono-eyebrow {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+}

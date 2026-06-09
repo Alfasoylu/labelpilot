@@ -10,6 +10,12 @@ export function trackLeadEvent(eventName: string, detail: Record<string, unknown
     dataLayer.push(payload);
   }
 
+  // GA4 standard lead conversion event — fires for quote and sample-box submits.
+  const gtag = (window as Window & { gtag?: (...args: unknown[]) => void }).gtag;
+  if (typeof gtag === "function") {
+    gtag("event", "generate_lead", { lead_type: eventName, ...detail });
+  }
+
   window.dispatchEvent(
     new CustomEvent("labelpilot:analytics", {
       detail: payload,

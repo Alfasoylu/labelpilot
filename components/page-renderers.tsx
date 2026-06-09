@@ -18,6 +18,7 @@ import {
   ReorderWorkflowBlock,
   StoredDesignVisualCard,
 } from "@/components/sections/ReorderWorkflowBlock";
+import { SellerTrustBlock } from "@/components/sections/SellerTrustBlock";
 import { TrustBar } from "@/components/sections/TrustBar";
 import { VariableDataBlock } from "@/components/sections/VariableDataBlock";
 import { ComparisonTable } from "@/components/tables/ComparisonTable";
@@ -498,6 +499,8 @@ export function HomePage({ page }: HomePageProps) {
           </figure>
         </section>
 
+        <SellerTrustBlock />
+
         <Section eyebrow="Fragen" title="Häufige Fragen zu PP-Rollenetiketten.">
           <FaqAccordion faqs={homepageFaqs} />
         </Section>
@@ -720,6 +723,8 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
         title="Einmal freigeben. Später schneller nachbestellen."
         lead="Freigegebene Druckdaten, Material und Maß bleiben gespeichert – die Nachbestellung startet schneller."
       />
+
+      <SellerTrustBlock />
 
       {page.path === "/de/ratgeber/transparente-vs-opake-etiketten" ? (
         <Section
@@ -1453,6 +1458,23 @@ function buildSpecRows(page: PublicPageData) {
       { label: "Weißunterdruck", value: "Nicht enthalten, läuft über Angebot" },
       { label: "Angebotsfall", value: "ab 20.000 Stück oder bei Sonderumfang" },
     );
+  } else if (
+    page.path === "/de/rollenetiketten" ||
+    page.path === "/de/rollenetiketten-drucken" ||
+    page.path === "/de/etiketten-auf-rolle"
+  ) {
+    rows.push(
+      { label: "Format", value: "100×200 mm Standard; Wunschformat bis 320 mm Breite, Höhe frei" },
+      { label: "Material", value: "PP opak oder transparent" },
+      { label: "Klebstoff", value: "Permanent; ablösbar auf Anfrage" },
+      { label: "Druck", value: "4/0-farbig CMYK Digital, ohne Einrichtungskosten" },
+      { label: "Finish", value: "Matt oder Glänzend – kein Preisaufschlag" },
+      { label: "Lieferform", value: "Auf Rolle, 76-mm-Kern, Wickelrichtung Standard" },
+      { label: "Mindestmenge", value: "1.000 Stück; ab 20.000 Stück per Angebot" },
+      { label: "Prüfung", value: "Kostenlose Druckdatenprüfung plus 1 Proof" },
+      { label: "Lieferung", value: "DDP nach Deutschland – Zoll und Einfuhr inklusive" },
+      { label: "Nachbestellung", value: "Gespeicherte Spezifikation zum gleichen Paketpreis" },
+    );
   } else {
     rows.push(
       { label: "Seitentyp", value: page.kind },
@@ -1479,6 +1501,9 @@ function shouldShowRegulatoryDisclaimer(path: string) {
     "/de/lebensmittel-etiketten",
     "/de/getraenke-etiketten",
     "/de/supplement-etiketten",
+    "/de/rollenetiketten",
+    "/de/rollenetiketten-drucken",
+    "/de/etiketten-auf-rolle",
   ].includes(path);
 }
 
