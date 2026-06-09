@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Instrument_Sans } from "next/font/google";
+import Script from "next/script";
 import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
 
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { buildAbsoluteUrl } from "@/lib/seo";
+
+const GTM_ID = "GTM-PZW6ZHTK";
 
 const fontHeading = Instrument_Sans({
   subsets: ["latin"],
@@ -82,6 +85,37 @@ export default function RootLayout({
       className={`${fontHeading.variable} ${fontBody.variable} ${fontMono.variable}`}
     >
       <body>
+        {/* GTM: consent defaults must be pushed to dataLayer before GTM loader fires */}
+        <Script id="gtm-consent-defaults" strategy="beforeInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('consent', 'default', {
+            analytics_storage: 'denied',
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+            wait_for_update: 2000
+          });
+        `}</Script>
+        <Script
+          id="gtm-loader"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtag/js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${GTM_ID}');`,
+          }}
+        />
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         <GoogleAnalytics />
         {children}
         <Toaster theme="light" position="bottom-right" richColors />
