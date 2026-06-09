@@ -572,6 +572,12 @@ const topLevelPages: PublicPageData[] = [
           "Spezialseite für Gläser, kleine Chargen und transparente Optiken.",
       },
       {
+        label: "Barcode-Etiketten",
+        href: "/de/barcode-etiketten",
+        description:
+          "EAN/GTIN direkt im Lebensmitteletikett integriert – für den Handel.",
+      },
+      {
         label: "Transparente vs. opake Etiketten",
         href: "/de/ratgeber/transparente-vs-opake-etiketten",
         description:
@@ -733,16 +739,22 @@ const topLevelPages: PublicPageData[] = [
     ],
     relatedLinks: [
       {
+        label: "Flaschenetiketten drucken",
+        href: "/de/flaschenetiketten-drucken",
+        description:
+          "Transparente und opake PP-Etiketten für Getränke- und Ölflaschen.",
+      },
+      {
+        label: "Weinetiketten drucken",
+        href: "/de/weinetiketten-drucken",
+        description:
+          "Wasserfeste PP-Etiketten für Wein-, Sekt- und Spirituosenflaschen.",
+      },
+      {
         label: "Flaschenetiketten",
         href: "/de/flaschenetiketten",
         description:
           "Spezialseite mit Fokus auf Glas, Sichtbarkeit und Materialwirkung.",
-      },
-      {
-        label: "Glossar: transparente Etiketten",
-        href: "/de/glossar/transparente-etiketten",
-        description:
-          "Kurze Definition für den Unterschied zur opaken Variante.",
       },
       ...guideCommercialLinks,
     ],
@@ -1150,6 +1162,18 @@ const topLevelPages: PublicPageData[] = [
         href: "/de/etiketten-auf-rolle",
         description:
           "Bedruckte Etiketten auf Rolle im Standardformat 100×200 mm.",
+      },
+      {
+        label: "Folienetiketten",
+        href: "/de/folienetiketten",
+        description:
+          "Wasserfeste PP-Folienetiketten – robuster als Papier.",
+      },
+      {
+        label: "Barcode-Etiketten",
+        href: "/de/barcode-etiketten",
+        description:
+          "EAN, GTIN, Code 128 und GS1 DataMatrix auf PP-Rolle.",
       },
       {
         label: "Ratgeber",
