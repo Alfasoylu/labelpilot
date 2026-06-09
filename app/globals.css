@@ -2075,6 +2075,83 @@ th {
   border-color: var(--accent);
 }
 
+/* Angebot/Offer page — form is the star, single sticky support panel */
+.offer-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  align-items: start;
+}
+.offer-form-card {
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border-radius: var(--radius-xl);
+}
+.offer-aside {
+  position: sticky;
+  top: 96px;
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+}
+.offer-aside h2 {
+  font-size: var(--fs-h3);
+  margin: 0 0 14px;
+}
+.offer-aside .secondary-link {
+  margin-top: 14px;
+  display: inline-flex;
+}
+.offer-aside__note {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: var(--fs-caption);
+}
+@media (max-width: 880px) {
+  .offer-layout {
+    grid-template-columns: 1fr;
+  }
+  .offer-aside {
+    position: static;
+    top: auto;
+  }
+}
+
+/* "So läuft es ab" — numbered process steps in the hero aside */
+.hero-steps {
+  list-style: none;
+  counter-reset: step;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.hero-steps li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 34px;
+  font-size: var(--fs-small);
+  color: var(--text);
+  line-height: 1.4;
+}
+.hero-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--bg-soft);
+  color: var(--text-strong);
+  font-family: var(--font-mono-stack);
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Mobile banner image — hidden on desktop */
 .hero-kalk__mobile-banner {
   display: none;

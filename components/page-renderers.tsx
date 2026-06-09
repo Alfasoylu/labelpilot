@@ -1278,80 +1278,42 @@ function QuotePage({ page, canonicalPath }: DynamicPageProps) {
       <HeroSection
         eyebrow={page.eyebrow}
         title={page.title}
-        lead={page.lead}
-        bullets={page.heroBullets}
-        secondaryCta={<Link href="/de/musterbox" className="secondary-link">Musterbox anfordern</Link>}
+        lead="Fordern Sie ein individuelles Angebot für PP-Rollenetiketten, Sondergrößen oder wiederkehrende Bestellungen an. Druckdaten können Sie später senden."
+        bullets={["Druckdaten später senden", "Antwort nach Prüfung"]}
         aside={
-          <div className="surface-card">
-            <h2>Was als Nächstes passiert</h2>
-            <ul className="simple-list">
-              <li>Anfrage wird strukturiert geprüft</li>
-              <li>Material, Größe und Menge werden eingeordnet</li>
-              <li>Rückfrage oder nächster Angebots-Schritt folgt</li>
-            </ul>
-            <p>
-              Für Materialunsicherheit ist die Musterbox der bessere Zwischenschritt
-              als ein vorschnelles Mengenbriefing.
-            </p>
+          <div className="surface-card offer-process-card">
+            <h2>So läuft es ab</h2>
+            <ol className="hero-steps">
+              <li>Anfrage senden</li>
+              <li>Rückfrage, falls nötig</li>
+              <li>Angebot erhalten</li>
+              <li>Druckdaten später senden</li>
+            </ol>
           </div>
         }
       />
 
-      <Section
-        eyebrow="Anfrageformular"
-        title="Seriöse B2B-Anfrage statt loses Kontaktformular"
-        lead="Die Formularoberfläche bleibt deutsch, zweispaltig und klar gegliedert in Unternehmen, Etikettenbedarf, Druckdaten und Nachricht."
-      >
-        <div className="two-column">
+      <section className="offer-layout">
+        <div className="offer-form-card surface-card">
           <QuoteRequestForm />
-          <div className="surface-card">
-            <h2>Warum diese Struktur</h2>
-            <div className="card-grid">
-              <article className="feature-card">
-                <h3>Unternehmen</h3>
-                <p>Kontaktanfragen und Produktanfragen werden getrennt behandelt.</p>
-              </article>
-              <article className="feature-card">
-                <h3>Etikettenbedarf</h3>
-                <p>Material, Maß und Menge stehen im Zentrum, nicht eine generische Freitextbox.</p>
-              </article>
-              <article className="feature-card">
-                <h3>Druckdaten und Nachricht</h3>
-                <p>Dateistatus und Zusatzinfos bleiben sichtbar, ohne einen Backend-Upload vorzutäuschen.</p>
-              </article>
-            </div>
-            <h3>Rechnungskauf auf Anfrage</h3>
-            <p>
-              Rechnungskauf ist für geprüfte Geschäftskunden auf Anfrage möglich.
-              Die Freigabe erfolgt manuell im Angebotsprozess und nicht über den
-              Standard-Checkout.
-            </p>
-          </div>
         </div>
-      </Section>
-
-      <Section
-        eyebrow="Ablauf"
-        title="Was nach dem Absenden zählt"
-        lead="Die Seite endet nicht im Unklaren, sondern erklärt den nächsten Schritt als B2B-Prozess."
-      >
-        <ProcessSteps
-          steps={[
-            {
-              title: "Anfrage prüfen",
-              body: "Material, Verpackung und Mengenlogik werden anhand Ihrer Angaben eingeordnet.",
-            },
-            {
-              title: "Rückfragen klären",
-              body: "Wenn Maß, Material oder Druckdaten noch offen sind, folgt zuerst eine technische oder inhaltliche Präzisierung.",
-            },
-            {
-              title: "Angebot vorbereiten",
-              body: "Erst danach wird der nächste Angebots- oder Spezifikationsschritt vorbereitet.",
-            },
-          ]}
-        />
-      </Section>
+        <aside className="offer-aside surface-card">
+          <h2>Wann ist ein Angebot sinnvoll?</h2>
+          <ul className="simple-list">
+            <li>20.000+ Stück</li>
+            <li>Sondergröße oder unklare Menge</li>
+            <li>Material noch nicht sicher</li>
+            <li>Wiederkehrender Bedarf</li>
+            <li>Druckdaten später senden</li>
+          </ul>
+          <p className="field-hint">Für Standardmengen nutzen Sie schneller den Kalkulator.</p>
+          <Link href="/de/kalkulator" className="secondary-link">Zum Kalkulator</Link>
+          <p className="offer-aside__note">
+            Rechnungskauf ist für geprüfte Geschäftskunden auf Anfrage möglich – die
+            Freigabe erfolgt manuell im Angebotsprozess.
+          </p>
+        </aside>
+      </section>
 
       <Section
         eyebrow="Alternative"
