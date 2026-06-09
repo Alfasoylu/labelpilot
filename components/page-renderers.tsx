@@ -363,22 +363,33 @@ export function HomePage({ page }: HomePageProps) {
 
         <Section
           eyebrow="Nachbestellen"
-          title="Einmal freigeben. Immer wieder nachbestellen."
-          lead="Freigegebene Druckdaten, Maße, Material und Produktionsparameter bleiben gespeichert – die nächste Bestellung dauert Sekunden."
+          title="Einmal freigeben. Später schneller nachbestellen."
+          lead="Nach der Freigabe speichern wir Material, Format, Version und Bestellhistorie. Bei der nächsten Bestellung wählen Sie nur Menge und Version."
         >
-          <div className="card-grid">
-            <article className="section-card">
-              <h3>Druckdaten gespeichert</h3>
-              <p>Freigegebene Datei bleibt im Kundenkonto abrufbar. Kein erneutes Suchen oder Hochladen.</p>
+          <div className="reorder-grid">
+            <article className="saved-design-card">
+              <div className="saved-design-card__head">
+                <span className="saved-design-card__label">Gespeichertes Design</span>
+                <span className="saved-design-card__badge">Freigegeben</span>
+              </div>
+              <dl className="saved-design-card__specs">
+                <div><dt>Produkt</dt><dd>PP-Rollenetikett</dd></div>
+                <div><dt>Material</dt><dd>Opak PP, glänzend</dd></div>
+                <div><dt>Format</dt><dd>60 × 40 mm</dd></div>
+                <div><dt>Version</dt><dd>v3</dd></div>
+                <div><dt>Letzte Bestellung</dt><dd>5.000 Stück</dd></div>
+              </dl>
+              <Link href="/konto" className="cta-button saved-design-card__cta">
+                Nachbestellen
+              </Link>
             </article>
-            <article className="section-card">
-              <h3>Format & Spezifikation hinterlegt</h3>
-              <p>Breite, Höhe, Material, Oberfläche und Produktionsparameter werden automatisch übernommen.</p>
-            </article>
-            <article className="section-card">
-              <h3>Nachbestellung in 30 Sekunden</h3>
-              <p>Aus dem Kundenkonto heraus eine neue Bestellung mit derselben Konfiguration starten – inklusive Bestell- und Rechnungsverlauf.</p>
-            </article>
+
+            <ol className="reorder-timeline" aria-label="Nachbestell-Ablauf">
+              <li className="is-done"><span className="reorder-timeline__dot" aria-hidden />Druckdaten gespeichert</li>
+              <li className="is-done"><span className="reorder-timeline__dot" aria-hidden />Version freigegeben</li>
+              <li><span className="reorder-timeline__dot" aria-hidden />Menge wählen</li>
+              <li><span className="reorder-timeline__dot" aria-hidden />Nachbestellen</li>
+            </ol>
           </div>
           <div className="hero-actions">
             <Link href="/konto" className="cta-button">
