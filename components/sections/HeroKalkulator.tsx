@@ -119,12 +119,11 @@ export function HeroKalkulator() {
       <section className="hero-kalk-split container">
         {/* LEFT: Calculator */}
         <div className="hero-kalk__left">
-          <span className="eyebrow mono-eyebrow">LEBENSMITTEL · GETRÄNKE · SUPPLEMENTE</span>
-          <h1 className="hero-kalk__h1">PP-Rollenetiketten für Marken mit wiederkehrenden Auflagen.</h1>
+          <span className="eyebrow mono-eyebrow">PP-ROLLENETIKETTEN · LEBENSMITTEL · GETRÄNKE · SUPPLEMENTE</span>
+          <h1 className="hero-kalk__h1">Einmal hochladen. Immer wieder bestellen.</h1>
           <p className="hero-kalk__sub">
-            Opake und transparente PP-Rollenetiketten für Lebensmittel, Getränke und Supplemente.
-            Druckdaten werden beim ersten Auftrag geprüft und gespeichert — jede Nachbestellung
-            startet ohne neue Abstimmung.
+            PP-Rollenetiketten für Lebensmittel, Getränke und Supplemente. Ihre Druckdaten werden
+            gespeichert — jede Nachbestellung dauert 30 Sekunden, ohne neue Abstimmung.
           </p>
 
           <div className="hero-kalk__mobile-banner">
@@ -319,7 +318,7 @@ export function HeroKalkulator() {
       {/* ── Below hero: trust strip ── */}
       <div className="hero-kalk__below container">
         <ul className="hero-kalk__trust-row">
-          <li>Einmal freigegeben — immer nachbestellbar</li>
+          <li>Nachbestellung in 30 Sekunden</li>
           <li>Druckdatenprüfung &amp; Proof inklusive</li>
           <li>Lieferung DDP nach Deutschland</li>
           <li>Opak &amp; transparent — 100×200 mm Standard</li>
