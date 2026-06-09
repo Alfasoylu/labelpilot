@@ -483,6 +483,36 @@ export const metadataMap: Record<string, MetadataEntry> = {
       "Folienetiketten Material",
     ],
   },
+  "/de/ratgeber/druckdaten-rollenetiketten": {
+    title: "Druckdaten für Rollenetiketten vorbereiten | Labelpilot.de",
+    description:
+      "Druckdaten für Rollenetiketten richtig anlegen: Beschnitt, Stanzkontur, 300 dpi, CMYK und Weißunterdruck bei transparentem PP. Checkliste für eine reibungslose Produktion.",
+    openGraphTitle: "Druckdaten für Rollenetiketten vorbereiten",
+    openGraphDescription:
+      "Beschnitt, Stanzkontur, CMYK & Weißunterdruck – Checkliste für Rollenetiketten.",
+    openGraphType: "article",
+    keywords: [
+      "Druckdaten Rollenetiketten",
+      "Etiketten Druckdaten vorbereiten",
+      "Weißunterdruck transparente Etiketten",
+      "Stanzkontur Etiketten",
+    ],
+  },
+  "/de/ratgeber/rollenetiketten-startups-kleinauflage": {
+    title: "Rollenetiketten für Startups: kleine Auflage planen | Labelpilot.de",
+    description:
+      "1.000 oder 5.000 Etiketten? Mengenvergleich für junge Produktmarken: Stückpreis, Lagerrisiko und einmalige Artwork-Investition – mit klarer Empfehlung.",
+    openGraphTitle: "Rollenetiketten für Startups – welche Auflage?",
+    openGraphDescription:
+      "1.000 vs. 5.000 Stück: Stückpreis, Risiko & Artwork-Investition im Vergleich.",
+    openGraphType: "article",
+    keywords: [
+      "Rollenetiketten kleine Auflage",
+      "Etiketten Kleinmenge",
+      "Etiketten Startup",
+      "Etiketten ab 1000 Stück",
+    ],
+  },
   "/de/ratgeber/transparente-vs-opake-etiketten": {
     title: "Transparente vs. opake Etiketten | Labelpilot.de",
     description:

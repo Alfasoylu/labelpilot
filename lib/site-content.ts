@@ -3401,6 +3401,215 @@ const guidePages: PublicPageData[] = [
     ],
   },
   {
+    path: "/de/ratgeber/druckdaten-rollenetiketten",
+    slug: "druckdaten-rollenetiketten",
+    kind: "guide",
+    title: "Druckdaten für Rollenetiketten richtig vorbereiten",
+    eyebrow: "Ratgeber",
+    lead:
+      "Worauf es bei Druckdaten speziell für Rollenetiketten ankommt: Beschnitt, Stanzkontur, Auflösung, Farbprofil und Weißunterdruck bei transparentem Material. Damit die Produktion ohne Rückfragen startet.",
+    heroBullets: [
+      "Rollenetiketten haben eigene Anforderungen: Stanzkontur, Wickelrichtung und Beschnitt.",
+      "Transparentes Material braucht für deckende Farben einen separaten Weißunterdruck.",
+      "Saubere Druckdaten sparen eine Proof-Runde und beschleunigen die Produktion.",
+    ],
+    sidebarTitle: "Dieser Guide hilft bei",
+    sidebarBullets: [
+      "Beschnitt, Stanzkontur und Sicherheitsabstand",
+      "Auflösung und Farbprofil (CMYK)",
+      "Weißunterdruck bei transparentem PP",
+    ],
+    primaryCta: {
+      label: "Druckdaten-Anforderungen ansehen",
+      href: "/de/druckdaten",
+    },
+    secondaryCta: sampleLink,
+    howToSteps: [
+      "Endformat exakt anlegen (z. B. 100×200 mm) und 2–3 mm Beschnitt rundherum ergänzen.",
+      "Wichtige Inhalte mit mindestens 2–3 mm Sicherheitsabstand zur Stanzkontur platzieren.",
+      "Stanzkontur als separate Volltonfarbe auf einer eigenen Ebene anlegen, nicht mitdrucken.",
+      "Farben in CMYK anlegen; Sonderfarben (z. B. Pantone) klar kennzeichnen.",
+      "Bilder mit mindestens 300 dpi im Endformat einbetten.",
+      "Bei transparentem Material Weißunterdruck als separate Fläche definieren, wo Farbe decken soll.",
+      "Schriften einbetten oder in Pfade umwandeln und die finale Version als PDF/X exportieren.",
+    ],
+    sections: [
+      {
+        title: "Beschnitt und Stanzkontur",
+        body: [
+          "Rollenetiketten werden gestanzt – die Stanzkontur gehört als separate Volltonfarbe auf eine eigene Ebene, damit sie nicht mitgedruckt wird.",
+          "Ein Beschnitt von 2–3 mm verhindert weiße Blitzer an den Kanten, ein Sicherheitsabstand schützt Texte vor dem Anschnitt.",
+        ],
+      },
+      {
+        title: "Auflösung und Farbprofil",
+        body: [
+          "Legen Sie Farben in CMYK an – RGB wird beim Druck konvertiert und kann sich verschieben.",
+          "Platzierte Bilder sollten mindestens 300 dpi im Endformat haben, damit Kanten und Verläufe sauber bleiben.",
+        ],
+      },
+      {
+        title: "Weißunterdruck bei transparentem PP",
+        body: [
+          "Auf transparentem Material erscheinen Farben sonst durchscheinend. Für deckende Bereiche wird eine separate Weißfläche unter die Farbe gedruckt.",
+          "Diesen Weißunterdruck legen Sie als eigene Fläche an; er ist ein kostenpflichtiger Zusatz und läuft über ein Angebot.",
+        ],
+      },
+      {
+        title: "Wickelrichtung und Rollenkern",
+        body: [
+          "Für die maschinelle Verarbeitung ist die Wickelrichtung relevant – standardmäßig gilt 76-mm-Kern und Standardwicklung.",
+          "Wenn Ihr Etikettierautomat eine bestimmte Wickelrichtung braucht, geben Sie sie vor der Produktion an.",
+        ],
+      },
+    ],
+    table: {
+      title: "Druckdaten-Anforderungen für Rollenetiketten",
+      lead: "Die technischen Eckwerte für saubere Druckdaten.",
+      columns: ["Anforderung", "Standard", "Hinweis"],
+      rows: [
+        ["Beschnitt", "2–3 mm rundherum", "Verhindert weiße Kanten"],
+        ["Sicherheitsabstand", "2–3 mm zur Stanzkontur", "Schützt Texte und Logos"],
+        ["Auflösung", "mind. 300 dpi", "Im Endformat eingebettet"],
+        ["Farbmodus", "CMYK", "Sonderfarben separat kennzeichnen"],
+        ["Stanzkontur", "Volltonfarbe, eigene Ebene", "Wird nicht mitgedruckt"],
+        ["Weißunterdruck", "nur transparentes PP", "Separate Fläche, über Angebot"],
+        ["Dateiformat", "PDF/X, AI, EPS", "Schriften eingebettet oder in Pfade"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Wie viel Beschnitt brauchen Druckdaten für Rollenetiketten?",
+        answer:
+          "2–3 mm Beschnitt rundherum sind üblich. Wichtige Inhalte sollten zusätzlich 2–3 mm Sicherheitsabstand zur Stanzkontur halten.",
+      },
+      {
+        question: "Was ist Weißunterdruck und wann brauche ich ihn?",
+        answer:
+          "Weißunterdruck ist eine Weißfläche, die bei transparentem Material unter die Farbe gedruckt wird, damit Farben decken statt durchzuscheinen. Er ist ein kostenpflichtiger Zusatz und nur bei transparentem PP nötig.",
+      },
+      {
+        question: "In welchem Farbmodus soll ich anlegen?",
+        answer:
+          "In CMYK. RGB-Farben werden beim Druck konvertiert und können sich verschieben. Sonderfarben kennzeichnen Sie separat.",
+      },
+      {
+        question: "Welches Dateiformat ist am besten?",
+        answer:
+          "Bevorzugt PDF/X, AI oder EPS mit eingebetteten oder in Pfade umgewandelten Schriften. Wir prüfen die Daten vor der Produktion technisch.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Rollenetiketten drucken lassen",
+        href: "/de/rollenetiketten-drucken",
+        description: "Druckablauf, CMYK-Digitaldruck und Proof für Rollenetiketten.",
+      },
+      {
+        label: "Druckdaten vorbereiten",
+        href: "/de/ratgeber/druckdaten-vorbereiten",
+        description: "Allgemeine Schritte für druckfertige Etikettendaten.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/ratgeber/rollenetiketten-startups-kleinauflage",
+    slug: "rollenetiketten-startups-kleinauflage",
+    kind: "guide",
+    title: "Rollenetiketten für Startups: 1.000 oder 5.000 Stück?",
+    eyebrow: "Ratgeber",
+    lead:
+      "Wie viele Etiketten lohnen sich für den Start? Dieser Guide vergleicht kleine und mittlere Auflagen für junge Produktmarken – mit Blick auf Stückpreis, Lagerrisiko und die einmalige Artwork-Investition.",
+    heroBullets: [
+      "Die Pilotauflage (1.000 Stück) senkt das Risiko beim ersten Test einer Spezifikation.",
+      "Die 5.000er-Auflage senkt den Stückpreis deutlich – sinnvoll, sobald das Design steht.",
+      "Die Artwork-Vorbereitung fällt nur einmal an und amortisiert sich über Nachbestellungen.",
+    ],
+    sidebarTitle: "Dieser Guide hilft bei",
+    sidebarBullets: [
+      "Mengenwahl für die erste Auflage",
+      "Abwägung von Stückpreis und Lagerrisiko",
+      "Planung wiederkehrender Nachbestellungen",
+    ],
+    primaryCta: {
+      label: "Jetzt konfigurieren",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: sampleLink,
+    sections: [
+      {
+        title: "Wann 1.000 Stück sinnvoll sind",
+        body: [
+          "Die Pilotauflage passt, wenn das Design noch neu ist, der Markt getestet wird oder mehrere Varianten parallel anlaufen.",
+          "Sie zahlen pro Stück mehr, halten aber das Lager- und Fehlerrisiko klein.",
+        ],
+      },
+      {
+        title: "Wann sich 5.000 Stück lohnen",
+        body: [
+          "Sobald Design und Spezifikation stehen und der Abverkauf läuft, senkt die 5.000er-Auflage den Stückpreis spürbar.",
+          "Das ist die empfohlene B2B-Menge für wiederkehrende Produktlinien mit stabiler Nachfrage.",
+        ],
+      },
+      {
+        title: "Die Artwork-Investition rechnet sich über die Zeit",
+        body: [
+          "Die einmalige Vorbereitung von Druckdaten und Freigabe fällt unabhängig von der Menge an.",
+          "Weil wir die freigegebene Spezifikation speichern, verteilt sich dieser Aufwand über alle späteren Nachbestellungen.",
+        ],
+      },
+      {
+        title: "Risiko, Cashflow und Wachstum abwägen",
+        body: [
+          "Eine kleine Erstauflage schont den Cashflow, eine größere senkt den Stückpreis – die richtige Wahl hängt von Abverkaufstempo und Liquidität ab.",
+          "Wer regelmäßig nachbestellt, kann klein starten und beim nächsten Lauf ohne neue Abstimmung auf eine größere Menge wechseln.",
+        ],
+      },
+    ],
+    table: {
+      title: "Auflagen im Vergleich für den Start",
+      lead: "Welche Menge zu welcher Situation passt.",
+      columns: ["Auflage", "Stückpreis-Tendenz", "Wann sinnvoll"],
+      rows: [
+        ["1.000 (Pilot)", "höher", "Neues Design, Markttest, mehrere Varianten"],
+        ["2.000 (Folge)", "mittel", "Kleinere Wiederholung einer geprüften Linie"],
+        ["5.000 (Standard)", "deutlich niedriger", "Design steht, Abverkauf läuft – empfohlen"],
+        ["10.000 (Serie)", "am niedrigsten", "Stabile, hohe Nachfrage"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Wie viele Etiketten sollte ich als Startup zuerst bestellen?",
+        answer:
+          "Wenn das Design neu ist oder Sie den Markt testen, ist die Pilotauflage mit 1.000 Stück risikoarm. Sobald das Design steht und der Abverkauf läuft, senkt die 5.000er-Auflage den Stückpreis deutlich.",
+      },
+      {
+        question: "Lohnt sich eine größere Auflage trotz höherem Gesamtpreis?",
+        answer:
+          "Oft ja, weil der Stückpreis sinkt und die einmalige Artwork-Vorbereitung sich über mehr Etiketten verteilt. Entscheidend sind Abverkaufstempo und Liquidität.",
+      },
+      {
+        question: "Muss ich bei einer Nachbestellung wieder mit 1.000 starten?",
+        answer:
+          "Nein. Nach der Freigabe ist Ihre Spezifikation gespeichert. Sie können bei der nächsten Bestellung ohne neue Abstimmung direkt eine größere Menge wählen.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Rollenetiketten",
+        href: "/de/rollenetiketten",
+        description: "Produktübersicht mit festen Paketen ab 1.000 Stück.",
+      },
+      {
+        label: "Etiketten 100×200 mm",
+        href: "/de/etiketten-100x200",
+        description: "Das Standardformat für wiederkehrende Produktetiketten.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
     path: "/de/ratgeber/transparente-vs-opake-etiketten",
     slug: "transparente-vs-opake-etiketten",
     kind: "guide",
