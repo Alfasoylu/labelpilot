@@ -909,10 +909,10 @@ textarea {
   color: var(--text-strong);
 }
 
-.field input,
+.field input:not([type="radio"]):not([type="checkbox"]),
 .field select,
 .field textarea,
-.field-full input,
+.field-full input:not([type="radio"]):not([type="checkbox"]),
 .field-full select,
 .field-full textarea {
   width: 100%;
@@ -927,10 +927,10 @@ textarea {
     box-shadow 0.16s ease;
 }
 
-.field input:focus,
+.field input:not([type="radio"]):not([type="checkbox"]):focus,
 .field select:focus,
 .field textarea:focus,
-.field-full input:focus,
+.field-full input:not([type="radio"]):not([type="checkbox"]):focus,
 .field-full select:focus,
 .field-full textarea:focus {
   border-color: rgba(176, 138, 69, 0.5);
@@ -2613,10 +2613,10 @@ th {
   color: var(--muted);
 }
 
-.kalkulator-page .field input,
+.kalkulator-page .field input:not([type="radio"]):not([type="checkbox"]),
 .kalkulator-page .field select,
 .kalkulator-page .field-full select,
-.kalkulator-page .field-full input {
+.kalkulator-page .field-full input:not([type="radio"]):not([type="checkbox"]) {
   min-height: 40px;
   padding: 8px 11px;
   font-size: 0.875rem;
@@ -2834,23 +2834,55 @@ th {
 .artwork-option {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 9px 12px;
+  gap: 11px;
+  padding: 13px 15px;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 14px;
   cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  background: #fff;
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.artwork-option:hover {
+  border-color: rgba(176, 138, 69, 0.5);
 }
 
 .artwork-option input[type="radio"] {
-  margin-top: 2px;
+  width: 18px;
+  height: 18px;
+  min-height: 0;
+  margin: 1px 0 0;
+  padding: 0;
   flex-shrink: 0;
   accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* Text column fills the remaining width beside the radio. */
+.artwork-option > div {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .artwork-option--active {
   border-color: var(--accent);
-  background: rgba(176, 138, 69, 0.04);
+  background: rgba(176, 138, 69, 0.06);
+  box-shadow: 0 0 0 3px rgba(176, 138, 69, 0.12);
+}
+
+/* Checkboxes (Tiefkühl, Weißunterdruck) get native sizing, never the
+   full-width text-input styling. */
+.checkbox-field input[type="checkbox"],
+.kalkulator-page input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  min-height: 0;
+  padding: 0;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
 }
 
 .artwork-option__label {
