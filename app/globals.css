@@ -449,7 +449,7 @@ textarea {
   margin: 18px 0 0;
   max-width: 40rem;
   color: rgba(248, 250, 252, 0.84);
-  font-size: clamp(0.98rem, 1.1vw, 1.05rem);
+  font-size: var(--fs-body-lg);
   line-height: 1.6;
 }
 
@@ -633,13 +633,13 @@ textarea {
 
 .section-header h2,
 .cta-shell h2 {
-  font-size: clamp(1.4rem, 2.1vw, 1.8rem);
+  font-size: var(--fs-h2);
 }
 
 .lead {
   max-width: 760px;
   color: var(--muted);
-  font-size: 1.06rem;
+  font-size: var(--fs-body-lg);
   line-height: 1.72;
 }
 
@@ -1409,11 +1409,6 @@ th {
     padding: 22px;
   }
 
-  .hero-panel h1,
-  .legal-card h1 {
-    font-size: clamp(1.7rem, 6vw, 2.4rem);
-  }
-
   .hero-kpi-grid {
     grid-template-columns: 1fr;
   }
@@ -1448,7 +1443,7 @@ th {
   margin: 18px 0 0;
   max-width: 48ch;
   color: var(--muted);
-  font-size: clamp(1.02rem, 1.4vw, 1.16rem);
+  font-size: var(--fs-body-lg);
   line-height: 1.62;
 }
 
@@ -1762,7 +1757,7 @@ th {
 .hero-kalk__sub {
   margin: 12px 0 0;
   max-width: 50ch;
-  font-size: 0.96rem;
+  font-size: var(--fs-body-lg);
   line-height: 1.6;
   color: var(--muted);
 }
@@ -2016,8 +2011,28 @@ th {
   color: var(--text-strong);
   text-align: right;
 }
+.saved-design-card__demo {
+  opacity: 0.6;
+  font-weight: 400;
+}
+/* Ghost CTA — visible but clearly a demo action inside the example card,
+   distinct from the real deep-ink primary CTA below. */
 .saved-design-card__cta {
+  display: block;
   width: 100%;
+  text-align: center;
+  padding: 9px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  transition: border-color 0.16s ease, color 0.16s ease;
+}
+.saved-design-card__cta:hover {
+  border-color: var(--accent);
+  color: var(--text-strong);
 }
 .reorder-timeline {
   list-style: none;
@@ -2137,7 +2152,7 @@ th {
   color: var(--text-strong);
   line-height: 1.08;
   letter-spacing: -0.015em;
-  font-size: clamp(1.4rem, 2.1vw, 1.8rem);
+  font-size: var(--fs-h2);
 }
 
 .cta-editorial__content p {
@@ -2194,7 +2209,7 @@ th {
 .use-card p {
   margin: 0;
   color: var(--muted);
-  font-size: 0.92rem;
+  font-size: var(--fs-small);
   line-height: 1.5;
 }
 
@@ -2225,7 +2240,7 @@ th {
 
 .compare-card h3 {
   margin: 0 0 16px;
-  font-size: 1.2rem;
+  font-size: var(--fs-h3);
   color: var(--text-strong);
 }
 
@@ -2387,7 +2402,7 @@ th {
 }
 
 .lj-caption__title {
-  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  font-size: var(--fs-h3);
   line-height: 1.12;
   color: var(--text-strong);
   margin: 0;
@@ -2395,7 +2410,7 @@ th {
 }
 
 .lj-caption__body {
-  font-size: 1.05rem;
+  font-size: var(--fs-body-lg);
   line-height: 1.55;
   color: var(--muted);
   max-width: 46ch;
@@ -2518,7 +2533,7 @@ th {
 }
 
 .lj-static__text h3 {
-  font-size: 1.15rem;
+  font-size: var(--fs-h3);
   margin: 6px 0 4px;
   color: var(--text-strong);
 }

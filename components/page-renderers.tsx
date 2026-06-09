@@ -369,7 +369,9 @@ export function HomePage({ page }: HomePageProps) {
           <div className="reorder-grid">
             <article className="saved-design-card">
               <div className="saved-design-card__head">
-                <span className="saved-design-card__label">Gespeichertes Design</span>
+                <span className="saved-design-card__label">
+                  Gespeichertes Design <span className="saved-design-card__demo">· Beispiel</span>
+                </span>
                 <span className="saved-design-card__badge">Freigegeben</span>
               </div>
               <dl className="saved-design-card__specs">
@@ -379,7 +381,7 @@ export function HomePage({ page }: HomePageProps) {
                 <div><dt>Version</dt><dd>v3</dd></div>
                 <div><dt>Letzte Bestellung</dt><dd>5.000 Stück</dd></div>
               </dl>
-              <Link href="/konto" className="cta-button saved-design-card__cta">
+              <Link href="/konto" className="saved-design-card__cta">
                 Nachbestellen
               </Link>
             </article>
