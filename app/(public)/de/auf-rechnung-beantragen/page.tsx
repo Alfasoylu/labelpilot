@@ -4,9 +4,9 @@ import { buildAbsoluteUrl } from "@/lib/seo";
 import { AufRechnungForm } from "./AufRechnungForm";
 
 export const metadata: Metadata = {
-  title: "Auf Rechnung bestellen – Netto-15 für Geschäftskunden | Labelpilot.de",
+  title: "Auf Rechnung bestellen – B2B-Netto-15 | Labelpilot.de",
   description:
-    "Geprüfte B2B-Kunden können PP-Rollenetiketten auf Rechnung bestellen. Zahlung 15 Tage nach Lieferung. Antrag in 2 Minuten ausfüllen.",
+    "Geprüfte B2B-Kunden können PP-Rollenetiketten auf Rechnung bestellen (Netto-15). Antrag in 2 Minuten – wir prüfen und melden uns innerhalb von 1–2 Werktagen.",
   alternates: {
     canonical: buildAbsoluteUrl("/de/auf-rechnung-beantragen"),
   },

@@ -11,7 +11,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de": {
     title: "PP-Rollenetiketten für Marken in Deutschland | Labelpilot.de",
     description:
-      "Individuell bedruckte PP-Rollenetiketten für Lebensmittel-, Getränke- und Supplement-Marken. Mit technischer Druckdatenprüfung, Musterbox und einfacher Nachbestellung.",
+      "Bedruckte PP-Rollenetiketten für Lebensmittel-, Getränke- und Supplement-Marken. Mit technischer Druckdatenprüfung, Musterbox und Nachbestellsystem.",
     openGraphTitle: "Labelpilot – PP-Etiketten B2B",
     openGraphDescription:
       "PP-Rollenetiketten für Lebensmittel, Getränke & Supplemente.",
@@ -26,9 +26,9 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/lebensmittel-etiketten": {
-    title: "Lebensmitteletiketten drucken | Labelpilot.de",
+    title: "Lebensmitteletiketten drucken lassen | Labelpilot.de",
     description:
-      "Bedruckte PP-Rollenetiketten für Lebensmittelmarken in Deutschland. Geeignet für Gläser, Beutel, Flaschen und Verpackungen.",
+      "PP-Rollenetiketten für Lebensmittelmarken in Deutschland. Geeignet für Gläser, Beutel, Flaschen und Verpackungen – mit geprüften Druckdaten und Nachbestellsystem.",
     openGraphTitle: "Lebensmitteletiketten drucken",
     openGraphDescription:
       "PP-Etiketten für Gläser, Beutel & Flaschen – B2B.",
@@ -40,7 +40,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/supplement-etiketten": {
-    title: "Supplement-Etiketten drucken | Labelpilot.de",
+    title: "Supplement-Etiketten drucken lassen | Labelpilot.de",
     description:
       "PP-Rollenetiketten für Supplement-Dosen, Beutel und Flaschen. 100×200 mm, opak oder transparent, mit technischer Dateiprüfung.",
     openGraphTitle: "Supplement-Etiketten drucken",
@@ -54,7 +54,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/getraenke-etiketten": {
-    title: "Getränkeetiketten drucken | Labelpilot.de",
+    title: "Getränkeetiketten drucken lassen | Labelpilot.de",
     description:
       "Transparente und opake PP-Rollenetiketten für Getränke, Flaschen und Glasverpackungen. Für Marken in Deutschland mit einfacher Nachbestellung.",
     openGraphTitle: "Getränkeetiketten drucken",
@@ -82,7 +82,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/opake-pp-etiketten": {
-    title: "Opake PP-Etiketten drucken | Labelpilot.de",
+    title: "Opake PP-Etiketten drucken lassen | Labelpilot.de",
     description:
       "Opake PP-Rollenetiketten 100×200 mm für Lebensmittel-, Supplement- und Produktverpackungen. Ideal für wiederkehrende B2B-Bestellungen.",
     openGraphTitle: "Opake PP-Etiketten drucken",
@@ -96,7 +96,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/pp-rollenetiketten": {
-    title: "PP-Rollenetiketten drucken | Labelpilot.de",
+    title: "PP-Rollenetiketten drucken lassen | Labelpilot.de",
     description:
       "Individuell bedruckte PP-Rollenetiketten für deutsche B2B-Marken. Opak oder transparent, 100×200 mm, mit gespeicherten Druckdaten.",
     openGraphTitle: "PP-Rollenetiketten drucken",
@@ -112,7 +112,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/rollenetiketten": {
     title: "Rollenetiketten drucken lassen | Labelpilot.de",
     description:
-      "Bedruckte Rollenetiketten aus PP für Lebensmittel-, Getränke- und Supplement-Marken. Opak oder transparent, mit geprüften Druckdaten und einfacher Nachbestellung. Lieferung DDP nach Deutschland.",
+      "PP-Rollenetiketten für Lebensmittel-, Getränke- und Supplement-Marken. Opak oder transparent, 100×200 mm, mit geprüften Druckdaten und Nachbestellsystem.",
     openGraphTitle: "Rollenetiketten drucken lassen",
     openGraphDescription:
       "PP-Rollenetiketten opak oder transparent – B2B, mit Nachbestellsystem.",
@@ -124,7 +124,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/rollenetiketten-drucken": {
-    title: "Rollenetiketten drucken lassen – PP für B2B | Labelpilot.de",
+    title: "PP-Rollenetiketten drucken lassen – B2B | Labelpilot.de",
     description:
       "PP-Rollenetiketten drucken lassen mit technischer Druckdatenprüfung, Proof und gespeicherten Daten für jede Nachbestellung. 4/0-farbig CMYK ohne Einrichtungskosten.",
     openGraphTitle: "Rollenetiketten drucken lassen",
@@ -152,9 +152,9 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/flaschenetiketten-drucken": {
-    title: "Flaschenetiketten drucken lassen – PP auf Rolle | Labelpilot.de",
+    title: "Flaschenetiketten drucken lassen – PP | Labelpilot.de",
     description:
-      "Flaschenetiketten drucken lassen: transparentes oder opakes PP auf Rolle für Getränke, Spirituosen und Öle. Wasserfest, mit geprüften Druckdaten. Lieferung DDP nach Deutschland.",
+      "Flaschenetiketten auf PP-Rolle drucken – transparent oder opak. Wasserfest für Getränke, Spirituosen und Öle. Mit geprüften Druckdaten und DDP-Lieferung.",
     openGraphTitle: "Flaschenetiketten drucken lassen",
     openGraphDescription:
       "No-Label-Look oder deckend – PP-Etiketten für Flaschen, wasserfest.",
@@ -166,7 +166,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/weinetiketten-drucken": {
-    title: "Weinetiketten drucken lassen – PP auf Rolle | Labelpilot.de",
+    title: "Weinetiketten drucken lassen – PP | Labelpilot.de",
     description:
       "Weinetiketten drucken lassen auf wasserfestem PP, transparent oder opak. Für Wein, Sekt und Spirituosen – hält im Weinkühler. Mit geprüften Druckdaten und Nachbestellung.",
     openGraphTitle: "Weinetiketten drucken lassen",
@@ -180,9 +180,9 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/barcode-etiketten": {
-    title: "Barcode-Etiketten drucken lassen – EAN, GTIN, GS1 | Labelpilot.de",
+    title: "Barcode-Etiketten drucken lassen – EAN & GTIN | Labelpilot.de",
     description:
-      "Barcode-Etiketten auf PP-Rolle: EAN-13, GTIN, Code 128, QR-Code und GS1 DataMatrix – integriert ins Produktetikett oder separat. Für Handel, Lebensmittel und Rückverfolgbarkeit.",
+      "Barcode-Etiketten auf PP-Rolle: EAN-13, GTIN, Code 128, QR-Code und GS1 DataMatrix – integriert ins Produktetikett oder separat. Für Handel und Lebensmittel.",
     openGraphTitle: "Barcode-Etiketten drucken lassen",
     openGraphDescription:
       "EAN, GTIN, Code 128, QR & GS1 DataMatrix – scanbar auf PP-Rolle.",
@@ -194,9 +194,9 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/folienetiketten": {
-    title: "Folienetiketten drucken lassen – PP, wasserfest | Labelpilot.de",
+    title: "Folienetiketten drucken lassen – PP | Labelpilot.de",
     description:
-      "Folienetiketten aus PP auf Rolle – wasserfest, reißfest und beständiger als Papier. Opak oder transparent, für Flaschen, Dosen, Tiegel und Beutel. Lieferung DDP nach Deutschland.",
+      "PP-Folienetiketten auf Rolle – wasserfest, reißfest und langlebiger als Papier. Opak oder transparent für Flaschen, Dosen, Tiegel und Beutel in Deutschland.",
     openGraphTitle: "Folienetiketten drucken lassen",
     openGraphDescription:
       "Wasserfeste PP-Folienetiketten – robuster als Papier, opak oder transparent.",
@@ -210,7 +210,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/etiketten-100x200": {
     title: "Etiketten 100×200 mm drucken | Labelpilot.de",
     description:
-      "100×200 mm PP-Rollenetiketten für Produktverpackungen. Geeignet für Lebensmittel, Getränke und Supplemente. Mengen ab 1.000 Stück.",
+      "100×200 mm PP-Rollenetiketten für Produktverpackungen. Geeignet für Lebensmittel, Getränke und Supplemente. Mengen ab 1.000 Stück, opak oder transparent.",
     openGraphTitle: "Etiketten 100×200 mm drucken",
     openGraphDescription:
       "100×200 mm PP-Etiketten ab 1.000 Stück für Produktmarken.",
@@ -251,7 +251,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/angebot-anfordern": {
     title: "B2B-Angebot für Etiketten anfordern | Labelpilot.de",
     description:
-      "Fordern Sie ein individuelles B2B-Angebot für PP-Rollenetiketten, Thermoetiketten oder größere Etikettenmengen an.",
+      "Fordern Sie ein individuelles B2B-Angebot für PP-Rollenetiketten an – für Wunschformate, Sondermengen oder größere Folgeauflagen. Antwort in 1–2 Werktagen.",
     openGraphTitle: "B2B-Angebot für Etiketten",
     openGraphDescription:
       "Angebot für PP-Etiketten & Thermoetiketten anfordern.",
@@ -262,7 +262,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/nachbestellen": {
-    title: "Etiketten nachbestellen | Labelpilot.de",
+    title: "PP-Rollenetiketten schnell nachbestellen | Labelpilot.de",
     description:
       "Bestellen Sie freigegebene Etiketten schneller erneut. Labelpilot.de speichert Druckdaten, Material, Größe und Stückzahl für Nachbestellungen.",
     openGraphTitle: "Etiketten nachbestellen",
@@ -316,7 +316,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/kontakt": {
-    title: "Kontakt | Labelpilot.de",
+    title: "Kontakt – PP-Etiketten Anfragen | Labelpilot.de",
     description:
       "Kontaktieren Sie Labelpilot.de für Fragen zu PP-Rollenetiketten, Musterbox, Druckdaten, Angeboten oder Nachbestellungen.",
     openGraphTitle: "Kontakt – Labelpilot.de",
@@ -329,15 +329,17 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/impressum": {
-    title: "Impressum | Labelpilot.de",
-    description: "Impressum von Labelpilot.de.",
+    title: "Impressum – rechtliche Pflichtangaben | Labelpilot.de",
+    description:
+      "Gesetzliche Pflichtangaben gemäß § 5 TMG für Labelpilot.de – betrieben von Zhenkai Global Trading Ltd., Hongkong, mit Lieferung nach Deutschland.",
     openGraphTitle: "Impressum | Labelpilot.de",
     openGraphDescription: "Gesetzliche Anbieterangaben zu Labelpilot.de.",
     keywords: ["Labelpilot Impressum", "Anbieter Labelpilot"],
   },
   "/de/datenschutz": {
-    title: "Datenschutzerklärung | Labelpilot.de",
-    description: "Informationen zum Datenschutz bei Labelpilot.de.",
+    title: "Datenschutzerklärung – DSGVO | Labelpilot.de",
+    description:
+      "Informationen zum Datenschutz bei Labelpilot.de gemäß DSGVO und TTDSG: Erhebung, Verarbeitung und Rechte der Nutzer im Überblick.",
     openGraphTitle: "Datenschutz | Labelpilot.de",
     openGraphDescription:
       "Datenschutzerklärung gemäß DSGVO von Labelpilot.de.",
@@ -345,15 +347,16 @@ export const metadataMap: Record<string, MetadataEntry> = {
   },
   "/de/agb": {
     title: "Allgemeine Geschäftsbedingungen | Labelpilot.de",
-    description: "Allgemeine Geschäftsbedingungen von Labelpilot.de.",
+    description:
+      "Allgemeine Geschäftsbedingungen von Labelpilot.de für Bestellungen, Lieferung, Zahlung und Widerruf im B2B-Etikettenbereich.",
     openGraphTitle: "AGB | Labelpilot.de",
     openGraphDescription: "AGB für Bestellungen bei Labelpilot.de.",
     keywords: ["AGB Labelpilot", "Geschäftsbedingungen Etiketten"],
   },
   "/de/versand": {
-    title: "Versandinformationen | Labelpilot.de",
+    title: "Versand und Lieferzeiten für Etiketten | Labelpilot.de",
     description:
-      "Informationen zu Versand, Lieferung und Produktionsablauf bei Labelpilot.de.",
+      "Produktions- und Versandzeiten für PP-Rollenetiketten bei Labelpilot.de. Typisch 15–20 Werktage ab Zahlungseingang, DDP-Lieferung nach Deutschland.",
     openGraphTitle: "Versand & Lieferung | Labelpilot",
     openGraphDescription:
       "Lieferzeiten, Versandkosten & Lieferregionen erklärt.",
@@ -366,14 +369,14 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/widerruf": {
     title: "Widerruf und Sonderanfertigungen | Labelpilot.de",
     description:
-      "Informationen zu Widerruf, Sonderanfertigungen, individuellen Druckprodukten und Reklamationen.",
+      "PP-Rollenetiketten sind Sonderanfertigungen und vom Widerrufsrecht ausgenommen. Informationen zu Reklamationen und Mängelrügen bei Labelpilot.de.",
     openGraphTitle: "Widerruf | Labelpilot.de",
     openGraphDescription:
       "Widerrufsrecht & Sonderanfertigungen bei Labelpilot.de.",
     keywords: ["Widerruf Etiketten", "Sonderanfertigungen Etiketten"],
   },
   "/de/kaffee-etiketten": {
-    title: "Kaffee-Etiketten drucken | Labelpilot.de",
+    title: "Kaffee-Etiketten drucken lassen | Labelpilot.de",
     description:
       "PP-Rollenetiketten für Kaffeebeutel und Kaffeemarken. Opake Etiketten für wiederkehrende Produktverpackungen in Deutschland.",
     openGraphTitle: "Kaffee-Etiketten drucken",
@@ -387,7 +390,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/gewuerz-etiketten": {
-    title: "Gewürz-Etiketten drucken | Labelpilot.de",
+    title: "Gewürz-Etiketten drucken lassen | Labelpilot.de",
     description:
       "PP-Rollenetiketten für Gewürzgläser, Beutel und Verpackungen. Mit gespeicherten Druckdaten für spätere Nachbestellungen.",
     openGraphTitle: "Gewürz-Etiketten drucken",
@@ -402,7 +405,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/honig-marmelade-etiketten": {
     title: "Honig- und Marmeladenetiketten drucken | Labelpilot.de",
     description:
-      "Transparente und opake PP-Rollenetiketten für Honiggläser, Marmeladengläser und kleine Lebensmittelmarken.",
+      "Transparente und opake PP-Rollenetiketten für Honiggläser, Marmeladengläser und Konservengläser. Mit gespeicherten Druckdaten für schnelle Nachbestellungen.",
     openGraphTitle: "Honig- & Marmeladenetiketten",
     openGraphDescription:
       "PP-Etiketten für Honiggläser & Marmeladen.",
@@ -414,9 +417,9 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/flaschenetiketten": {
-    title: "Flaschenetiketten drucken | Labelpilot.de",
+    title: "Flaschenetiketten drucken lassen | Labelpilot.de",
     description:
-      "Transparente und opake PP-Rollenetiketten für Flaschen, Getränke und Glasverpackungen in Deutschland.",
+      "Transparente und opake PP-Rollenetiketten für Flaschen, Getränke und Glasverpackungen in Deutschland. Wasserfest, CMYK-bedruckt, mit geprüften Druckdaten.",
     openGraphTitle: "Flaschenetiketten drucken",
     openGraphDescription:
       "Transparente & opake PP-Etiketten für Flaschen – B2B.",
@@ -427,9 +430,9 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/ratgeber": {
-    title: "Ratgeber für Etiketten, Materialien und Druckdaten | Labelpilot.de",
+    title: "Ratgeber Etiketten – Materialien & Druckdaten | Labelpilot.de",
     description:
-      "Vergleiche, Schritt-für-Schritt-Erklärungen und Kaufhilfen zu PP-Rollenetiketten, Materialwahl, Mengen und Druckdaten.",
+      "Vergleiche, Schritt-für-Schritt-Erklärungen und Kaufhilfen zu PP-Rollenetiketten. Themen: Materialwahl, Mengenplanung, Druckdaten und Veredelung für B2B-Marken.",
     openGraphTitle: "Ratgeber Etiketten | Labelpilot",
     openGraphDescription:
       "Fachwissen zu Material, Druckdaten & Veredelung für Marken.",
@@ -454,7 +457,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/ratgeber/lebensmittelkennzeichnung-pflichtangaben": {
-    title: "Lebensmittelkennzeichnung: Pflichtangaben nach LMIV | Labelpilot.de",
+    title: "LMIV-Pflichtangaben für Lebensmitteletiketten | Labelpilot.de",
     description:
       "Welche Pflichtangaben nach LMIV auf ein Lebensmitteletikett gehören: Bezeichnung, Zutaten, Allergene, Nährwerte, MHD und Mindestschriftgröße – als praktische Checkliste.",
     openGraphTitle: "LMIV-Pflichtangaben für Lebensmitteletiketten",
@@ -471,7 +474,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/ratgeber/pp-etiketten-materialvergleich": {
     title: "PP, PE und PET: Etikettenfolien im Vergleich | Labelpilot.de",
     description:
-      "PP, PE und PET im Vergleich: Beständigkeit, Flexibilität und Einsatz der Folienmaterialien für Etiketten – und warum PP für die meisten Produktverpackungen die beste Wahl ist.",
+      "PP, PE und PET im Vergleich: Beständigkeit, Flexibilität und Einsatz für Etiketten – und warum PP für die meisten Produktverpackungen die beste Wahl ist.",
     openGraphTitle: "PP vs. PE vs. PET – Etikettenfolien im Vergleich",
     openGraphDescription:
       "Folienmaterialien für Etiketten: Eigenschaften und Einsatz von PP, PE & PET.",
@@ -486,7 +489,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/ratgeber/druckdaten-rollenetiketten": {
     title: "Druckdaten für Rollenetiketten vorbereiten | Labelpilot.de",
     description:
-      "Druckdaten für Rollenetiketten richtig anlegen: Beschnitt, Stanzkontur, 300 dpi, CMYK und Weißunterdruck bei transparentem PP. Checkliste für eine reibungslose Produktion.",
+      "Rollenetiketten-Druckdaten richtig anlegen: Beschnitt, Stanzkontur, 300 dpi, CMYK und Weißunterdruck bei transparentem PP – Checkliste für die Produktion.",
     openGraphTitle: "Druckdaten für Rollenetiketten vorbereiten",
     openGraphDescription:
       "Beschnitt, Stanzkontur, CMYK & Weißunterdruck – Checkliste für Rollenetiketten.",
@@ -499,7 +502,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/ratgeber/rollenetiketten-startups-kleinauflage": {
-    title: "Rollenetiketten für Startups: kleine Auflage planen | Labelpilot.de",
+    title: "Rollenetiketten für Startups: Auflage wählen | Labelpilot.de",
     description:
       "1.000 oder 5.000 Etiketten? Mengenvergleich für junge Produktmarken: Stückpreis, Lagerrisiko und einmalige Artwork-Investition – mit klarer Empfehlung.",
     openGraphTitle: "Rollenetiketten für Startups – welche Auflage?",
@@ -516,7 +519,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/ratgeber/transparente-vs-opake-etiketten": {
     title: "Transparente vs. opake Etiketten | Labelpilot.de",
     description:
-      "Vergleich transparenter und opaker PP-Etiketten für Flaschen, Gläser, Dosen und Produktverpackungen.",
+      "Transparente oder opake PP-Etiketten? Vergleich für Flaschen, Gläser und Dosen – mit klarer Empfehlung für verschiedene Branchen und Verpackungsarten.",
     openGraphTitle: "Transparent vs. opak – PP-Etiketten",
     openGraphDescription:
       "Welche Folie passt zur Verpackung? Vergleich mit Empfehlung.",
@@ -544,7 +547,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/ratgeber/druckdaten-vorbereiten": {
     title: "Druckdaten für Etiketten vorbereiten | Labelpilot.de",
     description:
-      "So bereiten Sie Druckdaten für PP-Rollenetiketten vor. Formate, Beschnitt, Proof und technische Dateiprüfung erklärt.",
+      "Druckdaten für PP-Rollenetiketten vorbereiten: akzeptierte Formate, Farbmodus CMYK, Beschnitt und Proof-Freigabe Schritt für Schritt erklärt.",
     openGraphTitle: "Druckdaten vorbereiten",
     openGraphDescription:
       "Formate, Beschnitt & Proof – Schritt für Schritt für Etiketten.",
@@ -559,7 +562,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/glossar": {
     title: "Glossar für Etikettenbegriffe | Labelpilot.de",
     description:
-      "Kurze, AI-lesbare Erklärungen zu Begriffen rund um PP-Rollenetiketten, Druckdaten, Proof und Nachbestellung.",
+      "Erklärungen zu Fachbegriffen rund um PP-Rollenetiketten, Druckdaten, Proof und Nachbestellung – kompakt und AI-lesbar für Einkäufer und Produktmarken.",
     openGraphTitle: "Glossar | Labelpilot.de",
     openGraphDescription:
       "Etikettenbegriffe von A–Z: Proof, Beschnitt, CMYK & mehr.",
@@ -570,9 +573,9 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/glossar/pp-etiketten": {
-    title: "Was sind PP-Etiketten? | Labelpilot.de",
+    title: "Was sind PP-Etiketten? Erklärung & Einsatz | Labelpilot.de",
     description:
-      "PP-Etiketten kurz erklärt: Material, Einsatzbereiche und Relevanz für Produktverpackungen und Rollenetiketten.",
+      "PP-Etiketten kurz erklärt: Polypropylenfolie für Produktverpackungen – wasserfest, reißfest und geeignet für Lebensmittel, Getränke und Supplemente.",
     openGraphTitle: "Was sind PP-Etiketten?",
     openGraphDescription:
       "PP-Etiketten kurz erklärt – Material, Einsatz & Vorteile.",
@@ -614,9 +617,9 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/glossar/proof": {
-    title: "Was ist ein Proof? | Labelpilot.de",
+    title: "Was ist ein Proof bei Etiketten? | Labelpilot.de",
     description:
-      "Proof kurz erklärt: Warum die Freigabe vor Produktion wichtig ist und wie sie spätere Nachbestellungen absichert.",
+      "Proof kurz erklärt: Die Druckfreigabe vor der Produktion – warum sie wichtig ist, wie sie abläuft und wie sie spätere Nachbestellungen absichert.",
     openGraphTitle: "Was ist ein Proof?",
     openGraphDescription:
       "Druckfreigabe erklärt – warum der Proof Produktion sichert.",
@@ -624,9 +627,9 @@ export const metadataMap: Record<string, MetadataEntry> = {
     keywords: ["Proof Etiketten", "Druckfreigabe Etiketten"],
   },
   "/de/glossar/beschnitt": {
-    title: "Was ist Beschnitt? | Labelpilot.de",
+    title: "Was ist Beschnitt bei Etiketten? | Labelpilot.de",
     description:
-      "Beschnitt kurz erklärt: warum ein Sicherheitsrand in Druckdaten wichtig ist und wie er unsaubere Kanten verhindert.",
+      "Beschnitt kurz erklärt: warum ein Sicherheitsrand in Druckdaten nötig ist, wie er angelegt wird und wie er unsaubere Schnittkanten verhindert.",
     openGraphTitle: "Was ist Beschnitt?",
     openGraphDescription:
       "Beschnitt in Druckdaten – für saubere Kanten bei Etiketten.",
@@ -634,7 +637,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
     keywords: ["Beschnitt Druckdaten", "Beschnitt Etiketten", "Anschnitt Etiketten"],
   },
   "/de/glossar/druckdaten": {
-    title: "Was sind Druckdaten? | Labelpilot.de",
+    title: "Was sind Druckdaten für Etiketten? | Labelpilot.de",
     description:
       "Druckdaten kurz erklärt: welche Dateien für Etiketten gemeint sind und warum sie für Proof, Freigabe und Nachbestellung wichtig bleiben.",
     openGraphTitle: "Was sind Druckdaten?",
@@ -646,7 +649,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/glossar/nachbestellung": {
     title: "Was bedeutet Nachbestellung bei Etiketten? | Labelpilot.de",
     description:
-      "Nachbestellung kurz erklärt: warum gespeicherte Druckdaten, Material und Größe spätere Abrufe beschleunigen.",
+      "Nachbestellung kurz erklärt: wie gespeicherte Druckdaten, Material und Maß spätere Auftragsabrufe beschleunigen – und warum das für B2B-Marken wichtig ist.",
     openGraphTitle: "Was ist Nachbestellung?",
     openGraphDescription:
       "Etiketten schnell erneut bestellen – Druckdaten gespeichert.",
