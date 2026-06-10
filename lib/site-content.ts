@@ -3036,36 +3036,36 @@ const topLevelPages: PublicPageData[] = [
         ],
       },
       {
-        title: “Cookies und Einwilligung”,
+        title: "Cookies und Einwilligung",
         body: [
-          “Technisch notwendige Cookies setzen wir ohne Einwilligung ein, da sie für den Betrieb der Website erforderlich sind (§ 25 Abs. 2 TTDSG, Art. 6 Abs. 1 lit. f DSGVO). Dazu gehören das Speichern Ihrer Cookie-Auswahl sowie Anmelde- und Sicherheitsfunktionen im Kundenkonto.”,
-          “Statistik-Cookies (eigene Reichweitenmessung, Google Analytics 4) und Marketing-Cookies (Google Ads) aktivieren wir ausschließlich mit Ihrer vorherigen Einwilligung (§ 25 Abs. 1 TTDSG, Art. 6 Abs. 1 lit. a DSGVO). Google Analytics und Google Ads sind bis zur Einwilligung vollständig deaktiviert (Google Consent Mode v2).”,
-          “Sie können Ihre Auswahl jederzeit ändern oder widerrufen – über den Link „Cookie-Einstellungen” im Fußbereich der Website. Der Widerruf wirkt für die Zukunft.”,
+          "Technisch notwendige Cookies setzen wir ohne Einwilligung ein, da sie für den Betrieb der Website erforderlich sind (§ 25 Abs. 2 TTDSG, Art. 6 Abs. 1 lit. f DSGVO). Dazu gehören das Speichern Ihrer Cookie-Auswahl sowie Anmelde- und Sicherheitsfunktionen im Kundenkonto.",
+          "Statistik-Cookies (eigene Reichweitenmessung, Google Analytics 4) und Marketing-Cookies (Google Ads) aktivieren wir ausschließlich mit Ihrer vorherigen Einwilligung (§ 25 Abs. 1 TTDSG, Art. 6 Abs. 1 lit. a DSGVO). Google Analytics und Google Ads sind bis zur Einwilligung vollständig deaktiviert (Google Consent Mode v2).",
+          "Sie können Ihre Auswahl jederzeit ändern oder widerrufen – über den Link „Cookie-Einstellungen” im Fußbereich der Website. Der Widerruf wirkt für die Zukunft.",
         ],
       },
       {
-        title: “Eigene Reichweitenmessung (Statistik)”,
+        title: "Eigene Reichweitenmessung (Statistik)",
         body: [
-          “Mit Ihrer Einwilligung führen wir eine anonymisierte, eigene Reichweitenmessung durch. Dabei wird im Browser eine zufällige Besucher-Kennung (Cookie „lp_vid”) gespeichert, um Seitenaufrufe und die Herkunft (z. B. Kampagnen-Parameter) zu erfassen und die Website zu verbessern.”,
-          “Wir speichern dabei keine vollständige IP-Adresse. Es wird lediglich ein grobes Herkunftsland sowie eine grobe Geräteklasse (Desktop, Tablet, Mobil) verarbeitet. Die Daten werden ausschließlich auf unseren eigenen Servern (Supabase) gespeichert.”,
-          “Ohne Ihre Einwilligung findet keine eigene Statistik-Erfassung statt; die Besucher-Kennung wird dann nicht gesetzt und bei einem Widerruf gelöscht.”,
+          "Mit Ihrer Einwilligung führen wir eine anonymisierte, eigene Reichweitenmessung durch. Dabei wird im Browser eine zufällige Besucher-Kennung (Cookie „lp_vid”) gespeichert, um Seitenaufrufe und die Herkunft (z. B. Kampagnen-Parameter) zu erfassen und die Website zu verbessern.",
+          "Wir speichern dabei keine vollständige IP-Adresse. Es wird lediglich ein grobes Herkunftsland sowie eine grobe Geräteklasse (Desktop, Tablet, Mobil) verarbeitet. Die Daten werden ausschließlich auf unseren eigenen Servern (Supabase) gespeichert.",
+          "Ohne Ihre Einwilligung findet keine eigene Statistik-Erfassung statt; die Besucher-Kennung wird dann nicht gesetzt und bei einem Widerruf gelöscht.",
         ],
       },
       {
-        title: “Google Analytics 4 (Statistik)”,
+        title: "Google Analytics 4 (Statistik)",
         body: [
-          “Mit Ihrer Einwilligung nutzen wir Google Analytics 4, einen Webanalysedienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland (bzw. Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA).”,
-          “Google Analytics setzt Cookies und erfasst anonymisierte Nutzungsdaten wie Seitenaufrufe, Verweildauer, Absprungraten und Gerätetyp. Die IP-Adresse wird vor der Übermittlung an Google anonymisiert (IP-Anonymisierung aktiv). Eine Zusammenführung der erfassten Daten mit anderen Google-Diensten ohne Ihre gesonderte Einwilligung erfolgt nicht.”,
-          “Wir verwenden Google Consent Mode v2: Solange keine Einwilligung für Statistik-Cookies erteilt wurde, ist Google Analytics vollständig deaktiviert – es werden weder Cookies gesetzt noch Daten übertragen. Rechtsgrundlage der Verarbeitung ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TTDSG).”,
-          “Daten können in die USA übermittelt werden; die Übermittlung erfolgt auf Grundlage der EU-Standardvertragsklauseln (Art. 46 DSGVO). Datenschutzerklärung von Google: policies.google.com/privacy. Sie können die Datenerhebung durch Google Analytics jederzeit über die Cookie-Einstellungen im Fußbereich widerrufen.”,
+          "Mit Ihrer Einwilligung nutzen wir Google Analytics 4, einen Webanalysedienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland (bzw. Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA).",
+          "Google Analytics setzt Cookies und erfasst anonymisierte Nutzungsdaten wie Seitenaufrufe, Verweildauer, Absprungraten und Gerätetyp. Die IP-Adresse wird vor der Übermittlung an Google anonymisiert (IP-Anonymisierung aktiv). Eine Zusammenführung der erfassten Daten mit anderen Google-Diensten ohne Ihre gesonderte Einwilligung erfolgt nicht.",
+          "Wir verwenden Google Consent Mode v2: Solange keine Einwilligung für Statistik-Cookies erteilt wurde, ist Google Analytics vollständig deaktiviert – es werden weder Cookies gesetzt noch Daten übertragen. Rechtsgrundlage der Verarbeitung ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TTDSG).",
+          "Daten können in die USA übermittelt werden; die Übermittlung erfolgt auf Grundlage der EU-Standardvertragsklauseln (Art. 46 DSGVO). Datenschutzerklärung von Google: policies.google.com/privacy. Sie können die Datenerhebung durch Google Analytics jederzeit über die Cookie-Einstellungen im Fußbereich widerrufen.",
         ],
       },
       {
-        title: “Google Ads und Konversionsmessung (Marketing)”,
+        title: "Google Ads und Konversionsmessung (Marketing)",
         body: [
-          “Mit Ihrer Einwilligung nutzen wir Google Ads, einen Werbe- und Konversionsmessdienst von Google Ireland Limited (Adresse siehe oben). Google Ads ermöglicht uns zu messen, welche Werbekampagnen zu Anfragen oder Bestellungen auf Labelpilot.de geführt haben.”,
-          “Dabei kann Google einen Cookie im Browser setzen, wenn Sie über eine Google-Anzeige auf unsere Website gelangen. Dieser Cookie ermöglicht keine persönliche Identifikation. Er dient ausschließlich der anonymisierten Auswertung, ob eine Conversion stattgefunden hat.”,
-          “Wir verwenden Google Consent Mode v2: Ohne Ihre Einwilligung für Marketing-Cookies werden keine Daten an Google Ads übertragen. Rechtsgrundlage ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TTDSG). Sie können die Einwilligung jederzeit über die Cookie-Einstellungen im Fußbereich widerrufen. Weitere Informationen sowie die Möglichkeit, personalisierte Werbung bei Google zu deaktivieren: adssettings.google.com.”,
+          "Mit Ihrer Einwilligung nutzen wir Google Ads, einen Werbe- und Konversionsmessdienst von Google Ireland Limited (Adresse siehe oben). Google Ads ermöglicht uns zu messen, welche Werbekampagnen zu Anfragen oder Bestellungen auf Labelpilot.de geführt haben.",
+          "Dabei kann Google einen Cookie im Browser setzen, wenn Sie über eine Google-Anzeige auf unsere Website gelangen. Dieser Cookie ermöglicht keine persönliche Identifikation. Er dient ausschließlich der anonymisierten Auswertung, ob eine Conversion stattgefunden hat.",
+          "Wir verwenden Google Consent Mode v2: Ohne Ihre Einwilligung für Marketing-Cookies werden keine Daten an Google Ads übertragen. Rechtsgrundlage ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TTDSG). Sie können die Einwilligung jederzeit über die Cookie-Einstellungen im Fußbereich widerrufen. Weitere Informationen sowie die Möglichkeit, personalisierte Werbung bei Google zu deaktivieren: adssettings.google.com.",
         ],
       },
       {
@@ -3097,9 +3097,8 @@ const topLevelPages: PublicPageData[] = [
       {
         title: "Geltungsbereich und Vertragspartner",
         body: [
-          "Diese Allgemeinen Geschäftsbedingungen gelten für alle Bestellungen über Labelpilot.de.",
+          "Diese Allgemeinen Geschäftsbedingungen gelten ausschließlich gegenüber Unternehmern im Sinne des § 14 BGB, d. h. natürlichen oder juristischen Personen oder rechtsfähigen Personengesellschaften, die beim Abschluss des Rechtsgeschäfts in Ausübung ihrer gewerblichen oder selbständigen beruflichen Tätigkeit handeln. Ein Vertragsschluss mit Verbrauchern im Sinne des § 13 BGB ist ausgeschlossen.",
           "Vertragspartnerin ist Zhenkai Global Trading Limited (Anschrift siehe Impressum). Produktion und Versand erfolgen über unseren Export- und Logistikpartner in der Türkei.",
-          "Das Angebot richtet sich an Verbraucher und Unternehmer.",
         ],
       },
       {
@@ -3128,7 +3127,7 @@ const topLevelPages: PublicPageData[] = [
         body: [
           "Die Lieferung erfolgt ausschließlich innerhalb Deutschlands. Der Versand erfolgt aus der Türkei per DHL- oder UPS-Luftfracht.",
           "Die Lieferung erfolgt DDP (Delivered Duty Paid): Einfuhrumsatzsteuer und etwaige Zollabgaben sind im Preis enthalten; bei der Zustellung entstehen keine zusätzlichen Kosten.",
-          "Die Lieferzeit beträgt in der Regel ca. 10–14 Werktage nach Ihrer Freigabe. Dies ist eine Orientierungsangabe, keine verbindliche Zustellgarantie.",
+          "Die Lieferzeit beträgt typisch 15–20 Werktage ab Zahlungseingang (Produktion und Versand zusammen). Dies ist eine Orientierungsangabe, keine verbindliche Zustellgarantie.",
         ],
       },
       {
@@ -3152,9 +3151,10 @@ const topLevelPages: PublicPageData[] = [
         ],
       },
       {
-        title: "Widerruf",
+        title: "Kein Widerrufsrecht",
         body: [
-          "Bei individuell nach Kundenvorgaben angefertigten Produkten besteht kein Widerrufsrecht. Für nicht individualisierte Standardprodukte gilt für Verbraucher das gesetzliche Widerrufsrecht. Einzelheiten finden Sie auf der Seite \"Widerruf und Sonderanfertigungen\".",
+          "Da alle Verträge ausschließlich mit Unternehmern i.S.d. § 14 BGB geschlossen werden, findet das gesetzliche Verbraucher-Widerrufsrecht (§§ 355 ff. BGB) keine Anwendung.",
+          "Darüber hinaus handelt es sich bei allen bedruckten Produkten um Sonderanfertigungen nach § 312g Abs. 2 Nr. 1 BGB, die nach Kundenspezifikation hergestellt werden und nicht für die Rücksendung geeignet sind.",
         ],
       },
       {
@@ -3167,7 +3167,8 @@ const topLevelPages: PublicPageData[] = [
       {
         title: "Schlussbestimmungen",
         body: [
-          "Es gilt das Recht der Bundesrepublik Deutschland. Zwingende Verbraucherschutzvorschriften des Staates, in dem der Verbraucher seinen gewöhnlichen Aufenthalt hat, bleiben unberührt.",
+          "Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts (CISG).",
+          "Gerichtsstand für alle Streitigkeiten aus Verträgen mit Kaufleuten, juristischen Personen des öffentlichen Rechts oder öffentlich-rechtlichen Sondervermögen ist nach Wahl der Verkäuferin der Sitz der Verkäuferin oder der Sitz des Käufers.",
           "Sollte eine Bestimmung unwirksam sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.",
         ],
       },
@@ -3213,45 +3214,30 @@ const topLevelPages: PublicPageData[] = [
     path: "/de/widerruf",
     slug: "widerruf",
     kind: "legal",
-    title: "Widerruf und Sonderanfertigungen",
+    title: "Kein Widerrufsrecht – B2B-Bestellungen",
     eyebrow: "Rechtliches",
-    lead: "Informationen zu Widerruf, Sonderanfertigungen, individuellen Druckprodukten und Reklamationen.",
+    lead: "Informationen zum Ausschluss des Widerrufsrechts bei B2B-Bestellungen und zu Ihren Gewährleistungsrechten bei Mängeln.",
     sidebarTitle: "",
     sidebarBullets: [],
     sections: [
       {
+        title: "Kein Widerrufsrecht für Unternehmer",
+        body: [
+          "Labelpilot.de richtet sich ausschließlich an Unternehmer im Sinne des § 14 BGB. Das gesetzliche Verbraucher-Widerrufsrecht nach §§ 355 ff. BGB findet daher keine Anwendung.",
+        ],
+      },
+      {
         title: "Kein Widerrufsrecht bei Sonderanfertigungen",
         body: [
-          "Unsere individuell nach Ihren Vorgaben bedruckten Etiketten sind Sonderanfertigungen. Das Widerrufsrecht ist gemäß § 312g Abs. 2 Nr. 1 BGB ausgeschlossen, da die Ware nach Kundenspezifikation angefertigt und eindeutig auf Ihre persönlichen Bedürfnisse zugeschnitten ist.",
+          "Darüber hinaus handelt es sich bei allen bedruckten Etiketten um Sonderanfertigungen nach § 312g Abs. 2 Nr. 1 BGB: Die Ware wird nach Ihren individuellen Druckdaten und Spezifikationen hergestellt und ist nicht für eine anderweitige Verwendung geeignet.",
           "Mit Ihrer Druckfreigabe stimmen Sie dem Beginn der Produktion ausdrücklich zu.",
         ],
       },
       {
-        title: "Widerrufsrecht für Standardprodukte (Verbraucher)",
+        title: "Gewährleistung und Reklamationen",
         body: [
-          "Soweit Sie Verbraucher sind und ein nicht individualisiertes Standardprodukt (z. B. eine Musterbox) bestellen, steht Ihnen ein gesetzliches Widerrufsrecht zu.",
-          "Widerrufsfrist: vierzehn Tage ab dem Tag, an dem Sie oder ein von Ihnen benannter Dritter die Ware in Besitz genommen haben.",
-          "Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Zhenkai Global Trading Limited, kontakt@labelpilot.de) mittels einer eindeutigen Erklärung über Ihren Entschluss informieren. Zur Wahrung der Frist genügt die rechtzeitige Absendung der Mitteilung.",
-          "Folgen des Widerrufs: Im Falle eines wirksamen Widerrufs erstatten wir alle erhaltenen Zahlungen unverzüglich, spätestens binnen vierzehn Tagen.",
-        ],
-      },
-      {
-        title: "Muster-Widerrufsformular",
-        body: [
-          "(Wenn Sie den Vertrag widerrufen wollen, füllen Sie bitte dieses Formular aus und senden Sie es zurück.)",
-          "An: Zhenkai Global Trading Limited, kontakt@labelpilot.de",
-          "Hiermit widerrufe(n) ich/wir den von mir/uns abgeschlossenen Vertrag über den Kauf der folgenden Waren:",
-          "Bestellt am / erhalten am: __________",
-          "Name des/der Verbraucher(s): __________",
-          "Anschrift des/der Verbraucher(s): __________",
-          "Datum und Unterschrift (nur bei Mitteilung auf Papier): __________",
-        ],
-      },
-      {
-        title: "Reklamationen und Mängel",
-        body: [
-          "Unabhängig vom Widerrufsrecht bestehen Ihre gesetzlichen Gewährleistungsrechte bei Mängeln der Ware.",
-          "Reklamationen richten Sie bitte unter Angabe Ihrer Bestellnummer an kontakt@labelpilot.de.",
+          "Unberührt bleiben Ihre gesetzlichen Gewährleistungsrechte bei Mängeln der gelieferten Ware (§§ 434 ff. BGB).",
+          "Reklamationen richten Sie bitte unter Angabe Ihrer Bestellnummer und Fotos des Mangels an kontakt@labelpilot.de.",
         ],
       },
     ],
