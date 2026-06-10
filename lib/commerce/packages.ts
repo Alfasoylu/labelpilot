@@ -75,9 +75,18 @@ export const PACKAGES: CommercePackage[] = [
     label: "Serie",
     grossAmountCents: 101031,
   },
+  {
+    id: "test-email-10-eur",
+    productSlug: "opake-pp-etiketten",
+    material: "OPAQUE",
+    quantity: 1,
+    label: "Interner E-Mail-Test",
+    grossAmountCents: 1000,
+  },
 ];
 
 const expectedGrossCentsById: Record<string, number> = {
+  "test-email-10-eur": 1000,
   "opaque-pp-100x200-1000": 21301,
   "opaque-pp-100x200-2000": 33201,
   "opaque-pp-100x200-5000": 57001,
