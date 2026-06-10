@@ -1228,11 +1228,7 @@ function GlossaryPage({ page, canonicalPath }: DynamicPageProps) {
       />
 
       {page.glossaryData ? (
-        <Section
-          eyebrow="Definition"
-          title="Der Begriff in einer klaren, AI-lesbaren Struktur"
-          lead="Glossar-Seiten bleiben knapp, aber wirken jetzt wie bewusst gestaltete Definitionsseiten statt wie Textfragmente."
-        >
+        <Section eyebrow="Definition">
           <div className="card-grid">
             <article className="feature-card">
               <h3>Definition</h3>
@@ -1253,8 +1249,7 @@ function GlossaryPage({ page, canonicalPath }: DynamicPageProps) {
 
       <Section
         eyebrow="Einordnung"
-        title="Sichtbare Erklärung auf der Seite"
-        lead="Die Definition bleibt auf der Seite sichtbar und stimmt mit der Structured-Data-Ebene überein."
+        title="Bedeutung und Einsatz"
       >
         <FeatureGrid items={buildFeatureItemsFromSections(page)} />
       </Section>
@@ -1262,8 +1257,7 @@ function GlossaryPage({ page, canonicalPath }: DynamicPageProps) {
       {page.relatedLinks?.length ? (
         <Section
           eyebrow="Weiter zur passenden Produkt- oder Guide-Seite"
-          title="Glossar endet nicht im Leerlauf"
-          lead="Auch kurze Definitionsseiten führen in die relevanten kommerziellen und erklärenden Inhalte zurück."
+          title="Passende Seiten"
         >
           <RelatedLinks links={page.relatedLinks} />
         </Section>
@@ -1290,7 +1284,6 @@ function HubPage({ page, canonicalPath }: DynamicPageProps) {
         <Section
           eyebrow="Hub"
           title="Alle relevanten Unterseiten auf einen Blick"
-          lead="Die Hub-Seiten werden als klare Wissensnavigation gestaltet und bleiben Teil von Nav, Sitemap und internem Linkgraph."
         >
           <RelatedLinks links={page.hubLinks} />
         </Section>
@@ -1298,20 +1291,19 @@ function HubPage({ page, canonicalPath }: DynamicPageProps) {
 
       <Section
         eyebrow="Orientierung"
-        title="Warum diese Hub-Seite existiert"
-        lead="Ratgeber und Glossar werden nicht versteckt, sondern als bewusst gestaltete Einstiegspunkte gezeigt."
+        title="Mehr erfahren"
       >
         <FeatureGrid items={buildFeatureItemsFromSections(page)} />
       </Section>
 
       {page.faqs?.length ? (
-        <Section eyebrow="FAQ" title="Häufige Fragen zum Hub" lead="Die sichtbaren Kurzantworten bleiben erhalten.">
+        <Section eyebrow="FAQ" title="Häufige Fragen">
           <FaqAccordion faqs={page.faqs} />
         </Section>
       ) : null}
 
       {page.relatedLinks?.length ? (
-        <Section eyebrow="Weiterführend" title="Verknüpfte kommerzielle Seiten" lead="Die Hubs bleiben mit Produkt- und Service-Seiten verbunden und verlieren keine SEO-Funktion.">
+        <Section eyebrow="Weiterführend" title="Verwandte Themen">
           <RelatedLinks links={page.relatedLinks} />
         </Section>
       ) : null}
