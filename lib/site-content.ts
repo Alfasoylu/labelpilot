@@ -2902,24 +2902,41 @@ const topLevelPages: PublicPageData[] = [
       {
         title: "Übermittlung in Drittländer",
         body: [
-          "Eine Verarbeitung findet unter anderem in den USA (Vercel, Amazon Web Services, Stripe) sowie in Hongkong (Verantwortlicher) statt.",
-          "Soweit erforderlich, erfolgt die Übermittlung auf Grundlage geeigneter Garantien, insbesondere der Standardvertragsklauseln der EU-Kommission (Art. 46 DSGVO).",
+          "Eine Verarbeitung findet unter anderem in den USA (Vercel, Amazon Web Services, Stripe, Google LLC) sowie in Hongkong (Verantwortlicher) statt.",
+          "Soweit erforderlich, erfolgt die Übermittlung auf Grundlage geeigneter Garantien, insbesondere der Standardvertragsklauseln der EU-Kommission (Art. 46 DSGVO). Bei Google Analytics und Google Ads erfolgt die Übermittlung nur bei erteilter Einwilligung.",
         ],
       },
       {
-        title: "Cookies und Einwilligung",
+        title: “Cookies und Einwilligung”,
         body: [
-          "Technisch notwendige Cookies setzen wir ohne Einwilligung ein, da sie für den Betrieb der Website erforderlich sind (§ 25 Abs. 2 TTDSG, Art. 6 Abs. 1 lit. f DSGVO). Dazu gehören das Speichern Ihrer Cookie-Auswahl sowie Anmelde- und Sicherheitsfunktionen im Kundenkonto.",
-          "Zusätzliche Statistik-Funktionen aktivieren wir ausschließlich mit Ihrer vorherigen Einwilligung (§ 25 Abs. 1 TTDSG, Art. 6 Abs. 1 lit. a DSGVO). Beim ersten Besuch können Sie im Banner zustimmen oder ablehnen.",
-          "Sie können Ihre Auswahl jederzeit ändern oder widerrufen – über den Link „Cookie-Einstellungen“ im Fußbereich der Website. Der Widerruf wirkt für die Zukunft.",
+          “Technisch notwendige Cookies setzen wir ohne Einwilligung ein, da sie für den Betrieb der Website erforderlich sind (§ 25 Abs. 2 TTDSG, Art. 6 Abs. 1 lit. f DSGVO). Dazu gehören das Speichern Ihrer Cookie-Auswahl sowie Anmelde- und Sicherheitsfunktionen im Kundenkonto.”,
+          “Statistik-Cookies (eigene Reichweitenmessung, Google Analytics 4) und Marketing-Cookies (Google Ads) aktivieren wir ausschließlich mit Ihrer vorherigen Einwilligung (§ 25 Abs. 1 TTDSG, Art. 6 Abs. 1 lit. a DSGVO). Google Analytics und Google Ads sind bis zur Einwilligung vollständig deaktiviert (Google Consent Mode v2).”,
+          “Sie können Ihre Auswahl jederzeit ändern oder widerrufen – über den Link „Cookie-Einstellungen” im Fußbereich der Website. Der Widerruf wirkt für die Zukunft.”,
         ],
       },
       {
-        title: "Reichweitenmessung (Statistik)",
+        title: “Eigene Reichweitenmessung (Statistik)”,
         body: [
-          "Mit Ihrer Einwilligung führen wir eine anonyme, eigene Reichweitenmessung durch (kein Drittanbieter-Tracking). Dabei wird im Browser eine zufällige Besucher-Kennung (Cookie „lp_vid“) gespeichert, um Seitenaufrufe und die Herkunft (z. B. Kampagnen-Parameter) zu erfassen und die Website zu verbessern.",
-          "Wir speichern dabei keine vollständige IP-Adresse. Es wird lediglich ein grobes Herkunftsland sowie eine grobe Geräteklasse (Desktop, Tablet, Mobil) verarbeitet.",
-          "Ohne Ihre Einwilligung findet keine Statistik-Erfassung statt; die Besucher-Kennung wird dann nicht gesetzt und bei einem Widerruf gelöscht.",
+          “Mit Ihrer Einwilligung führen wir eine anonymisierte, eigene Reichweitenmessung durch. Dabei wird im Browser eine zufällige Besucher-Kennung (Cookie „lp_vid”) gespeichert, um Seitenaufrufe und die Herkunft (z. B. Kampagnen-Parameter) zu erfassen und die Website zu verbessern.”,
+          “Wir speichern dabei keine vollständige IP-Adresse. Es wird lediglich ein grobes Herkunftsland sowie eine grobe Geräteklasse (Desktop, Tablet, Mobil) verarbeitet. Die Daten werden ausschließlich auf unseren eigenen Servern (Supabase) gespeichert.”,
+          “Ohne Ihre Einwilligung findet keine eigene Statistik-Erfassung statt; die Besucher-Kennung wird dann nicht gesetzt und bei einem Widerruf gelöscht.”,
+        ],
+      },
+      {
+        title: “Google Analytics 4 (Statistik)”,
+        body: [
+          “Mit Ihrer Einwilligung nutzen wir Google Analytics 4, einen Webanalysedienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland (bzw. Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA).”,
+          “Google Analytics setzt Cookies und erfasst anonymisierte Nutzungsdaten wie Seitenaufrufe, Verweildauer, Absprungraten und Gerätetyp. Die IP-Adresse wird vor der Übermittlung an Google anonymisiert (IP-Anonymisierung aktiv). Eine Zusammenführung der erfassten Daten mit anderen Google-Diensten ohne Ihre gesonderte Einwilligung erfolgt nicht.”,
+          “Wir verwenden Google Consent Mode v2: Solange keine Einwilligung für Statistik-Cookies erteilt wurde, ist Google Analytics vollständig deaktiviert – es werden weder Cookies gesetzt noch Daten übertragen. Rechtsgrundlage der Verarbeitung ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TTDSG).”,
+          “Daten können in die USA übermittelt werden; die Übermittlung erfolgt auf Grundlage der EU-Standardvertragsklauseln (Art. 46 DSGVO). Datenschutzerklärung von Google: policies.google.com/privacy. Sie können die Datenerhebung durch Google Analytics jederzeit über die Cookie-Einstellungen im Fußbereich widerrufen.”,
+        ],
+      },
+      {
+        title: “Google Ads und Konversionsmessung (Marketing)”,
+        body: [
+          “Mit Ihrer Einwilligung nutzen wir Google Ads, einen Werbe- und Konversionsmessdienst von Google Ireland Limited (Adresse siehe oben). Google Ads ermöglicht uns zu messen, welche Werbekampagnen zu Anfragen oder Bestellungen auf Labelpilot.de geführt haben.”,
+          “Dabei kann Google einen Cookie im Browser setzen, wenn Sie über eine Google-Anzeige auf unsere Website gelangen. Dieser Cookie ermöglicht keine persönliche Identifikation. Er dient ausschließlich der anonymisierten Auswertung, ob eine Conversion stattgefunden hat.”,
+          “Wir verwenden Google Consent Mode v2: Ohne Ihre Einwilligung für Marketing-Cookies werden keine Daten an Google Ads übertragen. Rechtsgrundlage ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TTDSG). Sie können die Einwilligung jederzeit über die Cookie-Einstellungen im Fußbereich widerrufen. Weitere Informationen sowie die Möglichkeit, personalisierte Werbung bei Google zu deaktivieren: adssettings.google.com.”,
         ],
       },
       {
