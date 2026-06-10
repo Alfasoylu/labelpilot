@@ -179,6 +179,20 @@ export const metadataMap: Record<string, MetadataEntry> = {
       "Spirituosen Etiketten",
     ],
   },
+  "/de/bieretiketten-drucken": {
+    title: "Bieretiketten drucken lassen – PP wasserfest | Labelpilot.de",
+    description:
+      "Bieretiketten drucken lassen auf wasserfestem PP – hält im Eiseimer und Kühlregal. Für Craft-Brauereien und Kleinbrauereien ab 1.000 Stück mit einfacher Nachbestellung.",
+    openGraphTitle: "Bieretiketten drucken lassen",
+    openGraphDescription:
+      "Wasserfeste PP-Bieretiketten für Flasche und Eiseimer – transparent oder opak.",
+    keywords: [
+      "Bieretiketten drucken",
+      "Bieretiketten drucken lassen",
+      "Craft Beer Etiketten",
+      "Brauerei Etiketten",
+    ],
+  },
   "/de/barcode-etiketten": {
     title: "Barcode-Etiketten drucken lassen – EAN & GTIN | Labelpilot.de",
     description:

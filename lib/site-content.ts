@@ -1584,6 +1584,11 @@ const topLevelPages: PublicPageData[] = [
         description: "PP-Etiketten für Wein-, Sekt- und Spirituosenflaschen.",
       },
       {
+        label: "Bieretiketten drucken",
+        href: "/de/bieretiketten-drucken",
+        description: "Wasserfeste PP-Etiketten für Bierflaschen und Eiseimer.",
+      },
+      {
         label: "Getränke-Etiketten",
         href: "/de/getraenke-etiketten",
         description: "Branchenseite für Getränke- und Flaschenmarken.",
@@ -1682,6 +1687,130 @@ const topLevelPages: PublicPageData[] = [
         label: "Flaschenetiketten drucken",
         href: "/de/flaschenetiketten-drucken",
         description: "PP-Etiketten für Getränke-, Öl- und Sirupflaschen.",
+      },
+      {
+        label: "Bieretiketten drucken",
+        href: "/de/bieretiketten-drucken",
+        description: "Wasserfeste PP-Etiketten für Bierflaschen und Eiseimer.",
+      },
+      {
+        label: "Getränke-Etiketten",
+        href: "/de/getraenke-etiketten",
+        description: "Branchenseite für Getränke- und Flaschenmarken.",
+      },
+      ...guideCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/bieretiketten-drucken",
+    slug: "bieretiketten-drucken",
+    kind: "collection",
+    title: "Bieretiketten drucken lassen",
+    eyebrow: "Bier & Craft Beer",
+    lead:
+      "Bieretiketten drucken lassen – auf PP-Rolle, feuchtigkeitsbeständig für Flasche und Eiseimer. Transparent oder opak, für Craft-Brauereien und Kleinauflagen ab 1.000 Stück mit einfacher Nachbestellung.",
+    heroBullets: [
+      "Feste Pakete ab 179 € netto (1.000 Stück), 5.000 Stück für 479 € netto – inkl. Versand nach Deutschland.",
+      "PP-Folie ist wasserfest – hält im Eiseimer, bei Kondenswasser und im Kühllager zuverlässig.",
+      "Für Craft-Brauereien, Saisonbiere und Brauereien mit mehreren Sorten in Wiederholauflagen.",
+    ],
+    sidebarTitle: "Typische Anwendungen",
+    sidebarBullets: [
+      "0,33-l- und 0,5-l-Bierflaschen (Langhals, Bügelverschluss)",
+      "Craft Beer, Spezialbier und Saisonbiere",
+      "Brauereien mit mehreren Sorten und regelmäßigen Nachbestellungen",
+    ],
+    primaryCta: {
+      label: "Jetzt konfigurieren",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: {
+      label: "Musterbox anfordern",
+      href: "/de/musterbox",
+    },
+    sections: [
+      {
+        title: "Warum PP-Folie für Bieretiketten die richtige Wahl ist",
+        body: [
+          "Bierflaschen stehen im Eiseimer, im Kühlregal oder werden mit feuchten Händen aus der Kiste genommen. Papieretiketten weichen bei Feuchtigkeit auf, quellen und lösen sich – PP-Folie nicht.",
+          "PP-Folie ist nicht hygroskopisch: Das Druckbild bleibt auch bei dauerhafter Kondensation scharf, und der Permanentklebstoff hält bei Temperaturen von –20 °C bis +80 °C. Damit ist PP die in der deutschen Brauerei- und Getränkebranche am weitesten verbreitete Etikettenlösung für Flaschen.",
+        ],
+      },
+      {
+        title: "Pflichtangaben auf Bieretiketten in Deutschland",
+        body: [
+          "Für Bier gelten nach der LMIV (Verordnung (EU) Nr. 1169/2011) und der deutschen Lebensmittelkennzeichnungsverordnung mehrere Pflichtangaben: Bezeichnung des Lebensmittels, Zutatenverzeichnis (Wasser, Gerstenmalz, Hopfen, Hefe), Nettofüllmenge, Alkoholgehalt (verpflichtend ab 1,2 Vol.-%), Name und Anschrift des Herstellers oder Abfüllers sowie das Mindesthaltbarkeitsdatum (besonders bei naturtrübem, ungefilterten Bier).",
+          "Seit 2023 ist für alkoholische Getränke über 1,2 Vol.-% schrittweise die Nährwertdeklaration verpflichtend. Getreideallergene (Gerste, Weizen) müssen im Zutatenverzeichnis hervorgehoben werden. Die inhaltliche und rechtliche Verantwortung für alle Pflichtangaben liegt bei Ihnen – wir übernehmen den Druck Ihres freigegebenen Layouts.",
+        ],
+      },
+      {
+        title: "Opak oder transparent: welche Optik passt zum Bier?",
+        body: [
+          "Opakes PP eignet sich für klassische Bieretiketten mit deckenden Flächen, kräftigen Farben und feinen Typografie-Details – passend für traditionelle Brauereien, regionale Markenbiere und Saisonbiere mit klassischer Anmutung.",
+          "Transparentes PP erzeugt den No-Label-Look, der besonders bei hellen Bieren und modernem Craft-Beer-Design eingesetzt wird: Das Glas bleibt sichtbar, Logos und Texte wirken direkt auf der Flasche. Für deckende Farben auf transparentem Material ist Weißunterdruck nötig (kostenpflichtiger Zusatz über Angebot).",
+        ],
+      },
+      {
+        title: "Craft Beer und Kleinbrauereien: Auflagen ab 1.000 Stück",
+        body: [
+          "Laut Deutschem Brauer-Bund (brauer-bund.de) gibt es in Deutschland über 1.500 aktive Brauereien. Ein wachsender Anteil entfällt auf Craft-Brauereien und Spezialitätenanbieter mit kleinen Batches und saisonalen Sondereditions.",
+          "Für diese Betriebe ist die Pilotauflage ab 1.000 Stück der sinnvolle Einstieg: ausreichend für eine Abfüllcharge, klar kalkulierbar, und das gespeicherte Artwork ermöglicht die Nachbestellung ohne erneutes Briefing bei der nächsten Charge.",
+        ],
+      },
+      {
+        title: "Mehrere Sorten und Jahresabschnitte: Nachbestellung für Brauchargen",
+        body: [
+          "Brauereien mit mehreren Biersorten bestellen für jede Sorte ein eigenes Etikett-Artwork. Nach der ersten Freigabe speichert Labelpilot die Druckdaten sortenweise – jede Nachbestellung startet ohne neues Briefing, neue Dateiprüfung oder Farbabstimmung.",
+          "Wer vier bis sechs Auflagen pro Jahr produziert, amortisiert den einmaligen Einrichtungsaufwand schnell und spart bei jeder weiteren Charge Zeit und Koordinationsaufwand.",
+        ],
+      },
+    ],
+    table: {
+      title: "PP-Bieretiketten: opak oder transparent?",
+      lead: "Welche Materialvariante zu welchem Brauerei- und Designtyp passt.",
+      columns: ["Material", "Wirkung", "Passend für"],
+      rows: [
+        ["Opakes PP", "deckend, kräftig, klassisch", "Traditionsbrauereien, regionale Markenbiere, Saisonbiere mit deckenden Motiven"],
+        ["Transparentes PP", "klar, modern, No-Label-Look", "Craft Beer mit reduzierten Designs, helle Biere, direkte Glasoptik"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Halten PP-Bieretiketten im Eiseimer?",
+        answer:
+          "Ja. PP-Folie ist wasserfest und nicht hygroskopisch – das Druckbild bleibt auch bei direktem Eiswasserkontakt erhalten. Der Permanentklebstoff hält bei Temperaturen bis –20 °C zuverlässig.",
+      },
+      {
+        question: "Welche Pflichtangaben müssen auf ein Bieretikett?",
+        answer:
+          "Mindestens: Bezeichnung, Zutaten (inkl. Allergene hervorgehoben), Nettofüllmenge, Alkoholgehalt (ab 1,2 Vol.-%), Name und Adresse des Herstellers/Abfüllers sowie MHD. Seit 2023 kommen schrittweise Nährwertangaben hinzu. Die inhaltliche Verantwortung liegt bei Ihnen.",
+      },
+      {
+        question: "Kann ich verschiedene Biersorten in einem Auftrag bestellen?",
+        answer:
+          "Für mehrere Sorten mit unterschiedlichen Motiven in einem Auftrag erstellen wir ein individuelles Angebot. Jede Sorte bekommt ihr eigenes gespeichertes Artwork für spätere Nachbestellungen.",
+      },
+      {
+        question: "Ab wie vielen Stück kann ich bestellen?",
+        answer:
+          "Die Pilotauflage beginnt bei 1.000 Stück. Das entspricht einer typischen Kleinbrauerei-Abfüllcharge. Die empfohlene B2B-Standardauflage liegt bei 5.000 Stück für besseres Preis-Mengen-Verhältnis.",
+      },
+      {
+        question: "Wie lange dauert die Lieferung?",
+        answer:
+          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland. Die Lieferung erfolgt DDP – Zoll und Einfuhr sind inklusive, kein Mehraufwand für Sie.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Flaschenetiketten drucken",
+        href: "/de/flaschenetiketten-drucken",
+        description: "PP-Etiketten für alle Flaschentypen – Öl, Saft, Sirup und Getränke.",
+      },
+      {
+        label: "Weinetiketten drucken",
+        href: "/de/weinetiketten-drucken",
+        description: "Feuchtigkeitsbeständige PP-Etiketten für Wein- und Spirituosenflaschen.",
       },
       {
         label: "Getränke-Etiketten",
@@ -4452,6 +4581,7 @@ export const sitemapEntries: SitemapEntry[] = [
   { path: "/de/etiketten-auf-rolle", priority: 0.9, changeFrequency: "weekly" },
   { path: "/de/flaschenetiketten-drucken", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/weinetiketten-drucken", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/de/bieretiketten-drucken", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/barcode-etiketten", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/folienetiketten", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/etiketten-100x200", priority: 0.8, changeFrequency: "weekly" },
