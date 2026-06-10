@@ -135,7 +135,7 @@ const homepageFaqs: FAQ[] = [
   },
   {
     question: "Wann sollte ich ein Angebot anfordern?",
-    answer: "Ab 20.000 Stück, bei mehreren Designs, Sonderformen oder Veredelung.",
+    answer: "Bei mehreren Designs, Sonderformen oder Veredelung.",
   },
   {
     question: "Wie schnell wird produziert?",
@@ -216,7 +216,7 @@ export function HomePage({ page }: HomePageProps) {
     { title: "PP opak & transparent", body: "Zwei Materialien für jede Verpackung." },
     { title: "Druckdaten gespeichert", body: "Freigegebene Version bleibt nutzbar." },
     { title: "Proof vor Produktion", body: "Produktion erst nach Ihrer Freigabe." },
-    { title: "Angebot ab 20.000 Stück", body: "Großmengen individuell kalkuliert." },
+    { title: "Großmengen per Angebot", body: "Sondermengen individuell kalkuliert." },
   ];
 
   return (
@@ -277,7 +277,7 @@ export function HomePage({ page }: HomePageProps) {
             </article>
             <article className="section-card">
               <h3>Sofortpreis im Kalkulator</h3>
-              <p>Format eingeben, Menge wählen – der Netto- und Bruttopreis erscheint sofort. Keine Anfrage nötig bis 19.999 Stück.</p>
+              <p>Format eingeben, Menge wählen – der Netto- und Bruttopreis erscheint sofort. Keine Anfrage nötig.</p>
             </article>
             <article className="section-card">
               <h3>Direkt zur Bestellung</h3>
@@ -1348,7 +1348,7 @@ function QuotePage({ page, canonicalPath }: DynamicPageProps) {
         <aside className="offer-aside surface-card">
           <h2>Wann ist ein Angebot sinnvoll?</h2>
           <ul className="simple-list">
-            <li>20.000+ Stück</li>
+            <li>Großvolumige Aufträge</li>
             <li>Sondergröße oder unklare Menge</li>
             <li>Material noch nicht sicher</li>
             <li>Wiederkehrender Bedarf</li>
@@ -1486,7 +1486,7 @@ function buildSpecRows(page: PublicPageData) {
       { label: "Geeignet für", value: "Klare Pflichtangaben, dichte Farbflächen und robuste Regaloptik" },
       { label: "Hinweis", value: "Für Spender oder Maschine gilt standardmäßig 76-mm-Kern und Wickelrichtung Standard. Abweichungen laufen über Angebot." },
       { label: "Standardumfang", value: "1 Design, CMYK-Digitaldruck, Datenprüfung + 1 Proof, Versand nach Deutschland" },
-      { label: "Angebotsfall", value: "ab 20.000 Stück oder bei Sonderumfang" },
+      { label: "Angebotsfall", value: "Sondermengen oder Sonderumfang per Angebot" },
     );
   } else if (page.path === "/de/transparente-pp-etiketten") {
     rows.push(
@@ -1499,7 +1499,7 @@ function buildSpecRows(page: PublicPageData) {
       { label: "Geeignet für", value: "Premium-Optik, reduzierte Gestaltung und klare Glas- oder Flaschenwirkung" },
       { label: "Hinweis", value: "Für Spender oder Maschine gilt standardmäßig 76-mm-Kern und Wickelrichtung Standard. Abweichungen laufen über Angebot." },
       { label: "Weißunterdruck", value: "Nicht enthalten, läuft über Angebot" },
-      { label: "Angebotsfall", value: "ab 20.000 Stück oder bei Sonderumfang" },
+      { label: "Angebotsfall", value: "Sondermengen oder Sonderumfang per Angebot" },
     );
   } else if (
     page.path === "/de/rollenetiketten" ||
@@ -1516,7 +1516,7 @@ function buildSpecRows(page: PublicPageData) {
       { label: "Druck", value: "4/0-farbig CMYK Digital, ohne Einrichtungskosten" },
       { label: "Finish", value: "Matt oder Glänzend – kein Preisaufschlag" },
       { label: "Lieferform", value: "Auf Rolle, 76-mm-Kern, Wickelrichtung Standard" },
-      { label: "Mindestmenge", value: "1.000 Stück; ab 20.000 Stück per Angebot" },
+      { label: "Mindestmenge", value: "1.000 Stück; Sondermengen per Angebot" },
       { label: "Prüfung", value: "Kostenlose Druckdatenprüfung plus 1 Proof" },
       { label: "Lieferung", value: "DDP nach Deutschland – Zoll und Einfuhr inklusive" },
       { label: "Nachbestellung", value: "Gespeicherte Spezifikation zum gleichen Paketpreis" },

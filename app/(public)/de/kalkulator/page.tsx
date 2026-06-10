@@ -69,7 +69,7 @@ export default async function KalkulatorPage({
       <div className="kalkulator-page-intro">
         <span className="eyebrow">PP-Rollenetiketten nach Maß</span>
         <h1>Etikettenpreis berechnen</h1>
-        <p>Format, Material und Menge eingeben – Preis erscheint sofort. Ab 1 bis 19.999 Stück direkt bestellbar.</p>
+        <p>Format, Material und Menge eingeben – Preis erscheint sofort. Direkt bestellbar bis 1.000.000 Stück.</p>
       </div>
 
       <KalkulatorClient
@@ -86,8 +86,7 @@ export default async function KalkulatorPage({
       <article className="surface-card">
         <h2>Fragen zum Format?</h2>
         <p>
-          Für Sonderfälle wie Konturschnitte, Veredelungen, Mehrfachsorten oder Großmengen
-          ab 20.000 Stück erstellen wir ein individuelles B2B-Angebot.
+          Für Sonderfälle wie Konturschnitte, Veredelungen oder Mehrfachsorten erstellen wir ein individuelles B2B-Angebot.
         </p>
         <div className="cta-row">
           <Link href="/de/angebot-anfordern" className="cta-link">

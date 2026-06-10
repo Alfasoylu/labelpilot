@@ -199,9 +199,9 @@ export function ProductConfigurator({
           </article>
         ) : (
           <article className="surface-card configurator__result">
-            <h4>Ab 20.000 Stück: individuelles B2B-Angebot</h4>
+            <h4>Individuelles B2B-Angebot</h4>
             <p>
-              Für Großmengen ab 20.000 Stück kalkulieren wir ein individuelles Angebot statt
+              Für Sonderanforderungen kalkulieren wir ein individuelles Angebot statt
               des Direkt-Checkouts.
             </p>
             <div className="inline-actions">

@@ -28,7 +28,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/lebensmittel-etiketten": {
     title: "Lebensmitteletiketten drucken lassen | Labelpilot.de",
     description:
-      "PP-Rollenetiketten für Lebensmittelmarken in Deutschland. Geeignet für Gläser, Beutel, Flaschen und Verpackungen – mit geprüften Druckdaten und Nachbestellsystem.",
+      "Lebensmitteletiketten drucken lassen auf PP-Rolle – für Gläser, Beutel, Flaschen und Verpackungen in Deutschland. Mit geprüften Druckdaten und Nachbestellsystem.",
     openGraphTitle: "Lebensmitteletiketten drucken",
     openGraphDescription:
       "PP-Etiketten für Gläser, Beutel & Flaschen – B2B.",
@@ -42,7 +42,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/supplement-etiketten": {
     title: "Supplement-Etiketten drucken lassen | Labelpilot.de",
     description:
-      "PP-Rollenetiketten für Supplement-Dosen, Beutel und Flaschen. 100×200 mm, opak oder transparent, mit technischer Dateiprüfung.",
+      "Supplement-Etiketten drucken lassen auf PP-Rolle – für Dosen, Beutel und Flaschen. Wunschformat, opak oder transparent, mit technischer Dateiprüfung.",
     openGraphTitle: "Supplement-Etiketten drucken",
     openGraphDescription:
       "PP-Etiketten für Dosen, Beutel & Supplement-Marken.",
@@ -70,10 +70,10 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/transparente-pp-etiketten": {
     title: "Transparente PP-Etiketten drucken | Labelpilot.de",
     description:
-      "Transparente PP-Rollenetiketten 100×200 mm für Flaschen, Gläser und Premium-Verpackungen. Druckdaten hochladen und nachbestellen.",
+      "Transparente PP-Rollenetiketten für Flaschen, Gläser und Premium-Verpackungen. Wunschformat, Druckdaten hochladen und nachbestellen.",
     openGraphTitle: "Transparente PP-Etiketten",
     openGraphDescription:
-      "No-Label-Look für Flaschen & Gläser – 100×200 mm.",
+      "No-Label-Look für Flaschen & Gläser – im Wunschformat.",
     keywords: [
       "transparente PP-Etiketten",
       "No-Label-Look Etiketten",
@@ -84,10 +84,10 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/opake-pp-etiketten": {
     title: "Opake PP-Etiketten drucken lassen | Labelpilot.de",
     description:
-      "Opake PP-Rollenetiketten 100×200 mm für Lebensmittel-, Supplement- und Produktverpackungen. Ideal für wiederkehrende B2B-Bestellungen.",
+      "Opake PP-Rollenetiketten für Lebensmittel-, Supplement- und Produktverpackungen. Wunschformat, ideal für wiederkehrende B2B-Bestellungen.",
     openGraphTitle: "Opake PP-Etiketten drucken",
     openGraphDescription:
-      "Deckend-weiße PP-Etiketten, 100×200 mm – B2B.",
+      "Deckend-weiße PP-Etiketten im Wunschformat – B2B.",
     keywords: [
       "opake PP-Etiketten",
       "weiße PP-Etiketten",
@@ -98,10 +98,10 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/pp-rollenetiketten": {
     title: "PP-Rollenetiketten drucken lassen | Labelpilot.de",
     description:
-      "Individuell bedruckte PP-Rollenetiketten für deutsche B2B-Marken. Opak oder transparent, 100×200 mm, mit gespeicherten Druckdaten.",
+      "Individuell bedruckte PP-Rollenetiketten für deutsche B2B-Marken. Opak oder transparent, Wunschformat, mit gespeicherten Druckdaten.",
     openGraphTitle: "PP-Rollenetiketten drucken",
     openGraphDescription:
-      "Opak oder transparent, 100×200 mm – für B2B-Marken.",
+      "Opak oder transparent, Wunschformat – für B2B-Marken.",
     keywords: [
       "PP-Rollenetiketten",
       "PP-Etiketten kaufen",
@@ -112,7 +112,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/rollenetiketten": {
     title: "Rollenetiketten drucken lassen | Labelpilot.de",
     description:
-      "PP-Rollenetiketten für Lebensmittel-, Getränke- und Supplement-Marken. Opak oder transparent, 100×200 mm, mit geprüften Druckdaten und Nachbestellsystem.",
+      "PP-Rollenetiketten für Lebensmittel-, Getränke- und Supplement-Marken. Opak oder transparent, Wunschformat, mit geprüften Druckdaten und Nachbestellsystem.",
     openGraphTitle: "Rollenetiketten drucken lassen",
     openGraphDescription:
       "PP-Rollenetiketten opak oder transparent – B2B, mit Nachbestellsystem.",
@@ -140,10 +140,10 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/etiketten-auf-rolle": {
     title: "Bedruckte Etiketten auf Rolle – 100×200 mm PP | Labelpilot.de",
     description:
-      "Bedruckte Etiketten auf Rolle aus PP im Format 100×200 mm, opak oder transparent. Für Spender und Etikettiermaschinen. Lieferung DDP nach Deutschland.",
+      "Bedruckte Etiketten auf Rolle aus PP, opak oder transparent. Gängige Formate: 60×40 mm, 100×100 mm. Für Spender und Etikettiermaschinen, DDP nach Deutschland.",
     openGraphTitle: "Bedruckte Etiketten auf Rolle",
     openGraphDescription:
-      "PP-Etiketten auf Rolle, 100×200 mm – für Spender & Etikettiermaschine.",
+      "PP-Etiketten auf Rolle im Wunschformat – für Spender & Etikettiermaschine.",
     keywords: [
       "Etiketten auf Rolle",
       "bedruckte Etiketten auf Rolle",
@@ -154,7 +154,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/flaschenetiketten-drucken": {
     title: "Flaschenetiketten drucken lassen – PP | Labelpilot.de",
     description:
-      "Flaschenetiketten auf PP-Rolle drucken – transparent oder opak. Wasserfest für Getränke, Spirituosen und Öle. Mit geprüften Druckdaten und DDP-Lieferung.",
+      "Flaschenetiketten drucken lassen auf wasserfestem PP – transparent oder opak. Für Getränke, Spirituosen und Öle. Mit geprüften Druckdaten und DDP-Lieferung.",
     openGraphTitle: "Flaschenetiketten drucken lassen",
     openGraphDescription:
       "No-Label-Look oder deckend – PP-Etiketten für Flaschen, wasserfest.",
@@ -182,7 +182,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/barcode-etiketten": {
     title: "Barcode-Etiketten drucken lassen – EAN & GTIN | Labelpilot.de",
     description:
-      "Barcode-Etiketten auf PP-Rolle: EAN-13, GTIN, Code 128, QR-Code und GS1 DataMatrix – integriert ins Produktetikett oder separat. Für Handel und Lebensmittel.",
+      "Barcode-Etiketten drucken lassen auf PP-Rolle: EAN-13, GTIN, Code 128, QR-Code und GS1 DataMatrix – integriert ins Produktetikett oder separat. Für Handel und Lebensmittel.",
     openGraphTitle: "Barcode-Etiketten drucken lassen",
     openGraphDescription:
       "EAN, GTIN, Code 128, QR & GS1 DataMatrix – scanbar auf PP-Rolle.",
@@ -196,7 +196,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/folienetiketten": {
     title: "Folienetiketten drucken lassen – PP | Labelpilot.de",
     description:
-      "PP-Folienetiketten auf Rolle – wasserfest, reißfest und langlebiger als Papier. Opak oder transparent für Flaschen, Dosen, Tiegel und Beutel in Deutschland.",
+      "Folienetiketten drucken lassen auf PP-Rolle – wasserfest, reißfest und langlebiger als Papier. Opak oder transparent für Flaschen, Dosen, Tiegel und Beutel in Deutschland.",
     openGraphTitle: "Folienetiketten drucken lassen",
     openGraphDescription:
       "Wasserfeste PP-Folienetiketten – robuster als Papier, opak oder transparent.",

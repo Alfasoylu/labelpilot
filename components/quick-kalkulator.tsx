@@ -70,7 +70,7 @@ export function QuickKalkulator() {
             id="qk-quantity"
             type="number"
             min={1}
-            max={19999}
+            max={1000000}
             value={quantity}
             onChange={(e) => setQuantity(e.target.value === "" ? "" : Number.parseInt(e.target.value, 10))}
           />
@@ -122,7 +122,7 @@ export function QuickKalkulator() {
             </div>
           )}
           {priceState.status === "quote" && (
-            <span className="price-note">Ab 20.000 Stück: individuelles Angebot</span>
+            <span className="price-note">Für Sonderanforderungen: individuelles Angebot</span>
           )}
           {priceState.status === "unavailable" && (
             <span className="price-note">Preisanfrage über den Kalkulator</span>

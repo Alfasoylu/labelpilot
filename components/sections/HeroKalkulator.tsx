@@ -154,7 +154,7 @@ export function HeroKalkulator() {
                   id="hk-qty"
                   type="number"
                   min={1}
-                  max={19999}
+                  max={1000000}
                   value={quantity}
                   onChange={(e) =>
                     setQuantity(e.target.value === "" ? "" : Number.parseInt(e.target.value, 10))

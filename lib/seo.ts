@@ -199,21 +199,21 @@ function getProductSchemaDetails(path: string) {
         sku: "pp-roll-labels-configurator",
         category: "PP-Rollenetiketten",
         material: "Opakes oder transparentes PP",
-        format: "100×200 mm oder Wunschformat",
+        format: "Wunschformat – z. B. 60×40 mm, 100×100 mm",
       };
     case "/de/opake-pp-etiketten":
       return {
         sku: "pp-opaque-100x200",
         category: "PP-Rollenetiketten",
         material: "Opakes PP",
-        format: "100×200 mm",
+        format: "Wunschformat",
       };
     case "/de/transparente-pp-etiketten":
       return {
         sku: "pp-transparent-100x200",
         category: "PP-Rollenetiketten",
         material: "Transparentes PP",
-        format: "100×200 mm",
+        format: "Wunschformat",
       };
     case "/de/thermo-versandetiketten":
       return {

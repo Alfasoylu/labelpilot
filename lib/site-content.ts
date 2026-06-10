@@ -164,7 +164,7 @@ export const pricingValueBundleLine =
   "Alle Pakete enthalten technische Druckdatenprüfung, Versand nach Deutschland und die Speicherung freigegebener Druckdaten für die 30-Sekunden-Nachbestellung.";
 
 export const fixedPriceIncludedRows = [
-  { label: "Format", value: "100×200 mm (10×20 cm), rechteckig, auf Rolle" },
+  { label: "Format", value: "z. B. 60×40 mm, 100×100 mm – Wunschformat bis 320 mm Breite" },
   { label: "Design", value: "1 Design / 1 Artwork pro Auftrag" },
   { label: "Material", value: "Genanntes PP-Material (opak oder transparent)" },
   { label: "Klebstoff", value: "Permanent; ablösbare oder anwendungsspezifische Klebstoffe auf Anfrage (Angebot)" },
@@ -205,7 +205,7 @@ export const opaquePackages: PackageTier[] = [
     quantity: 1000,
     net: 179,
     note: "Ersttest",
-    description: "Großes 100×200-mm-Format als bezahlter Ersttest mit klarer Spezifikation.",
+    description: "Für den bezahlten Ersttest – mit klarer Spezifikation und Proof.",
   }),
   buildFixedTier({
     label: "Folgeauflage",
@@ -221,7 +221,7 @@ export const opaquePackages: PackageTier[] = [
     net: 479,
     note: "Wiederbestellung",
     description:
-      "Der Kernpreis für wiederkehrende B2B-Bestellungen im großen 100×200-mm-Format.",
+      "Der Kernpreis für wiederkehrende B2B-Bestellungen.",
     badge: "Empfohlenes B2B-Paket",
     popular: true,
   }),
@@ -235,7 +235,7 @@ export const opaquePackages: PackageTier[] = [
   }),
   {
     label: "B2B Abruf",
-    quantity: "20.000+ Stück",
+    quantity: "Individuelle Menge",
     priceLabel: "Angebot",
     shippingLabel: "Individuelles B2B-Angebot anfordern",
     format: "100 × 200 mm",
@@ -251,7 +251,7 @@ export const transparentPackages: PackageTier[] = [
     quantity: 1000,
     net: 199,
     note: "Premium-Einstieg",
-    description: "Für erste Tests mit transparenter Optik im großen 100×200-mm-Format.",
+    description: "Für erste Tests mit transparenter Optik – PP transparent auf Rolle.",
   }),
   buildFixedTier({
     label: "Folgeauflage",
@@ -281,7 +281,7 @@ export const transparentPackages: PackageTier[] = [
   }),
   {
     label: "B2B Abruf",
-    quantity: "20.000+ Stück",
+    quantity: "Individuelle Menge",
     priceLabel: "Angebot",
     shippingLabel: "Individuelles B2B-Angebot anfordern",
     format: "100 × 200 mm",
@@ -447,7 +447,7 @@ const commonCommercialLinks: RelatedLink[] = [
     label: "Angebot anfordern",
     href: "/de/angebot-anfordern",
     description:
-      "Für 20.000+ Stück, Sondergrößen oder mehrere Varianten im selben Projekt.",
+      "Für Sondergrößen oder mehrere Varianten im selben Projekt.",
   },
 ];
 
@@ -484,7 +484,7 @@ const topLevelPages: PublicPageData[] = [
       "Bedruckte PP-Rollenetiketten für Lebensmittelmarken in Deutschland. Geeignet für Gläser, Beutel, Flaschen und klassische Verpackungen.",
     heroBullets: [
       "Opake oder transparente PP-Varianten für unterschiedliche Verpackungsoptiken.",
-      "100×200 mm als bewährtes Standardformat für wiederkehrende Produktetiketten.",
+      "Gängige Formate: 60×40 mm, 100×100 mm – Wunschformat frei wählbar.",
       "Nachbestelllogik wichtig für Sortimente mit mehreren Chargen und saisonalen Abrufen.",
     ],
     sidebarTitle: "Typische Anwendungen",
@@ -548,9 +548,9 @@ const topLevelPages: PublicPageData[] = [
           "Ja. PP-Folie mit permanentem Klebstoff hält auch bei Kondenswasser und im gekühlten Bereich. Papieretiketten weichen bei Feuchtigkeit auf – PP nicht.",
       },
       {
-        question: "Welche Lebensmittelverpackungen passen zum Standardformat 100×200 mm?",
+        question: "Welche Lebensmittelverpackungen passen zu gängigen Etikettenformaten?",
         answer:
-          "Das Format 100×200 mm eignet sich für viele Produktetiketten auf Gläsern, Beuteln und Flaschen. Andere Maße wählen Sie im Kalkulator frei, Breite bis 320 mm.",
+          "Gängige Formate sind 60×40 mm und 100×100 mm; im Kalkulator ist jedes Wunschformat frei wählbar. Andere Maße wählen Sie im Kalkulator frei, Breite bis 320 mm.",
       },
       {
         question: "Kann ich bei wiederkehrenden Sorten dieselbe Spezifikation erneut bestellen?",
@@ -593,7 +593,7 @@ const topLevelPages: PublicPageData[] = [
     title: "Supplement-Etiketten drucken",
     eyebrow: "Branche",
     lead:
-      "PP-Rollenetiketten für Supplement-Dosen, Beutel und Flaschen. 100×200 mm, opak oder transparent, mit technischer Dateiprüfung.",
+      "PP-Rollenetiketten für Supplement-Dosen, Beutel und Flaschen. Wunschformat, opak oder transparent, mit technischer Dateiprüfung.",
     heroBullets: [
       "Geeignet für wiederkehrende SKU-Strukturen im B2B-Kontext.",
       "Saubere Unterscheidung zwischen Standardprodukt und Angebotsfall.",
@@ -618,7 +618,7 @@ const topLevelPages: PublicPageData[] = [
         title: "Struktur statt Variantenchaos",
         body: [
           "Supplement-Marken brauchen wiederkehrende Etiketten mit fest dokumentierter Spezifikation – nicht ständig neue Online-Konfigurationen.",
-          "Darum konzentrieren wir uns auf einen klaren Kern aus PP-Material, Standardformat und Nachbestellung.",
+          "Darum konzentrieren wir uns auf einen klaren Kern aus PP-Material, Wunschformat und Nachbestellung.",
         ],
       },
       {
@@ -657,7 +657,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Sind Supplement-Etiketten nur für Dosen gedacht?",
         answer:
-          "Nein. Sie decken auch Beutel und Flaschen ab, solange Material und Etikettengröße klar beschrieben sind. Das Standardformat ist 100×200 mm.",
+          "Nein. Sie decken auch Beutel und Flaschen ab, solange Material und Etikettengröße klar beschrieben sind. Gängige Formate: 60×40 mm und 100×100 mm, Wunschformat frei wählbar.",
       },
       {
         question: "Halten die Etiketten auf glänzenden Supplement-Dosen?",
@@ -771,7 +771,7 @@ const topLevelPages: PublicPageData[] = [
       "Wunschformat – Breite bis 320 mm, Höhe frei wählbar.",
       "Preisberechnung sofort im Kalkulator – ohne Anfrage oder Wartezeit.",
       "Netto und Brutto sichtbar, Versand nach Deutschland inklusive.",
-      "Ab 20.000 Stück oder für Sonderanforderungen: individuelles B2B-Angebot.",
+      "Für Sonderanforderungen: individuelles B2B-Angebot.",
     ],
     sidebarTitle: "Produktfokus",
     sidebarBullets: [
@@ -786,7 +786,7 @@ const topLevelPages: PublicPageData[] = [
     secondaryCta: sampleLink,
     packageHeading: "Preise für transparente PP-Etiketten",
     packageLead:
-      "Die festen Pakete zeigen das große 100×200-mm-Format, 1 Design pro Auftrag, Standard-Datenprüfung, 1 Proof-Runde und Versand nach Deutschland. Weißunterdruck ist nicht enthalten und läuft als Zusatz über das Angebot.",
+      "Die festen Pakete zeigen gängige Formate wie 60×40 mm oder 100×100 mm, 1 Design pro Auftrag, Standard-Datenprüfung, 1 Proof-Runde und Versand nach Deutschland. Weißunterdruck ist nicht enthalten und läuft als Zusatz über das Angebot.",
     packageTable: transparentPackages,
     sections: [
       {
@@ -908,7 +908,7 @@ const topLevelPages: PublicPageData[] = [
       "Das Standardprodukt für kontrastreiche Druckmotive und klare Deckkraft.",
       "Wunschformat – Breite bis 320 mm, Höhe frei wählbar.",
       "Preis sofort im Kalkulator – netto und brutto, Versand nach Deutschland inklusive.",
-      "Ab 20.000 Stück oder für Sonderanforderungen: individuelles B2B-Angebot.",
+      "Für Sonderanforderungen: individuelles B2B-Angebot.",
     ],
     sidebarTitle: "Produktfokus",
     sidebarBullets: [
@@ -923,7 +923,7 @@ const topLevelPages: PublicPageData[] = [
     secondaryCta: fileLink,
     packageHeading: "Preise für opake PP-Etiketten",
     packageLead:
-      "Diese Tabelle zeigt die festen Pakete als All-in-Preis für das große 100×200-mm-Format inkl. Standard-Datenprüfung, 1 Proof-Runde und Versand nach Deutschland.",
+      "Diese Tabelle zeigt die festen Pakete als All-in-Preis inkl. Standard-Datenprüfung, 1 Proof-Runde und Versand nach Deutschland.",
     packageTable: opaquePackages,
     sections: [
       {
@@ -1142,7 +1142,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Welche Menge läuft nicht mehr als Standardpaket?",
         answer:
-          "Die festen Pakete decken 1.000, 2.000, 5.000 und 10.000 Stück ab. Ab 20.000 Stück, bei mehreren Varianten oder bei Sonderanforderungen fordern Sie ein individuelles Angebot an.",
+          "Die festen Pakete decken 1.000, 2.000, 5.000 und 10.000 Stück ab. Bei mehreren Varianten oder Sonderanforderungen fordern Sie ein individuelles Angebot an.",
       },
       {
         question: "Wie lange dauert der Weg von Freigabe bis Lieferung?",
@@ -1161,7 +1161,7 @@ const topLevelPages: PublicPageData[] = [
         label: "Etiketten auf Rolle",
         href: "/de/etiketten-auf-rolle",
         description:
-          "Bedruckte Etiketten auf Rolle im Standardformat 100×200 mm.",
+          "Bedruckte Etiketten auf Rolle im Wunschformat – z. B. 60×40 mm oder 100×100 mm.",
       },
       {
         label: "Folienetiketten",
@@ -1248,7 +1248,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Was kosten Rollenetiketten?",
         answer:
-          "Im Kalkulator geben Sie Breite, Höhe und Menge ein und sehen den Netto- und Bruttopreis sofort – inklusive Versand nach Deutschland. Feste Pakete gibt es für 1.000 bis 10.000 Stück, ab 20.000 Stück per Angebot.",
+          "Im Kalkulator geben Sie Breite, Höhe und Menge ein und sehen den Netto- und Bruttopreis sofort – inklusive Versand nach Deutschland. Feste Pakete gibt es für 1.000 bis 10.000 Stück; größere Mengen per Angebot.",
       },
       {
         question: "Ab welcher Menge kann ich Rollenetiketten bestellen?",
@@ -1280,7 +1280,7 @@ const topLevelPages: PublicPageData[] = [
       {
         label: "Etiketten auf Rolle",
         href: "/de/etiketten-auf-rolle",
-        description: "Bedruckte Etiketten auf Rolle im Standardformat 100×200 mm.",
+        description: "Bedruckte Etiketten auf Rolle im Wunschformat – z. B. 60×40 mm oder 100×100 mm.",
       },
       ...guideCommercialLinks,
     ],
@@ -1383,7 +1383,7 @@ const topLevelPages: PublicPageData[] = [
       {
         label: "Etiketten auf Rolle",
         href: "/de/etiketten-auf-rolle",
-        description: "Bedruckte Etiketten auf Rolle im Standardformat 100×200 mm.",
+        description: "Bedruckte Etiketten auf Rolle im Wunschformat – z. B. 60×40 mm oder 100×100 mm.",
       },
       ...guideCommercialLinks,
     ],
@@ -1395,11 +1395,11 @@ const topLevelPages: PublicPageData[] = [
     title: "Bedruckte Etiketten auf Rolle",
     eyebrow: "Auf Rolle",
     lead:
-      "Bedruckte Etiketten auf Rolle aus PP – im Standardformat 100×200 mm, opak oder transparent. Für die automatische Verarbeitung über Spender oder Etikettiermaschine, geliefert DDP nach Deutschland.",
+      "Bedruckte Etiketten auf Rolle aus PP – im Wunschformat, opak oder transparent. Für die automatische Verarbeitung über Spender oder Etikettiermaschine, geliefert DDP nach Deutschland.",
     heroBullets: [
       "Feste Pakete ab 179 € netto (1.000 Stück), 5.000 Stück für 479 € netto – inkl. Versand.",
       "Etiketten auf Rolle für Spender und Etikettiermaschinen statt loser Einzelblätter.",
-      "Standardformat 100×200 mm, opak oder transparent auf robustem PP.",
+      "Wunschformat – z. B. 60×40 mm, 100×100 mm – auf robustem PP.",
       "Druckdaten geprüft und gespeichert – jede Nachbestellung startet ohne neue Abstimmung.",
     ],
     sidebarTitle: "Warum auf Rolle",
@@ -1425,10 +1425,10 @@ const topLevelPages: PublicPageData[] = [
         ],
       },
       {
-        title: "Standardformat 100×200 mm",
+        title: "Wunschformat nach Maß",
         body: [
-          "Das Format 100×200 mm bündelt die Nachfrage auf eine gut steuerbare Standardgröße für Produktverpackungen.",
-          "Andere Maße sind im Kalkulator frei wählbar – Breite bis 320 mm, Höhe frei.",
+          "Gängige Formate wie 60×40 mm und 100×100 mm decken viele Produktverpackungen ab – andere Maße sind im Kalkulator frei wählbar.",
+          "Breite bis 320 mm, Höhe frei – der Preis wird sofort berechnet.",
         ],
       },
       {
@@ -1444,10 +1444,10 @@ const topLevelPages: PublicPageData[] = [
       lead: "Format, Material und Lieferform im Überblick.",
       columns: ["Merkmal", "Standard", "Hinweis"],
       rows: [
-        ["Format", "100×200 mm", "Wunschformat bis 320 mm Breite möglich"],
+        ["Format", "60×40 mm, 100×100 mm u. v. m.", "Wunschformat bis 320 mm Breite"],
         ["Material", "PP opak oder transparent", "Matt oder glänzend, kein Aufpreis"],
         ["Lieferform", "auf Rolle", "Für Spender und Etikettiermaschine"],
-        ["Mindestmenge", "1.000 Stück", "Ab 20.000 Stück per Angebot"],
+        ["Mindestmenge", "1.000 Stück", "Sondermengen per Angebot"],
       ],
     },
     faqs: [
@@ -1464,7 +1464,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Welche Formate sind auf Rolle möglich?",
         answer:
-          "Das Standardformat ist 100×200 mm. Im Kalkulator wählen Sie Breite bis 320 mm und die Höhe frei – der Preis wird sofort berechnet.",
+          "Gängige Formate: 60×40 mm und 100×100 mm. Im Kalkulator wählen Sie Breite bis 320 mm und die Höhe frei – der Preis wird sofort berechnet.",
       },
       {
         question: "Sind die Etiketten opak oder transparent?",
@@ -1486,7 +1486,7 @@ const topLevelPages: PublicPageData[] = [
       {
         label: "Etiketten 100×200 mm",
         href: "/de/etiketten-100x200",
-        description: "Das Standardformat für wiederkehrende Produktetiketten.",
+        description: "Formatseite für 100×200-mm-PP-Etiketten mit klarer Einordnung des Einsatzfalls.",
       },
       ...guideCommercialLinks,
     ],
@@ -1564,7 +1564,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Eignen sich die Etiketten für runde Flaschen?",
         answer:
-          "Ja. Auf Rolle gelieferte Etiketten lassen sich über Spender oder Etikettiermaschine sauber um runde Flaschen wickeln. Das Standardformat ist 100×200 mm, andere Maße sind frei wählbar.",
+          "Ja. Auf Rolle gelieferte Etiketten lassen sich über Spender oder Etikettiermaschine sauber um runde Flaschen wickeln. Gängige Formate: 60×40 mm und 100×100 mm, andere Maße frei wählbar.",
       },
       {
         question: "Brauche ich Weißunterdruck auf transparentem Material?",
@@ -1839,7 +1839,7 @@ const topLevelPages: PublicPageData[] = [
         title: "Gestanzt auf Rolle",
         body: [
           "Die Folienetiketten werden gestanzt auf Rolle geliefert – für Spender und Etikettiermaschine.",
-          "Standardformat 100×200 mm, andere Maße im Kalkulator frei wählbar.",
+          "Gängige Formate: 60×40 mm, 100×100 mm – im Kalkulator frei wählbar.",
         ],
       },
     ],
@@ -1951,7 +1951,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Welche Mengen gibt es für 100×200-mm-Etiketten?",
         answer:
-          "Im Kalkulator Menge frei wählen – ab 1 bis 19.999 Stück direkt bestellbar. Ab 20.000 Stück oder bei mehreren Varianten fordern Sie ein individuelles Angebot an.",
+          "Im Kalkulator Menge frei wählen – direkt bestellbar bis 1.000.000 Stück. Für mehrere Varianten oder Sonderanforderungen: individuelles Angebot.",
       },
       {
         question: "Was passiert, wenn ich statt 100×200 mm ein anderes Format brauche?",
@@ -1964,7 +1964,7 @@ const topLevelPages: PublicPageData[] = [
         label: "PP vs. Papier",
         href: "/de/ratgeber/pp-etiketten-vs-papieretiketten",
         description:
-          "Materialvergleich für wiederkehrende Produktetiketten im Standardformat.",
+          "Materialvergleich für wiederkehrende Produktetiketten im Wunschformat.",
       },
       ...guideCommercialLinks,
     ],
@@ -2095,7 +2095,7 @@ const topLevelPages: PublicPageData[] = [
     lead:
       "Fordern Sie ein individuelles B2B-Angebot für PP-Rollenetiketten, Thermoetiketten oder größere Etikettenmengen an.",
     heroBullets: [
-      "Geeignet für 20.000+ Stück, Sondergrößen, unklare Materialwahl oder wiederkehrende Abrufe.",
+      "Für Sondergrößen, unklare Materialwahl oder wiederkehrende Großabrufe.",
       "Der Prozess ist bewusst strukturiert und kein generisches Kontaktformular.",
       "Ohne Dateiupload: Für das erste Angebot reichen Material, Größe, Menge und Verpackung.",
     ],
@@ -2111,7 +2111,7 @@ const topLevelPages: PublicPageData[] = [
         body: [
           "Immer dann, wenn Ihre Menge, Verpackung oder Spezifikation über die festen Standardpakete hinausgeht.",
         ],
-        bullets: ["20.000+ Stück", "Sondergrößen oder mehrere Varianten", "Unklare Materialentscheidung"],
+        bullets: ["Großvolumige Aufträge", "Sondergrößen oder mehrere Varianten", "Unklare Materialentscheidung"],
       },
       {
         title: "Was nach der Anfrage passiert",
@@ -3604,7 +3604,7 @@ const guidePages: PublicPageData[] = [
       {
         label: "Etiketten 100×200 mm",
         href: "/de/etiketten-100x200",
-        description: "Das Standardformat für wiederkehrende Produktetiketten.",
+        description: "Formatseite für 100×200-mm-PP-Etiketten mit klarer Einordnung des Einsatzfalls.",
       },
       ...guideCommercialLinks,
     ],

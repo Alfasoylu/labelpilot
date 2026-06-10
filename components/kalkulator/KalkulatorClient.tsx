@@ -627,7 +627,7 @@ export function KalkulatorClient({
 
             {!canOrder && priceState.status !== "quote" && priceState.status !== "unconfigured" && (
               <p className="field-hint">
-                Ab 20.000 Stück oder bei besonderen Anforderungen:{" "}
+                Für Sonderanforderungen oder besonderen Umfang:{" "}
                 <a href="/de/angebot-anfordern" className="secondary-link">
                   Angebot anfordern
                 </a>
