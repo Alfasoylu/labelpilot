@@ -28,8 +28,7 @@ export function SellerTrustBlock() {
           <div className="seller-trust-block__item">
             <dt>Vertragspartner</dt>
             <dd>
-              Zhenkai Global Trading Limited, Unit 2A, 17/F, Glenealy Tower, No. 1 Glenealy,
-              Central, Hong Kong. Anwendbares Recht: Deutschland.{" "}
+              Alfa Soylu Elektronik, Istanbul, Türkei. Anwendbares Recht: Deutschland.{" "}
               <a href="/de/impressum" className="seller-trust-block__link">
                 Impressum
               </a>

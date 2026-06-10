@@ -345,7 +345,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/impressum": {
     title: "Impressum – rechtliche Pflichtangaben | Labelpilot.de",
     description:
-      "Gesetzliche Pflichtangaben gemäß § 5 TMG für Labelpilot.de – betrieben von Zhenkai Global Trading Ltd., Hongkong, mit Lieferung nach Deutschland.",
+      "Gesetzliche Pflichtangaben gemäß § 5 TMG für Labelpilot.de – betrieben von Alfa Soylu Elektronik, Istanbul, Türkei, mit Lieferung nach Deutschland.",
     openGraphTitle: "Impressum | Labelpilot.de",
     openGraphDescription: "Gesetzliche Anbieterangaben zu Labelpilot.de.",
     keywords: ["Labelpilot Impressum", "Anbieter Labelpilot"],

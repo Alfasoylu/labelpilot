@@ -2525,7 +2525,7 @@ const topLevelPages: PublicPageData[] = [
     sidebarBullets: [
       "Fokus: PP-Rollenetiketten für Produktmarken",
       "Lieferung: DDP nach Deutschland",
-      "Vertragspartner: Zhenkai Global Trading Limited",
+      "Vertragspartner: Alfa Soylu Elektronik",
     ],
     primaryCta: {
       label: "Jetzt konfigurieren",
@@ -2567,7 +2567,7 @@ const topLevelPages: PublicPageData[] = [
       {
         title: "Wer der Vertragspartner ist",
         body: [
-          "Vertragspartnerin ist die Zhenkai Global Trading Limited mit Sitz in Hongkong (Anschrift siehe Impressum).",
+          "Vertragspartnerin ist Alfa Soylu Elektronik mit Sitz in Istanbul, Türkei (Anschrift siehe Impressum).",
           "Zahlungen werden über Stripe abgewickelt. Anwendbares Recht für Bestellungen ist Deutschland.",
         ],
       },
@@ -2581,7 +2581,7 @@ const topLevelPages: PublicPageData[] = [
         ["Lieferung", "DDP nach Deutschland, Zoll & Einfuhr inklusive"],
         ["Versand", "Luftfracht DHL / UPS mit Sendungsverfolgung"],
         ["Zahlung", "Stripe (Karte, SEPA); Rechnung auf Anfrage"],
-        ["Vertragspartner", "Zhenkai Global Trading Limited, Hongkong"],
+        ["Vertragspartner", "Alfa Soylu Elektronik, Istanbul, Türkei"],
         ["Anwendbares Recht", "Deutschland"],
       ],
     },
@@ -2599,7 +2599,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Wer ist mein Vertragspartner?",
         answer:
-          "Vertragspartnerin ist die Zhenkai Global Trading Limited mit Sitz in Hongkong (Anschrift im Impressum). Zahlungen laufen über Stripe, anwendbares Recht ist Deutschland.",
+          "Vertragspartnerin ist Alfa Soylu Elektronik mit Sitz in Istanbul, Türkei (Anschrift im Impressum). Zahlungen laufen über Stripe, anwendbares Recht ist Deutschland.",
       },
       {
         question: "Entstehen bei der Lieferung Zusatzkosten?",
@@ -2954,10 +2954,9 @@ const topLevelPages: PublicPageData[] = [
       {
         title: "Anbieterkennzeichnung",
         body: [
-          "Zhenkai Global Trading Limited",
-          "Rechtsform: Limited Company (Private company limited by shares, Hongkong)",
-          "Sitz und registrierte Anschrift: Unit 2A, 17/F, Glenealy Tower, No. 1 Glenealy, Central, Hong Kong",
-          "HK Business Registration Number: 78363488",
+          "Alfa Soylu Elektronik",
+          "Rechtsform: Einzelunternehmen (Türkei)",
+          "Sitz und Anschrift: Istanbul, Türkei",
           "Steuerlicher Hinweis: Keine USt-IdNr. – Unternehmen mit Sitz außerhalb der EU",
         ],
       },
@@ -2988,7 +2987,7 @@ const topLevelPages: PublicPageData[] = [
         title: "Verantwortlicher",
         body: [
           "Verantwortlich für die Datenverarbeitung auf dieser Website ist:",
-          "Zhenkai Global Trading Limited, Unit 2A, 17/F, Glenealy Tower, No. 1 Glenealy, Central, Hong Kong",
+          "Alfa Soylu Elektronik, Istanbul, Türkei",
           "E-Mail: kontakt@labelpilot.de · Telefon: +90 549 688 51 90",
           "Vertreten durch: Alperen Aydin",
         ],
@@ -3098,7 +3097,7 @@ const topLevelPages: PublicPageData[] = [
         title: "Geltungsbereich und Vertragspartner",
         body: [
           "Diese Allgemeinen Geschäftsbedingungen gelten ausschließlich gegenüber Unternehmern im Sinne des § 14 BGB, d. h. natürlichen oder juristischen Personen oder rechtsfähigen Personengesellschaften, die beim Abschluss des Rechtsgeschäfts in Ausübung ihrer gewerblichen oder selbständigen beruflichen Tätigkeit handeln. Ein Vertragsschluss mit Verbrauchern im Sinne des § 13 BGB ist ausgeschlossen.",
-          "Vertragspartnerin ist Zhenkai Global Trading Limited (Anschrift siehe Impressum). Produktion und Versand erfolgen über unseren Export- und Logistikpartner in der Türkei.",
+          "Vertragspartnerin ist Alfa Soylu Elektronik, Istanbul, Türkei (Anschrift siehe Impressum). Produktion und Versand erfolgen aus der Türkei.",
         ],
       },
       {
