@@ -12,14 +12,6 @@ export type CommercePackage = {
 
 export const PACKAGES: CommercePackage[] = [
   {
-    id: "test-10-eur",
-    productSlug: "opake-pp-etiketten",
-    material: "OPAQUE",
-    quantity: 1,
-    label: "Interner Testauftrag",
-    grossAmountCents: 1000,
-  },
-  {
     id: "opaque-pp-100x200-1000",
     productSlug: "opake-pp-etiketten",
     material: "OPAQUE",
@@ -86,7 +78,6 @@ export const PACKAGES: CommercePackage[] = [
 ];
 
 const expectedGrossCentsById: Record<string, number> = {
-  "test-10-eur": 1000,
   "opaque-pp-100x200-1000": 21301,
   "opaque-pp-100x200-2000": 33201,
   "opaque-pp-100x200-5000": 57001,
