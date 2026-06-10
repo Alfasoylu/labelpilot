@@ -12,6 +12,14 @@ export type CommercePackage = {
 
 export const PACKAGES: CommercePackage[] = [
   {
+    id: "test-10-eur",
+    productSlug: "opake-pp-etiketten",
+    material: "OPAQUE",
+    quantity: 1,
+    label: "Interner Testauftrag",
+    grossAmountCents: 1000,
+  },
+  {
     id: "opaque-pp-100x200-1000",
     productSlug: "opake-pp-etiketten",
     material: "OPAQUE",
