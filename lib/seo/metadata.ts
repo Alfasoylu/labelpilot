@@ -443,17 +443,19 @@ export const metadataMap: Record<string, MetadataEntry> = {
     ],
   },
   "/de/ratgeber/pp-etiketten-vs-papieretiketten": {
-    title: "PP-Etiketten vs. Papieretiketten | Labelpilot.de",
+    title: "PP-Etiketten vs. Papieretiketten: Materialvergleich | Labelpilot.de",
     description:
-      "Vergleich von PP-Etiketten und Papieretiketten für Produktverpackungen. Mit Empfehlung für Lebensmittel-, Getränke- und Supplement-Marken.",
-    openGraphTitle: "PP vs. Papier – Etiketten Vergleich",
+      "PP-Folie oder Papier? Materialvergleich für Produktetiketten: Feuchtigkeitsbeständigkeit, Temperaturbereiche, EU-Lebensmittelkontakt-Normen und Kostenvergleich für B2B-Marken in Deutschland.",
+    openGraphTitle: "PP-Etiketten vs. Papieretiketten: Der Vergleich für Produktmarken",
     openGraphDescription:
-      "Welches Material ist besser? PP-Etiketten vs. Papier erklärt.",
+      "Welches Etikettenmaterial ist besser für Lebensmittel, Getränke und Supplemente? Technische Kennwerte, EU-Normen und ehrlicher Kostenvergleich.",
     openGraphType: "article",
     keywords: [
-      "PP-Etiketten vs Papier",
-      "Etiketten Material Vergleich",
-      "PP oder Papier Etiketten",
+      "papieretiketten vs pp etiketten",
+      "papieretiketten",
+      "etiketten material vergleich",
+      "folienetiketten oder papieretiketten",
+      "pp etiketten lebensmittelkontakt",
     ],
   },
   "/de/ratgeber/lebensmittelkennzeichnung-pflichtangaben": {

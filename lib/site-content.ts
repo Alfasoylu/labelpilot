@@ -3117,76 +3117,169 @@ const guidePages: PublicPageData[] = [
     path: "/de/ratgeber/pp-etiketten-vs-papieretiketten",
     slug: "pp-etiketten-vs-papieretiketten",
     kind: "guide",
-    title: "PP-Etiketten vs. Papieretiketten",
+    title: "PP-Etiketten vs. Papieretiketten: Der Materialvergleich für Produktmarken",
     eyebrow: "Ratgeber",
     lead:
-      "Vergleich von PP-Etiketten und Papieretiketten für Produktverpackungen. Mit Empfehlung für Lebensmittel-, Getränke- und Supplement-Marken.",
+      "Papieretiketten oder PP-Folienetiketten – welches Material für Lebensmittel, Getränke und Supplemente in Deutschland besser geeignet ist. Mit technischen Kennwerten, gesetzlichen Anforderungen nach EU-Recht und einem ehrlichen Kostenvergleich.",
     heroBullets: [
-      "Dieser Guide erklärt nicht nur Materialnamen, sondern echte Einsatzgrenzen im deutschen B2B-Alltag.",
-      "PP ist nicht automatisch immer besser, aber bei Feuchtigkeit, Abrieb und Wiederholung oft klar robuster.",
-      "Die Entscheidung hängt stärker an Verpackung und Prozess als an reiner Preiswahrnehmung.",
+      "PP-Folie und Papier unterscheiden sich in fünf messbaren Einsatzgrenzen: Feuchtigkeit, Temperatur, Abrieb, Lebensmittelkontakt und Druckreproduktion.",
+      "Papier kann die richtige Wahl sein – aber nicht für Kühlregal, Flasche, Kondenswasser oder wiederkehrende Serienauflagen.",
+      "Mit konkreten Kennwerten nach EU-Norm (Verordnung (EU) Nr. 10/2011) und Praxisbeispielen aus dem deutschen Lebensmittel- und Getränkemarkt.",
     ],
     sidebarTitle: "Dieser Guide hilft bei",
     sidebarBullets: [
-      "Materialwahl für wiederkehrende Produktetiketten",
-      "Abwägung zwischen Robustheit und klassischer Papieroptik",
-      "Früher Einordnung, wann ein B2B-Angebot sinnvoller ist als Trial-and-Error",
+      "Materialwahl vor der ersten Auflage",
+      "Abwägung zwischen Papieroptik und operativer Robustheit",
+      "Einordnung gesetzlicher Anforderungen für Lebensmittelkontakt in Deutschland",
     ],
-    primaryCta: quoteLink,
-    secondaryCta: sampleLink,
+    primaryCta: sampleLink,
+    secondaryCta: {
+      label: "PP-Rollenetiketten konfigurieren",
+      href: "/de/kalkulator",
+    },
+    howToSteps: [
+      "Verpackungstyp bestimmen: Flasche, Glas, Dose, Beutel oder Karton – die Oberfläche entscheidet über Klebstoffsystem und Materialsteifigkeit.",
+      "Feuchtigkeitsexposition prüfen: steht die Verpackung im Kühlregal, im Eiseimer oder wird sie feucht abgewischt? Dann PP, nicht Papier.",
+      "Temperaturbereich klären: Kühlkette und Tiefkühlbereich fordern PP mit passendem Klebstoff; Trockenregal ab +5 °C ist für beide Materialien unkritisch.",
+      "Lebensmittelkontakt-Status prüfen: Etiketten, die mit Lebensmitteln in Berührung kommen, brauchen Eignung nach EU-Verordnung (EU) Nr. 10/2011 (PP) oder BfR-Empfehlung XXXVI (Papier).",
+      "Optikziel festlegen: handwerkliche Papieroptik für Craft-Sortimente oder No-Label-Look und hohe Farbbrillanz für Premium-Getränke und Nahrungsergänzungsmittel.",
+      "Nachbestellfrequenz einschätzen: wer dieselbe Auflage mehrfach jährlich druckt, profitiert von der Farbstabilität und Reproduzierbarkeit der PP-Folie gegenüber wechselnden Papierchargen.",
+    ],
     sections: [
       {
-        title: "Wann Papier im Gespräch bleibt",
+        title: "Fünf Einsatzgrenzen, die über die Materialwahl entscheiden",
         body: [
-          "Papieretiketten können optisch passend sein, wenn eine bewusst natürliche, matte oder handwerkliche Anmutung gesucht wird und die Verpackung wenig Feuchtigkeit oder Reibung abbekommt.",
-          "Für kleine Serien ohne hohen Belastungsgrad kann Papier daher emotional attraktiv wirken, selbst wenn es operativ nicht immer die robusteste Lösung ist.",
+          "Beide Materialien – Papier und PP-Folie – sind im deutschen Markt weit verbreitet und technisch ausgereift. Die Entscheidung fällt nicht nach Gewohnheit oder Preiswahrnehmung, sondern nach fünf messbaren Einsatzgrenzen: Feuchtigkeitsbeständigkeit, Temperaturbereich, Abriebfestigkeit, Lebensmittelkontakt-Eignung und Druckreproduktion bei Wiederholauflagen.",
+          "Wer diese fünf Grenzen kennt, trifft die Materialentscheidung auf Basis der tatsächlichen Anforderungen seiner Verpackung – und vermeidet teure Nachkorrekturen, wenn das falsche Material in der Lieferkette versagt.",
         ],
       },
       {
-        title: "Wann PP die pragmatische Wahl ist",
+        title: "Feuchtigkeitsbeständigkeit: der kritischste Praxistest",
         body: [
-          "PP ist die bessere Wahl, wenn Etiketten exakt reproduzierbar bleiben müssen, regelmäßig nachbestellt werden oder mit Feuchtigkeit, Kühlung und Abrieb in Berührung kommen.",
-          "Gerade für Lebensmittel, Getränke und Supplemente ist diese operative Stabilität oft wichtiger als ein theoretisch günstigerer Ersteindruck.",
+          "Papier ist hygroskopisch: Es nimmt Feuchtigkeit aus der Luft auf, quillt und verliert Reißfestigkeit. Bei direktem Wasserkontakt – Kondensation, Eis, Abwischen – löst sich die Oberfläche auf, Tinte kann verschmieren, und das Etikett beginnt, sich zu lösen. Für Flaschen im Eiseimer, Dosen aus dem Kühlregal oder Gläser auf nassen Supermarktkühltischen ist Papier ohne ausdrückliche Nassfestausrüstung kein zuverlässiges Material.",
+          "PP-Folie (Polypropylen) ist nicht hygroskopisch. Die Oberfläche bleibt stabil, Farben behalten ihre Brillanz, und der Klebstoff hält auch bei Kondensation. Standard-PP-Etiketten mit Acrylat-Permanentklebstoff sind für dauerhaften Feuchtbereich ausgelegt – ohne Sonderausführung und ohne Aufpreis.",
         ],
       },
       {
-        title: "Der eigentliche Entscheidungshebel",
+        title: "Temperaturbereiche: Kühlkette, Tiefkühlung und Warenlager",
         body: [
-          "Die sinnvollste Frage lautet meist nicht 'Was ist billiger?', sondern 'Welches Material reduziert spätere Probleme bei Sichtbarkeit, Lagerung und Nachbestellung?'.",
-          "Wer wiederkehrende Chargen plant, spart mit einem robusteren Material oft mehr Zeit als mit einem minimal niedrigeren Einstiegspreis.",
+          "Standard-PP-Etiketten mit Permanentklebstoff sind für einen Anwendungsbereich von –20 °C bis +80 °C ausgelegt (je nach Klebstoff-Datenblatt des Herstellers). Das deckt Kühlregal (typisch +2 °C bis +8 °C), Tiefkühltruhe (–18 °C) und normale Lagerbedingungen ab.",
+          "Ungestrichene Papieretiketten sind für Temperaturbereiche von +5 °C bis +45 °C geeignet; gestrichene und beschichtete Varianten (wet-strength paper) können den Bereich erweitern, bleiben aber hygroskopisch. Für Kühlkettenprodukte – gefrorene Säfte, tiefgekühlte Fertiggerichte, gekühlte Nahrungsergänzungsmittel – ist PP-Folie die etablierte Wahl in der deutschen Lebensmittelbranche.",
         ],
       },
       {
-        title: "Praktische Empfehlung für die ersten Gespräche",
+        title: "Lebensmittelkontakt: gesetzliche Anforderungen in Deutschland",
         body: [
-          "Wenn Verpackung, Oberfläche und Einsatzumgebung noch unklar sind, ist die Musterbox der bessere Start als eine voreilige Materialentscheidung.",
+          "Etiketten, die direkt auf Lebensmitteln oder auf Verpackungen liegen, die Lebensmittel berühren, unterliegen in der EU der Verordnung (EU) Nr. 10/2011 über Materialien und Gegenstände aus Kunststoff im Lebensmittelkontakt. Polypropylen (PP) ist in Anhang I dieser Verordnung als zugelassener Stoff gelistet (FCM-Stoff-Nr. 393).",
+          "Das Bundesinstitut für Risikobewertung (BfR) hat mit der Empfehlung XIV einen deutschen Leitfaden für PP-Kunststoffe im Lebensmittelkontakt veröffentlicht, der Migrationsgrenzen und Prüfbedingungen definiert. Für Papier und Karton im Lebensmittelkontakt gilt die BfR-Empfehlung XXXVI. Beide Empfehlungen sind auf bfr.bund.de öffentlich zugänglich.",
+          "In der Praxis heißt das: Sowohl PP als auch Papier können lebensmittelgeeignet sein – maßgeblich sind Klebstoffzusammensetzung, Druckfarbe und Art des direkten Kontakts. Die pauschale Aussage 'Folie ist sicherer' oder 'Papier ist natürlicher und damit unbedenklicher' ist sachlich falsch.",
+        ],
+      },
+      {
+        title: "Optik und Markenanmutung: wann Papier seinen Platz hat",
+        body: [
+          "Papieretiketten haben einen eigenen, bewusst einsetzbaren Charakter: Ungestrichenes Naturpapier wirkt handwerklich und warm. Das ist passend für Craft-Bier aus Kleinbrauereien, Naturhonig aus regionaler Imkerei, Artisan-Gewürzmischungen oder Naturkosmetik mit Handwerklichkeitspositionierung. Dieser Effekt ist eine Designentscheidung – keine Sparmaßnahme.",
+          "PP-Folie hat andere Stärken: Farben erscheinen brillanter, die Oberfläche ist gleichmäßiger, und der No-Label-Look auf Glasflaschen ist ausschließlich mit transparenter PP-Folie möglich. Für Premium-Smoothies, proteinreiche Sportnahrung, hochauflösende Labelmotive auf Weinflaschen oder Luxuskosmetik ist PP die adäquatere Materialwahl.",
+          "Beide Optionen haben ihre Berechtigung. Die Entscheidung ist keine Wertung, sondern die Frage: Welche Anmutung passt zum Produktversprechen – und hält diese Anmutung auch unter den realen Bedingungen der Lieferkette?",
+        ],
+      },
+      {
+        title: "Nachhaltigkeit: Papier ist nicht automatisch die grünere Wahl",
+        body: [
+          "Ein verbreiteter Irrtum ist, dass Papieretiketten ökologisch immer besser sind als PP-Folien. Tatsächlich ist die Beurteilung differenzierter. Papier als Rohstoff ist nachwachsend, aber der Herstellungsprozess (Chlorbleiche, Coating-Mittel, Nassfestmacher, Kaschierklebstoffe) beinhaltet Hilfsstoffe, die den Recyclingwert des Papiers mindern können.",
+          "PP ist ein Kunststoff auf fossiler Rohstoffbasis, wird aber in Deutschland durch die Duale System-Infrastruktur im Gelben Sack bzw. der Gelben Tonne als LVP-Fraktion (Leichtverpackung) erfasst und werkstofflich recycelt. Das Verpackungsgesetz 2019 und das LUCID-Register der Stiftung Zentrale Stelle Verpackungsregister (verpackungsregister.org) verpflichten Inverkehrbringer zur Systembeteiligung – unabhängig davon, ob das Etikett aus Papier oder Folie besteht.",
+          "Der ökologisch relevantere Hebel liegt oft nicht beim Etikettenmaterial selbst, sondern bei der Verpackungsarchitektur insgesamt (Mono-Material-Design, Füllgrad, Transporteffizienz, Retouren). Wer Nachhaltigkeit glaubwürdig kommunizieren will, sollte Material und Gesamtprozess gemeinsam bewerten – nicht das Etikett isoliert.",
+        ],
+      },
+      {
+        title: "Kostenvergleich: Stückpreis und Gesamtkosten im Blick",
+        body: [
+          "Papieretiketten haben in einfachen, einfarbigen Ausführungen häufig einen niedrigeren Materialpreis als PP-Folie. Bei kleinen Serien für trockene Innenverpackungen kann das ein valides Argument sein.",
+          "Die vollständigere Rechnung berücksichtigt auch Ausschuss durch Feuchtigkeit und Transport, die Häufigkeit von Nachbestellungen bei kürzerer Haltbarkeit bestückter Etiketten und den Proof-Aufwand, der anfällt, wenn Chargen optisch variieren. Wer mit PP-Rollenetiketten arbeitet, stellt nach der ersten Freigabe folgende Auflagen ohne erneute Dateiprüfung und Farbabstimmung nach – das amortisiert den höheren Materialpreis bei vier bis sechs Auflagen pro Jahr fast immer.",
+        ],
+      },
+      {
+        title: "Reproduzierbarkeit und Nachbestellung: die unterschätzte Dimension",
+        body: [
+          "Für Marken, die ihre Etiketten mehrfach jährlich nachbestellen, ist Farbkonsistenz zwischen Auflagen entscheidend. Papier hat eine breitere Toleranz in Papierweißgrad und Oberflächenglätte; das führt zu messbaren Farbabweichungen zwischen Produktionschargen verschiedener Rohstofflieferungen.",
+          "PP-Folie hat eine gleichmäßigere Oberfläche und absorbiert keine Druckfarbe unterschiedlich stark. Das ergibt stabilere Druckwerte über wiederholte Auflagen hinweg. In der Kalkulation eines B2B-Einkäufers erscheint dieser Vorteil selten als Zahl – er zeigt sich aber als Reklamation, die mit PP seltener entsteht.",
         ],
       },
     ],
+    table: {
+      title: "PP-Etiketten vs. Papieretiketten: 10 Eigenschaften im Vergleich",
+      lead: "Technische Kennwerte und Einsatzgrenzen für die B2B-Materialwahl in Deutschland.",
+      columns: ["Eigenschaft", "PP-Folienetikett", "Papieretikett"],
+      rows: [
+        ["Feuchtigkeitsbeständigkeit", "Sehr gut – keine Quellung, kein Auflösen", "Gering bis mittel – quillt und löst sich bei Nässe"],
+        ["Temperaturbereich (Standard)", "−20 °C bis +80 °C", "+5 °C bis +45 °C (ungestrichen)"],
+        ["Abriebfestigkeit", "Hoch – Oberfläche bleibt stabil", "Mittel – Oberfläche kann reiben und ausfasern"],
+        ["Reißfestigkeit", "Sehr hoch (Folie reißt nicht)", "Gering – reißt bei Feuchtigkeitskontakt leicht"],
+        ["Lebensmittelkontakt EU", "EU-Verordnung 10/2011 + BfR XIV (PP zugelassen)", "BfR-Empfehlung XXXVI (Papier im Kontakt)"],
+        ["No-Label-Look möglich", "Ja – mit transparenter PP-Folie", "Nein – Papier ist immer sichtbar"],
+        ["Druckbrillanz", "Hoch – gleichmäßige Folienoberfläche", "Mittel – variiert mit Papiertyp und Charge"],
+        ["Farbkonsistenz bei Nachbestellungen", "Hoch – stabile Folienbasis", "Mittel – Chargenabweichungen möglich"],
+        ["Recyclingweg in Deutschland", "Gelber Sack / LVP-Fraktion (PP)", "Altpapier-Fraktion (falls nicht beschichtet)"],
+        ["LUCID-Pflicht nach VerpackG 2019", "Ja – gilt für beide Materialien", "Ja – gilt für beide Materialien"],
+      ],
+    },
     faqs: [
       {
-        question: "Sind PP-Etiketten grundsätzlich hochwertiger als Papieretiketten?",
+        question: "Wann sind Papieretiketten die richtige Wahl?",
         answer:
-          "Nicht grundsätzlich. Sie wirken anders und sind oft robuster. Ob sie hochwertiger erscheinen, hängt stark von Verpackung, Oberfläche und Markenbild ab.",
+          "Papieretiketten sind sinnvoll, wenn eine handwerkliche, matte oder natürliche Anmutung gewünscht wird und die Verpackung trocken bleibt – etwa für Craft-Sortimente, Artisan-Produkte oder Etiketten im Inneren von Kartonagen ohne Feuchtigkeitsexposition.",
       },
       {
-        question: "Wann sollte ich PP trotz höherem Einstieg bevorzugen?",
+        question: "Sind PP-Etiketten für Lebensmittelkontakt zugelassen?",
         answer:
-          "Wenn Feuchtigkeit, Abrieb, Kühlung oder wiederkehrende Nachbestellungen eine wichtige Rolle spielen, ist PP oft die risikoärmere Wahl.",
+          "Polypropylen (PP) ist in der EU-Verordnung (EU) Nr. 10/2011 über Kunststoffe im Lebensmittelkontakt als zugelassener Stoff gelistet (Anhang I, FCM-Stoff-Nr. 393). Das BfR ergänzt das mit der Empfehlung XIV für PP-Kunststoffe. Die vollständige Eignung hängt auch von Druckfarbe und Klebstoff ab – für spezifische Anfragen empfehlen wir Rücksprache mit dem Klebstofflieferanten.",
+      },
+      {
+        question: "Können Papieretiketten im Kühlregal eingesetzt werden?",
+        answer:
+          "Nur eingeschränkt. Ungestrichenes Papier ist im Feuchtkühllager nicht zuverlässig. Wet-Strength-Papier (nassfestes Papier) bietet mehr Beständigkeit, schützt aber nicht vollständig vor Kondensation und direktem Wasserkontakt. Für das deutsche Kühlregal ist PP-Folie die praxiserprobte Standardlösung.",
+      },
+      {
+        question: "Ist Papier ökologisch besser als PP-Folie?",
+        answer:
+          "Nicht pauschal. Papier ist nachwachsend, aber Beschichtungs- und Nassfestmachungsmittel können Recyclingfähigkeit mindern. PP wird in Deutschland über den Gelben Sack werkstofflich recycelt. Die Gesamtbilanz hängt von Rohstoff, Produktion, Nutzung und Entsorgung ab – eine isolierte Materialbetrachtung reicht nicht aus.",
+      },
+      {
+        question: "Was kostet PP-Folie mehr als Papier?",
+        answer:
+          "Der Materialpreis von PP-Folie liegt je nach Ausführung 20–60 % über vergleichbarem Papier. Bei der Gesamtkostenbetrachtung relativiert sich das: PP-Etiketten liefern weniger Ausschuss durch Feuchtigkeit, konsistentere Farben über Wiederholauflagen und einfacheres Nachbestellen ohne erneute Farbfreigabe.",
+      },
+      {
+        question: "Kann ich Papier- und PP-Etiketten auf derselben Etikettieranlage verarbeiten?",
+        answer:
+          "Grundsätzlich ja, wenn die Anlage für beide Materialien ausgelegt ist. PP-Folie ist steifer als Papier; bei sehr engen Rollenführungen und kleinen Radien kann die Steifigkeit relevant sein. Im Zweifelsfall Rücksprache mit dem Anlagenhersteller halten.",
+      },
+      {
+        question: "Was ist der Unterschied zwischen gestrichenem Papier und PP-Folie?",
+        answer:
+          "Gestrichenes Papier (coated paper) hat eine glatteOberfläche für bessere Druckqualität, bleibt aber grundsätzlich hygroskopisch und hat geringere Reißfestigkeit als PP. PP-Folie ist kein Papier und nimmt keine Feuchtigkeit auf – der strukturelle Unterschied bleibt, auch wenn gestrichenes Papier optisch näher an Folie heranrückt.",
+      },
+      {
+        question: "Bietet Labelpilot auch Papieretiketten an?",
+        answer:
+          "Nein. Unser Sortiment konzentriert sich auf PP-Rollenetiketten (opak und transparent) für B2B-Produktmarken in Deutschland. PP deckt die Anforderungen von Lebensmittel-, Getränke- und Supplement-Marken für wiederkehrende Auflagen zuverlässig ab. Für Papieretiketten empfehlen wir einen spezialisierten Anbieter in diesem Segment.",
       },
     ],
     relatedLinks: [
       {
         label: "Opake PP-Etiketten",
         href: "/de/opake-pp-etiketten",
-        description:
-          "Produktseite für den häufigsten PP-Standard mit klarer Deckkraft.",
+        description: "Deckende PP-Rollenetiketten – Standard für Lebensmittel, Gewürze und Supplemente.",
       },
       {
-        label: "Lebensmitteletiketten",
-        href: "/de/lebensmittel-etiketten",
-        description:
-          "Branchenkontext, in dem Materialrobustheit häufig wichtiger als Papieroptik wird.",
+        label: "Transparente PP-Etiketten",
+        href: "/de/transparente-pp-etiketten",
+        description: "No-Label-Look für Glasflaschen und Getränkeverpackungen.",
+      },
+      {
+        label: "Folienetiketten",
+        href: "/de/folienetiketten",
+        description: "PP-Folienetiketten im Überblick – wasserfest, auf Rolle, für B2B-Auflagen.",
       },
       ...guideCommercialLinks,
     ],
