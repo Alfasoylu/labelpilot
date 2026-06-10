@@ -86,6 +86,7 @@ export const PACKAGES: CommercePackage[] = [
 ];
 
 const expectedGrossCentsById: Record<string, number> = {
+  "test-10-eur": 1000,
   "opaque-pp-100x200-1000": 21301,
   "opaque-pp-100x200-2000": 33201,
   "opaque-pp-100x200-5000": 57001,
