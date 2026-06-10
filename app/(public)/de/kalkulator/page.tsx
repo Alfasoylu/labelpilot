@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { KalkulatorClient } from "@/components/kalkulator/KalkulatorClient";
 import { getDefaultPricingSettings } from "@/lib/admin/pricing";
+import { buildAbsoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Etiketten Kalkulator – Ihr individueller Preis | Labelpilot.de",
@@ -14,6 +15,9 @@ export const metadata: Metadata = {
     "Rollenetiketten Preisrechner",
     "Etiketten Preiskalkulation",
   ],
+  alternates: {
+    canonical: buildAbsoluteUrl("/de/kalkulator"),
+  },
   openGraph: {
     title: "Etiketten-Kalkulator | Labelpilot",
     description: "Sofort-Preis für PP-Etiketten – Format, Material, Menge.",
