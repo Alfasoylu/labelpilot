@@ -897,7 +897,7 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
         <Section
           eyebrow="Musteransicht"
           title="Die Musterbox als sichtbarer Materialvergleich"
-          lead="Die Bildfläche ergänzt die Erklärung der Musterbox, ohne den Hero in ein Fotolayout umzubauen."
+          lead="PP opak, PP transparent und Thermoetiketten – sehen und anfassen, bevor Sie bestellen."
         >
           <EditorialImage
             {...productImageAssets.sampleBox}
@@ -1589,7 +1589,7 @@ function getProductPageImage(path: string) {
       return {
         ...productImageAssets.productLine,
         title: "PP-Rollenetiketten im Einsatz",
-        lead: "Die Bildfläche ergänzt den Produkteinstieg und zeigt die Materialfamilie über mehrere Verpackungstypen hinweg.",
+        lead: "PP opak und PP transparent – für Lebensmittel, Getränke und Supplement-Verpackungen.",
         caption: "Produktlinie mit PP-Rollenetiketten auf Flasche, Beutel, Supplement-Flasche und Tiegel.",
       };
     case "/de/transparente-pp-etiketten":

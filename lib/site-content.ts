@@ -808,9 +808,9 @@ const topLevelPages: PublicPageData[] = [
         ],
       },
       {
-        title: "Welche Folgeseiten helfen",
+        title: "Einsatz & Verpackungstypen",
         body: [
-          "Die Branchen-Seite für Flaschenetiketten und der Materialvergleich transparent vs. opak vertiefen typische Kaufentscheidungen.",
+          "Ideal für Flaschen, Gläser und Premium-Verpackungen, bei denen die Verpackung selbst sichtbar bleiben soll.",
         ],
       },
     ],
@@ -923,7 +923,7 @@ const topLevelPages: PublicPageData[] = [
     secondaryCta: fileLink,
     packageHeading: "Preise für opake PP-Etiketten",
     packageLead:
-      "Diese Tabelle zeigt die festen Pakete als All-in-Preis inkl. Standard-Datenprüfung, 1 Proof-Runde und Versand nach Deutschland.",
+      "Feste Pakete als All-in-Preis – inkl. Druckdatenprüfung, Proof und Versand nach Deutschland.",
     packageTable: opaquePackages,
     sections: [
       {
@@ -939,9 +939,9 @@ const topLevelPages: PublicPageData[] = [
         ],
       },
       {
-        title: "Welche Inhalte vertiefen die Entscheidung",
+        title: "Typische Einsatzbereiche",
         body: [
-          "Für Materialvergleiche und Verpackungstypen lohnt sich die Kombination aus Branchen-Seiten und Vergleichsratgebern.",
+          "Gängige Verpackungstypen: Lebensmittelgläser, Supplement-Dosen, Kraftpapier-Beutel und Kartonagen.",
         ],
       },
     ],
@@ -1052,11 +1052,11 @@ const topLevelPages: PublicPageData[] = [
     lead:
       "Individuell bedruckte PP-Rollenetiketten für deutsche B2B-Marken. Opak oder transparent, Wunschformat nach Maß, mit gespeicherten Druckdaten.",
     heroBullets: [
-      "Zentrale Produktübersicht für opake und transparente PP-Etiketten.",
-      "Verbindet Materialwahl, Preise, Druckdaten und Nachbestellung.",
-      "Bewusst schlankes Sortiment statt verwirrender Variantenvielfalt.",
+      "Opake und transparente PP-Rollenetiketten auf einen Blick.",
+      "Materialwahl, Preise, Druckdaten und Nachbestellung.",
+      "Zwei Materialien, klare Pakete, schnelle Nachbestellung.",
     ],
-    sidebarTitle: "Was Sie hier finden",
+    sidebarTitle: "PP-Rollenetiketten im Überblick",
     sidebarBullets: [
       "Opakes PP als Standardlösung",
       "Transparentes PP als Premium-Variante",
@@ -2096,14 +2096,14 @@ const topLevelPages: PublicPageData[] = [
       "Fordern Sie ein individuelles B2B-Angebot für PP-Rollenetiketten, Thermoetiketten oder größere Etikettenmengen an.",
     heroBullets: [
       "Für Sondergrößen, unklare Materialwahl oder wiederkehrende Großabrufe.",
-      "Der Prozess ist bewusst strukturiert und kein generisches Kontaktformular.",
+      "Kein generisches Kontaktformular – geführte Anfrage mit konkreten Angaben.",
       "Ohne Dateiupload: Für das erste Angebot reichen Material, Größe, Menge und Verpackung.",
     ],
     sidebarTitle: "Wann ein Angebot sinnvoll ist",
     sidebarBullets: [
       "Einstieg für größere Mengen und Sonderfälle",
       "Strukturierte Erfassung Ihrer Anfrage",
-      "Verbindet Produktseiten, Musterbox und spätere Nachbestellung",
+      "Vorbereitung für Musterbox und spätere Nachbestellung",
     ],
     sections: [
       {
@@ -2116,7 +2116,7 @@ const topLevelPages: PublicPageData[] = [
       {
         title: "Was nach der Anfrage passiert",
         body: [
-          "Die Anfrage wird strukturiert erfasst, intern geprüft und als Grundlage für den nächsten Angebots- oder Rückfrage-Schritt verwendet.",
+          "Wir prüfen Ihre Angaben und melden uns innerhalb von 1–2 Werktagen mit einem Angebot oder einer Rückfrage.",
         ],
       },
       {
