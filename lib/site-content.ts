@@ -2956,7 +2956,7 @@ const topLevelPages: PublicPageData[] = [
         body: [
           "Alfa Soylu Elektronik",
           "Rechtsform: Einzelunternehmen (Türkei)",
-          "Sitz und Anschrift: Istanbul, Türkei",
+          "Anschrift: Yedikule Cirpici Yolu Sokak No:1/4, Zeytinburnu, Istanbul, Türkei",
           "Steuerlicher Hinweis: Keine USt-IdNr. – Unternehmen mit Sitz außerhalb der EU",
         ],
       },
@@ -2987,7 +2987,7 @@ const topLevelPages: PublicPageData[] = [
         title: "Verantwortlicher",
         body: [
           "Verantwortlich für die Datenverarbeitung auf dieser Website ist:",
-          "Alfa Soylu Elektronik, Istanbul, Türkei",
+          "Alfa Soylu Elektronik, Yedikule Cirpici Yolu Sokak No:1/4, Zeytinburnu, Istanbul, Türkei",
           "E-Mail: kontakt@labelpilot.de · Telefon: +90 549 688 51 90",
           "Vertreten durch: Alperen Aydin",
         ],
