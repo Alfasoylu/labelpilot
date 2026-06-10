@@ -52,6 +52,7 @@ function renderShell(input: {
 
   return `<!doctype html>
 <html lang="de">
+  <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /></head>
   <body style="margin:0;padding:24px;background:#F7F2E8;color:#2A2926;font-family:Arial,sans-serif;">
     <div style="max-width:640px;margin:0 auto;background:#FFFDF8;border:1px solid #E5DED2;border-radius:18px;padding:32px;">
       <p style="margin:0 0 8px 0;color:#B08A45;font-size:14px;font-weight:600;letter-spacing:0.04em;">Labelpilot.de</p>
