@@ -13,7 +13,7 @@ export function TrustBar({ items }: TrustBarProps) {
       <div className="trust-grid">
         {items.map((item) => (
           <article key={item.title} className="trust-item">
-            <h3>{item.title}</h3>
+            <p className="trust-item__title">{item.title}</p>
             <p>{item.body}</p>
           </article>
         ))}

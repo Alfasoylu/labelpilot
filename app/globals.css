@@ -730,6 +730,7 @@ textarea {
 .product-card h3,
 .sample-card h3,
 .trust-item h3,
+.trust-item .trust-item__title,
 .feature-card h3 {
   margin: 0 0 12px;
   color: var(--text-strong);
@@ -1134,6 +1135,11 @@ textarea {
   margin: 0;
   color: var(--muted);
   line-height: 1.66;
+}
+
+.trust-item .trust-item__title {
+  color: var(--text-strong);
+  line-height: 1.4;
 }
 
 .product-card-header,
@@ -2012,7 +2018,7 @@ th {
   text-align: right;
 }
 .saved-design-card__demo {
-  opacity: 0.6;
+  color: var(--muted);
   font-weight: 400;
 }
 /* Ghost CTA — visible but clearly a demo action inside the example card,
@@ -2323,7 +2329,7 @@ th {
 
 .compare-card--classic {
   background: var(--surface-strong);
-  color: var(--muted);
+  color: #5e5850;
 }
 
 .compare-card--labelpilot {
@@ -3731,7 +3737,7 @@ th {
   max-width: 70ch;
 }
 .consent-banner__link {
-  color: var(--accent-hover);
+  color: #7a5d1e;
   text-decoration: underline;
 }
 .consent-banner__options {
