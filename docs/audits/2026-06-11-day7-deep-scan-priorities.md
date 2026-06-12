@@ -3,16 +3,19 @@
 
 ---
 
-## P0 — Para kaybettiren / siparişi kıran (bugün)
+## P0 — Para kaybettiren / siparişi kıran — ÇÖZÜLDÜ (2026-06-11, commit 6249c59)
 
-| # | Sorun | Kanıt | Efor |
-|---|-------|-------|------|
-| 1 | **Artwork upload >4.5MB Vercel'de çalışamaz.** Kod 150MB ilan ediyor ama Vercel serverless body limiti ~4.5MB — gerçek baskı PDF'i (5–100MB) ödeme SONRASI en kritik adımda 413 ile patlar. Çözüm: Supabase Storage signed upload URL ile tarayıcıdan direkt yükleme. | `app/api/orders/[orderId]/artwork/route.ts:27`; ölü Pages-Router config :19-24 | 1g |
-| 2 | **Admin artwork/proof indirme 401 veriyor** (Supabase-session auth altında `getAdminActorFromRequest` Basic-Auth bekliyor). Founder müşterinin dosyasını indiremez = sipariş karşılanamaz. | `app/api/admin/orders/[orderId]/artwork/[fileId]/route.ts:16-19`, `proofs/[proofId]/route.ts:14-17` | 1s |
-| 3 | **Yeni PAID sipariş görünmez:** webhook admin'e e-posta atmıyor, dashboard PAID'i saymıyor, liste filtresi gizliyor. Sipariş gelir, kimse fark etmez. | `app/api/stripe/webhook/route.ts:233-238`; `app/(admin)/admin/page.tsx:36-79` | 2-3s |
-| 4 | **ADMIN_NOTIFY_EMAIL → Hotmail forwarding hiç doğrulanmadı** (SoT'de açık follow-up). Tüm sipariş/lead bildirimleri bu hatta. Canlı test şart. | `docs/00-SOURCE-OF-TRUTH.md:177` | 10dk + test |
-| 5 | **Kalkulator Designservice (+40€) checkout'a geçmiyor:** fiyat kutusunda gösteriliyor ama Stripe'a designFee'siz net/brüt gidiyor — müşteri hizmeti bekler, para alınmaz, sipariş kaydında iz yok. | `KalkulatorClient.tsx:759-760` (totalNetPrice geçilmiyor) | 2s |
-| 6 | **Wunschformat siparişinde Klebertyp / UV-Lack / Eckenradius kayboluyor:** müşteri seçiyor, özette görüyor, order.create'te alan yok → üretim yanlış spec ile yapılır. | `lib/checkout/intake.ts:109-122`; `create-custom-session/route.ts:132-178` | yarım gün |
+| # | Sorun | Durum |
+|---|-------|-------|
+| 1 | Artwork upload >4.5MB | DONE — Signed-upload-URL akışı: tarayıcı → Supabase direkt PUT, JSON registration gerçek boyutu doğrular, multipart küçük dosya fallback'i. NOT: bucket limiti yok → free tier global 50MB/dosya geçerli; 50MB+ AI/ZIP için plan yükseltmesi gerekebilir. |
+| 2 | Admin artwork/proof indirme 401 | DONE — `lib/security/admin-request-auth.ts` Supabase session VEYA Basic-Auth doğrular |
+| 3 | Yeni PAID sipariş görünmez | DONE — Webhook ops e-postası (`newOrderOpsNotification`), dashboard "Neu bezahlt" kartı, liste PAID filtresi |
+| 4 | **ADMIN_NOTIFY_EMAIL → Hotmail forwarding doğrulanmadı** | AÇIK — founder canlı test yapmalı (10dk). Tüm sipariş/lead alarmları bu hatta. |
+| 5 | Designservice +40€ kayboluyor | DONE — Server-side hesap (pricing settings), ayrı Stripe line item, `designServiceCents` order'a yazılıyor |
+| 6 | Wunschformat spec kaybı | DONE — `form/klebertyp/uvLack/cornerRadiusMm` kolonları (migration prod'a uygulandı), intake şeması genişletildi, admin detay + üretim devir listesinde görünüyor |
+
+> Bonus: upload token rotasyonu artık client'a dönüyor (aynı oturumda ikinci upload eskiden 403 alırdı); artwork ops e-postası EMAIL_REPLY_TO fallback'i kazandı.
+> Önceden kırık testler (temiz main'de de düşüyor, bu işle ilgisiz): `test:safety` (anasayfa PP-money-page link assertion'ı), `test:addons` (ADDONS flag açıkken eski beklenti).
 
 ## P1 — Ads açmadan önce (bu hafta, bilinen AW- tag'e ek)
 
