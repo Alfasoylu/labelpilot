@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getPrismaClient } from "@/lib/db/prisma";
-import { getAdminActorFromRequest } from "@/lib/security/admin-basic-auth";
+import { verifyAdminRequest } from "@/lib/security/admin-request-auth";
 import { getSignedUrl } from "@/lib/storage/artwork";
 
 export const runtime = "nodejs";
@@ -11,9 +11,7 @@ export async function GET(
   context: { params: Promise<{ orderId: string; proofId: string }> },
 ) {
   // BUG-004: Defense-in-depth — verify admin credentials independently of the middleware.
-  const expectedUser = process.env.ADMIN_BASIC_USER?.trim();
-  const actor = getAdminActorFromRequest(request);
-  if (!expectedUser || actor !== expectedUser) {
+  if (!(await verifyAdminRequest(request))) {
     return NextResponse.json({ error: "Nicht autorisiert." }, { status: 401 });
   }
 

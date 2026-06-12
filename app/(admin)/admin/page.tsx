@@ -21,6 +21,7 @@ export default async function AdminDashboardPage() {
   const stuckThreshold = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
   const [
+    paidAwaitingArtworkCount,
     reviewCount,
     proofCount,
     productionReadyCount,
@@ -33,6 +34,9 @@ export default async function AdminDashboardPage() {
     supportOpenCount,
     stuckCount,
   ] = await Promise.all([
+    prisma.order.count({
+      where: { status: "PAID" },
+    }),
     prisma.order.count({
       where: {
         OR: [{ status: "FILE_REVIEW" }, { status: "CORRECTION_REQUIRED" }],
@@ -97,6 +101,16 @@ export default async function AdminDashboardPage() {
       <article className="surface-card">
         <h2>Aktionen heute</h2>
         <div className="feature-grid">
+          <div className="section-card">
+            <h3>Neu bezahlt</h3>
+            <p className="price-note">
+              {paidAwaitingArtworkCount} Bestellung{paidAwaitingArtworkCount === 1 ? "" : "en"}{" "}
+              warten auf Druckdaten
+            </p>
+            <Link href="/admin/orders?status=PAID" className="secondary-link">
+              Bezahlte ansehen
+            </Link>
+          </div>
           <div className="section-card">
             <h3>Dateiprüfung</h3>
             <p className="price-note">{reviewCount} Bestellungen offen</p>

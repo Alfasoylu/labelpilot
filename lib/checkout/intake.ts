@@ -117,6 +117,10 @@ export const customSizeCheckoutIntakeSchema = z.object({
   farbigkeit: z.number().int().min(1).max(4).optional(),
   weissunterdruck: z.boolean().optional(),
   anzahlSorten: z.number().int().min(1).max(20).optional(),
+  klebertyp: z.enum(["PERMANENT", "WIEDERABLOESBAR"]).optional(),
+  uvLack: z.enum(["KEIN", "GLAENZEND"]).optional(),
+  cornerRadius: z.number().int().min(0).max(3).optional(),
+  designService: z.boolean().optional(),
   ...contactAddressFields,
   ...billingAddressFields,
 }).superRefine(requireBillingWhenDiffering);

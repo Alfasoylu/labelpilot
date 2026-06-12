@@ -177,6 +177,12 @@ export default async function AdminOrderDetailPage({
             <li>Material: {getMaterialLabel(order.material)}</li>
             <li>Menge: {order.quantity.toLocaleString("de-DE")} Stück</li>
             <li>Oberfläche: {formatFinishing(order.finishing)}</li>
+            {order.klebertyp === "WIEDERABLOESBAR" ? (
+              <li><strong>Kleber: Wiederablösbar</strong></li>
+            ) : null}
+            {order.uvLack === "GLAENZEND" ? <li><strong>UV-Schutzlack: Glänzend</strong></li> : null}
+            {order.form === "OVAL" ? <li><strong>Form: Oval / Rund</strong></li> : null}
+            {order.cornerRadiusMm != null ? <li>Eckenradius: {order.cornerRadiusMm} mm</li> : null}
             {order.tiefkuehlgeeignet ? (
               <li><strong>Tiefkühlgeeignet: Ja (Spezialkleber bis −20 °C)</strong></li>
             ) : null}
@@ -224,6 +230,12 @@ export default async function AdminOrderDetailPage({
             <li>Menge: {order.quantity.toLocaleString("de-DE")} Stück</li>
             <li>Anzahl Druckmotive: {order.extraDesignCount + 1}</li>
             <li>Oberfläche: {formatFinishing(order.finishing)}</li>
+            {order.klebertyp ? (
+              <li>Kleber: {order.klebertyp === "WIEDERABLOESBAR" ? "Wiederablösbar" : "Permanent"}</li>
+            ) : null}
+            {order.uvLack === "GLAENZEND" ? <li>UV-Schutzlack: Glänzend</li> : null}
+            {order.form === "OVAL" ? <li>Form: Oval / Rund</li> : null}
+            {order.cornerRadiusMm != null ? <li>Eckenradius: {order.cornerRadiusMm} mm</li> : null}
             {order.tiefkuehlgeeignet ? (
               <li><strong>Tiefkühlgeeignet: Ja (Spezialkleber bis −20 °C)</strong></li>
             ) : null}

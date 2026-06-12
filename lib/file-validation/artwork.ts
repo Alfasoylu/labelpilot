@@ -101,7 +101,15 @@ export function getProofFileRequirementsText() {
   return "Proof-Dateien: PDF, PNG oder JPG bis 25 MB.";
 }
 
-export function validateArtworkFile(file: File) {
+// Structural file metadata — a browser File satisfies this, and the signed-upload
+// flow can validate declared metadata before any bytes are transferred.
+export type ArtworkFileMeta = {
+  name: string;
+  size: number;
+  type: string;
+};
+
+export function validateArtworkFile(file: ArtworkFileMeta) {
   const extension = getExtension(file.name);
 
   if (!(extension in artworkRules)) {

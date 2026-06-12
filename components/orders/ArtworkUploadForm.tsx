@@ -32,6 +32,9 @@ export function ArtworkUploadForm({
   initialFiles,
 }: ArtworkUploadFormProps) {
   const [files, setFiles] = useState(initialFiles);
+  // The API rotates the upload token after every successful upload; keep the
+  // current one in state so a second upload in the same session keeps working.
+  const [activeToken, setActiveToken] = useState(token);
   const [uploadState, setUploadState] = useState<UploadState>({
     type: "idle",
     message: "",
@@ -56,20 +59,63 @@ export function ArtworkUploadForm({
     setIsPending(true);
     setUploadState({ type: "idle", message: "" });
 
-    const formData = new FormData();
-    formData.set("token", token);
-    formData.set("file", file);
-
     try {
+      // Step 1: request a signed upload URL (validates type/size/token server-side).
+      const urlResponse = await fetch(`/api/orders/${orderId}/artwork/upload-url`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: activeToken,
+          fileName: file.name,
+          fileType: file.type,
+          fileSize: file.size,
+        }),
+      });
+      const urlPayload = (await urlResponse.json().catch(() => null)) as
+        | { error?: string; uploadUrl?: string; storagePath?: string; sanitizedFileName?: string }
+        | null;
+
+      if (!urlResponse.ok || !urlPayload?.uploadUrl || !urlPayload.storagePath) {
+        setUploadState({
+          type: "error",
+          message: urlPayload?.error ?? "Upload fehlgeschlagen. Bitte versuchen Sie es erneut.",
+        });
+        return;
+      }
+
+      // Step 2: upload the file directly to storage — bytes bypass the app server,
+      // so large print files (50 MB+) work.
+      const putResponse = await fetch(urlPayload.uploadUrl, {
+        method: "PUT",
+        headers: { "Content-Type": file.type || "application/octet-stream" },
+        body: file,
+      });
+
+      if (!putResponse.ok) {
+        setUploadState({
+          type: "error",
+          message: "Upload fehlgeschlagen. Bitte versuchen Sie es erneut.",
+        });
+        return;
+      }
+
+      // Step 3: register the uploaded file on the order.
       const response = await fetch(`/api/orders/${orderId}/artwork`, {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: activeToken,
+          storagePath: urlPayload.storagePath,
+          fileName: file.name,
+          mimeType: file.type,
+        }),
       });
       const payload = (await response.json()) as
         | {
             error?: string;
             file?: ArtworkFileItem;
             message?: string;
+            newToken?: string;
           }
         | undefined;
 
@@ -83,6 +129,9 @@ export function ArtworkUploadForm({
         return;
       }
 
+      if (payload.newToken) {
+        setActiveToken(payload.newToken);
+      }
       setFiles((current) => [payload.file!, ...current]);
       setUploadState({
         type: "success",

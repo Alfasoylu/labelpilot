@@ -44,3 +44,5 @@ incoming-art/
 
 # Competitive research (local only, not for public repo)
 research/
+
+.vercel

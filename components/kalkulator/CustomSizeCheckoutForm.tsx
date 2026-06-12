@@ -27,6 +27,9 @@ type CustomSizeCheckoutFormProps = {
   printMethod?: "DIGITAL" | "FLEXO";
   netPrice: number;
   grossPrice: number;
+  designService?: boolean;
+  designFeeNet?: number;
+  designFeeGross?: number;
   isHeavyShipment?: boolean;
   onBack: () => void;
 };
@@ -69,6 +72,9 @@ export function CustomSizeCheckoutForm({
   printMethod = "DIGITAL",
   netPrice,
   grossPrice,
+  designService = false,
+  designFeeNet = 0,
+  designFeeGross = 0,
   isHeavyShipment = false,
   onBack,
 }: CustomSizeCheckoutFormProps) {
@@ -76,7 +82,9 @@ export function CustomSizeCheckoutForm({
   const [errorMessage, setErrorMessage] = useState("");
   // CHK-004: Prevent double-submit with a ref guard that is more reliable than isPending alone.
   const submittedRef = useRef(false);
-  const vatAmount = grossPrice - netPrice;
+  const totalNet = netPrice + designFeeNet;
+  const totalGross = grossPrice + designFeeGross;
+  const vatAmount = totalGross - totalNet;
 
   const handleSubmit = (formData: FormData) => {
     // CHK-004: Guard against double-submit before the transition starts or during slow redirects.
@@ -100,6 +108,7 @@ export function CustomSizeCheckoutForm({
         farbigkeit,
         anzahlSorten,
         uvLack,
+        designService,
         companyName: String(formData.get("companyName") ?? ""),
         contactName: String(formData.get("contactName") ?? ""),
         email: String(formData.get("email") ?? ""),
@@ -176,10 +185,15 @@ export function CustomSizeCheckoutForm({
           ) : (
             <li>Menge: {quantity.toLocaleString("de-DE")} Stück</li>
           )}
-          <li>Gesamt Netto: {formatEur(netPrice)}</li>
+          {designService && (
+            <li>
+              Designservice: {designFeeNet > 0 ? `${formatEur(designFeeNet)} netto` : "im Bestellwert inbegriffen"}
+            </li>
+          )}
+          <li>Gesamt Netto: {formatEur(totalNet)}</li>
           <li>MwSt. 19 %: {formatEur(vatAmount)}</li>
           <li>
-            <strong>Gesamt brutto: {formatEur(grossPrice)} inkl. 19 % MwSt.</strong>
+            <strong>Gesamt brutto: {formatEur(totalGross)} inkl. 19 % MwSt.</strong>
           </li>
           <li>Versand nach Deutschland: inklusive</li>
         </ul>

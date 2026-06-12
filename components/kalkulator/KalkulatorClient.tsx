@@ -758,6 +758,9 @@ export function KalkulatorClient({
             printMethod={printMethod ?? "DIGITAL"}
             netPrice={displayNetPrice}
             grossPrice={displayGrossPrice}
+            designService={!hasOwnArtwork}
+            designFeeNet={designFeeNet}
+            designFeeGross={designFeeGross}
             isHeavyShipment={isHeavyShipment}
             onBack={handleBack}
           />

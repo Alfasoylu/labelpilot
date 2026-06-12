@@ -298,6 +298,10 @@ model Order {
   reorderStockDuration    String?
   finishing               String?
   tiefkuehlgeeignet       Boolean  @default(false)
+  form                    String?
+  klebertyp               String?
+  uvLack                  String?
+  cornerRadiusMm          Int?
   rollKern                String?
   abrollrichtung          String?
   maxRollendurchmesser    String?

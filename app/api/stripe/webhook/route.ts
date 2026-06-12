@@ -3,7 +3,12 @@ import Stripe from "stripe";
 
 import { getPrismaClient } from "@/lib/db/prisma";
 import { sendEmail } from "@/lib/email/send";
-import { artworkApproved, orderConfirmation } from "@/lib/email/templates/lifecycle";
+import {
+  artworkApproved,
+  newOrderOpsNotification,
+  orderConfirmation,
+} from "@/lib/email/templates/lifecycle";
+import { getServerEnv } from "@/lib/env";
 import {
   canApplyStripePaymentFailure,
   canApplyStripePaymentSuccess,
@@ -196,6 +201,38 @@ async function handleCheckoutCompleted(event: Stripe.Event) {
 
   if (emailReservation.count !== 1) {
     return;
+  }
+
+  // Ops notification: the founder must learn about every paid order immediately.
+  // Tied to the same idempotency reservation as the customer email, but sent even
+  // when the customer email is missing. Failure is logged, never blocks the webhook.
+  const adminInbox = getServerEnv().ADMIN_NOTIFY_EMAIL || getServerEnv().EMAIL_REPLY_TO;
+  if (adminInbox) {
+    const opsTemplate = newOrderOpsNotification({
+      orderNumber: order.orderNumber,
+      orderId: order.id,
+      amountCents: order.amountCents,
+      material: order.material,
+      quantity: order.quantity,
+      customerEmail,
+      companyName: order.companyName,
+      isSameArtworkReorder,
+    });
+    const opsResult = await sendEmail({
+      to: adminInbox,
+      subject: opsTemplate.subject,
+      html: opsTemplate.html,
+      text: opsTemplate.text,
+    });
+    if (!opsResult.ok) {
+      console.error(
+        `Ops-Benachrichtigung für bezahlte Bestellung ${order.id} konnte nicht gesendet werden.`,
+      );
+    }
+  } else {
+    console.error(
+      `Ops-Benachrichtigung übersprungen für Bestellung ${order.id}: ADMIN_NOTIFY_EMAIL/EMAIL_REPLY_TO fehlt.`,
+    );
   }
 
   if (!customerEmail) {

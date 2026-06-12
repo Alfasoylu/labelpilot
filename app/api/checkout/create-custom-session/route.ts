@@ -62,17 +62,22 @@ export async function POST(request: Request) {
     const weissunterdruck = parsed.data.weissunterdruck === true;
     const anzahlSorten = parsed.data.anzahlSorten ?? 1;
     const colorCount = farbigkeit + (weissunterdruck ? 1 : 0);
+    const klebertyp = parsed.data.klebertyp ?? "PERMANENT";
+    const uvLack = parsed.data.uvLack ?? "KEIN";
+    const cornerRadiusMm = form === "RECHTECKIG" ? parsed.data.cornerRadius ?? 2 : null;
+    const designServiceRequested = parsed.data.designService === true;
 
     const [materialRow, settingsRow] = await Promise.all([
       prisma.pricingMaterialCost.findUnique({ where: { materialKey } }),
       prisma.pricingSettings.findUnique({ where: { id: "default" } }),
     ]);
 
+    const pricingSettings = mapPricingSettingsRecord(settingsRow);
     const priceResult = buildPublicCustomSizePriceResponse({
       featureEnabled: true,
       request: { materialKey, widthMm, heightMm, quantity, colorCount, anzahlSorten, tiefkuehlgeeignet: parsed.data.tiefkuehlgeeignet },
       params: mapMaterialCostRecord(materialRow),
-      settings: mapPricingSettingsRecord(settingsRow),
+      settings: pricingSettings,
     });
 
     if (priceResult.status !== 200 || !priceResult.body) {
@@ -96,8 +101,21 @@ export async function POST(request: Request) {
     // the Stripe session total, which would cause the webhook amount check to fail.
     const ovalSurchargeCents = Math.round(ovalSurchargeNet * 119);
 
+    // Designservice fee is computed server-side from the pricing settings — the client only
+    // sends the boolean. Free above the threshold, measured against the base net incl. oval surcharge
+    // (same basis the Kalkulator price box uses).
+    const baseNetForThreshold = priceResult.body.netPrice + ovalSurchargeNet;
+    const designServiceNetSetting = pricingSettings?.designServiceNet ?? 40;
+    const designServiceThreshold = pricingSettings?.designServiceFreeThresholdNet ?? 2000;
+    const designFeeNet =
+      designServiceRequested && baseNetForThreshold < designServiceThreshold
+        ? designServiceNetSetting
+        : 0;
+    const designFeeGrossCents = Math.round(designFeeNet * 119);
+
     // grossPrice includes material + printing + plates; ovalSurchargeCents added for oval/round form
-    const grossAmountCents = Math.round(priceResult.body.grossPrice * 100) + ovalSurchargeCents;
+    const grossAmountCents =
+      Math.round(priceResult.body.grossPrice * 100) + ovalSurchargeCents + designFeeGrossCents;
     const method = priceResult.body.method;
     const orderNumber = createOrderNumber();
 
@@ -160,18 +178,26 @@ export async function POST(request: Request) {
         customerNote: parsed.data.notes || null,
         finishing: parsed.data.finishing || null,
         tiefkuehlgeeignet: parsed.data.tiefkuehlgeeignet ?? false,
+        form,
+        klebertyp,
+        uvLack,
+        cornerRadiusMm,
         rollKern: parsed.data.rollKern || null,
         abrollrichtung: parsed.data.abrollrichtung || null,
         maxRollendurchmesser: parsed.data.maxRollendurchmesser || null,
         maschineName: parsed.data.maschineName || null,
         artworkInputStatus: parsed.data.artworkStatus,
-        selectedAddons: parsed.data.addons ?? undefined,
+        designServiceCents: designFeeGrossCents > 0 ? designFeeGrossCents : null,
+        addonsTotalCents: designFeeGrossCents > 0 ? designFeeGrossCents : null,
+        selectedAddons: designServiceRequested
+          ? { ...(parsed.data.addons ?? {}), designService: true }
+          : parsed.data.addons ?? undefined,
         // BUG-004: Link to customer account when authenticated.
         customerId: customerId ?? undefined,
         statusEvents: {
           create: {
             status: "PENDING_PAYMENT",
-            note: `Wunschformat-Checkout: ${widthMm}×${heightMm} mm${formLabel}, ${quantity} Stück${sortenLabel}, ${printLabel} (${parsed.data.artworkStatus}).`,
+            note: `Wunschformat-Checkout: ${widthMm}×${heightMm} mm${formLabel}, ${quantity} Stück${sortenLabel}, ${printLabel}, Kleber: ${klebertyp === "WIEDERABLOESBAR" ? "wiederablösbar" : "permanent"}${uvLack !== "KEIN" ? ", UV-Lack glänzend" : ""}${cornerRadiusMm != null ? `, Eckenradius ${cornerRadiusMm} mm` : ""}${designFeeGrossCents > 0 ? ", inkl. Designservice" : designServiceRequested ? ", Designservice (kostenlos)" : ""} (${parsed.data.artworkStatus}).`,
           },
         },
       },
@@ -202,13 +228,28 @@ export async function POST(request: Request) {
           quantity: 1,
           price_data: {
             currency: "eur",
-            unit_amount: grossAmountCents,
+            unit_amount: grossAmountCents - designFeeGrossCents,
             product_data: {
               name: getProductDisplayName(materialKey, widthMm, heightMm),
               description: `${quantity.toLocaleString("de-DE")} Stück${sortenLabel}${formLabel}, ${printLabel}, inkl. Versand`,
             },
           },
         },
+        ...(designFeeGrossCents > 0
+          ? [
+              {
+                quantity: 1,
+                price_data: {
+                  currency: "eur" as const,
+                  unit_amount: designFeeGrossCents,
+                  product_data: {
+                    name: "Designservice",
+                    description: "Etikettengestaltung nach Vorlage oder Briefing",
+                  },
+                },
+              },
+            ]
+          : []),
       ],
     });
 

@@ -88,6 +88,7 @@ export default async function AdminOrdersPage({ searchParams }: OrdersPageProps)
             <select id="status" name="status" defaultValue={statusFilter}>
               <option value="review-needed">Prüfung nötig</option>
               <option value="all">Alle</option>
+              <option value="PAID">Bezahlt (wartet auf Druckdaten)</option>
               <option value="FILE_REVIEW">Dateiprüfung</option>
               <option value="CORRECTION_REQUIRED">Korrektur erforderlich</option>
               <option value="WAITING_CUSTOMER_APPROVAL">Proof wartet</option>

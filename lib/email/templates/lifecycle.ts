@@ -429,6 +429,55 @@ export function artworkUploadedOpsNotification(input: {
   };
 }
 
+export function newOrderOpsNotification(input: {
+  orderNumber: string;
+  orderId: string;
+  amountCents: number;
+  material: string;
+  quantity: number;
+  customerEmail: string | null;
+  companyName: string | null;
+  isSameArtworkReorder: boolean;
+}): TemplateResult {
+  const baseUrl = getPublicEnv().NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
+  const adminOrderLink = `${baseUrl}/admin/orders/${input.orderId}`;
+  const orderKind = input.isSameArtworkReorder
+    ? "Nachbestellung (Artwork vorhanden, direkt produktionsbereit)"
+    : "Neue Bestellung (wartet auf Druckdaten)";
+  const subject = `Bezahlte Bestellung ${input.orderNumber} – ${formatEuroCents(input.amountCents)}`;
+  const text = [
+    `${orderKind}`,
+    "",
+    `Bestellnummer: ${input.orderNumber}`,
+    `Betrag: ${formatEuroCents(input.amountCents)}`,
+    `Material: ${formatMaterialLabel(input.material)}`,
+    `Menge: ${input.quantity.toLocaleString("de-DE")} Stück`,
+    `Firma: ${input.companyName || "Nicht angegeben"}`,
+    `Kunden-E-Mail: ${input.customerEmail || "Nicht angegeben"}`,
+    "",
+    `Admin-Link: ${adminOrderLink}`,
+  ].join("\n");
+
+  return {
+    subject,
+    text,
+    html: renderShell({
+      heading: "Bezahlte Bestellung eingegangen.",
+      intro: orderKind,
+      actionLabel: "Bestellung im Admin öffnen",
+      actionHref: adminOrderLink,
+      bodyHtml: `
+        <p style="margin:0 0 8px 0;"><strong>Bestellnummer:</strong> ${escapeHtml(input.orderNumber)}</p>
+        <p style="margin:0 0 8px 0;"><strong>Betrag:</strong> ${formatEuroCents(input.amountCents)}</p>
+        <p style="margin:0 0 8px 0;"><strong>Material:</strong> ${escapeHtml(formatMaterialLabel(input.material))}</p>
+        <p style="margin:0 0 8px 0;"><strong>Menge:</strong> ${input.quantity.toLocaleString("de-DE")} Stück</p>
+        <p style="margin:0 0 8px 0;"><strong>Firma:</strong> ${escapeHtml(input.companyName || "Nicht angegeben")}</p>
+        <p style="margin:0;"><strong>Kunden-E-Mail:</strong> ${escapeHtml(input.customerEmail || "Nicht angegeben")}</p>
+      `,
+    }),
+  };
+}
+
 export function quoteRequestReceivedCustomer(input: {
   companyName: string;
   productType?: string | null;
