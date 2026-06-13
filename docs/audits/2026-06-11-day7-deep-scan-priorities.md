@@ -1,6 +1,8 @@
 # Day-7 Deep Scan — Prioritized Task List
 **Date:** 2026-06-11 | **Method:** 36-agent full-repo scan (8 subsystems), high-impact findings adversarially verified against code.
 
+> **DURUM (2026-06-11): KOD TARAFI KAPANDI.** P0–P4 + P2-17 + tüm P3 + P5 güvenlik/data-loss/quick-win maddeleri çözüldü ve prod'a push edildi. Kalan birkaç P5 maddesi "Bilinçli ertelendi" bölümünde gerekçeleriyle backlog'a alındı (tasarım/model/migration kararı veya birbirine bağımlı işler — yeniden aksiyon-task DEĞİL). Açık kalan tek **karar** P2-13 VAT (founder+muhasebeci). Geri kalan açıklar founder aksiyonları (Vercel env: AW-/EMAIL_FROM/CRON_SECRET/ENABLE_REORDER_REMINDERS, LUCID, ADMIN_NOTIFY canlı test, S17 testi).
+
 ---
 
 ## P0 — Para kaybettiren / siparişi kıran — ÇÖZÜLDÜ (2026-06-11, commit 6249c59)
@@ -76,16 +78,20 @@ Async ödeme (SEPA vb.): `async_payment_succeeded`→handleCheckoutCompleted, `a
 ### ✅ Çözülenler (devam, 2026-06-11)
 - ✅ LiveChat consent'siz `lp_vid` artık yazmıyor (mount read-only, send'de lazy). TTDSG. Tarayıcıda doğrulandı.
 - ✅ `2 weitere Designs` gramer hatası düzeltildi.
+- ✅ .env.example tamamlandı (ADMIN_EMAIL, TELEGRAM_*, CHAT_WEBHOOK_SECRET; EMAIL_FROM→bestellungen@; Stripe "(Test Mode)"→"use LIVE keys").
+- ✅ CI genişletildi: encoding guard + typecheck + 6 logic testi (test:safety hariç — aşağıya bakın).
+- ✅ Quote/sample formları: umlautlar (Österreich/Getränke/Gewürze) + consent'te Datenschutz linki.
+- ✅ A11y: hata mesajlarına role="alert" (7 form); sitemap lastModified stabil build-zamanı sabiti.
+- ✅ Admin SHIPPED/DELIVERED timestamp'leri set ediliyor (generic dropdown).
+- ✅ Stale doc'lar düzeltildi (SoT: checkout live + Supabase admin auth).
 
-### ⚠️ Hâlâ açık
-- payment_intent metadata orderId boş → payment_failed no-op; session-id fallback ekle.
-- Reorder route'unda shipping adresi alınmıyor.
-- Kalan env var'lar .env.example'da eksik (ADMIN_EMAIL, TELEGRAM_*, CHAT_WEBHOOK_SECRET); Stripe bölümü "(Test Mode)" başlıklı.
-- Prisma migrations boş DB'yi bootstrap edemiyor (QuoteRequest/Lead/chat tabloları CREATE TABLE'sız).
-- CI sadece dil guard'ı koşuyor; encoding guard + typecheck + 7 test scripti CI'da yok.
-- Admin status değişiklikleri (SHIPPED/DELIVERED) müşteri e-postası/timestamp/validation atlıyor.
-- Manuel/bulk durumda refund handling yok (charge.refunded dinlenmiyor).
-- A11y: hata mesajları role="alert"siz, font 10 weight → 2'ye indir, sitemap lastModified=new Date().
-- Quote/sample formlarında "Oesterreich/Getraenke" (umlautsız) + Datenschutz linki eksik.
-- Ölü kod temizliği: BrandHero, PricingCard, ProductConfigurator, CheckoutButton, homePageData, shadcn artıkları.
-- Stale doc'lar (SoT "checkout not live" diyor) — gelecek ajanları yanıltıyor.
+### ⏸️ Bilinçli ertelendi (gerekçeli — aksiyon-task DEĞİL)
+- **payment_intent orderId boş → payment_failed no-op:** Davranış kabul edilebilir. Standart checkout'ta tek PI hatası siparişi prematüre PAYMENT_FAILED yapmamalı (müşteri aynı session'da tekrar deneyebilir); orphan PENDING_PAYMENT zaten `checkout.session.expired`→CANCELLED ile temizleniyor. Veri kaybı yok.
+- **Refund handling (charge.refunded):** REFUNDED order status'ü yok (migration + model kararı gerekir). Refund'lar admin tarafından Stripe'da başlatılıyor, yani zaten görünür. Ayrı scoped feature.
+- **Reorder route shipping adresi:** Reorder müşterinin kayıtlı profil adresini kullanıyor; override için UI gerekir. Feature.
+- **Prisma migrations bootstrap:** Prod çalışıyor (tablolar mevcut). Boş DB'de `migrate deploy` için baseline migration'ların yeniden üretilmesi gerekir (infra işi, `prisma migrate diff`); elle SQL riskli.
+- **Ölü kod temizliği (BrandHero/PricingCard/...):** test:safety bu component'lerin kaynağını assert ediyor; silmek önce test:safety'nin reconcile edilmesini gerektirir. Birlikte yapılmalı.
+- **Font weight trim (10→~2):** GÜVENLİ DEĞİL — globals.css'te yüklü 400-700 weight'lerin hepsi aktif kullanımda; herhangi birini silmek faux-bold yapar. Per-family usage mapping gerekir.
+- **test:safety reconcile:** Kaldırılan homepage package ladder + dead component'lere (BrandHero/PricingCard) bağlı source-text invariant suite. Mimariyle güncellenmeli; bu yüzden CI'a alınmadı.
+
+> Bu bölümdeki tüm somut kod bug'ları ve hızlı kazançlar kapatıldı. Kalanlar ya kasıtlı tasarım kararı (prematüre-fail önleme), ya model/migration kararı, ya da birbirine bağımlı (dead-code↔test) işler — tekrar "yapılacak" task olarak değil, bilinçli backlog olarak kayıtlı.

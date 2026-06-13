@@ -8,9 +8,9 @@
 
 | # | Item | Owner | Effort |
 |---|------|-------|--------|
-| 1 | **Google Ads AW- conversion tag** — No `AW-` snippet anywhere in codebase. Google Ads cannot attribute conversions or optimize bids. Create a "purchase" and "generate_lead" conversion action in Google Ads console, then add the `gtag('event', 'conversion', {...})` call to `checkout/success` and `quote-request-form.tsx`. | Dev | 2–3 h |
-| 2 | **Google Ads campaigns** — No campaigns exist yet. Cannot spend until conversion tag (item 1) is wired and tested. | Founder | — |
-| 3 | **EMAIL_FROM env var** — Set `bestellungen@labelpilot.de` in Vercel Dashboard (currently unset or wrong). Affects order confirmation and transactional email sender identity. | Founder | 5 min |
+| 1 | **Google Ads AW- conversion tag** — CODE READY (2026-06-11): `gtagPurchase` fires the Ads conversion (guarded), `begin_checkout` fires in the live Kalkulator funnel, `generate_lead` on quote submit. Remaining is founder-side: create the conversion action in Google Ads console and set `NEXT_PUBLIC_ADS_CONVERSION_ID` + `NEXT_PUBLIC_ADS_CONVERSION_LABEL_PURCHASE` in Vercel. | Founder | env only |
+| 2 | **Google Ads campaigns** — No campaigns exist yet. Cannot spend until the conversion env vars (item 1) are set and tested. | Founder | — |
+| 3 | **EMAIL_FROM env var** — Set `bestellungen@labelpilot.de` in Vercel Dashboard. Affects order confirmation and transactional email sender identity. (.env.example default already updated.) | Founder | 5 min |
 
 ---
 
