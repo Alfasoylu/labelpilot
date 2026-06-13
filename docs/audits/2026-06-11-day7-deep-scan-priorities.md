@@ -73,10 +73,13 @@ Async ödeme (SEPA vb.): `async_payment_succeeded`→handleCheckoutCompleted, `a
 - ✅ /admin-login `?next=` open redirect kapatıldı (yalnız same-origin path).
 - ✅ CRON_SECRET + ENABLE_REORDER_REMINDERS .env.example'a eklendi (P4 ile).
 
+### ✅ Çözülenler (devam, 2026-06-11)
+- ✅ LiveChat consent'siz `lp_vid` artık yazmıyor (mount read-only, send'de lazy). TTDSG. Tarayıcıda doğrulandı.
+- ✅ `2 weitere Designs` gramer hatası düzeltildi.
+
 ### ⚠️ Hâlâ açık
 - payment_intent metadata orderId boş → payment_failed no-op; session-id fallback ekle.
 - Reorder route'unda shipping adresi alınmıyor.
-- LiveChat consent'siz localStorage `lp_vid` yazıyor (TTDSG tutarsızlığı).
 - Kalan env var'lar .env.example'da eksik (ADMIN_EMAIL, TELEGRAM_*, CHAT_WEBHOOK_SECRET); Stripe bölümü "(Test Mode)" başlıklı.
 - Prisma migrations boş DB'yi bootstrap edemiyor (QuoteRequest/Lead/chat tabloları CREATE TABLE'sız).
 - CI sadece dil guard'ı koşuyor; encoding guard + typecheck + 7 test scripti CI'da yok.
@@ -85,5 +88,4 @@ Async ödeme (SEPA vb.): `async_payment_succeeded`→handleCheckoutCompleted, `a
 - A11y: hata mesajları role="alert"siz, font 10 weight → 2'ye indir, sitemap lastModified=new Date().
 - Quote/sample formlarında "Oesterreich/Getraenke" (umlautsız) + Datenschutz linki eksik.
 - Ölü kod temizliği: BrandHero, PricingCard, ProductConfigurator, CheckoutButton, homePageData, shadcn artıkları.
-- `2 weiteres Design` gramer hatası (`checkout-addons.ts:170`).
 - Stale doc'lar (SoT "checkout not live" diyor) — gelecek ajanları yanıltıyor.
