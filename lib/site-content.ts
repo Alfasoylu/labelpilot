@@ -2211,7 +2211,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Ist die Musterbox kostenlos?",
         answer:
-          "Je nach Anfrage kann die Musterbox kostenpflichtig oder nur für qualifizierte B2B-Anfragen freigegeben werden.",
+          "Für qualifizierte B2B-Anfragen ist die Musterbox kostenlos. Bitte fragen Sie sie mit Ihren Unternehmensdaten an, damit wir sie passend zusammenstellen können.",
       },
       {
         question: "Kann ich danach ein Angebot anfordern?",

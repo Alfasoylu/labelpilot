@@ -198,7 +198,7 @@ export function CustomSizeCheckoutForm({
           <li>Versand nach Deutschland: inklusive</li>
         </ul>
         <p className="field-hint">
-          Lieferzeit: ca. {isHeavyShipment ? "21–28" : "7–14"} Werktage nach Ihrer Druckdaten-Freigabe
+          Lieferzeit: ca. {isHeavyShipment ? "21–28" : "10–14"} Werktage nach Ihrer Druckdaten-Freigabe
           (Produktion + Versand nach Deutschland). Voraussichtlicher Zeitraum, keine bindende Garantie.
         </p>
       </article>

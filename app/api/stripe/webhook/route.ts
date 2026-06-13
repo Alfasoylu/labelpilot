@@ -368,6 +368,66 @@ async function handlePaymentFailed(event: Stripe.Event) {
   ]);
 }
 
+// Async payment methods (SEPA-Lastschrift, etc.) confirm AFTER checkout.session.completed.
+// For those, completed fires with payment_status != "paid" and the money clears later via
+// checkout.session.async_payment_succeeded / async_payment_failed. Without handling the failed
+// case the order would linger in PENDING_PAYMENT. (Success is routed to handleCheckoutCompleted,
+// whose session then carries payment_status === "paid".)
+async function handleCheckoutAsyncFailed(event: Stripe.Event) {
+  const prisma = getPrismaClient();
+  if (!prisma) {
+    return;
+  }
+
+  const session = event.data.object as Stripe.Checkout.Session;
+  const orderId = session.metadata?.orderId;
+  if (!orderId) {
+    return;
+  }
+
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    include: { payments: true },
+  });
+
+  if (!order || !canApplyStripePaymentFailure(order.status)) {
+    return;
+  }
+
+  const paymentIntentId =
+    typeof session.payment_intent === "string"
+      ? session.payment_intent
+      : session.payment_intent?.id ?? null;
+
+  await prisma.$transaction([
+    prisma.order.update({
+      where: { id: order.id },
+      data: { status: "PAYMENT_FAILED", stripePaymentIntentId: paymentIntentId },
+    }),
+    prisma.payment.upsert({
+      where: { orderId: order.id },
+      update: { status: "FAILED", stripePaymentIntentId: paymentIntentId, stripeEventId: event.id },
+      create: {
+        orderId: order.id,
+        stripeCheckoutSessionId: session.id,
+        stripePaymentIntentId: paymentIntentId,
+        amountCents: order.amountCents,
+        currency: order.currency,
+        status: "FAILED",
+        provider: "stripe",
+        stripeEventId: event.id,
+      },
+    }),
+    prisma.orderStatusEvent.create({
+      data: {
+        orderId: order.id,
+        status: "PAYMENT_FAILED",
+        note: "Asynchrone Zahlung (z. B. SEPA-Lastschrift) fehlgeschlagen.",
+      },
+    }),
+  ]);
+}
+
 export async function POST(request: Request) {
   const prisma = getPrismaClient();
   if (!prisma) {
@@ -440,7 +500,12 @@ export async function POST(request: Request) {
   try {
     switch (event.type) {
       case "checkout.session.completed":
+      // Async methods clear after the redirect; the session here carries payment_status "paid".
+      case "checkout.session.async_payment_succeeded":
         await handleCheckoutCompleted(event);
+        break;
+      case "checkout.session.async_payment_failed":
+        await handleCheckoutAsyncFailed(event);
         break;
       case "payment_intent.payment_failed":
         await handlePaymentFailed(event);

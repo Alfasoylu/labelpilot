@@ -95,7 +95,7 @@ const productImageAssets = {
 
 const homepageOrderingSteps = [
   { title: "Format & Menge eingeben", body: "Breite, Höhe und Menge frei wählen – Sofortpreis erscheint direkt im Kalkulator." },
-  { title: "Material wählen", body: "Opak PP, transparent PP oder Etikettenpapier – matt oder glänzend, kein Aufpreis." },
+  { title: "Material wählen", body: "Opak PP oder transparent PP – matt oder glänzend, kein Aufpreis. Etikettenpapier auf Anfrage." },
   { title: "Druckdaten hochladen oder später senden", body: "PDF, AI, EPS oder SVG – technische Prüfung inklusive. Druckdaten können auch nach der Bestellung nachgeliefert werden." },
   { title: "Produktion starten & nachbestellen", body: "Nach Proof-Freigabe startet die Produktion. Beim nächsten Mal sind Format, Material und Druckdaten bereits gespeichert – Nachbestellung in 30 Sekunden." },
 ];
@@ -103,7 +103,7 @@ const homepageOrderingSteps = [
 const homepageFaqs: FAQ[] = [
   {
     question: "Welche Etikettenmaterialien gibt es?",
-    answer: "PP-Folie weiß (opak), PP-Folie transparent und Etikettenpapier weiß. Der Kalkulator zeigt den Preis für jedes Material direkt an.",
+    answer: "PP-Folie weiß (opak) und PP-Folie transparent zeigt der Kalkulator direkt mit Preis an. Etikettenpapier weiß bieten wir auf Anfrage an.",
   },
   {
     question: "Kann ich mein eigenes Format bestellen?",
@@ -474,9 +474,9 @@ export function HomePage({ page }: HomePageProps) {
               Etikettenproduktion.
             </p>
             <ul className="simple-list">
-              <li>Musterbox: kostenlos anfordern</li>
-              <li>Digitaler Proof: 10 EUR netto</li>
-              <li>Technischer Datencheck: inklusive</li>
+              <li>Musterbox: für qualifizierte B2B-Anfragen kostenlos</li>
+              <li>Digitaler Proof &amp; technischer Datencheck: inklusive</li>
+              <li>Physischer Andruck: 10 EUR netto (optional)</li>
               <li>Design-Service: 40 EUR netto (kostenlos ab 2.000 EUR Auftragswert)</li>
             </ul>
             <div className="hero-actions">
@@ -629,6 +629,36 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
             caption={getProductPageImage(page.path)!.caption}
             sizes="(max-width: 1024px) 100vw, 760px"
           />
+        </Section>
+      ) : null}
+
+      {page.packageTable?.length ? (
+        <Section
+          eyebrow="Preise"
+          title={page.packageHeading ?? "Paketpreise auf einen Blick"}
+          lead={page.packageLead ?? "Feste Paketpreise inkl. Versand nach Deutschland – Wunschformat berechnet der Kalkulator."}
+        >
+          <div className="card-grid">
+            {page.packageTable.map((tier) => (
+              <article
+                key={tier.label}
+                className={`section-card${tier.popular ? " section-card--popular" : ""}`}
+              >
+                {tier.badge ? <span className="badge">{tier.badge}</span> : null}
+                <h3>{tier.label}</h3>
+                <p className="price-note">{tier.quantity}</p>
+                <p>
+                  <strong>{tier.priceLabel}</strong>
+                </p>
+                {tier.grossLabel ? (
+                  <p className="field-hint">{tier.grossLabel} brutto inkl. 19 % MwSt.</p>
+                ) : null}
+                {tier.perPieceLabel ? <p className="field-hint">{tier.perPieceLabel}</p> : null}
+                {tier.shippingLabel ? <p className="field-hint">{tier.shippingLabel}</p> : null}
+                <p>{tier.description}</p>
+              </article>
+            ))}
+          </div>
         </Section>
       ) : null}
 
@@ -1525,9 +1555,20 @@ function buildSpecRows(page: PublicPageData) {
       { label: "Nummernvergabe", value: "EAN/GTIN über GS1; Code wird von Ihnen geliefert" },
     );
   } else {
+    // Generic PP roll-label spec. Used for any product/collection page without a
+    // bespoke table above — previously this branch rendered internal debug rows
+    // ("Seitentyp", "Pfad") that leaked onto live pages incl. the bieretiketten landing.
     rows.push(
-      { label: "Seitentyp", value: page.kind },
-      { label: "Pfad", value: page.path },
+      { label: "Format", value: "100×200 mm Standard; Wunschformat bis 320 mm Breite, Höhe frei" },
+      { label: "Material", value: "PP opak oder transparent" },
+      { label: "Klebstoff", value: "Permanent; ablösbar auf Anfrage" },
+      { label: "Druck", value: "4/0-farbig CMYK Digital, ohne Einrichtungskosten" },
+      { label: "Finish", value: "Matt oder Glänzend – kein Preisaufschlag" },
+      { label: "Lieferform", value: "Auf Rolle, 76-mm-Kern, Wickelrichtung Standard" },
+      { label: "Mindestmenge", value: "1.000 Stück; Sondermengen per Angebot" },
+      { label: "Prüfung", value: "Kostenlose Druckdatenprüfung plus 1 Proof" },
+      { label: "Lieferung", value: "DDP nach Deutschland – Zoll und Einfuhr inklusive" },
+      { label: "Nachbestellung", value: "Gespeicherte Spezifikation zum gleichen Paketpreis" },
     );
   }
 

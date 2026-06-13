@@ -633,7 +633,7 @@ export function KalkulatorClient({
                     <span>✓ Inklusive Versand nach Deutschland</span>
                   </li>
                   <li className="kalkulator-price-shipping">
-                    <span>Lieferzeit: ca. {isHeavyShipment ? "21–28" : "7–14"} Werktage nach Druckdaten-Freigabe</span>
+                    <span>Lieferzeit: ca. {isHeavyShipment ? "21–28" : "10–14"} Werktage nach Druckdaten-Freigabe</span>
                   </li>
                 </ul>
                 <div className="inline-actions">
