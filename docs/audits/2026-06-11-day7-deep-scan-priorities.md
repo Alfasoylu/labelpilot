@@ -21,7 +21,7 @@
 
 | # | Sorun | Kanıt | Efor |
 |---|-------|-------|------|
-| 7 | **Consent Mode 'update' geri dönen ziyaretçide re-fire edilmiyor** → ikinci ziyarette satın alan herkesin GA4/Ads conversion'ı consent-denied kaybolur. B2B'de alıcılar nadiren ilk ziyarette alır. Fix: mount'ta stored consent varsa `gtagConsent('update', ...)` ateşle. | `ConsentBanner.tsx:22-41` vs :53-58 | 30dk |
+| ~~7~~ | ~~**Consent Mode 'update' geri dönen ziyaretçide re-fire edilmiyor**~~ → DONE (commit sonrası): inline gtag-init artık consent `default`'unu `lp_consent` cookie'sinden türetiyor (dönen ziyaretçi `granted` başlıyor), ConsentBanner mount'ta `update`'i re-fire ediyor (defense-in-depth). Tarayıcıda 3 yolda da doğrulandı. | `GoogleAnalytics.tsx`, `ConsentBanner.tsx` | ✅ |
 | 8 | **Purchase event webhook yarışını kaybediyor:** Stripe redirect webhook'tan önce gelirse success page null döner, GA4 purchase HİÇ ateşlenmez (poll/refresh yok). | `checkout/success/page.tsx:64-67,106-111` | 2-3s |
 | 9 | **Canlı funnel'da begin_checkout yok** — event sadece hiçbir sayfanın import etmediği CheckoutButton'da. Canlı yol (Kalkulator → CustomSizeCheckoutForm) hiçbir şey ateşlemiyor. | `CheckoutButton.tsx:189` (dead code) | 1s |
 | 10 | **gtag Ads conversion çağrısı guard'sız** — `NEXT_PUBLIC_ADS_CONVERSION_ID` set edilir edilmez, gtag'ı bloklayan tarayıcıda success page throw eder. | `lib/analytics/gtag.ts:64-71` | 15dk |
