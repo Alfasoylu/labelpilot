@@ -167,7 +167,10 @@ export function buildCheckoutAddons(input: {
         normalizedAddons.extraDesignCount === 1
           ? "Zusatzdesign"
           : "Zusatzdesigns",
-      description: `${normalizedAddons.extraDesignCount} weiteres Design neben dem enthaltenen Hauptdesign`,
+      description:
+        normalizedAddons.extraDesignCount === 1
+          ? "1 weiteres Design neben dem enthaltenen Hauptdesign"
+          : `${normalizedAddons.extraDesignCount} weitere Designs neben dem enthaltenen Hauptdesign`,
       netAmount: extraDesignNet,
       grossAmountCents: netEuroToGrossCents(extraDesignNet),
     });

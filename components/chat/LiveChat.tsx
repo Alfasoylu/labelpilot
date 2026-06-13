@@ -14,6 +14,20 @@ function genVisitorId(): string {
   return "v_" + Math.random().toString(36).slice(2, 12);
 }
 
+// Read-only: never writes. Used on mount so we do NOT store an identifier
+// before the visitor actually interacts (TTDSG — no storage without the
+// user-initiated functional action of starting a chat).
+function readVisitorId(): string {
+  try {
+    return localStorage.getItem("lp_vid") || "";
+  } catch {
+    return "";
+  }
+}
+
+// Creates and persists the id. Only called once the visitor sends a message —
+// a functional interaction the user requested, so the identifier is necessary
+// to route the conversation.
 function getOrCreateVisitorId(): string {
   try {
     const stored = localStorage.getItem("lp_vid");
@@ -46,9 +60,10 @@ export function LiveChat() {
   const inputRef = useRef<HTMLInputElement>(null);
   const visitorId = useRef<string>("");
 
-  // Init visitor ID on mount
+  // On mount only restore an existing id/session — never create one (no storage
+  // write before the visitor interacts).
   useEffect(() => {
-    visitorId.current = getOrCreateVisitorId();
+    visitorId.current = readVisitorId();
     const sid = getStoredSessionId();
     if (sid) {
       setSessionId(sid);
@@ -118,6 +133,11 @@ export function LiveChat() {
     if (!text || sending) return;
     setSending(true);
     setInput("");
+
+    // Create + persist the visitor id now (first interaction), not on page load.
+    if (!visitorId.current) {
+      visitorId.current = getOrCreateVisitorId();
+    }
 
     try {
       const res = await fetch("/api/chat/message", {
