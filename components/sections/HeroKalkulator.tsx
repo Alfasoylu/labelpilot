@@ -1,8 +1,23 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
+// Art-directed hero images. The mobile banner and the desktop portrait are two
+// different crops shown at different breakpoints. Using two next/image elements
+// with `priority` injected media-less <link rel=preload> tags, so BOTH images
+// downloaded on EVERY viewport — the cause of the 4.5–5.3s mobile LCP. A
+// <picture> with <source media> lets the browser fetch EXACTLY the one image
+// that matches the current viewport, eagerly, with no cross-viewport waste.
+// srcSet still points at the Next.js image optimizer so each device gets a
+// right-sized webp.
+const BLANK_PIXEL =
+  "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1'%20height='1'%3E%3C/svg%3E";
+
+function optimizedSrcSet(path: string, widths: number[]) {
+  const enc = encodeURIComponent(path);
+  return widths.map((w) => `/_next/image?url=${enc}&w=${w}&q=75 ${w}w`).join(", ");
+}
 
 type MaterialSlug = "pp-white" | "pp-transparent";
 
@@ -127,15 +142,25 @@ export function HeroKalkulator() {
           </p>
 
           <div className="hero-kalk__mobile-banner">
-            <Image
-              src="/images/editorial/mobile-labels-hero.webp"
-              alt="Labelpilot.de Musteretiketten: CMYK-bedruckte PP-Rollenetiketten auf Sriracha-Flasche, Honig-Glas, Hyaluron-Serum und Protein-Dose"
-              width={1320}
-              height={440}
-              priority
-              sizes="100vw"
-              style={{ width: "100%", height: "auto", display: "block" }}
-            />
+            {/* Mobile LCP image — only fetched at <=1024px. On desktop the
+                source does not match and the 0-byte blank pixel is used. */}
+            <picture>
+              <source
+                media="(max-width: 1024px)"
+                srcSet={optimizedSrcSet("/images/editorial/mobile-labels-hero.webp", [640, 828, 1080, 1920])}
+                sizes="100vw"
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={BLANK_PIXEL}
+                alt="Labelpilot.de Musteretiketten: CMYK-bedruckte PP-Rollenetiketten auf Sriracha-Flasche, Honig-Glas, Hyaluron-Serum und Protein-Dose"
+                width={1320}
+                height={440}
+                fetchPriority="high"
+                decoding="async"
+                style={{ width: "100%", height: "auto", display: "block" }}
+              />
+            </picture>
           </div>
 
           <div className="hero-kalk__card">
@@ -297,15 +322,26 @@ export function HeroKalkulator() {
         {/* RIGHT: Product image */}
         <div className="hero-kalk__visual">
           <figure className="hero-product-photo">
-            <Image
-              src="/images/editorial/sample-labels-cmyk.webp"
-              alt="Labelpilot.de CMYK-Musteretiketten: vollflächig bedruckte PP-Rollenetiketten auf Sriracha-Flasche, Honig-Glas, Serum-Flasche, Protein-Dose und Kaffeebeutel"
-              width={900}
-              height={1125}
-              priority
-              sizes="(max-width: 1024px) 100vw, 440px"
-              className="hero-product-photo__img"
-            />
+            {/* Desktop LCP image — only fetched at >=1025px. On mobile the
+                source does not match and the 0-byte blank pixel is used (and
+                the figure is display:none there anyway). */}
+            <picture>
+              <source
+                media="(min-width: 1025px)"
+                srcSet={optimizedSrcSet("/images/editorial/sample-labels-cmyk.webp", [640, 828, 1080])}
+                sizes="440px"
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={BLANK_PIXEL}
+                alt="Labelpilot.de CMYK-Musteretiketten: vollflächig bedruckte PP-Rollenetiketten auf Sriracha-Flasche, Honig-Glas, Serum-Flasche, Protein-Dose und Kaffeebeutel"
+                width={900}
+                height={1125}
+                fetchPriority="high"
+                decoding="async"
+                className="hero-product-photo__img"
+              />
+            </picture>
             <div className="hero-product-photo__badge hero-kalk__badge-row">
               <span className="hero-product-photo__badge-pill">Proof inklusive</span>
               <span className="hero-product-photo__badge-pill">DDP nach DE</span>
