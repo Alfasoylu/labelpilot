@@ -25,7 +25,7 @@
 | ~~8~~ | ~~**Purchase event webhook yarışını kaybediyor**~~ → DONE: success page artık Stripe `payment_status=paid` ile purchase event'i ateşliyor (DB PAID beklemiyor); teşekkür UI Stripe ödeme onayından, upload CTA DB status'ünden sürülüyor + webhook gecikme penceresinde "link hazırlanıyor" notu. | `checkout/success/page.tsx` | ✅ |
 | ~~9~~ | ~~**Canlı funnel'da begin_checkout yok**~~ → DONE: `KalkulatorClient.handleOrder` artık GA4 `begin_checkout` ateşliyor (gross değer, purchase ile aynı baz). Tarayıcıda doğrulandı: value 323.68, items dolu, qty 1000. | `KalkulatorClient.tsx` | ✅ |
 | ~~10~~ | ~~**gtag Ads conversion çağrısı guard'sız**~~ → DONE: `window.gtag` varlık kontrolü eklendi (gtagEvent ile aynı). | `lib/analytics/gtag.ts` | ✅ |
-| 11 | **Mobile LCP 4.5–5.3s (perf 69–74):** hero görseli iki kez indiriliyor, ikisi de `priority`. Ads ile mobil trafik alacaksın — bu dönüşümü doğrudan vurur. | `HeroKalkulator.tsx`; lighthouse-report*.json | 2-3s |
+| ~~11~~ | ~~**Mobile LCP 4.5–5.3s:** hero görseli iki kez indiriliyor, ikisi de priority~~ → DONE: iki next/image → `<picture>` + `<source media>`. Tarayıcı her viewport'ta tam olarak tek optimize webp'i eager indiriyor, preload rekabeti/çapraz israf yok. İki viewport'ta da doğrulandı (mobil: yalnız banner; desktop: yalnız w=640 portre). | `HeroKalkulator.tsx` | ✅ |
 | 12 | **S17 sellability testi hiç koşulmadı** — dokümante pre-Ads go/no-go kapısı; sign-off tablosu boş. P0'lar bitince uçtan uca koş. | `docs/S17-SELLABILITY-TEST-CHECKLIST.md:121-125` | 2-3s manuel |
 
 ## P2 — Hukuki / güven (bu hafta)
