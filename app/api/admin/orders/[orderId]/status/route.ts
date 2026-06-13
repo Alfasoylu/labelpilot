@@ -46,11 +46,20 @@ export async function POST(
   const { status, note } = parsed.data;
   const redirectTo = safeRedirect(parsed.data.redirectTo, "/admin/orders");
 
+  // Keep the shipment timestamps consistent when set via the generic dropdown
+  // (the dedicated shipment form sets these plus tracking + the customer email;
+  // a manual override here at least records when it happened).
+  const now = new Date();
+  const timestamps: { shippedAt?: Date; deliveredAt?: Date } = {};
+  if (status === "SHIPPED") timestamps.shippedAt = now;
+  if (status === "DELIVERED") timestamps.deliveredAt = now;
+
   try {
     await prisma.order.update({
       where: { id: orderId },
       data: {
         status,
+        ...timestamps,
         statusEvents: {
           create: {
             status,

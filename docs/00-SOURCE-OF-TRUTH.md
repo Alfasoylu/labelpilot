@@ -162,7 +162,7 @@ This section records current production blockers without changing source-of-trut
 
 ### Checkout
 
-- **Status:** implemented in code, but **not live in production today**.
+- **Status (updated 2026-06-11):** **live in production** — Stripe live mode, transactional email and the purchase conversion event are all proven. Async payment methods (SEPA) are handled in the webhook.
 - **Code scope now present:** fixed-package checkout includes a dedicated pre-Stripe intake step that captures buyer contact data, shipping address, artwork readiness, server-side price revalidation, and draft-order persistence before Stripe redirect.
 - **Observed live behavior:** `/api/checkout/create-session` returns `503` when required Stripe or database environment is missing.
 - **Operational consequence:** the site is effectively **quote-only right now** even though checkout code exists.
@@ -180,7 +180,7 @@ This section records current production blockers without changing source-of-trut
 ### Auth
 
 - **Status (updated 2026-06-05):** **customer Supabase Auth + account layer is now implemented** (Track S · S3) — `/konto` login/registration, a customer dashboard (order history, saved designs, 1-click reorder, artwork/proof step links via S8), a `Customer` model and order/design linking by verified email. The additive prod migration `20260605193000_customer_account_links` is **applied to production** (via Supabase MCP) and `Customer` has RLS enabled.
-- **Admin auth:** still the **Basic-Auth stopgap** — S4 (Supabase admin auth + role) is **deferred** pending a live login test.
+- **Admin auth (updated 2026-06-11):** **Supabase session is the primary admin gate** — `middleware.ts` enforces a Supabase session whose email matches `ADMIN_EMAIL`; Basic Auth remains only as a no-config fallback. Admin API routes (artwork/proof downloads etc.) verify the same via `lib/security/admin-request-auth.ts`.
 - **Operator to confirm:** Supabase Auth env present in production + a live login/register round-trip tested end-to-end (the supervisor cannot verify a live session blind).
 - **Token fallback retained:** guest token access for upload/proof/order remains as a fallback alongside login.
 - **Responsible:** operator for env + live-login verification.
