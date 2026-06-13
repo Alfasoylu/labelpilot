@@ -1,16 +1,45 @@
-name: Language Guard (German only)
+name: CI
 
 on:
   push:
   pull_request:
 
 jobs:
-  german-only:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-      - name: Check for Turkish in customer-facing files
-        run: node scripts/check-language.mjs
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Guards (previously only check:lang ran in CI; encoding + typecheck only
+      # ran in Vercel prebuild, so mojibake/type errors passed CI green).
+      - name: Language guard (German only)
+        run: npm run check:lang
+
+      - name: Encoding guard (no mojibake / dropped umlauts)
+        run: npm run check:encoding
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Unit/logic test scripts. test:safety is intentionally excluded — it is a
+      # source-text invariant suite that has drifted from the current homepage
+      # architecture and needs a separate reconciliation pass.
+      - name: Pricing engine tests
+        run: npm run test:pricing-engine
+      - name: Admin orders tests
+        run: npm run test:admin-orders
+      - name: Custom-size public tests
+        run: npm run test:custom-size-public
+      - name: Quote source tests
+        run: npm run test:quote-source
+      - name: Variable-data tests
+        run: npm run test:variable-data
+      - name: Checkout add-ons tests
+        run: npm run test:addons

@@ -19,8 +19,14 @@ const disabled = buildCheckoutAddons({
   settings: DEFAULT_ADDON_SETTINGS,
 });
 
-assert.equal(disabled.addonsTotalCents, 0);
-assert.deepEqual(disabled.lineItems, []);
+// When the ADDONS feature is disabled, design/express/extra-design are gated out,
+// but physicalProof is intentionally always available (see checkout-addons.ts:82).
+// physicalProof 10 EUR net -> 1190 cents gross.
+assert.equal(disabled.addonsTotalCents, 1190);
+assert.equal(disabled.lineItems.length, 1);
+assert.equal(disabled.lineItems[0]?.key, "physicalProof");
+assert.equal(disabled.designServiceCents, null);
+assert.equal(disabled.expressCents, null);
 assert.equal(disabled.extraDesignCount, 0);
 
 const freeOwnData = buildCheckoutAddons({

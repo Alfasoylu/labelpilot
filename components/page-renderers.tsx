@@ -530,6 +530,9 @@ export function HomePage({ page }: HomePageProps) {
               <Link href="/de/angebot-anfordern" className="secondary-link">
                 Angebot erhalten
               </Link>
+              <Link href="/de/pp-rollenetiketten" className="secondary-link">
+                Alle PP-Rollenetiketten ansehen
+              </Link>
             </div>
           </div>
         </section>
