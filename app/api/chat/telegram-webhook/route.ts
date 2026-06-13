@@ -34,12 +34,16 @@ async function sendTelegramReply(token: string, chatId: number, text: string) {
 export async function POST(req: NextRequest) {
   const env = getServerEnv();
 
-  // Verify secret token sent by Telegram in X-Telegram-Bot-Api-Secret-Token header
-  if (env.CHAT_WEBHOOK_SECRET) {
-    const secret = req.headers.get("x-telegram-bot-api-secret-token");
-    if (secret !== env.CHAT_WEBHOOK_SECRET) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+  // Fail closed: without a configured secret, anyone could POST forged
+  // "operator" messages into a chat whose UUID is known/leaked. Require the
+  // secret and verify the X-Telegram-Bot-Api-Secret-Token header against it.
+  if (!env.CHAT_WEBHOOK_SECRET) {
+    console.error("Telegram-Webhook abgelehnt: CHAT_WEBHOOK_SECRET nicht konfiguriert.");
+    return NextResponse.json({ error: "Webhook not configured" }, { status: 503 });
+  }
+  const secret = req.headers.get("x-telegram-bot-api-secret-token");
+  if (secret !== env.CHAT_WEBHOOK_SECRET) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const update: TelegramUpdate = await req.json().catch(() => ({}));

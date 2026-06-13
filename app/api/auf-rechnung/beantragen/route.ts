@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
+import { getPrismaClient } from "@/lib/db/prisma";
 import { sendEmail } from "@/lib/email/send";
 import { getServerEnv } from "@/lib/env";
+import { computeLeadScore } from "@/lib/leads/scoring";
+
+export const runtime = "nodejs";
 
 const schema = z.object({
   firmenname: z.string().min(2).max(120).trim(),
@@ -48,12 +52,57 @@ export async function POST(req: NextRequest) {
   `;
   const text = `Auf-Rechnung-Anfrage\nFirma: ${d.firmenname}\nUSt-IdNr.: ${d.ustId ?? "–"}\nAnsprechpartner: ${d.ansprechpartner}\nE-Mail: ${d.email}\nTelefon: ${d.telefon ?? "–"}\nBestellvolumen: ${d.bestellvolumen ?? "–"}\nNachricht: ${d.nachricht ?? "–"}`;
 
-  await sendEmail({
+  // Persist the lead first so it is never lost if the operator email fails
+  // (sendEmail never throws — it returns {ok:false} on misconfiguration/outage).
+  let persisted = false;
+  const prisma = getPrismaClient();
+  if (prisma) {
+    try {
+      const { score, quality } = computeLeadScore({
+        type: "BULK_ORDER_INTEREST",
+        country: "DE",
+        quantity: d.bestellvolumen,
+        notes: d.nachricht,
+      });
+      await prisma.lead.create({
+        data: {
+          type: "BULK_ORDER_INTEREST",
+          score,
+          quality,
+          email: d.email,
+          companyName: d.firmenname,
+          contactName: d.ansprechpartner,
+          phone: d.telefon || null,
+          quantity: d.bestellvolumen || null,
+          notes: d.nachricht || null,
+          sourceType: "auf_rechnung_form",
+          sourcePage: "/de/auf-rechnung-beantragen",
+        },
+      });
+      persisted = true;
+    } catch (error) {
+      console.error("Auf-Rechnung-Lead konnte nicht gespeichert werden:", error);
+    }
+  }
+
+  const emailResult = await sendEmail({
     to: notifyTo,
     subject: `Auf-Rechnung-Anfrage: ${d.firmenname}`,
     html,
     text,
   });
+
+  if (!emailResult.ok) {
+    console.error(`Auf-Rechnung-Benachrichtigung fehlgeschlagen für ${d.firmenname}.`);
+  }
+
+  // Only fail the request if BOTH the DB write and the email were lost.
+  if (!persisted && !emailResult.ok) {
+    return NextResponse.json(
+      { error: "Anfrage konnte nicht verarbeitet werden. Bitte versuchen Sie es erneut." },
+      { status: 500 },
+    );
+  }
 
   return NextResponse.json({ ok: true });
 }

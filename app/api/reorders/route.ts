@@ -232,7 +232,9 @@ export async function POST(request: Request) {
     reorderSourceArtworkVersionId: selectedVersion.id,
   };
 
-  const session = await stripe.checkout.sessions.create({
+  let session: Awaited<ReturnType<typeof stripe.checkout.sessions.create>>;
+  try {
+    session = await stripe.checkout.sessions.create({
     mode: "payment",
     success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${baseUrl}/checkout/cancel`,
@@ -257,7 +259,29 @@ export async function POST(request: Request) {
         },
       },
     ],
-  });
+    });
+  } catch (error) {
+    // Like the other checkout routes: a Stripe failure must mark the order
+    // PAYMENT_FAILED instead of leaving it orphaned in PENDING_PAYMENT (no
+    // session exists, so checkout.session.expired would never clean it up).
+    console.error("Reorder-Checkout-Session fehlgeschlagen:", error);
+    await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        status: "PAYMENT_FAILED",
+        statusEvents: {
+          create: {
+            status: "PAYMENT_FAILED",
+            note: "Nachbestellung: Stripe-Session-Erstellung fehlgeschlagen.",
+          },
+        },
+      },
+    });
+    return NextResponse.json(
+      { error: "Checkout ist derzeit nicht verfügbar. Bitte nutzen Sie das Angebotsformular." },
+      { status: 503 },
+    );
+  }
 
   // BUG-007: Guard against Stripe returning a session without a URL.
   // Without this check the client receives { url: null } and gets no redirect;

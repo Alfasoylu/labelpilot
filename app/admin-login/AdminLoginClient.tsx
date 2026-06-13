@@ -4,10 +4,20 @@ import { createBrowserClient } from "@supabase/ssr";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
+// Only allow same-origin absolute paths as the post-login redirect. Reject
+// protocol-relative ("//evil") and any absolute URL with a scheme, so a crafted
+// /admin-login?next=https://evil.example cannot bounce the founder off-site.
+function safeInternalNext(raw: string | null): string {
+  if (raw && raw.startsWith("/") && !raw.startsWith("//") && !raw.startsWith("/\\")) {
+    return raw;
+  }
+  return "/admin";
+}
+
 export function AdminLoginClient() {
   const router = useRouter();
   const params = useSearchParams();
-  const next = params.get("next") ?? "/admin";
+  const next = safeInternalNext(params.get("next"));
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

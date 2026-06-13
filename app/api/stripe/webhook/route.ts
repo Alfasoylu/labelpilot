@@ -549,6 +549,19 @@ export async function POST(request: Request) {
     const message = error instanceof Error ? error.message : "Unbekannter Webhook-Fehler.";
     console.error("Stripe-Webhook-Verarbeitung fehlgeschlagen:", error);
     await markStripeEventError(event.id, message);
+    // Alert ops: an ERROR event is skipped on every Stripe retry, so a paid order
+    // can stay stuck (no PAID status, no confirmation email) until someone fixes
+    // it by hand. Make that failure loud instead of a silent console.warn.
+    const adminInbox = getServerEnv().ADMIN_NOTIFY_EMAIL || getServerEnv().EMAIL_REPLY_TO;
+    if (adminInbox) {
+      const body = `Stripe-Webhook ${event.id} (${event.type}) konnte nicht verarbeitet werden und wurde als ERROR markiert.\n\nFehler: ${message}\n\nBitte manuell prüfen – eine bezahlte Bestellung kann sonst unbestätigt bleiben.`;
+      await sendEmail({
+        to: adminInbox,
+        subject: `⚠ Stripe-Webhook-Fehler: ${event.type}`,
+        html: `<p>${body.replace(/\n/g, "<br>")}</p>`,
+        text: body,
+      }).catch(() => undefined);
+    }
     return NextResponse.json({ error: "Webhook-Verarbeitung fehlgeschlagen." }, { status: 500 });
   }
 
