@@ -588,10 +588,22 @@ export function reorderReminder(input: {
   companyName?: string | null;
   quantity: number;
   material: string;
+  widthMm?: number | null;
+  heightMm?: number | null;
   clickToken: string;
 }): TemplateResult {
   const baseUrl = getPublicEnv().NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
-  const reorderLink = `${baseUrl}/de/kalkulator?reorder=${encodeURIComponent(input.orderId)}&ct=${encodeURIComponent(input.clickToken)}`;
+  // Pre-fill the Kalkulator with the prior order's configuration using the query
+  // params the Kalkulator page actually reads (quantity/width/height/material).
+  // The old link used ?reorder=&ct= which the page ignored, so the CTA was dead.
+  const reorderParams = new URLSearchParams({
+    quantity: String(input.quantity),
+    material: input.material === "TRANSPARENT" ? "pp-transparent" : "pp-white",
+    ct: input.clickToken,
+  });
+  if (input.widthMm) reorderParams.set("width", String(input.widthMm));
+  if (input.heightMm) reorderParams.set("height", String(input.heightMm));
+  const reorderLink = `${baseUrl}/de/kalkulator?${reorderParams.toString()}`;
   const subject = `Ihr Etiketten-Vorrat geht zur Neige – ${input.orderNumber}`;
 
   const text = [

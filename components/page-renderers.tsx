@@ -1113,9 +1113,9 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
 
       <ContentCta
         title="Wenn die Grundlage klar ist, sollte der nächste Schritt bewusst gewählt werden."
-        body="Produkt, Musterbox oder Angebot bleiben sichtbar erreichbar, ohne neue Backend-Funktionen vorzutäuschen."
-        primaryLabel={page.path === "/de/nachbestellen" ? "Etiketten nachbestellen" : "Angebot anfordern"}
-        primaryHref={page.path === "/de/nachbestellen" ? "/de/angebot-anfordern" : "/de/angebot-anfordern"}
+        body="Produkt, Musterbox oder Angebot bleiben jederzeit erreichbar."
+        primaryLabel={page.path === "/de/nachbestellen" ? "Im Kundenkonto nachbestellen" : "Angebot anfordern"}
+        primaryHref={page.path === "/de/nachbestellen" ? "/konto" : "/de/angebot-anfordern"}
         secondaryLabel="Musterbox anfordern"
         secondaryHref="/de/musterbox"
       />

@@ -199,6 +199,11 @@ const fileLink: CtaLink = {
   href: "/de/druckdaten",
 };
 
+const kontoLink: CtaLink = {
+  label: "Im Kundenkonto nachbestellen",
+  href: "/konto",
+};
+
 export const opaquePackages: PackageTier[] = [
   buildFixedTier({
     label: "Pilotauflage",
@@ -2293,8 +2298,8 @@ const topLevelPages: PublicPageData[] = [
       "Material, Größe und Stückzahl",
       "Wiederholbare Produktlogik für spätere Abrufe",
     ],
-    primaryCta: quoteLink,
-    secondaryCta: fileLink,
+    primaryCta: kontoLink,
+    secondaryCta: quoteLink,
     sections: [
       {
         title: "Warum Nachbestellung so wichtig ist",

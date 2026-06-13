@@ -13,7 +13,16 @@ export async function GET(request: Request) {
   const env = getServerEnv();
   const authHeader = request.headers.get("authorization");
 
-  if (!env.APP_SECRET || authHeader !== `Bearer ${env.APP_SECRET}`) {
+  // Vercel Cron sends `Authorization: Bearer ${CRON_SECRET}` automatically when
+  // the CRON_SECRET env var is set. Accept that, and keep APP_SECRET as a
+  // fallback for manual/local triggers. Previously only APP_SECRET was checked,
+  // so the scheduled Vercel invocation always 401'd and no reminder ever ran.
+  const expectedSecrets = [env.CRON_SECRET, env.APP_SECRET].filter(Boolean);
+  const authorized =
+    expectedSecrets.length > 0 &&
+    expectedSecrets.some((secret) => authHeader === `Bearer ${secret}`);
+
+  if (!authorized) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -28,9 +37,12 @@ export async function GET(request: Request) {
 
   const now = new Date();
 
+  // The admin creation route writes reminders with status "PENDING"; this query
+  // previously looked for "DRAFT", so it never matched and no reminder was ever
+  // sent. Match the status the reminders are actually created with.
   const reminders = await prisma.reorderReminder.findMany({
     where: {
-      status: "DRAFT",
+      status: "PENDING",
       isEnabled: true,
       scheduledFor: { lte: now },
     },
@@ -43,6 +55,8 @@ export async function GET(request: Request) {
           companyName: true,
           quantity: true,
           material: true,
+          widthMm: true,
+          heightMm: true,
           customer: { select: { notificationPrefs: true } },
         },
       },
@@ -84,6 +98,8 @@ export async function GET(request: Request) {
       companyName: order.companyName,
       quantity: order.quantity,
       material: order.material,
+      widthMm: order.widthMm,
+      heightMm: order.heightMm,
       clickToken,
     });
 

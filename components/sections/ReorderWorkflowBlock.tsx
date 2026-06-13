@@ -67,9 +67,9 @@ export function StoredDesignVisualCard() {
           <strong>bereit für Nachbestellung</strong>
         </div>
       </div>
-      <button type="button" className="cta-button">
-        Nachbestellen
-      </button>
+      <a href="/konto" className="cta-button">
+        Im Kundenkonto nachbestellen
+      </a>
     </div>
   );
 }
