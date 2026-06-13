@@ -1115,7 +1115,7 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
       <Section
         eyebrow="Kerninhalte"
         title="Die wichtigsten Punkte dieser Seite"
-        lead="Der Inhalt bleibt erhalten, wird aber in ruhigere, scanbare Karten übersetzt."
+        lead="Material, Ablauf und Lieferung kompakt zusammengefasst."
       >
         <FeatureGrid items={buildFeatureItemsFromSections(page)} />
       </Section>
@@ -1130,13 +1130,13 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
       ) : null}
 
       {page.faqs?.length ? (
-        <Section eyebrow="FAQ" title="Häufige Fragen" lead="Die sichtbaren Antworten bleiben Teil der Seite und des SEO-Setups.">
+        <Section eyebrow="FAQ" title="Häufige Fragen" lead="Antworten zu Material, Ablauf, Lieferung und Nachbestellung.">
           <FaqAccordion faqs={page.faqs} />
         </Section>
       ) : null}
 
       {page.relatedLinks?.length ? (
-        <Section eyebrow="Weiterführend" title="Passende nächste Seiten" lead="Service-Seiten verlieren keine internen Links und keine kommerzielle Orientierung.">
+        <Section eyebrow="Weiterführend" title="Passende nächste Seiten" lead="Verwandte Themen und passende nächste Schritte.">
           <RelatedLinks links={page.relatedLinks} />
         </Section>
       ) : null}
@@ -1184,8 +1184,8 @@ function GuidePage({ page, canonicalPath }: DynamicPageProps) {
       {page.howToSteps?.length ? (
         <Section
           eyebrow="Schrittfolge"
-          title="Der Guide als echte Arbeitsoberfläche"
-          lead="Diese Seite wird nicht als Textwand gezeigt, sondern als konkrete Hilfestruktur für den nächsten Arbeitsschritt."
+          title="Schritt für Schritt zum nächsten Arbeitsschritt"
+          lead="Klar gegliederte Hilfestellung statt langer Textwand."
         >
           <ProcessSteps
             steps={page.howToSteps.map((step, index) => ({
@@ -1199,7 +1199,7 @@ function GuidePage({ page, canonicalPath }: DynamicPageProps) {
       <Section
         eyebrow="Einordnung"
         title="Was der Ratgeber konkret erklärt"
-        lead="Jeder Guide bleibt eigenständig und inhaltlich sichtbar, wird aber besser gegliedert und scanbar."
+        lead="Die wichtigsten Punkte übersichtlich gegliedert."
       >
         <FeatureGrid items={buildFeatureItemsFromSections(page)} />
       </Section>

@@ -621,7 +621,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/glossar/thermoetiketten": {
     title: "Was sind Thermoetiketten? | Labelpilot.de",
     description:
-      "Thermoetiketten kurz erklärt: Einsatz in Versand, Lager und Fulfillment – und warum sie im MVP nur als Cross-Sell auftreten.",
+      "Thermoetiketten kurz erklärt: Einsatz in Versand, Lager und Fulfillment – und wie sie sich von PP-Produktetiketten unterscheiden.",
     openGraphTitle: "Was sind Thermoetiketten?",
     openGraphDescription:
       "Thermodirektdruck erklärt – Einsatz in Versand & Logistik.",
