@@ -38,16 +38,19 @@
 | ~~16~~ | ~~**Kontakt linki header/footer'da yok**~~ → DONE: footer Service grubuna Kontakt eklendi. | `lib/site-content.ts` | ✅ |
 | 17 | **Async ödeme yöntemleri (SEPA vb.) siparişi asla PAID yapmaz** — `async_payment_succeeded` handle edilmiyor. Stripe dashboard'da aktif yöntemleri kontrol et; ya card-only kısıtla ya handler ekle. | `webhook/route.ts:404-435` | 2s |
 
-## P3 — İçerik tutarlılığı (bu hafta, kopya işi)
+## P3 — İçerik tutarlılığı — ✅ ÇÖZÜLDÜ
 
-| # | Sorun | Efor |
-|---|-------|------|
-| 18 | **3 çelişkili teslimat süresi:** kanonik "15–20 Werktage ab Zahlungseingang" vs "10–14 nach Freigabe" (3 core ürün sayfası + intake + success) vs "7–14" (kalkulator). Tek iddiaya indir. | 2s |
-| 19 | **Debug fallback 4 canlı sayfada görünüyor:** "Seitentyp: product / Pfad: /de/..." — /de/pp-rollenetiketten ve yeni /de/bieretiketten-drucken dahil. | 1s |
-| 20 | **İç tasarım notları müşteriye görünüyor:** "ohne neue Backend-Funktionen vorzutäuschen", "Diese Phase implementiert noch kein Backend..." vb. guide/service sayfalarında. | 2s |
-| 21 | **110/172 içerik bölümü sadece ilk paragrafını render ediyor** (body[0] sorunu) — yazılmış Ratgeber içeriğinin çoğu görünmüyor, SEO değeri çöpe gidiyor. | 1g |
-| 22 | **Musterbox çelişkisi:** anasayfa "kostenlos", /de/musterbox FAQ "kostenpflichtig olabilir". + anasayfa "Etikettenpapier" vaat ediyor, kalkulatorda yok. + "Digitaler Proof: 10 EUR" yanlış (digital inklusive, 10€ fiziksel Andruck). | 1s |
-| 23 | **Ürün sayfalarında fiyat çapası yok:** packageTable (179/279/479/799€) tanımlı ama hiçbir renderer okumuyor. Reklam trafiği fiyatsız sayfaya düşer. | 2-4s |
+| # | Sorun | Durum |
+|---|-------|-------|
+| ~~18~~ | ~~3 çelişkili teslimat süresi~~ | DONE: kalkulator/custom checkout "7–14" → "10–14"; tüm post-approval iddiaları "10–14 nach Freigabe" |
+| ~~19~~ | ~~Debug fallback 4 canlı sayfada~~ | DONE: else dalı jenerik PP spec; "Seitentyp/Pfad" gitti. Tarayıcıda doğrulandı |
+| ~~20~~ | ~~İç tasarım notları müşteriye görünüyor~~ | DONE: VariableDataBlock + 5 Section lead + SEO meta'daki "im MVP" temizlendi |
+| ~~21~~ | ~~110/172 bölüm sadece body[0] render ediyor~~ | DONE: ContentSections renderer (tüm paragraf+bullet); Guide+Service'e uygulandı. Ratgeber'de 8 bölüm 2-3 paragrafla doğrulandı. Product/industry/glossary/hub bilinçli olarak özet-kart |
+| ~~22~~ | ~~Musterbox/proof/Etikettenpapier çelişkisi~~ | DONE: proof "digital inklusive + 10€ fiziksel Andruck"; Etikettenpapier "auf Anfrage"; Musterbox FAQ "kostenlos für qualifizierte B2B" |
+| ~~23~~ | ~~Ürün sayfalarında fiyat çapası yok~~ | DONE: ProductLikePage'e Preise bölümü; 179/279/479/799 net+brüt+per-piece tier kartları. Tarayıcıda 4 tier doğrulandı |
+
+## P2-17 — ✅ ÇÖZÜLDÜ
+Async ödeme (SEPA vb.): `async_payment_succeeded`→handleCheckoutCompleted, `async_payment_failed`→PAYMENT_FAILED. Paid order artık PENDING_PAYMENT'ta takılmıyor.
 
 ## P4 — Reorder sistemi — ✅ ÇÖZÜLDÜ (marka = "Nachbestellung in 30 Sekunden")
 
