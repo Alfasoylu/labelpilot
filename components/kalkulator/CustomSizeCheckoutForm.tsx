@@ -286,6 +286,14 @@ export function CustomSizeCheckoutForm({
 
       {errorMessage ? <p className="form-status error">{errorMessage}</p> : null}
 
+      <p className="field-hint">
+        Mit Klick auf &bdquo;Zur Zahlung weiter&ldquo; bestellen Sie kostenpflichtig. Es gelten
+        unsere{" "}
+        <a href="/de/agb" target="_blank" rel="noreferrer" className="secondary-link">AGB</a>; Hinweise
+        zum Datenschutz finden Sie in der{" "}
+        <a href="/de/datenschutz" target="_blank" rel="noreferrer" className="secondary-link">Datenschutzerklärung</a>.
+      </p>
+
       <div className="inline-actions">
         <button type="submit" className="cta-button" disabled={isPending}>
           {isPending ? "Weiter zu Stripe..." : "Zur Zahlung weiter"}

@@ -382,6 +382,7 @@ export const footerLinks: FooterGroup[] = [
       { label: "Nachbestellen", href: "/de/nachbestellen" },
       { label: "Druckdaten", href: "/de/druckdaten" },
       { label: "Angebot anfordern", href: "/de/angebot-anfordern" },
+      { label: "Kontakt", href: "/de/kontakt" },
     ],
   },
   {
@@ -3030,7 +3031,7 @@ const topLevelPages: PublicPageData[] = [
       {
         title: "Übermittlung in Drittländer",
         body: [
-          "Eine Verarbeitung findet unter anderem in den USA (Vercel, Amazon Web Services, Stripe, Google LLC) sowie in Hongkong (Verantwortlicher) statt.",
+          "Eine Verarbeitung findet unter anderem in den USA (Vercel, Amazon Web Services, Stripe, Google LLC) sowie in der Türkei (Verantwortlicher: Alfa Soylu Elektronik, Istanbul) statt. Für die Türkei besteht kein Angemessenheitsbeschluss der EU-Kommission.",
           "Soweit erforderlich, erfolgt die Übermittlung auf Grundlage geeigneter Garantien, insbesondere der Standardvertragsklauseln der EU-Kommission (Art. 46 DSGVO). Bei Google Analytics und Google Ads erfolgt die Übermittlung nur bei erteilter Einwilligung.",
         ],
       },
