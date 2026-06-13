@@ -13,6 +13,18 @@ import { gtagConsent } from "@/lib/analytics/gtag";
 
 export const OPEN_CONSENT_EVENT = "lp:open-consent";
 
+// Single source for mapping the stored consent choice to Google Consent Mode v2
+// signals. Used both when the visitor changes their choice and when re-applying
+// a stored choice on mount.
+function applyConsentMode(choice: { analytics: boolean; marketing: boolean }) {
+  gtagConsent("update", {
+    analytics_storage: choice.analytics ? "granted" : "denied",
+    ad_storage: choice.marketing ? "granted" : "denied",
+    ad_user_data: choice.marketing ? "granted" : "denied",
+    ad_personalization: choice.marketing ? "granted" : "denied",
+  });
+}
+
 export function ConsentBanner() {
   const [open, setOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -28,6 +40,11 @@ export function ConsentBanner() {
     } else {
       setAnalytics(current.analytics);
       setMarketing(current.marketing);
+      // Re-apply the stored consent to Google Consent Mode on every page load.
+      // Without this, a returning visitor's session stays at the inline 'denied'
+      // default and GA4/Ads conversions (begin_checkout, purchase) are recorded
+      // as consent-denied — losing attribution exactly when Ads campaigns run.
+      applyConsentMode(current);
     }
     const onOpen = () => {
       const c = readConsent();
@@ -50,12 +67,7 @@ export function ConsentBanner() {
       visitorId = null;
     }
     // Google Consent Mode v2 — update based on user choice
-    gtagConsent("update", {
-      analytics_storage: choice.analytics ? "granted" : "denied",
-      ad_storage: choice.marketing ? "granted" : "denied",
-      ad_user_data: choice.marketing ? "granted" : "denied",
-      ad_personalization: choice.marketing ? "granted" : "denied",
-    });
+    applyConsentMode(choice);
     void fetch("/api/consent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
