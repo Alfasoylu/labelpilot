@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { PurchaseEvent } from "@/components/analytics/PurchaseEvent";
 import { getPrismaClient } from "@/lib/db/prisma";
+import { canCustomerUploadArtwork } from "@/lib/orders/status";
 import { getStripeServerClient } from "@/lib/stripe/server";
 
 export const metadata: Metadata = {
@@ -28,53 +29,58 @@ async function getSuccessPageData(sessionId?: string) {
     const stripe = getStripeServerClient();
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-    // CHK-001: Only show success UI for completed payments.
+    // CHK-001: Payment confirmation comes from Stripe directly. The retrieved
+    // session is fetched server-side with the secret key, so payment_status:"paid"
+    // is authoritative and available the instant the customer is redirected —
+    // BEFORE the webhook has reconciled the DB. We therefore drive the purchase
+    // event and the thank-you UI from Stripe, not from the DB order status, so
+    // the GA4/Ads conversion is never lost to the webhook race.
     if (session.payment_status !== "paid") {
       return null;
     }
 
     const orderId = session.metadata?.orderId;
-
-    if (!orderId) {
-      return null;
-    }
+    const amountEur = session.amount_total ? session.amount_total / 100 : null;
 
     const prisma = getPrismaClient();
-    if (!prisma) {
-      return {
-        orderNumber: session.metadata?.orderNumber ?? null,
-        isSameArtworkReorder: session.metadata?.reorderMode === "SAME_ARTWORK",
-        uploadHref: null,
-        artworkInputStatus: null,
-      };
-    }
+    const order =
+      orderId && prisma
+        ? await prisma.order.findUnique({
+            where: { id: orderId },
+            select: {
+              id: true,
+              orderNumber: true,
+              status: true,
+              reorderMode: true,
+              uploadToken: true,
+              artworkInputStatus: true,
+            },
+          })
+        : null;
 
-    const order = await prisma.order.findUnique({
-      where: { id: orderId },
-      select: {
-        id: true,
-        orderNumber: true,
-        status: true,
-        reorderMode: true,
-        uploadToken: true,
-        artworkInputStatus: true,
-      },
-    });
+    const isSameArtworkReorder =
+      order?.reorderMode === "SAME_ARTWORK" ||
+      session.metadata?.reorderMode === "SAME_ARTWORK";
 
-    // CHK-001: Also guard against orders that are not yet marked PAID in the DB.
-    if (!order || order.status !== "PAID" && order.status !== "APPROVED_FOR_PRODUCTION") {
-      return null;
-    }
+    // The upload link is only offered once the webhook has flipped the order
+    // into an uploadable state. Until then the payment is still confirmed; the
+    // customer also receives the upload link in the confirmation email.
+    const uploadReady = order
+      ? canCustomerUploadArtwork(order.status) ||
+        order.status === "APPROVED_FOR_PRODUCTION"
+      : false;
 
     return {
+      paid: true,
       orderNumber: order?.orderNumber ?? session.metadata?.orderNumber ?? null,
-      isSameArtworkReorder: order?.reorderMode === "SAME_ARTWORK",
+      amountEur,
+      isSameArtworkReorder,
       artworkInputStatus: order?.artworkInputStatus ?? null,
+      uploadReady,
       uploadHref:
-        order?.uploadToken && order.id
+        uploadReady && order?.uploadToken && order.id
           ? `/de/auftrag/${order.id}/druckdaten?token=${encodeURIComponent(order.uploadToken)}`
           : null,
-      amountEur: session.amount_total ? session.amount_total / 100 : null,
     };
   } catch {
     return null;
@@ -84,10 +90,17 @@ async function getSuccessPageData(sessionId?: string) {
 export default async function CheckoutSuccessPage({ searchParams }: SuccessPageProps) {
   const params = await searchParams;
   const successData = await getSuccessPageData(params.session_id);
+  // Payment is confirmed by Stripe (getSuccessPageData only returns when paid).
   const hasResolvedCheckoutState = Boolean(successData);
   const isSameArtworkReorder = Boolean(successData?.isSameArtworkReorder);
   const uploadFlowAvailable = Boolean(successData?.uploadHref) && !isSameArtworkReorder;
   const needsArtworkHelp = successData?.artworkInputStatus === "needs_help";
+  // Paid, but the webhook has not yet flipped the order into an uploadable state.
+  const uploadPending =
+    hasResolvedCheckoutState &&
+    !isSameArtworkReorder &&
+    !needsArtworkHelp &&
+    !successData?.uploadReady;
   const uploadHref = successData?.uploadHref ?? "";
   const pageHeading = hasResolvedCheckoutState
     ? "Vielen Dank – Ihre Bestellung ist eingegangen."
@@ -125,6 +138,12 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
             Die finale Zahlungsbestätigung erfolgt über den verifizierten Stripe-Webhook.
           </p>
         )}
+        {uploadPending ? (
+          <p className="field-hint">
+            Ihr persönlicher Upload-Link wird gerade vorbereitet und ist in wenigen Augenblicken
+            hier sowie in Ihrer Bestellbestätigung per E-Mail verfügbar.
+          </p>
+        ) : null}
         <div className="cta-row">
           {uploadFlowAvailable ? (
             <Link href={uploadHref} className="cta-link">

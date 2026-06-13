@@ -61,7 +61,15 @@ export function gtagPurchase(params: {
     value: params.value,
     currency: params.currency ?? "EUR",
   });
-  if (ADS_CONVERSION_ID && ADS_CONVERSION_LABEL_PURCHASE) {
+  // Google Ads conversion. Guard window.gtag the same way gtagEvent does — an
+  // ad/script blocker can leave window.gtag undefined, and an unguarded call
+  // would throw on the success page once the Ads env vars are set in production.
+  if (
+    ADS_CONVERSION_ID &&
+    ADS_CONVERSION_LABEL_PURCHASE &&
+    typeof window !== "undefined" &&
+    window.gtag
+  ) {
     window.gtag("event", "conversion", {
       send_to: `${ADS_CONVERSION_ID}/${ADS_CONVERSION_LABEL_PURCHASE}`,
       value: params.value,

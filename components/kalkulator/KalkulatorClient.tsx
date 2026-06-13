@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { trackLeadEvent } from "@/lib/analytics/browser";
+import { gtagEvent } from "@/lib/analytics/gtag";
 import { CustomSizeCheckoutForm } from "./CustomSizeCheckoutForm";
 
 type MaterialKey = "OPAQUE_PP" | "TRANSPARENT_PP";
@@ -183,6 +184,24 @@ export function KalkulatorClient({
       quantity: typeof config.mengeProMotiv === "number" ? config.mengeProMotiv * config.anzahlSorten : null,
       finishing: config.finishing,
       netPrice: priceState.status === "configured" ? priceState.netPrice : null,
+    });
+    // GA4/Ads begin_checkout for the live Kalkulator funnel. Value is gross
+    // (incl. design fee + oval surcharge) to match the purchase event basis,
+    // so Ads ROAS compares like with like.
+    gtagEvent("begin_checkout", {
+      currency: "EUR",
+      value: totalGrossPrice || undefined,
+      items: [
+        {
+          item_id:
+            config.materialKey === "OPAQUE_PP"
+              ? "opake-pp-etiketten"
+              : "transparente-pp-etiketten",
+          item_name: `PP-Rollenetiketten ${config.widthMm}x${config.heightMm}mm`,
+          item_variant: config.materialKey,
+          quantity: totalQuantity || undefined,
+        },
+      ],
     });
     setMode("checkout");
     setTimeout(() => {
