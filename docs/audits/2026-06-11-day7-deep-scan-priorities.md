@@ -33,9 +33,9 @@
 | # | Sorun | Kanıt | Efor |
 |---|-------|-------|------|
 | 13 | **VAT çelişkisi:** site her yerde "inkl. 19% MwSt." gösteriyor/tahsil ediyor ama EU/DE VAT kaydı yok ve Impressum "Keine USt-IdNr." diyor — S19 dokümanı %19 MwSt satırı gösterilmemeli diyor. Founder + muhasebeci kararı, sonra kod düzeltmesi. | `docs/S19-VAT-READINESS.md` | karar + 0.5-1g |
-| 14 | **Datenschutz hâlâ "in Hongkong (Verantwortlicher)" diyor** — son Zhenkai kalıntısı; Türkiye (adequacy yok) açıklanmalı. | `lib/site-content.ts` Drittländer bölümü | 15dk |
-| 15 | **Checkout'ta AGB/Datenschutz referansı yok** — § 312i BGB bilgi yükümlülüğü B2B'de de geçerli; "Es gelten unsere AGB" + link ekle. | `CheckoutIntakeForm.tsx`, `CustomSizeCheckoutForm.tsx` | 30dk |
-| 16 | **Kontakt linki header/footer'da yok** — telefon/e-posta keşfedilemiyor; Türkiye merkezli satıcı için güven kritiği. | `lib/site-content.ts:351-406` | 30dk |
+| ~~14~~ | ~~**Datenschutz hâlâ "in Hongkong (Verantwortlicher)" diyor**~~ → DONE: Türkei (Alfa Soylu Elektronik, Istanbul) + "kein Angemessenheitsbeschluss" notu. Hongkong tamamen kalktı. | `lib/site-content.ts` | ✅ |
+| ~~15~~ | ~~**Checkout'ta AGB/Datenschutz referansı yok**~~ → DONE: her iki checkout formuna submit öncesi "Es gelten unsere AGB" + AGB/Datenschutz linkleri + kostenpflichtig-bestellen ifadesi. Tarayıcıda doğrulandı. | `CheckoutIntakeForm.tsx`, `CustomSizeCheckoutForm.tsx` | ✅ |
+| ~~16~~ | ~~**Kontakt linki header/footer'da yok**~~ → DONE: footer Service grubuna Kontakt eklendi. | `lib/site-content.ts` | ✅ |
 | 17 | **Async ödeme yöntemleri (SEPA vb.) siparişi asla PAID yapmaz** — `async_payment_succeeded` handle edilmiyor. Stripe dashboard'da aktif yöntemleri kontrol et; ya card-only kısıtla ya handler ekle. | `webhook/route.ts:404-435` | 2s |
 
 ## P3 — İçerik tutarlılığı (bu hafta, kopya işi)
