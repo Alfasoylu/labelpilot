@@ -1117,7 +1117,7 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
         title="Die wichtigsten Punkte dieser Seite"
         lead="Material, Ablauf und Lieferung kompakt zusammengefasst."
       >
-        <FeatureGrid items={buildFeatureItemsFromSections(page)} />
+        <ContentSections sections={page.sections} />
       </Section>
 
       {page.table ? (
@@ -1201,7 +1201,7 @@ function GuidePage({ page, canonicalPath }: DynamicPageProps) {
         title="Was der Ratgeber konkret erklärt"
         lead="Die wichtigsten Punkte übersichtlich gegliedert."
       >
-        <FeatureGrid items={buildFeatureItemsFromSections(page)} />
+        <ContentSections sections={page.sections} />
       </Section>
 
       {page.table ? (
@@ -1492,6 +1492,31 @@ function buildFeatureItemsFromSections(page: PublicPageData) {
     title: section.title,
     body: [section.body[0], section.bullets?.[0]].filter(Boolean).join(" "),
   }));
+}
+
+// Renders sections in full — every paragraph and every bullet. The FeatureGrid
+// summary above only shows section.body[0]/bullets[0], which silently dropped the
+// 2nd+ paragraphs of ~110 sections (most of the written Ratgeber/Service content).
+function ContentSections({ sections }: { sections: PublicPageData["sections"] }) {
+  return (
+    <div className="section-stack">
+      {sections.map((section) => (
+        <article key={section.title} className="surface-card">
+          <h3>{section.title}</h3>
+          {section.body.map((paragraph, index) => (
+            <p key={`${section.title}-p-${index}`}>{paragraph}</p>
+          ))}
+          {section.bullets?.length ? (
+            <ul className="simple-list">
+              {section.bullets.map((bullet) => (
+                <li key={bullet}>{bullet}</li>
+              ))}
+            </ul>
+          ) : null}
+        </article>
+      ))}
+    </div>
+  );
 }
 
 function buildSpecRows(page: PublicPageData) {
