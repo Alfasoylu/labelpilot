@@ -49,14 +49,16 @@
 | 22 | **Musterbox çelişkisi:** anasayfa "kostenlos", /de/musterbox FAQ "kostenpflichtig olabilir". + anasayfa "Etikettenpapier" vaat ediyor, kalkulatorda yok. + "Digitaler Proof: 10 EUR" yanlış (digital inklusive, 10€ fiziksel Andruck). | 1s |
 | 23 | **Ürün sayfalarında fiyat çapası yok:** packageTable (179/279/479/799€) tanımlı ama hiçbir renderer okumuyor. Reklam trafiği fiyatsız sayfaya düşer. | 2-4s |
 
-## P4 — Reorder sistemi tamamen ölü (marka = "Nachbestellung in 30 Sekunden")
+## P4 — Reorder sistemi — ✅ ÇÖZÜLDÜ (marka = "Nachbestellung in 30 Sekunden")
 
-| # | Sorun | Efor |
-|---|-------|------|
-| 24 | Cron auth yanlış: route APP_SECRET bekliyor, Vercel CRON_SECRET gönderiyor → günlük cron 401. | 30dk |
-| 25 | Reminder sorgusu `status: DRAFT` filtreliyor, tek yaratım yolu `PENDING` yazıyor → hiçbir reminder asla gönderilmez. | 30dk |
-| 26 | Reminder e-postasındaki CTA ölü link: `/de/kalkulator?reorder=...&ct=...` paramları sayfa tarafından okunmuyor. | 2-4s |
-| 27 | `/de/nachbestellen` sayfası quote formuna yönlendiriyor; "Etiketten nachbestellen" butonu da aynı yere gidiyor (etiket yalan söylüyor). ReorderWorkflowBlock'taki "Nachbestellen" butonu onClick'siz. | 1s |
+| # | Sorun | Durum |
+|---|-------|-------|
+| ~~24~~ | ~~Cron auth yanlış (APP_SECRET vs CRON_SECRET)~~ | DONE: CRON_SECRET (öncelik) veya APP_SECRET (manuel) kabul ediliyor; env.ts + .env.example'a eklendi |
+| ~~25~~ | ~~Reminder sorgusu DRAFT, yaratım PENDING~~ | DONE: cron artık `PENDING` sorguluyor |
+| ~~26~~ | ~~Reminder CTA ölü link~~ | DONE: kalkulator'un okuduğu param'larla (quantity/width/height/material) pre-fill linki; tek tıkla önceki config canlı fiyatla açılıyor |
+| ~~27~~ | ~~/de/nachbestellen + demo butonu quote'a gidiyor~~ | DONE: tüm reorder CTA'ları /konto'ya; demo `<button>` → `<a href="/konto">`; iç tasarım notu sızıntısı temizlendi. Tarayıcıda doğrulandı |
+
+> NOT: Reminder'ları admin'in oluşturması gerekiyor (`/admin/reorder`), ENABLE_REORDER_REMINDERS=true + CRON_SECRET Vercel'de set olmalı. Otomatik prediction→reminder üretimi henüz yok (admin manuel).
 
 ## P5 — Sağlamlaştırma (önümüzdeki 2 hafta)
 
