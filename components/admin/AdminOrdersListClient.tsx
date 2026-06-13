@@ -86,7 +86,7 @@ export function AdminOrdersListClient({ orders }: Props) {
   return (
     <div className="section-stack">
       {resultMsg ? <p className="form-status success">{resultMsg}</p> : null}
-      {errorMsg ? <p className="form-status error">{errorMsg}</p> : null}
+      {errorMsg ? <p className="form-status error" role="alert">{errorMsg}</p> : null}
 
       {selected.size > 0 ? (
         <div className="bulk-action-bar">

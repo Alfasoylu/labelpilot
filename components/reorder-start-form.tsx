@@ -162,7 +162,7 @@ export function ReorderStartForm({
       </div>
 
       {message ? <p className="form-status success">{message}</p> : null}
-      {error ? <p className="form-status error">{error}</p> : null}
+      {error ? <p className="form-status error" role="alert">{error}</p> : null}
       <p className="field-hint">
         Identisches Artwork geht direkt in den Checkout. Bei kleinen Anpassungen wird dieselbe
         Spezifikation als neue Bestellung vorbereitet, damit Sie später korrigierte Druckdaten hochladen können.

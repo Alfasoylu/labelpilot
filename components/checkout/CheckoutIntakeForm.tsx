@@ -481,7 +481,7 @@ export function CheckoutIntakeForm({
         </div>
       </div>
 
-      {errorMessage ? <p className="form-status error">{errorMessage}</p> : null}
+      {errorMessage ? <p className="form-status error" role="alert">{errorMessage}</p> : null}
 
       <p className="field-hint">
         Mit Klick auf &bdquo;Zur Zahlung weiter&ldquo; bestellen Sie kostenpflichtig. Es gelten

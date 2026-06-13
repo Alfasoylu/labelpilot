@@ -14,13 +14,13 @@ const initialState: SampleBoxFormState = {
   message: "",
 };
 
-const countries = ["Deutschland", "Oesterreich", "Schweiz", "Andere"];
+const countries = ["Deutschland", "Österreich", "Schweiz", "Andere"];
 const industries = [
   "Lebensmittel",
-  "Getraenke",
+  "Getränke",
   "Supplemente",
   "Kaffee / Tee",
-  "Gewuerze",
+  "Gewürze",
   "Honig / Marmelade",
   "Kosmetik",
   "Andere",
@@ -179,8 +179,10 @@ export function SampleBoxRequestForm() {
         <div className="field-full checkbox-field">
           <input id="sample-consent" name="consent" type="checkbox" value="yes" required />
           <label htmlFor="sample-consent">
-            Ich habe die Datenschutzerklärung gelesen und stimme zu, dass
-            meine Angaben zur Bearbeitung meiner Anfrage verwendet werden.
+            Ich habe die{" "}
+            <a href="/de/datenschutz" target="_blank" rel="noreferrer">Datenschutzerklärung</a>{" "}
+            gelesen und stimme zu, dass meine Angaben zur Bearbeitung meiner Anfrage verwendet
+            werden.
           </label>
         </div>
       </div>

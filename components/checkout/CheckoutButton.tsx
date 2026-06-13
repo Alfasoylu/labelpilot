@@ -224,7 +224,7 @@ export function CheckoutButton({
       >
         {isPending ? "Weiterleitung..." : "Zahlungspflichtig bestellen"}
       </button>
-      {navError ? <p className="form-status error">{navError}</p> : null}
+      {navError ? <p className="form-status error" role="alert">{navError}</p> : null}
     </div>
   );
 }

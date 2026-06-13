@@ -326,7 +326,7 @@ export function CustomSizePriceForm({
 
           {state.status === "error" ? (
             <div className="section-stack">
-              <p className="form-status error">{state.message}</p>
+              <p className="form-status error" role="alert">{state.message}</p>
               <div className="inline-actions">
                 <Link href={quoteHref} className="secondary-link">
                   Wunschformat als Angebot anfragen

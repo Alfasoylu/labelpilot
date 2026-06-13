@@ -53,7 +53,7 @@ export function ProofApprovalForm({ orderId, proofFileId, accessToken, onSuccess
 
   return (
     <div className="section-stack">
-      {errorMsg ? <p className="form-status error">{errorMsg}</p> : null}
+      {errorMsg ? <p className="form-status error" role="alert">{errorMsg}</p> : null}
 
       {mode === "idle" && (
         <div className="inline-actions">
