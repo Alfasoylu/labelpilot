@@ -22,9 +22,9 @@
 | # | Sorun | Kanıt | Efor |
 |---|-------|-------|------|
 | ~~7~~ | ~~**Consent Mode 'update' geri dönen ziyaretçide re-fire edilmiyor**~~ → DONE (commit sonrası): inline gtag-init artık consent `default`'unu `lp_consent` cookie'sinden türetiyor (dönen ziyaretçi `granted` başlıyor), ConsentBanner mount'ta `update`'i re-fire ediyor (defense-in-depth). Tarayıcıda 3 yolda da doğrulandı. | `GoogleAnalytics.tsx`, `ConsentBanner.tsx` | ✅ |
-| 8 | **Purchase event webhook yarışını kaybediyor:** Stripe redirect webhook'tan önce gelirse success page null döner, GA4 purchase HİÇ ateşlenmez (poll/refresh yok). | `checkout/success/page.tsx:64-67,106-111` | 2-3s |
-| 9 | **Canlı funnel'da begin_checkout yok** — event sadece hiçbir sayfanın import etmediği CheckoutButton'da. Canlı yol (Kalkulator → CustomSizeCheckoutForm) hiçbir şey ateşlemiyor. | `CheckoutButton.tsx:189` (dead code) | 1s |
-| 10 | **gtag Ads conversion çağrısı guard'sız** — `NEXT_PUBLIC_ADS_CONVERSION_ID` set edilir edilmez, gtag'ı bloklayan tarayıcıda success page throw eder. | `lib/analytics/gtag.ts:64-71` | 15dk |
+| ~~8~~ | ~~**Purchase event webhook yarışını kaybediyor**~~ → DONE: success page artık Stripe `payment_status=paid` ile purchase event'i ateşliyor (DB PAID beklemiyor); teşekkür UI Stripe ödeme onayından, upload CTA DB status'ünden sürülüyor + webhook gecikme penceresinde "link hazırlanıyor" notu. | `checkout/success/page.tsx` | ✅ |
+| ~~9~~ | ~~**Canlı funnel'da begin_checkout yok**~~ → DONE: `KalkulatorClient.handleOrder` artık GA4 `begin_checkout` ateşliyor (gross değer, purchase ile aynı baz). Tarayıcıda doğrulandı: value 323.68, items dolu, qty 1000. | `KalkulatorClient.tsx` | ✅ |
+| ~~10~~ | ~~**gtag Ads conversion çağrısı guard'sız**~~ → DONE: `window.gtag` varlık kontrolü eklendi (gtagEvent ile aynı). | `lib/analytics/gtag.ts` | ✅ |
 | 11 | **Mobile LCP 4.5–5.3s (perf 69–74):** hero görseli iki kez indiriliyor, ikisi de `priority`. Ads ile mobil trafik alacaksın — bu dönüşümü doğrudan vurur. | `HeroKalkulator.tsx`; lighthouse-report*.json | 2-3s |
 | 12 | **S17 sellability testi hiç koşulmadı** — dokümante pre-Ads go/no-go kapısı; sign-off tablosu boş. P0'lar bitince uçtan uca koş. | `docs/S17-SELLABILITY-TEST-CHECKLIST.md:121-125` | 2-3s manuel |
 
