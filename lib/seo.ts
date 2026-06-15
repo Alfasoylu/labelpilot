@@ -200,6 +200,7 @@ function getProductSchemaDetails(path: string) {
         category: "PP-Rollenetiketten",
         material: "Opakes oder transparentes PP",
         format: "Wunschformat – z. B. 60×40 mm, 100×100 mm",
+        image: buildAbsoluteUrl("/images/pp-rollenetiketten-produktlinie.webp"),
       };
     case "/de/opake-pp-etiketten":
       return {
@@ -207,6 +208,7 @@ function getProductSchemaDetails(path: string) {
         category: "PP-Rollenetiketten",
         material: "Opakes PP",
         format: "Wunschformat",
+        image: buildAbsoluteUrl("/images/transparente-vs-opake-pp-etiketten.webp"),
       };
     case "/de/transparente-pp-etiketten":
       return {
@@ -214,6 +216,7 @@ function getProductSchemaDetails(path: string) {
         category: "PP-Rollenetiketten",
         material: "Transparentes PP",
         format: "Wunschformat",
+        image: buildAbsoluteUrl("/images/transparente-vs-opake-pp-etiketten.webp"),
       };
     case "/de/thermo-versandetiketten":
       return {
@@ -221,6 +224,7 @@ function getProductSchemaDetails(path: string) {
         category: "Thermo-Versandetiketten",
         material: "Thermo",
         format: "100×150 mm",
+        image: buildAbsoluteUrl("/images/og-default-labelpilot-1200x630.png"),
       };
     default:
       return null;
@@ -268,6 +272,11 @@ function buildVisibleProductOffers(page: PublicPageData, path: string) {
             value: quantityValue,
             unitText: "Stück",
           },
+          seller: {
+            "@type": "Organization",
+            name: "Labelpilot.de",
+            url: buildAbsoluteUrl("/"),
+          },
         };
       })
       .filter(Boolean) ?? [];
@@ -307,6 +316,7 @@ export function buildPageSchema(page: PublicPageData, path: string) {
             value: productSchemaDetails?.material ?? page.sidebarBullets[0],
           },
         ],
+        image: productSchemaDetails?.image,
         offers: visibleOffers,
       };
     }
