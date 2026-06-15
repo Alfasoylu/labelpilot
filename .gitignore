@@ -24,6 +24,9 @@ next-env.d.ts
 # Prisma generated client
 /prisma/generated
 
+# Lighthouse reports (generated artifacts, local only)
+lighthouse-report*.json
+
 # Logs
 *.log
 npm-debug.log*
