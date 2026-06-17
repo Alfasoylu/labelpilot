@@ -2662,7 +2662,7 @@ const topLevelPages: PublicPageData[] = [
       {
         title: "Warum opakes PP hier oft vorne liegt",
         body: [
-          "Kaffeebeutel haben häufig matte oder kraftige Oberflächen, auf denen klare Deckkraft wichtiger ist als ein transparenter Look.",
+          "Kaffeebeutel haben häufig matte oder kräftige Oberflächen, auf denen klare Deckkraft wichtiger ist als ein transparenter Look.",
           "Opakes PP ist daher oft die pragmatische Wahl, wenn Sortennamen, Röstdaten oder Zubereitungshinweise zuverlässig lesbar bleiben müssen.",
         ],
       },
@@ -3394,7 +3394,7 @@ const guidePages: PublicPageData[] = [
       {
         question: "Was ist der Unterschied zwischen gestrichenem Papier und PP-Folie?",
         answer:
-          "Gestrichenes Papier (coated paper) hat eine glatteOberfläche für bessere Druckqualität, bleibt aber grundsätzlich hygroskopisch und hat geringere Reißfestigkeit als PP. PP-Folie ist kein Papier und nimmt keine Feuchtigkeit auf – der strukturelle Unterschied bleibt, auch wenn gestrichenes Papier optisch näher an Folie heranrückt.",
+          "Gestrichenes Papier (coated paper) hat eine glatte Oberfläche für bessere Druckqualität, bleibt aber grundsätzlich hygroskopisch und hat geringere Reißfestigkeit als PP. PP-Folie ist kein Papier und nimmt keine Feuchtigkeit auf – der strukturelle Unterschied bleibt, auch wenn gestrichenes Papier optisch näher an Folie heranrückt.",
       },
       {
         question: "Bietet Labelpilot auch Papieretiketten an?",

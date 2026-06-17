@@ -943,7 +943,7 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
       {page.path === "/de/musterbox" ? (
         <Section
           eyebrow="Qualifizierung"
-          title="Die Musterbox wird als kontrollierter B2B-Funnel erklärt"
+          title="So funktioniert die Musterbox"
           lead="Nicht als Give-away, sondern als Schritt vor einer belastbaren Materialentscheidung."
         >
           <div className="two-column">
@@ -1055,7 +1055,7 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
         <Section
           eyebrow="Technische Übersicht"
           title="Formate, Checkliste und häufige Fehler klar statt als Textblock"
-          lead="Die Druckdaten-Seite wird wie eine technische Betriebsseite aufgebaut, nicht wie eine lose FAQ."
+          lead="Alle technischen Anforderungen kompakt im Überblick – damit Ihre Druckdaten beim ersten Mal passen."
         >
           <div className="two-column">
             <SpecTable
@@ -1188,7 +1188,7 @@ function GuidePage({ page, canonicalPath }: DynamicPageProps) {
         <Section
           eyebrow="Schrittfolge"
           title="Schritt für Schritt zum nächsten Arbeitsschritt"
-          lead="Klar gegliederte Hilfestellung statt langer Textwand."
+          lead="Folgen Sie diesen Schritten, um Ihre Etiketten korrekt vorzubereiten."
         >
           <ProcessSteps
             steps={page.howToSteps.map((step, index) => ({
@@ -1219,7 +1219,7 @@ function GuidePage({ page, canonicalPath }: DynamicPageProps) {
       ) : null}
 
       {page.faqs?.length ? (
-        <Section eyebrow="Kurzantworten" title="Häufige Rückfragen zum Thema" lead="Die Antworten bleiben sichtbar und unterstützen weiterhin FAQ-Schema und Suchintention.">
+        <Section eyebrow="Kurzantworten" title="Häufige Rückfragen zum Thema" lead="Häufige Fragen kurz und klar beantwortet.">
           <FaqAccordion faqs={page.faqs} />
         </Section>
       ) : null}
@@ -1227,16 +1227,16 @@ function GuidePage({ page, canonicalPath }: DynamicPageProps) {
       {page.relatedLinks?.length ? (
         <Section
           eyebrow="Verknüpfung"
-          title="Diese Guides führen zurück in kommerzielle Seiten"
-          lead="Die internen Links bleiben erhalten und werden als echte B2B-Pfade visualisiert."
+          title="Weiterführende Themen"
+          lead="Passende Produkte, Ratgeber und Serviceleistungen auf einen Blick."
         >
           <RelatedLinks links={page.relatedLinks} />
         </Section>
       ) : null}
 
       <ContentCta
-        title="Wenn der Guide die Entscheidung geklärt hat, sollte der nächste Schritt klar sein."
-        body="Die Seite endet bewusst in Angebot, Musterbox oder produktnahen Einstiegen statt in einem toten Wissensende."
+        title="Bereit für den nächsten Schritt?"
+        body="Preis sofort berechnen, Musterbox anfordern oder ein individuelles B2B-Angebot einholen."
         primaryLabel="Angebot anfordern"
         primaryHref="/de/angebot-anfordern"
         secondaryLabel="Musterbox anfordern"
@@ -1401,7 +1401,7 @@ function QuotePage({ page, canonicalPath }: DynamicPageProps) {
       </Section>
 
       {page.faqs?.length ? (
-        <Section eyebrow="FAQ" title="Häufige Fragen zum Angebotsprozess" lead="Die sichtbaren Antworten bleiben erhalten und deutsch.">
+        <Section eyebrow="FAQ" title="Häufige Fragen zum Angebotsprozess" lead="Antworten zu Mengen, Ablauf und Angebotsformat.">
           <FaqAccordion faqs={page.faqs} />
         </Section>
       ) : null}

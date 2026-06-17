@@ -13,7 +13,7 @@ const defaultSteps = [
 
 export function ReorderWorkflowBlock({
   title = "Gespeicherte Designs statt jedes Mal von vorn",
-  lead = "Die UI erklärt den eigentlichen Moat: nicht nur drucken, sondern freigegebene Spezifikationen so halten, dass die nächste Bestellung schneller wird.",
+  lead = "Freigegebene Druckdaten, Material und Maß bleiben gespeichert – die nächste Bestellung startet schneller ohne neue Abstimmung.",
   steps = defaultSteps,
 }: ReorderWorkflowBlockProps) {
   return (
