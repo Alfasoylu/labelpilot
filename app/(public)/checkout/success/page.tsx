@@ -199,8 +199,7 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
                   <h3>Produktion & Versand</h3>
                   <p>
                     Nach Ihrer Freigabe produzieren wir Ihre PP-Rollenetiketten. Die Lieferzeit
-                    liegt bei ca. 10–14 Werktagen nach Ihrer Freigabe für Produktion und Versand
-                    nach Deutschland.
+                    liegt bei ca. 7–21 Werktagen je nach Auftragsvolumen (Produktion und Versand nach Deutschland).
                   </p>
                 </article>
               </>

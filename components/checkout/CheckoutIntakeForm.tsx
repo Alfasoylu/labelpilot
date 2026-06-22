@@ -267,8 +267,7 @@ export function CheckoutIntakeForm({
           </p>
         ) : null}
         <p className="field-hint">
-          Lieferzeit: ca. 10–14 Werktage nach Ihrer Freigabe (Produktion + Versand nach
-          Deutschland). Voraussichtlicher Zeitraum, keine bindende Garantie.
+          Lieferzeit: ca. 7–21 Werktage je nach Auftragsvolumen (Produktion + Versand nach Deutschland).
         </p>
         <p className="field-hint">
           <Link href={configuratorChangeHref} className="secondary-link">

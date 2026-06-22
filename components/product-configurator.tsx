@@ -159,7 +159,7 @@ export function ProductConfigurator({
             <ul className="simple-list">
               <li>Technische Druckdatenprüfung + 1 digitaler Proof inklusive</li>
               <li>Gespeicherte Druckdaten für die schnelle Nachbestellung</li>
-              <li>Lieferzeit: ca. 10–14 Werktage nach Ihrer Freigabe (keine bindende Garantie)</li>
+              <li>Lieferzeit: ca. 7–21 Werktage je nach Auftragsvolumen</li>
             </ul>
             <p className="field-hint">
               Rollenkern, Abrollrichtung und Maschinendaten erfassen wir im nächsten Schritt.

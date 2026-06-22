@@ -370,7 +370,7 @@ export const metadataMap: Record<string, MetadataEntry> = {
   "/de/versand": {
     title: "Versand und Lieferzeiten für Etiketten | Labelpilot.de",
     description:
-      "Produktions- und Versandzeiten für PP-Rollenetiketten bei Labelpilot.de. Typisch 15–20 Werktage ab Zahlungseingang, DDP-Lieferung nach Deutschland.",
+      "Produktions- und Versandzeiten für PP-Rollenetiketten bei Labelpilot.de. Typisch 7–21 Werktage ab Zahlungseingang, DDP-Lieferung nach Deutschland.",
     openGraphTitle: "Versand & Lieferung | Labelpilot",
     openGraphDescription:
       "Lieferzeiten, Versandkosten & Lieferregionen erklärt.",

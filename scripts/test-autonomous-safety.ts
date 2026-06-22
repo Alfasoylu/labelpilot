@@ -252,7 +252,7 @@ assert.match(
 );
 assert.match(
   checkoutSuccessPageSource,
-  /ca\. 10–14 Werktagen nach Ihrer Freigabe/,
+  /ca\. 7–21 Werktagen je nach Auftragsvolumen/,
   "Checkout success page must keep the canonical honest delivery range after proof approval.",
 );
 assert.match(

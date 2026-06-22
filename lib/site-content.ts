@@ -864,7 +864,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Wie lange dauert die Lieferung nach der Freigabe?",
         answer:
-          "Die ehrliche Richtgröße liegt bei ca. 10–14 Werktagen nach Ihrer Freigabe für Produktion und Versand nach Deutschland. Das ist ein voraussichtlicher Zeitraum und keine bindende Garantie.",
+          "Die ehrliche Richtgröße liegt bei ca. 7–21 Werktagen nach Ihrer Freigabe für Produktion und Versand nach Deutschland. Das ist ein voraussichtlicher Zeitraum und keine bindende Garantie.",
       },
       {
         question: "Sind die Rollen direkt für Spender oder Maschinen geeignet?",
@@ -1005,7 +1005,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Wie lange dauert die Lieferung nach der Freigabe?",
         answer:
-          "Als ehrliche Orientierung gelten ca. 10–14 Werktage nach Ihrer Freigabe für Produktion und Versand nach Deutschland. Das ist ein voraussichtlicher Zeitraum, keine bindende Garantie.",
+          "Als ehrliche Orientierung gelten ca. 7–21 Werktage nach Ihrer Freigabe für Produktion und Versand nach Deutschland. Das ist ein voraussichtlicher Zeitraum, keine bindende Garantie.",
       },
       {
         question: "Sind die Rollen direkt für Spender oder Maschinen geeignet?",
@@ -1153,7 +1153,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Wie lange dauert der Weg von Freigabe bis Lieferung?",
         answer:
-          "Für die Standardlogik gilt als ehrliche Orientierung ein Zeitraum von ca. 10–14 Werktagen nach Ihrer Freigabe für Produktion und Versand nach Deutschland. Das ist kein starres Liefergarantie-Versprechen.",
+          "Für die Standardlogik gilt als ehrliche Orientierung ein Zeitraum von ca. 7–21 Werktagen nach Ihrer Freigabe für Produktion und Versand nach Deutschland. Das ist kein starres Liefergarantie-Versprechen.",
       },
     ],
     relatedLinks: [
@@ -1274,7 +1274,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Wie lange dauert die Lieferung?",
         answer:
-          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung an Ihre Adresse in Deutschland (Produktion und Versand). Die Lieferung erfolgt DDP – Zoll und Einfuhr sind inklusive.",
+          "Typisch 7–21 Werktage ab Zahlungseingang bis zur Lieferung an Ihre Adresse in Deutschland (Produktion und Versand). Die Lieferung erfolgt DDP – Zoll und Einfuhr sind inklusive.",
       },
     ],
     relatedLinks: [
@@ -1377,7 +1377,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Wie lange dauert der Druck bis zur Lieferung?",
         answer:
-          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland – Produktion und Versand zusammen. Die Lieferung erfolgt DDP, Zoll und Einfuhr inklusive.",
+          "Typisch 7–21 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland – Produktion und Versand zusammen. Die Lieferung erfolgt DDP, Zoll und Einfuhr inklusive.",
       },
     ],
     relatedLinks: [
@@ -1480,7 +1480,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Wie schnell wird geliefert?",
         answer:
-          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland. Die Lieferung erfolgt DDP – Zoll und Einfuhr sind im Preis enthalten.",
+          "Typisch 7–21 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland. Die Lieferung erfolgt DDP – Zoll und Einfuhr sind im Preis enthalten.",
       },
     ],
     relatedLinks: [
@@ -1580,7 +1580,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Wie lange dauert die Lieferung?",
         answer:
-          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland. Die Lieferung erfolgt DDP – Zoll und Einfuhr sind inklusive.",
+          "Typisch 7–21 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland. Die Lieferung erfolgt DDP – Zoll und Einfuhr sind inklusive.",
       },
     ],
     relatedLinks: [
@@ -1685,7 +1685,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Wie lange dauert die Lieferung?",
         answer:
-          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland, DDP – Zoll und Einfuhr inklusive.",
+          "Typisch 7–21 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland, DDP – Zoll und Einfuhr inklusive.",
       },
     ],
     relatedLinks: [
@@ -1804,7 +1804,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Wie lange dauert die Lieferung?",
         answer:
-          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland. Die Lieferung erfolgt DDP – Zoll und Einfuhr sind inklusive, kein Mehraufwand für Sie.",
+          "Typisch 7–21 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland. Die Lieferung erfolgt DDP – Zoll und Einfuhr sind inklusive, kein Mehraufwand für Sie.",
       },
     ],
     relatedLinks: [
@@ -1911,7 +1911,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Wie lange dauert die Lieferung?",
         answer:
-          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland, DDP – Zoll und Einfuhr inklusive.",
+          "Typisch 7–21 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland, DDP – Zoll und Einfuhr inklusive.",
       },
     ],
     relatedLinks: [
@@ -2013,7 +2013,7 @@ const topLevelPages: PublicPageData[] = [
       {
         question: "Wie lange dauert die Lieferung?",
         answer:
-          "Typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland, DDP – Zoll und Einfuhr inklusive.",
+          "Typisch 7–21 Werktage ab Zahlungseingang bis zur Lieferung in Deutschland, DDP – Zoll und Einfuhr inklusive.",
       },
     ],
     relatedLinks: [
@@ -2458,7 +2458,7 @@ const topLevelPages: PublicPageData[] = [
       {
         title: "Lieferzeit als ehrliche Orientierung",
         body: [
-          "Als ehrliche Orientierung gelten ca. 10–14 Werktage nach Ihrer Druckfreigabe (Produktion und Versand nach Deutschland); bei schweren oder sehr großen Sendungen kann es länger dauern. Das ist eine Richtgröße, keine bindende Garantie – ist ein Termin für Sie kritisch, stimmen wir ihn vor der Bestellung gemeinsam ab.",
+          "Als ehrliche Orientierung gelten ca. 7–21 Werktage nach Ihrer Druckfreigabe (Produktion und Versand nach Deutschland); bei schweren oder sehr großen Sendungen kann es länger dauern. Das ist eine Richtgröße, keine bindende Garantie – ist ein Termin für Sie kritisch, stimmen wir ihn vor der Bestellung gemeinsam ab.",
         ],
       },
       {
@@ -3132,7 +3132,7 @@ const topLevelPages: PublicPageData[] = [
         body: [
           "Die Lieferung erfolgt ausschließlich innerhalb Deutschlands. Der Versand erfolgt aus der Türkei per DHL- oder UPS-Luftfracht.",
           "Die Lieferung erfolgt DDP (Delivered Duty Paid): Einfuhrumsatzsteuer und etwaige Zollabgaben sind im Preis enthalten; bei der Zustellung entstehen keine zusätzlichen Kosten.",
-          "Die Lieferzeit beträgt typisch 15–20 Werktage ab Zahlungseingang (Produktion und Versand zusammen). Dies ist eine Orientierungsangabe, keine verbindliche Zustellgarantie.",
+          "Die Lieferzeit beträgt typisch 7–21 Werktage ab Zahlungseingang (Produktion und Versand zusammen). Dies ist eine Orientierungsangabe, keine verbindliche Zustellgarantie.",
         ],
       },
       {
@@ -3209,7 +3209,7 @@ const topLevelPages: PublicPageData[] = [
       {
         title: "Hinweise zu Lieferzeiten",
         body: [
-          "Als Orientierung gilt: typisch 15–20 Werktage ab Zahlungseingang bis zur Lieferung an Ihre Adresse in Deutschland (Produktion und Versand zusammen, ohne Zollverzug).",
+          "Als Orientierung gilt: typisch 7–21 Werktage ab Zahlungseingang bis zur Lieferung an Ihre Adresse in Deutschland (Produktion und Versand zusammen, ohne Zollverzug).",
           "Maßgeblich für den Produktionsstart ist Ihre Proof-Freigabe. Es handelt sich um eine Orientierungsangabe, nicht um eine verbindliche Zustellgarantie.",
         ],
       },
