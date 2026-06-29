@@ -742,6 +742,10 @@ const topLevelPages: PublicPageData[] = [
         answer:
           "Ja. Sobald mehrere Varianten, Mengen oder Spezifikationen zusammenkommen, ist das Angebotsformular der richtige Einstieg.",
       },
+      {
+        question: "Welche Pflichtangaben müssen auf Getränkeetiketten stehen?",
+        answer: "Getränkehersteller müssen neben Bezeichnung und Zutaten auch die Nettofüllmenge und den Namen des verantwortlichen Unternehmers angeben. Alkoholische Getränke ab 1,2 Vol.-% müssen zusätzlich den Alkoholgehalt ausweisen. Wir drucken Ihr freigegebenes Layout – die inhaltliche Prüfung liegt bei Ihnen.",
+      },
     ],
     relatedLinks: [
       {
@@ -2143,6 +2147,7 @@ const topLevelPages: PublicPageData[] = [
         title: "Wann Thermo sinnvoll ist",
         body: [
           "Wenn Versand, Lager oder Fulfillment im selben B2B-Kontext mitgedacht werden, sind Thermo-Versandetiketten eine logische Ergänzung.",
+          "Besonders wenn Produkt- und Versandetiketten vom selben Lieferanten kommen sollen, entfällt die Abstimmung zwischen zwei Druckanbietern.",
         ],
       },
     ],
@@ -2217,6 +2222,10 @@ const topLevelPages: PublicPageData[] = [
         question: "Kann ich danach ein Angebot anfordern?",
         answer:
           "Ja. Genau dafür ist die Musterbox gedacht: Material klären, dann den Angebotsprozess mit konkreteren Angaben starten.",
+      },
+      {
+        question: "Was ist konkret in der Musterbox enthalten?",
+        answer: "Die Musterbox enthält bedruckte Beispiele auf opakem PP und transparentem PP in gängigen Formaten sowie ein Thermo-Versandbeispiel. So können Sie Materialwirkung, Haptik und Klebstoffverhalten direkt an Ihrer Verpackung vergleichen, bevor Sie die erste Auflage beauftragen.",
       },
     ],
     relatedLinks: guideCommercialLinks,
@@ -2326,6 +2335,10 @@ const topLevelPages: PublicPageData[] = [
         answer:
           "Ja. Im Kundenkonto können Sie jede frühere Bestellung direkt in den Kalkulator übernehmen – Format, Material und Menge werden vorausgefüllt. Druckdaten aus der letzten freigegebenen Version können wiederverwendet werden.",
       },
+      {
+        question: "Wie lange dauert eine Nachbestellung im Vergleich zur ersten Bestellung?",
+        answer: "Da Druckdaten, Material und Format bereits gespeichert und freigegeben sind, entfällt die Prüf- und Abstimmungsrunde – die Nachbestellung startet direkt in die Produktion.",
+      },
     ],
     relatedLinks: [
       {
@@ -2388,6 +2401,10 @@ const topLevelPages: PublicPageData[] = [
         question: "Was passiert, wenn meine Datei später korrigiert werden muss?",
         answer:
           "Dann greifen Datencheck, Rückfrage und Proof-Freigabe, bevor produziert wird. Ziel ist nicht, eine unfertige Datei blind weiterzureichen, sondern sie erst druckreif zu machen und danach als klare Basis für spätere Wiederholungen zu sichern.",
+      },
+      {
+        question: "Welche Mindestauflösung brauchen Bilder in Druckdaten?",
+        answer: "Platzierte Rastergrafiken sollten im Endformat mindestens 300 dpi aufweisen. Bei niedrigerer Auflösung entstehen sichtbare Pixel an Kanten und Farbverläufen – das häufigste Problem bei der Dateiprüfung.",
       },
     ],
     relatedLinks: [
@@ -2468,6 +2485,12 @@ const topLevelPages: PublicPageData[] = [
         ],
       },
     ],
+    faqs: [
+      {
+        question: "Was bedeutet DDP-Lieferung für mich als Käufer?",
+        answer: "DDP steht für „Delivered Duty Paid“: Zoll, Einfuhrumsatzsteuer und alle Importkosten sind im Paketpreis enthalten. Bei der Zustellung durch DHL oder UPS entstehen für Sie keine zusätzlichen Gebühren oder Zollaufwand.",
+      },
+    ],
   },
   {
     path: "/de/kontakt",
@@ -2513,6 +2536,12 @@ const topLevelPages: PublicPageData[] = [
         ["Druckdaten vorbereiten", "Druckdaten-Seite lesen"],
       ],
     },
+    faqs: [
+      {
+        question: "Wie schnell erhalten Sie eine Antwort?",
+        answer: "Anfragen zu Angeboten und Musterboxen beantworten wir in der Regel innerhalb von 1–2 Werktagen. Für strukturierte Anfragen mit konkreten Mengen nutzen Sie besser das Angebotsformular unter /de/angebot-anfordern.",
+      },
+    ],
   },
   {
     path: "/de/unternehmen",
@@ -2684,6 +2713,10 @@ const topLevelPages: PublicPageData[] = [
         answer:
           "Weil Kaffeeverpackungen vor allem mit Beuteln und dichten Informationsflächen verbunden sind, nicht mit transparenter Glasoptik.",
       },
+      {
+        question: "Welche Pflichtangaben gehören auf ein Kaffeeetikett?",
+        answer: "Kaffee als Lebensmittel unterliegt der LMIV: Bezeichnung, Zutatenverzeichnis, Nettofüllmenge, MHD und der Name des Verantwortlichen sind Pflicht. Für Bio-Kaffee kommen das EU-Biologo und die Kontrollstellen-Nummer hinzu.",
+      },
     ],
     relatedLinks: [
       {
@@ -2764,6 +2797,10 @@ const topLevelPages: PublicPageData[] = [
         answer:
           "Viele Gewürzmarken haben viele wiederkehrende SKUs. Wenn Größe, Material und Druckdaten einmal festgelegt sind, wird jede weitere Sorte einfacher.",
       },
+      {
+        question: "Was muss auf ein Gewürzetiketten nach LMIV stehen?",
+        answer: "Neben Bezeichnung, Nettofüllmenge und MHD sind Allergene in Gewürzmischungen häufig relevant – etwa Sellerie, Senf und Sesam. Bei Mischungen mit mehr als zwei Zutaten ist ein vollständiges Zutatenverzeichnis in absteigender Gewichtsreihenfolge Pflicht.",
+      },
     ],
     relatedLinks: [
       {
@@ -2842,6 +2879,10 @@ const topLevelPages: PublicPageData[] = [
         question: "Warum sind Flaschen- und Materialratgeber hier besonders relevant?",
         answer:
           "Weil die eigentliche Entscheidung meist nicht nur die Branche ist, sondern die sichtbare Verpackungsoberfläche aus Glas und der gewünschte Markeneindruck.",
+      },
+      {
+        question: "Welche Pflichtangaben gelten speziell für Honigetiketten?",
+        answer: "Honig unterliegt der Deutschen Honigverordnung (HonigV): Pflicht sind die Bezeichnung „Honig“, alle Ursprungsländer, Nettofüllmenge, MHD und Name des Verantwortlichen. Seit 2015 müssen bei Ländermischungen alle Ursprungsländer aufgeführt werden.",
       },
     ],
     relatedLinks: [
@@ -2923,6 +2964,10 @@ const topLevelPages: PublicPageData[] = [
         question: "Warum ist der Materialvergleich bei Flaschen so wichtig?",
         answer:
           "Weil bei Flaschen die sichtbare Oberfläche das Kaufmotiv stark beeinflusst. Die Materialwahl ist hier kein Detail, sondern die zentrale Entscheidung.",
+      },
+      {
+        question: "Welches Etikettenformat passt zu gängigen Flaschengrößen?",
+        answer: "Für 0,5-l-Flaschen sind Maße von 60×90 mm bis 90×130 mm gebräuchlich, für 0,75-l-Weinflaschen typisch 90×120 mm. Im Kalkulator ist jedes Wunschformat bis 320 mm Breite frei einstellbar.",
       },
     ],
     relatedLinks: [
@@ -3903,6 +3948,14 @@ const guidePages: PublicPageData[] = [
         answer:
           "Vor allem dann, wenn Glas, Füllfarbe oder ein Premium-Look eine große Rolle spielen und noch unklar ist, wie stark die Verpackung selbst sichtbar bleiben soll.",
       },
+      {
+        question: "Was kostet transparentes PP mehr als opakes PP?",
+        answer: "Transparentes PP liegt im Paketpreis etwas über der opaken Variante. Weißunterdruck, der für deckende Farben auf transparentem Material nötig ist, kommt als kostenpflichtiger Zusatz über ein Angebot dazu.",
+      },
+      {
+        question: "Kann ich beide Varianten vor der Bestellung vergleichen?",
+        answer: "Ja. Die Musterbox enthält Beispiele beider Materialien, damit Sie Haptik, Transparenzgrad und Farbwirkung direkt an Ihrer Verpackung prüfen können.",
+      },
     ],
     relatedLinks: [
       {
@@ -3969,6 +4022,7 @@ const guidePages: PublicPageData[] = [
         title: "Der operative Unterschied",
         body: [
           "Rollenetiketten sind nicht nur ein anderes Trägermedium, sondern ein anderes Prozessversprechen: wiederholbar, strukturierter und klarer auf Serienproduktion ausgelegt.",
+          "Bogenetiketten eignen sich für manuelle Spenderanwendungen mit kleinem Durchsatz. Bei Serien ab 1.000 Stück pro Auflage rechnet sich die Rollenlogik durch gleichmäßigeres Handling, weniger Ausschuss und einfachere Maschinenetikettierung.",
         ],
       },
     ],
