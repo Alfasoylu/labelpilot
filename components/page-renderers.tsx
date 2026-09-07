@@ -665,20 +665,39 @@ function ProductLikePage({ page, canonicalPath }: DynamicPageProps) {
         </Section>
       ) : null}
 
-      <Section
-        eyebrow="Kalkulator"
-        title="Preis für Ihr Wunschformat berechnen"
-        lead="Breite, Höhe, Material und Menge eingeben – der Kalkulator zeigt den Preis sofort."
-      >
-        <div className="hero-actions">
-          <Link href="/de/kalkulator" className="cta-button">
-            Preis berechnen
-          </Link>
-          <Link href="/de/angebot-anfordern" className="secondary-link">
-            B2B-Angebot anfordern
-          </Link>
-        </div>
-      </Section>
+      {page.path === "/de/papieretiketten" ? (
+        // Papier has no instant price — the calculator only covers the two PP
+        // standard materials, so this page must not promise a Sofortpreis.
+        <Section
+          eyebrow="Nächster Schritt"
+          title="Papieretiketten anfragen"
+          lead="Format, Menge und Anwendung senden – Sie erhalten einen konkreten Preis. Für die PP-Standardmaterialien zeigt der Kalkulator den Preis sofort."
+        >
+          <div className="hero-actions">
+            <Link href="/de/angebot-anfordern" className="cta-button">
+              Angebot anfordern
+            </Link>
+            <Link href="/de/kalkulator" className="secondary-link">
+              PP-Preis im Kalkulator ansehen
+            </Link>
+          </div>
+        </Section>
+      ) : (
+        <Section
+          eyebrow="Kalkulator"
+          title="Preis für Ihr Wunschformat berechnen"
+          lead="Breite, Höhe, Material und Menge eingeben – der Kalkulator zeigt den Preis sofort."
+        >
+          <div className="hero-actions">
+            <Link href="/de/kalkulator" className="cta-button">
+              Preis berechnen
+            </Link>
+            <Link href="/de/angebot-anfordern" className="secondary-link">
+              B2B-Angebot anfordern
+            </Link>
+          </div>
+        </Section>
+      )}
 
       <Section
         eyebrow="Sicherheit"
@@ -855,10 +874,16 @@ function IndustryPage({ page, canonicalPath }: DynamicPageProps) {
         title="Welches Material passt – und warum"
       >
         <ComparisonTable
-          title="Material und Einsatz im Überblick"
-          lead="Empfehlung, Einsatz und Wiederbestellung pro Variante."
-          columns={["Variante", "Wofür sie passt", "Warum sie wiederholbar bleibt"]}
-          rows={buildIndustryComparisonRows(page)}
+          title={page.table?.title ?? "Material und Einsatz im Überblick"}
+          lead={page.table?.lead ?? "Empfehlung, Einsatz und Wiederbestellung pro Variante."}
+          columns={
+            page.table?.columns ?? [
+              "Variante",
+              "Wofür sie passt",
+              "Warum sie wiederholbar bleibt",
+            ]
+          }
+          rows={page.table?.rows ?? buildIndustryComparisonRows(page)}
         />
       </Section>
 
@@ -866,7 +891,7 @@ function IndustryPage({ page, canonicalPath }: DynamicPageProps) {
         eyebrow="Einsatzfälle"
         title="Typische Anforderungen"
       >
-        <FeatureGrid items={buildFeatureItemsFromSections(page)} />
+        <ContentSections sections={page.sections} />
       </Section>
 
       <ReorderWorkflowBlock
@@ -1115,6 +1140,8 @@ function ServicePage({ page, canonicalPath }: DynamicPageProps) {
         </Section>
       ) : null}
 
+      <HowToSection page={page} />
+
       <Section
         eyebrow="Kerninhalte"
         title="Die wichtigsten Punkte dieser Seite"
@@ -1184,20 +1211,7 @@ function GuidePage({ page, canonicalPath }: DynamicPageProps) {
         </Section>
       ) : null}
 
-      {page.howToSteps?.length ? (
-        <Section
-          eyebrow="Schrittfolge"
-          title="Schritt für Schritt zum nächsten Arbeitsschritt"
-          lead="Folgen Sie diesen Schritten, um Ihre Etiketten korrekt vorzubereiten."
-        >
-          <ProcessSteps
-            steps={page.howToSteps.map((step, index) => ({
-              title: `Schritt ${index + 1}`,
-              body: step,
-            }))}
-          />
-        </Section>
-      ) : null}
+      <HowToSection page={page} />
 
       <Section
         eyebrow="Einordnung"
@@ -1432,17 +1446,63 @@ function LegalPage({ page, canonicalPath }: DynamicPageProps) {
   );
 }
 
+function HowToSection({ page }: { page: PublicPageData }) {
+  if (!page.howToSteps?.length) {
+    return null;
+  }
+
+  return (
+    <Section
+      eyebrow="Schrittfolge"
+      title="Schritt für Schritt zum nächsten Arbeitsschritt"
+      lead="Folgen Sie diesen Schritten, um Ihre Etiketten korrekt vorzubereiten."
+    >
+      <ProcessSteps
+        steps={page.howToSteps.map((step, index) => ({
+          title: `Schritt ${index + 1}`,
+          body: step,
+        }))}
+      />
+    </Section>
+  );
+}
+
 function QuickAnswerCard({ page }: { page: PublicPageData }) {
+  // GEO rule (docs/73 §6): the visible direct-answer block must actually answer
+  // the page question, not repeat the meta description. Pages that carry a
+  // dedicated `directAnswer` render it; the rest still fall back to `lead`.
   return (
     <div className="surface-card">
       <h2>Kurzantwort</h2>
-      <p>{page.lead}</p>
+      <p>{page.directAnswer ?? page.lead}</p>
       <ul className="simple-list">
         {page.sidebarBullets.map((bullet) => (
           <li key={bullet}>{bullet}</li>
         ))}
       </ul>
+      {page.updatedAt ? <UpdatedAtNote updatedAt={page.updatedAt} /> : null}
     </div>
+  );
+}
+
+function UpdatedAtNote({ updatedAt }: { updatedAt: string }) {
+  const parsed = new Date(`${updatedAt}T00:00:00.000Z`);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return null;
+  }
+
+  const formatted = new Intl.DateTimeFormat("de-DE", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(parsed);
+
+  return (
+    <p className="field-hint">
+      Zuletzt aktualisiert am <time dateTime={updatedAt}>{formatted}</time>
+    </p>
   );
 }
 
@@ -1570,6 +1630,41 @@ function buildSpecRows(page: PublicPageData) {
       { label: "Prüfung", value: "Kostenlose Druckdatenprüfung plus 1 Proof" },
       { label: "Lieferung", value: "DDP nach Deutschland – Zoll und Einfuhr inklusive" },
       { label: "Nachbestellung", value: "Gespeicherte Spezifikation zum gleichen Paketpreis" },
+    );
+  } else if (page.path === "/de/tiefkuehl-etiketten") {
+    rows.push(
+      { label: "Format", value: "Wunschformat bis 320 mm Breite, Höhe frei wählbar, auf Rolle" },
+      { label: "Material", value: "PP opak oder transparent" },
+      { label: "Klebstoff Standard", value: "Permanent – für Kühlregal und normale Lagerbedingungen" },
+      { label: "Klebstoff Tiefkühl", value: "Tiefkühlgeeignet bis −20 °C – im Kalkulator wählbar, mit Aufschlag" },
+      { label: "Etikettieren", value: "Bei Standardklebstoff auf trockener Oberfläche bei Raumtemperatur, danach einfrieren" },
+      { label: "Druck", value: "4/0-farbig CMYK Digital, ohne Einrichtungskosten" },
+      { label: "Lieferform", value: "Auf Rolle, 76-mm-Kern, Wickelrichtung Standard" },
+      { label: "Mindestmenge", value: "1.000 Stück; Sondermengen per Angebot" },
+      { label: "Hinweis", value: "Wir nennen den Auslegungsbereich, geben aber keine Haftungsgarantie für Ihre konkrete Verpackung – Vorabtest über die Musterbox empfohlen" },
+    );
+  } else if (page.path === "/de/papieretiketten") {
+    rows.push(
+      { label: "Material", value: "Etikettenpapier weiß – auf Anfrage über den Angebotsweg" },
+      { label: "Standardmaterial", value: "PP opak oder transparent mit Sofortpreis im Kalkulator" },
+      { label: "Format", value: "Wunschformat bis 320 mm Breite, Höhe frei wählbar, auf Rolle" },
+      { label: "Preis", value: "Kein Sofortpreis – Format, Menge und Anwendung über die Angebotsanfrage senden" },
+      { label: "Geeignet für", value: "Trockenware, Kartonverpackungen und matte, natürliche Haptik" },
+      { label: "Nicht geeignet für", value: "Kühlregal, Tiefkühlung, Dauerkontakt mit Fett oder Feuchtigkeit" },
+      { label: "Lieferform", value: "Auf Rolle, 76-mm-Kern, Wickelrichtung Standard" },
+      { label: "Mindestmenge", value: "1.000 Stück; genaue Konditionen im Angebot" },
+    );
+  } else if (page.path === "/de/klebeetiketten") {
+    rows.push(
+      { label: "Aufbau", value: "Selbstklebend: Druckmaterial, Klebstoffschicht, Trägerpapier" },
+      { label: "Material", value: "PP opak oder transparent" },
+      { label: "Klebstoff Standard", value: "Permanent – nicht zerstörungsfrei ablösbar" },
+      { label: "Tiefkühlgeeignet", value: "Bis −20 °C im Kalkulator wählbar, mit Aufschlag" },
+      { label: "Ablösbar", value: "Auf Anfrage, Angebotsfall – nicht im Standardpreis" },
+      { label: "Lieferform", value: "Ausschließlich auf Rolle, 76-mm-Kern, Wickelrichtung Standard" },
+      { label: "Format", value: "Wunschformat bis 320 mm Breite, Höhe frei wählbar" },
+      { label: "Mindestmenge", value: "1.000 Stück; Sondermengen per Angebot" },
+      { label: "Maschinenverarbeitung", value: "Rollenkern, Wickelrichtung und Etikettenabstand bitte bei der Anfrage angeben" },
     );
   } else if (page.path === "/de/barcode-etiketten") {
     rows.push(

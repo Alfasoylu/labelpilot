@@ -57,6 +57,15 @@ export type PublicPageData = {
   title: string;
   eyebrow: string;
   lead: string;
+  // GEO rule (docs/73 §6): every commercial/content page needs a visible, self-
+  // contained "Kurzantwort" of 2-4 sentences. `lead` is the meta description and
+  // is too short to serve as the extractable answer block, so pages carry a
+  // dedicated one. Falls back to `lead` while a page has none.
+  directAnswer?: string;
+  // ISO date (YYYY-MM-DD) of the last substantive content review. Rendered as a
+  // visible "Zuletzt aktualisiert" line and mapped to schema dateModified plus
+  // the per-URL sitemap lastmod.
+  updatedAt?: string;
   heroBullets?: string[];
   sidebarTitle: string;
   sidebarBullets: string[];
@@ -109,6 +118,9 @@ type FooterGroup = {
 
 export type SitemapEntry = {
   path: string;
+  /** ISO date (YYYY-MM-DD) used as sitemap lastmod. Omitted entries fall back
+   *  to the build date. */
+  lastModified?: string;
   priority: number;
   changeFrequency:
     | "always"
@@ -369,6 +381,9 @@ export const footerLinks: FooterGroup[] = [
       { label: "PP-Rollenetiketten", href: "/de/pp-rollenetiketten" },
       { label: "Opake PP-Etiketten", href: "/de/opake-pp-etiketten" },
       { label: "Transparente PP-Etiketten", href: "/de/transparente-pp-etiketten" },
+      { label: "Klebeetiketten", href: "/de/klebeetiketten" },
+      { label: "Papieretiketten", href: "/de/papieretiketten" },
+      { label: "Tiefkühl-Etiketten", href: "/de/tiefkuehl-etiketten" },
       { label: "Thermo-Versandetiketten", href: "/de/thermo-versandetiketten" },
     ],
   },
@@ -378,11 +393,15 @@ export const footerLinks: FooterGroup[] = [
       { label: "Lebensmittel-Etiketten", href: "/de/lebensmittel-etiketten" },
       { label: "Getränke-Etiketten", href: "/de/getraenke-etiketten" },
       { label: "Supplement-Etiketten", href: "/de/supplement-etiketten" },
+      { label: "Kosmetik-Etiketten", href: "/de/kosmetik-etiketten" },
     ],
   },
   {
     title: "Service",
     links: [
+      { label: "Etiketten gestalten", href: "/de/etiketten-gestalten" },
+      { label: "Variable Daten", href: "/de/variable-daten-etiketten" },
+      { label: "Lotnummer & MHD", href: "/de/etiketten-mit-lotnummer-skt" },
       { label: "Musterbox", href: "/de/musterbox" },
       { label: "Nachbestellen", href: "/de/nachbestellen" },
       { label: "Druckdaten", href: "/de/druckdaten" },
@@ -488,6 +507,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Branche",
     lead:
       "Bedruckte PP-Rollenetiketten für Lebensmittelmarken in Deutschland. Geeignet für Gläser, Beutel, Flaschen und klassische Verpackungen.",
+    directAnswer:
+      "Lebensmitteletiketten müssen zwei Anforderungen zugleich erfüllen: dauerhaft lesbare Pflichtangaben nach LMIV und Beständigkeit gegen Feuchtigkeit, Fett und Kühlung. PP-Folie ist dafür der belastbarere Träger als Papier, weil sie im Kühlregal nicht aufquillt und Produktreste sich abwischen lassen. Wir drucken Ihr freigegebenes Layout – für Inhalt und rechtliche Konformität der Pflichtangaben sind Sie verantwortlich.",
     heroBullets: [
       "Opake oder transparente PP-Varianten für unterschiedliche Verpackungsoptiken.",
       "Gängige Formate: 60×40 mm, 100×100 mm – Wunschformat frei wählbar.",
@@ -566,6 +587,18 @@ const topLevelPages: PublicPageData[] = [
     ],
     relatedLinks: [
       {
+        label: "Etiketten mit Lotnummer und MHD",
+        href: "/de/etiketten-mit-lotnummer-skt",
+        description:
+          "Chargenkennzeichnung und Mindesthaltbarkeitsdatum auf dem Etikett.",
+      },
+      {
+        label: "Tiefkühl-Etiketten",
+        href: "/de/tiefkuehl-etiketten",
+        description:
+          "Klebstoffwahl für Kühlregal, Tiefkühlung und feuchte Oberflächen.",
+      },
+      {
         label: "Flaschenetiketten",
         href: "/de/flaschenetiketten",
         description:
@@ -600,6 +633,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Branche",
     lead:
       "PP-Rollenetiketten für Supplement-Dosen, Beutel und Flaschen. Wunschformat, opak oder transparent, mit technischer Dateiprüfung.",
+    directAnswer:
+      "Supplement-Etiketten brauchen viel Pflichttext auf kleiner Fläche und in der Regel eine Chargenkennzeichnung mit Mindesthaltbarkeitsdatum. PP-Folie ist dafür der passende Träger: beständig gegen Feuchtigkeit und Abrieb, mit klarer Deckung für dichte Textblöcke. Bleiben Charge und MHD über eine Auflage gleich, gehören sie ins Layout; wechseln sie je Etikett, laufen sie als variable Daten über ein Angebot.",
     heroBullets: [
       "Geeignet für wiederkehrende SKU-Strukturen im B2B-Kontext.",
       "Saubere Unterscheidung zwischen Standardprodukt und Angebotsfall.",
@@ -678,6 +713,18 @@ const topLevelPages: PublicPageData[] = [
     ],
     relatedLinks: [
       {
+        label: "Etiketten mit Lotnummer und MHD",
+        href: "/de/etiketten-mit-lotnummer-skt",
+        description:
+          "Charge und Mindesthaltbarkeitsdatum fest im Layout, variabel je Etikett oder als Freifläche.",
+      },
+      {
+        label: "Variable Daten aus CSV und Excel",
+        href: "/de/variable-daten-etiketten",
+        description:
+          "Mehrere Chargen in einer Auflage – Ablauf, Pflichtspalten und Grenzen.",
+      },
+      {
         label: "Beutel als Anwendungsfall",
         href: "/de/kaffee-etiketten",
         description:
@@ -700,6 +747,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Branche",
     lead:
       "Transparente und opake PP-Rollenetiketten für Getränke, Flaschen und Glasverpackungen. Für Marken in Deutschland mit einfacher Nachbestellung.",
+    directAnswer:
+      "Bei Getränkeetiketten entscheidet die Kühlung: Sobald Flaschen gekühlt werden, bildet sich Kondenswasser, an dem Papieretiketten aufquellen und sich an den Rändern lösen. PP-Folie bleibt maßhaltig und lesbar. Transparentes PP erzeugt auf Klarglas den No-Label-Look, opakes PP liefert die Deckung für Pflichtangaben – für kräftige Farben auf transparentem Material ist ein Weißunterdruck nötig.",
     heroBullets: [
       "Transparente PP-Etiketten passen besonders gut zu Flaschen- und Glasoptiken.",
       "Opake Varianten bleiben sinnvoll für kontrastreiche Designs und Pflichtangaben.",
@@ -749,6 +798,12 @@ const topLevelPages: PublicPageData[] = [
     ],
     relatedLinks: [
       {
+        label: "Etiketten gestalten",
+        href: "/de/etiketten-gestalten",
+        description:
+          "Von Format und Material zum druckfähigen Layout – in der richtigen Reihenfolge.",
+      },
+      {
         label: "Flaschenetiketten drucken",
         href: "/de/flaschenetiketten-drucken",
         description:
@@ -777,6 +832,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Produkt",
     lead:
       "Transparente PP-Rollenetiketten im Wunschformat für Flaschen, Gläser und Premium-Verpackungen. Druckdaten hochladen, prüfen und später leichter nachbestellen.",
+    directAnswer:
+      "Transparente PP-Etiketten wirken auf Glas und klaren Kunststoffflaschen wie ein direkter Aufdruck: Der Etikettenrand verschwindet optisch, nur Farbe und Schrift bleiben sichtbar. Der entscheidende technische Punkt ist der Weißunterdruck – ohne ihn wirken Farben lasierend und Weißtöne verschwinden ganz. Soll etwas deckend stehen, ist ein Weißunterdruck nötig; er ist ein kostenpflichtiger Zusatz und läuft über ein Angebot.",
     heroBullets: [
       "Wunschformat – Breite bis 320 mm, Höhe frei wählbar.",
       "Preisberechnung sofort im Kalkulator – ohne Anfrage oder Wartezeit.",
@@ -878,6 +935,12 @@ const topLevelPages: PublicPageData[] = [
     ],
     relatedLinks: [
       {
+        label: "Kosmetik-Etiketten",
+        href: "/de/kosmetik-etiketten",
+        description:
+          "Transparente Optik auf Tiegeln, Pumpflaschen und Seren.",
+      },
+      {
         label: "Flaschenetiketten",
         href: "/de/flaschenetiketten",
         description: "Branchenseite für sichtbare Glas- und Flaschenverpackungen.",
@@ -914,6 +977,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Produkt",
     lead:
       "Opake PP-Rollenetiketten im Wunschformat für Lebensmittel-, Supplement- und Produktverpackungen. Ideal für wiederkehrende B2B-Bestellungen.",
+    directAnswer:
+      "Opake PP-Etiketten sind das deckende Standardmaterial: Sie decken den Untergrund vollständig ab, sodass Farben sicher stehen und Pflichtangaben kontraststark bleiben. Das macht sie zur richtigen Wahl für Dosen, Beutel, farbige Verpackungen und überall dort, wo viel Pflichttext lesbar bleiben muss. Gegenüber Papier bleiben sie bei Feuchtigkeit, Fett und Abrieb formstabil.",
     heroBullets: [
       "Das Standardprodukt für kontrastreiche Druckmotive und klare Deckkraft.",
       "Wunschformat – Breite bis 320 mm, Höhe frei wählbar.",
@@ -1061,6 +1126,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Produktübersicht",
     lead:
       "Individuell bedruckte PP-Rollenetiketten für deutsche B2B-Marken. Opak oder transparent, Wunschformat nach Maß, mit gespeicherten Druckdaten.",
+    directAnswer:
+      "PP-Rollenetiketten sind bedruckte Etiketten aus Polypropylen-Folie, die auf Rolle geliefert und über Spender oder Etikettiermaschine verarbeitet werden. Sie sind der Standard für wiederkehrende Produktetiketten, weil PP gegen Feuchtigkeit, Fett und Abrieb beständig ist und sich prozesssicher verarbeiten lässt. Bei Labelpilot wählen Sie zwischen opakem und transparentem PP im Wunschformat bis 320 mm Breite; freigegebene Druckdaten bleiben für spätere Nachbestellungen gespeichert.",
     heroBullets: [
       "Opake und transparente PP-Rollenetiketten auf einen Blick.",
       "Materialwahl, Preise, Druckdaten und Nachbestellung.",
@@ -1162,6 +1229,18 @@ const topLevelPages: PublicPageData[] = [
     ],
     relatedLinks: [
       {
+        label: "Klebeetiketten",
+        href: "/de/klebeetiketten",
+        description:
+          "Klebstoffvarianten: permanent, tiefkühlgeeignet und ablösbar auf Anfrage.",
+      },
+      {
+        label: "Etiketten gestalten",
+        href: "/de/etiketten-gestalten",
+        description:
+          "Layout selbst aufbauen oder gestalten lassen – mit technischer Prüfung.",
+      },
+      {
         label: "Rollenetiketten drucken lassen",
         href: "/de/rollenetiketten-drucken",
         description:
@@ -1202,6 +1281,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Rollenetiketten",
     lead:
       "Bedruckte Rollenetiketten aus PP für Lebensmittel-, Getränke- und Supplement-Marken in Deutschland. Opak oder transparent, mit geprüften und gespeicherten Druckdaten für schnelle Nachbestellungen.",
+    directAnswer:
+      "Rollenetiketten sind Etiketten, die auf einem Trägerband aufgerollt geliefert werden – im Gegensatz zu Bogenetiketten. Genau diese Bauform macht die maschinelle und halbautomatische Etikettierung möglich und ist damit der Standard für Produktmarken mit wiederkehrenden Auflagen. Wir produzieren sie auf PP-Folie, opak oder transparent, ab 1.000 Stück mit Sofortpreis im Kalkulator.",
     heroBullets: [
       "Feste Pakete ab 179 € netto (1.000 Stück), 5.000 Stück für 479 € netto – inkl. Versand nach Deutschland.",
       "PP-Rollenetiketten opak oder transparent – ein klarer Materialkern statt unübersichtlicher Varianten.",
@@ -1283,6 +1364,12 @@ const topLevelPages: PublicPageData[] = [
     ],
     relatedLinks: [
       {
+        label: "Klebeetiketten",
+        href: "/de/klebeetiketten",
+        description:
+          "Selbstklebende Etiketten auf Rolle und die passende Klebstoffwahl.",
+      },
+      {
         label: "Rollenetiketten drucken lassen",
         href: "/de/rollenetiketten-drucken",
         description: "Druckablauf, Datenprüfung und Proof für bedruckte Rollenetiketten.",
@@ -1303,6 +1390,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Druckservice",
     lead:
       "PP-Rollenetiketten drucken lassen – mit technischer Druckdatenprüfung, digitalem Proof und gespeicherten Daten für jede Nachbestellung. Für B2B-Marken in Deutschland, geliefert DDP.",
+    directAnswer:
+      "Rollenetiketten drucken lassen bedeutet bei uns: Format, Material und Menge im Kalkulator festlegen, Druckdaten hochladen, technische Prüfung und Proof abwarten, freigeben – danach startet die Produktion. Gedruckt wird digital im CMYK-Verfahren ohne Klischee- oder Einrichtungskosten, was kleine und mittlere Auflagen wirtschaftlich macht. Die freigegebene Datei bleibt für Nachbestellungen gespeichert.",
     heroBullets: [
       "Feste Pakete ab 179 € netto (1.000 Stück), 5.000 Stück für 479 € netto – inkl. Versand.",
       "4/0-farbiger CMYK-Digitaldruck ohne Einrichtungs- oder Klischeekosten.",
@@ -1406,6 +1495,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Auf Rolle",
     lead:
       "Bedruckte Etiketten auf Rolle aus PP – im Wunschformat, opak oder transparent. Für die automatische Verarbeitung über Spender oder Etikettiermaschine, geliefert DDP nach Deutschland.",
+    directAnswer:
+      "Etiketten auf Rolle werden auf einem durchgehenden Trägerband geliefert und lassen sich damit über Handspender oder Etikettiermaschine verarbeiten. Für Marken, die regelmäßig etikettieren, ist das der entscheidende Unterschied zu Bogenware: aus Handarbeit wird ein Minutenvorgang. Wir liefern bedruckte Etiketten auf Rolle aus PP-Folie im Wunschformat bis 320 mm Breite, ab 1.000 Stück.",
     heroBullets: [
       "Feste Pakete ab 179 € netto (1.000 Stück), 5.000 Stück für 479 € netto – inkl. Versand.",
       "Etiketten auf Rolle für Spender und Etikettiermaschinen statt loser Einzelblätter.",
@@ -1838,6 +1929,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Kennzeichnung",
     lead:
       "Barcode-Etiketten auf PP-Rolle für Produkt- und Handelskennzeichnung. EAN, GTIN, Code 128 und 2D-Codes wie QR oder GS1 DataMatrix – als fester Bestandteil Ihres Produktetiketts oder als separates Kennzeichnungsetikett.",
+    directAnswer:
+      "Ein Barcode auf dem Etikett funktioniert nur, wenn drei Dinge stimmen: ausreichender Kontrast zwischen Strichen und Hintergrund, eine Mindestgröße mit ruhiger Zone am Rand und keine Verzerrung durch nachträgliches Skalieren. Auf transparentem Material braucht der Barcode zusätzlich einen deckenden Hintergrund, sonst scheitert der Scan. Wir prüfen diese Punkte in der technischen Datenprüfung, bevor die Auflage produziert wird.",
     heroBullets: [
       "Feste Pakete ab 179 € netto (1.000 Stück), 5.000 Stück für 479 € netto – inkl. Versand.",
       "EAN/GTIN, Code 128, QR-Code und GS1 DataMatrix in scharfer Druckauflösung.",
@@ -1940,6 +2033,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Material",
     lead:
       "Folienetiketten aus PP auf Rolle – wasserfest, reißfest und beständiger als Papier. Opak oder transparent, für Produkte, die Feuchtigkeit, Abrieb oder Kühlung ausgesetzt sind.",
+    directAnswer:
+      "Folienetiketten sind Etiketten aus Kunststofffolie statt Papier – bei uns aus PP. Der praktische Unterschied zeigt sich im Alltag: Folie quillt bei Kondenswasser nicht auf, saugt kein Fett und scheuert im Transport nicht an den Kanten auf. Damit sind Folienetiketten die richtige Wahl für Kühlregal, feuchte Umgebungen, Kosmetik und alles, was maschinell verarbeitet wird.",
     heroBullets: [
       "Feste Pakete ab 179 € netto (1.000 Stück), 5.000 Stück für 479 € netto – inkl. Versand.",
       "Wasserfest und reißfest – PP-Folie statt aufweichendem Papier.",
@@ -2021,6 +2116,12 @@ const topLevelPages: PublicPageData[] = [
       },
     ],
     relatedLinks: [
+      {
+        label: "Papieretiketten",
+        href: "/de/papieretiketten",
+        description:
+          "Wann Papier die bessere Wahl ist – und wann Folie klar überlegen bleibt.",
+      },
       {
         label: "PP vs. Papieretiketten",
         href: "/de/ratgeber/pp-etiketten-vs-papieretiketten",
@@ -2176,6 +2277,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Musterbox",
     lead:
       "Fordern Sie eine Labelpilot Musterbox an und vergleichen Sie opake PP-Etiketten, transparente PP-Etiketten und Thermoetiketten.",
+    directAnswer:
+      "Die Musterbox enthält gedruckte Beispiele der beiden PP-Standardmaterialien opak und transparent, damit Sie Deckkraft, Oberfläche und Haptik vor der ersten Auflage in der Hand haben. Sinnvoll ist sie vor allem dann, wenn die Materialentscheidung noch offen ist oder die Haftung auf Ihrer konkreten Verpackung geprüft werden soll. Ein Test auf der echten Verpackung kostet wenige Tage und ersetzt jede Vermutung.",
     heroBullets: [
       "Die Musterbox reduziert Materialunsicherheit vor größeren B2B-Bestellungen.",
       "Sie ist kein pauschales Gratis-Giveaway, sondern ein qualifizierender Zwischenschritt.",
@@ -2296,6 +2399,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Nachbestellung",
     lead:
       "Bestellen Sie freigegebene Etiketten später schneller erneut. Labelpilot.de speichert Druckdaten, Material, Größe und Stückzahl für Nachbestellungen.",
+    directAnswer:
+      "Nach der ersten Freigabe bleiben Material, Format, Druckdaten und Version gespeichert. Eine Nachbestellung derselben Spezifikation startet damit aus dem Kundenkonto, ohne dass Layout und Daten erneut abgestimmt werden müssen – zum gleichen Paketpreis. Ändert sich nur ein Datum oder eine Chargennummer, ist das eine Textänderung an der gespeicherten Version, kein neues Projekt.",
     heroBullets: [
       "Gespeicherte Spezifikationen machen wiederkehrende Bestellungen für B2B-Marken wirtschaftlich.",
       "Material, Größe und Druckdaten sind gespeichert – bei jeder Folgebestellung keine Rückfragen.",
@@ -2342,6 +2447,12 @@ const topLevelPages: PublicPageData[] = [
     ],
     relatedLinks: [
       {
+        label: "Variable Daten aus CSV und Excel",
+        href: "/de/variable-daten-etiketten",
+        description:
+          "Gleiches Layout, neue Chargendaten: der wiederkehrende Fall bei Nachbestellungen.",
+      },
+      {
         label: "Ratgeber",
         href: "/de/ratgeber",
         description:
@@ -2358,6 +2469,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Druckdaten",
     lead:
       "Welche Druckdaten für PP-Rollenetiketten akzeptiert werden: PDF, AI, EPS, SVG, PNG, JPG oder ZIP. Mit technischer Dateiprüfung vor der Freigabe.",
+    directAnswer:
+      "Druckfähige Etikettendaten brauchen 3 mm Beschnitt umlaufend, ausreichenden Sicherheitsabstand zum Rand, CMYK-Farbraum und eingebettete oder in Pfade umgewandelte Schriften. Angenommen werden PDF, AI, EPS, SVG, PNG, JPG und ZIP. Jede Datei durchläuft eine technische Prüfung – Beschnitt, Auflösung, Farbraum, Schriftgrößen und bei transparentem Material die Weißunterdruck-Frage; die Produktion startet erst nach Ihrer Proof-Freigabe.",
     heroBullets: [
       "Das Angebotsformular funktioniert zunächst ohne Upload.",
       "Wir prüfen die erwarteten Formate technisch, bevor produziert wird.",
@@ -2408,6 +2521,12 @@ const topLevelPages: PublicPageData[] = [
       },
     ],
     relatedLinks: [
+      {
+        label: "Etiketten gestalten",
+        href: "/de/etiketten-gestalten",
+        description:
+          "Der Weg von der Idee zur druckfähigen Datei – Schritt für Schritt.",
+      },
       {
         label: "Ratgeber: Druckdaten vorbereiten",
         href: "/de/ratgeber/druckdaten-vorbereiten",
@@ -2915,6 +3034,8 @@ const topLevelPages: PublicPageData[] = [
     eyebrow: "Branche",
     lead:
       "Transparente und opake PP-Rollenetiketten für Flaschen, Getränke und Glasverpackungen in Deutschland.",
+    directAnswer:
+      "Bei Flaschenetiketten entscheiden zwei Größen: der Flaschendurchmesser und die Frage, ob gekühlt wird. Je kleiner der Durchmesser, desto stärker verzieht sich langer Text optisch und desto eher hebt sich das Etikettenende ab. Wird gekühlt, ist PP-Folie gegenüber Papier klar im Vorteil, weil Kondenswasser dem Material nichts anhaben kann – transparent für den No-Label-Look, opak für sichere Lesbarkeit.",
     heroBullets: [
       "Flaschenetiketten sind der stärkste Anwendungsfall für transparente PP-Oberflächen.",
       "Getränke, Glasoptik und gebogene Flächen stellen besondere Anforderungen an Material und Druck.",
@@ -3292,6 +3413,933 @@ const topLevelPages: PublicPageData[] = [
       },
     ],
   },
+  // ---------------------------------------------------------------------------
+  // GEO/SEO release 2026-09: pages for real, already-shipped capabilities that
+  // had no landing surface (variable data, Lot/MHD, Tiefkühl option) plus the
+  // uncontested material/vertical terms from docs/87 §4 Tier 2-3.
+  // ---------------------------------------------------------------------------
+  {
+    path: "/de/variable-daten-etiketten",
+    slug: "variable-daten-etiketten",
+    kind: "service",
+    title: "Etiketten mit variablen Daten drucken",
+    eyebrow: "Variable Daten",
+    lead:
+      "Rollenetiketten mit variablen Daten: Lotnummer, MHD/SKT, SKU oder fortlaufende Nummern je Etikett – aus Ihrer CSV- oder Excel-Datei.",
+    directAnswer:
+      "Variable Daten bedeuten: Layout, Material und Format bleiben identisch, nur einzelne Felder wechseln von Etikett zu Etikett. Sie liefern eine CSV-, TSV- oder Excel-Datei (XLSX/XLS) mit einer Zeile pro Etikett, wir prüfen sie zeilenweise und melden fehlerhafte Zeilen mit Zeilennummer zurück. Variable Daten sind nicht Teil der Fixpreis-Pakete und laufen über ein Angebot, weil Zeilenzahl, Feldanzahl und Prüfaufwand den Preis bestimmen.",
+    updatedAt: "2026-09-07",
+    heroBullets: [
+      "Pflichtspalten: lotNumber und bestBeforeDate – deutsche Spaltennamen wie Charge, Chargennummer, MHD oder SKT werden automatisch erkannt.",
+      "Dateiformate: CSV, TSV, XLSX und XLS. Excel-Datumszellen werden automatisch umgerechnet.",
+      "Jede Zeile wird einzeln geprüft: fehlende Pflichtfelder und ungültige Datumswerte kommen mit Zeilennummer zurück.",
+    ],
+    sidebarTitle: "Wann variable Daten sinnvoll sind",
+    sidebarBullets: [
+      "Jede Charge braucht eine eigene Lotnummer",
+      "MHD/SKT wechselt je Produktionslauf",
+      "Mehrere SKUs teilen sich dasselbe Layout",
+    ],
+    primaryCta: {
+      label: "Angebot für variable Daten anfordern",
+      href: "/de/angebot-anfordern",
+    },
+    secondaryCta: {
+      label: "Druckdaten-Anforderungen ansehen",
+      href: "/de/druckdaten",
+    },
+    sections: [
+      {
+        title: "Das Problem: ein Layout, viele Chargen",
+        body: [
+          "Bei wiederkehrenden Produktetiketten ändert sich in der Praxis fast nie das Design – sondern nur die Charge, das Mindesthaltbarkeitsdatum oder die SKU. Wer dafür jedes Mal eine neue Druckdatei baut, produziert Versionschaos und Freigabefehler.",
+          "Variable Daten trennen die beiden Ebenen: Das freigegebene Layout bleibt unverändert gespeichert, die wechselnden Felder kommen als Datentabelle dazu. Freigegeben wird einmal das Layout plus die Feldpositionen, danach wird pro Auflage nur noch die Datentabelle geprüft.",
+        ],
+      },
+      {
+        title: "Der Ablauf in fünf Schritten",
+        body: [
+          "Der Prozess ist bewusst dateibasiert – Sie exportieren aus Ihrem ERP, Ihrer Chargenverwaltung oder schlicht aus Excel und müssen kein zusätzliches System bedienen.",
+        ],
+        bullets: [
+          "1. Layout freigeben: Sie senden das Etikettenlayout mit klar markierten Datenfeldern (Platzhalter für Lot, MHD, SKU).",
+          "2. Datentabelle liefern: eine Zeile pro Etikett als CSV, TSV, XLSX oder XLS.",
+          "3. Prüfbericht erhalten: Wir melden erkannte Spalten, gültige Zeilen und fehlerhafte Zeilen mit Zeilennummer und Fehlergrund zurück.",
+          "4. Korrigieren und freigeben: Sie bessern die gemeldeten Zeilen nach; freigegeben wird der geprüfte Stand.",
+          "5. Produktion: Die Auflage läuft mit dem gespeicherten Layout und der freigegebenen Datentabelle.",
+        ],
+      },
+      {
+        title: "Welche Spaltennamen erkannt werden",
+        body: [
+          "Sie müssen Ihre Exportdatei nicht umbenennen. Groß-/Kleinschreibung, Leerzeichen und Sonderzeichen in den Spaltenüberschriften werden ignoriert, gängige deutsche und englische Bezeichnungen werden auf dasselbe Feld abgebildet.",
+        ],
+      },
+      {
+        title: "Welche Datumsformate akzeptiert werden",
+        body: [
+          "Für das MHD/SKT werden zwei Schreibweisen akzeptiert: TT.MM.JJJJ (z. B. 31.12.2027) und JJJJ-MM-TT (z. B. 2027-12-31).",
+          "Echte Excel-Datumszellen werden automatisch in JJJJ-MM-TT umgerechnet – Sie müssen die Spalte in Excel also nicht vorher als Text formatieren. Andere Schreibweisen (z. B. 12/31/2027 oder „Dez 2027“) werden als ungültig gemeldet, statt still falsch interpretiert zu werden.",
+        ],
+      },
+      {
+        title: "Grenzen – bewusst benannt",
+        body: [
+          "Variable Daten sind kein Fixpreis-Bestandteil. Der Preis hängt von Zeilenzahl, Anzahl variabler Felder und Prüfaufwand ab und wird als Angebot kalkuliert.",
+          "Die inhaltliche Richtigkeit der Daten liegt bei Ihnen: Wir prüfen Struktur, Pflichtfelder und Datumsformat – nicht, ob eine Lotnummer zu Ihrer Produktion passt oder ein MHD betriebswirtschaftlich korrekt berechnet wurde.",
+        ],
+      },
+    ],
+    table: {
+      title: "Erkannte Spaltennamen und Pflichtfelder",
+      lead: "Diese Bezeichnungen werden automatisch dem jeweiligen Feld zugeordnet.",
+      columns: ["Feld", "Erkannte Spaltennamen", "Pflicht", "Beispielwert"],
+      rows: [
+        [
+          "Lotnummer",
+          "lotNumber, lot, Lotnummer, Charge, Chargennummer",
+          "Ja",
+          "L-2026-0418",
+        ],
+        [
+          "MHD / SKT",
+          "bestBeforeDate, bestBefore, MHD, SKT, Mindesthaltbarkeit",
+          "Ja",
+          "31.12.2027 oder 2027-12-31",
+        ],
+        [
+          "SKU",
+          "sku",
+          "Nein",
+          "SUP-500-VIT-D3",
+        ],
+        [
+          "Weitere Felder",
+          "eigene Spaltenüberschrift, unverändert übernommen",
+          "Nein",
+          "Abfüllcharge, Werk, Linie",
+        ],
+      ],
+    },
+    faqs: [
+      {
+        question: "Welche Dateiformate kann ich liefern?",
+        answer:
+          "CSV, TSV, XLSX und XLS. Bei Excel-Dateien wird das erste Tabellenblatt gelesen; die erste Zeile muss die Spaltenüberschriften enthalten.",
+      },
+      {
+        question: "Muss ich meine Spalten auf englische Namen umbenennen?",
+        answer:
+          "Nein. Charge, Chargennummer, Lot und Lotnummer werden alle als Lotnummer erkannt; MHD, SKT und Mindesthaltbarkeit alle als Mindesthaltbarkeitsdatum. Groß-/Kleinschreibung und Leerzeichen spielen keine Rolle.",
+      },
+      {
+        question: "Was passiert mit fehlerhaften Zeilen?",
+        answer:
+          "Sie werden nicht still übergangen. Jede Zeile wird einzeln geprüft; fehlende Pflichtfelder und ungültige Datumswerte kommen mit Zeilennummer und Fehlergrund zurück, damit Sie gezielt korrigieren können.",
+      },
+      {
+        question: "Was kostet der Druck mit variablen Daten?",
+        answer:
+          "Variable Daten sind in den Fixpreis-Paketen nicht enthalten. Zeilenzahl, Anzahl der variablen Felder und Prüfaufwand bestimmen den Preis – deshalb läuft dieser Fall über ein Angebot.",
+      },
+      {
+        question: "Kann ich fortlaufende Nummern ohne eigene Datei erzeugen lassen?",
+        answer:
+          "Fortlaufende Nummerierung ist möglich, wird aber wie jeder variable Datenfall über das Angebot definiert – inklusive Startwert, Schrittweite und Stellenanzahl. Der verlässlichere Weg bleibt eine Datentabelle aus Ihrem System.",
+      },
+      {
+        question: "Bleibt mein Layout zwischen zwei Chargen gespeichert?",
+        answer:
+          "Ja. Das freigegebene Layout inklusive Material, Format und Feldpositionen bleibt gespeichert. Für die nächste Charge liefern Sie nur die neue Datentabelle.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Etiketten mit Lotnummer und MHD",
+        href: "/de/etiketten-mit-lotnummer-skt",
+        description:
+          "Der häufigste Anwendungsfall im Detail: Chargenkennzeichnung und Mindesthaltbarkeitsdatum auf dem Etikett.",
+      },
+      {
+        label: "Supplement-Etiketten",
+        href: "/de/supplement-etiketten",
+        description:
+          "Branchenseite mit den Pflichtangaben, die bei Nahrungsergänzungsmitteln zusätzlich zur Charge gehören.",
+      },
+      {
+        label: "Druckdaten",
+        href: "/de/druckdaten",
+        description:
+          "Technische Anforderungen an das Layout, in das die variablen Felder eingesetzt werden.",
+      },
+      ...commonCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/etiketten-mit-lotnummer-skt",
+    slug: "etiketten-mit-lotnummer-skt",
+    kind: "service",
+    title: "Etiketten mit Lotnummer und MHD drucken",
+    eyebrow: "Chargenkennzeichnung",
+    lead:
+      "PP-Rollenetiketten mit Chargennummer und Mindesthaltbarkeitsdatum – fest im Layout oder variabel je Etikett aus Ihrer Datentabelle.",
+    directAnswer:
+      "Für Lotnummer und MHD auf dem Etikett gibt es zwei Wege. Bleiben beide Angaben über die gesamte Auflage gleich, gehören sie ins Layout und sind im normalen Etikettenpreis enthalten. Wechseln sie innerhalb einer Auflage, laufen sie als variable Daten über eine CSV- oder Excel-Datei und werden als Angebot kalkuliert. Ein dritter Weg ist die Freifläche: Sie lassen Charge und MHD frei und bedrucken sie selbst mit einem Thermotransfer- oder Tintenstrahldrucker in der Abfüllung.",
+    updatedAt: "2026-09-07",
+    heroBullets: [
+      "Feste Charge je Auflage: im Layout enthalten, kein Aufpreis.",
+      "Wechselnde Charge je Etikett: variable Daten aus CSV/Excel, per Angebot.",
+      "Freifläche zum Selbstbedrucken: Layout mit reservierter, unbedruckter Datenzone.",
+    ],
+    sidebarTitle: "Typische Auslöser",
+    sidebarBullets: [
+      "Lebensmittel und Getränke mit Chargenrückverfolgung",
+      "Nahrungsergänzungsmittel mit MHD je Produktionslauf",
+      "Kosmetik mit Chargenkennzeichnung auf der Verpackung",
+    ],
+    primaryCta: {
+      label: "Angebot anfordern",
+      href: "/de/angebot-anfordern",
+    },
+    secondaryCta: {
+      label: "Variable Daten im Detail",
+      href: "/de/variable-daten-etiketten",
+    },
+    sections: [
+      {
+        title: "Die Entscheidung vor dem Druck: fest, variabel oder frei",
+        body: [
+          "Die meisten Marken stellen die Frage zu spät – erst wenn das Layout schon freigegeben ist. Dabei entscheidet die Antwort über Preis, Vorlaufzeit und darüber, ob eine Auflage überhaupt in einem Durchlauf produzierbar ist.",
+          "Die Faustregel: Solange eine Auflage genau einer Charge entspricht, ist die feste Variante die günstigste und schnellste. Sobald eine Auflage mehrere Chargen abdecken soll, führt an variablen Daten oder einer Freifläche kein Weg vorbei.",
+        ],
+      },
+      {
+        title: "Variante A – feste Angaben im Layout",
+        body: [
+          "Charge und MHD stehen als normaler Text im Druck-PDF. Diese Variante kostet keinen Aufpreis und läuft mit den regulären Paketpreisen.",
+          "Der Nachteil ist die Bindung: Eine Auflage gilt nur für eine Charge. Bleibt Ware übrig, während sich das MHD ändert, ist der Rest nicht mehr verwendbar. Für Marken, die ohnehin chargenweise nachbestellen, ist das trotzdem oft der wirtschaftlichste Weg – die gespeicherte Spezifikation macht die Nachbestellung mit geändertem Datum zu einer Textänderung statt zu einem neuen Projekt.",
+        ],
+      },
+      {
+        title: "Variante B – variable Daten je Etikett",
+        body: [
+          "Layout und Material bleiben identisch, Lot und MHD wechseln zeilenweise aus Ihrer Datentabelle. So lassen sich mehrere Chargen in einer Auflage produzieren.",
+          "Pflichtspalten sind lotNumber und bestBeforeDate; deutsche Spaltennamen wie Charge, Chargennummer, MHD oder SKT werden automatisch erkannt. Akzeptierte Datumsformate sind TT.MM.JJJJ und JJJJ-MM-TT, Excel-Datumszellen werden umgerechnet. Variable Daten sind nicht Teil der Fixpreis-Pakete und laufen über ein Angebot.",
+        ],
+      },
+      {
+        title: "Variante C – Freifläche zum Selbstbedrucken",
+        body: [
+          "Das Etikett wird mit einer definierten unbedruckten Zone produziert, die Sie in der Abfüllung mit einem Thermotransfer- oder Tintenstrahldrucker bedrucken.",
+          "Wichtig ist die Materialfrage: Nicht jede Tinte hält auf glänzender PP-Folie. Planen Sie die Freifläche ein, klären Sie vorab Ihr Druckverfahren – bei matter Oberfläche ist die Haftung von Tintenstrahldruck in der Regel unkritischer als auf Glanz. Die Musterbox ist hier der günstigste Vorabtest.",
+        ],
+      },
+      {
+        title: "Gestaltung der Datenzone",
+        body: [
+          "Unabhängig von der Variante gilt: Charge und MHD gehören in eine eigene, ruhige Zone – nicht über Farbverläufe, Bilder oder Kanten.",
+          "Halten Sie die Zone mindestens 3 mm vom Etikettenrand entfernt und wählen Sie eine gut lesbare, nicht zu schmale Schrift. Bei variablen Daten muss die Zone außerdem für den längsten vorkommenden Wert ausgelegt sein – nicht für den kürzesten.",
+        ],
+      },
+    ],
+    table: {
+      title: "Die drei Wege im Vergleich",
+      lead: "Kosten, Flexibilität und Aufwand je Variante.",
+      columns: ["Variante", "Preis", "Chargen je Auflage", "Passt für"],
+      rows: [
+        [
+          "Fest im Layout",
+          "im Etikettenpreis enthalten",
+          "genau eine",
+          "Auflagen, die einer Charge entsprechen",
+        ],
+        [
+          "Variable Daten",
+          "per Angebot",
+          "mehrere",
+          "eine Auflage über mehrere Chargen",
+        ],
+        [
+          "Freifläche selbst bedrucken",
+          "im Etikettenpreis enthalten",
+          "beliebig",
+          "eigene Abfüllung mit Thermotransfer-/Tintenstrahldrucker",
+        ],
+      ],
+    },
+    howToSteps: [
+      "Prüfen, ob eine Auflage genau einer Charge entspricht – dann reicht die feste Variante im Layout.",
+      "Bei mehreren Chargen je Auflage entscheiden: variable Daten aus Datei oder Freifläche zum Selbstbedrucken.",
+      "Datenzone im Layout festlegen: eigene ruhige Fläche, mindestens 3 mm Abstand zum Rand, ausgelegt auf den längsten Wert.",
+      "Bei variablen Daten die Tabelle mit den Spalten lotNumber und bestBeforeDate vorbereiten (CSV, TSV, XLSX oder XLS).",
+      "Angebot anfordern beziehungsweise Layout freigeben – danach bleibt die Spezifikation für Nachbestellungen gespeichert.",
+    ],
+    faqs: [
+      {
+        question: "Kostet die Chargennummer auf dem Etikett Aufpreis?",
+        answer:
+          "Nein, solange sie über die gesamte Auflage gleich bleibt und Teil des Layouts ist. Aufpreis entsteht erst, wenn Lot oder MHD innerhalb einer Auflage wechseln – dann ist es ein variabler Datenfall und läuft über ein Angebot.",
+      },
+      {
+        question: "Was ist der Unterschied zwischen MHD und SKT?",
+        answer:
+          "MHD steht für Mindesthaltbarkeitsdatum („mindestens haltbar bis“), SKT für Sondermerkmale des Verbrauchsdatums („zu verbrauchen bis“) im Sprachgebrauch vieler Marken. Für den Druck ist beides derselbe Fall: ein Datumsfeld, das entweder fest im Layout steht oder variabel je Etikett gesetzt wird.",
+      },
+      {
+        question: "Kann ich die Charge selbst nachträglich aufdrucken?",
+        answer:
+          "Ja. Wir reservieren dafür eine unbedruckte Datenzone im Layout. Klären Sie vorab, ob Ihr Drucker auf der gewählten PP-Oberfläche haftet – auf matter Folie ist Tintenstrahldruck in der Regel unkritischer als auf Glanz.",
+      },
+      {
+        question: "Wie groß muss die Datenzone sein?",
+        answer:
+          "Sie muss für den längsten vorkommenden Wert ausgelegt sein, nicht für den kürzesten, und mindestens 3 mm Abstand zum Etikettenrand halten. Ein ruhiger, einfarbiger Hintergrund verbessert die Lesbarkeit deutlich.",
+      },
+      {
+        question: "Prüft Labelpilot, ob meine Chargenangaben rechtlich korrekt sind?",
+        answer:
+          "Nein. Wir prüfen die Datei technisch – Struktur, Pflichtfelder, Datumsformat – und drucken Ihr freigegebenes Layout. Für Pflichtangaben, Rückverfolgbarkeit und die inhaltliche Richtigkeit der Charge sind Sie verantwortlich.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Variable Daten aus CSV und Excel",
+        href: "/de/variable-daten-etiketten",
+        description:
+          "Erkannte Spaltennamen, akzeptierte Datumsformate und der komplette Prüfablauf.",
+      },
+      {
+        label: "Lebensmittelkennzeichnung – Pflichtangaben",
+        href: "/de/ratgeber/lebensmittelkennzeichnung-pflichtangaben",
+        description:
+          "Welche Angaben neben Charge und MHD auf ein Lebensmitteletikett gehören.",
+      },
+      {
+        label: "Supplement-Etiketten",
+        href: "/de/supplement-etiketten",
+        description: "Branchenseite für Nahrungsergänzungsmittel mit wiederkehrenden Chargen.",
+      },
+      ...commonCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/tiefkuehl-etiketten",
+    slug: "tiefkuehl-etiketten",
+    kind: "product",
+    title: "Tiefkühl-Etiketten für Gefrierprodukte",
+    eyebrow: "Anwendung",
+    lead:
+      "PP-Rollenetiketten für Tiefkühlprodukte – mit tiefkühlgeeignetem Klebstoff bis −20 °C, direkt im Kalkulator wählbar.",
+    directAnswer:
+      "Für Tiefkühlprodukte ist nicht das Etikettenmaterial das Problem, sondern der Klebstoff. Standard-PP mit Permanentklebstoff hält Kühlregal und kurze Kältephasen aus; für dauerhafte Lagerung bei −18 °C bis −20 °C und für Etikettierung auf bereits gefrorener oder feuchter Oberfläche gibt es im Kalkulator die Option „Tiefkühlgeeignet (bis −20 °C)“ mit einem gesondert kalkulierten Materialaufschlag. PP-Folie selbst ist der richtige Träger, weil sie im Gegensatz zu Papier bei Kondenswasser nicht aufweicht.",
+    updatedAt: "2026-09-07",
+    heroBullets: [
+      "Option „Tiefkühlgeeignet (bis −20 °C)“ direkt im Kalkulator – Preis erscheint sofort.",
+      "PP-Folie statt Papier: unempfindlich gegen Kondenswasser und Reifbildung.",
+      "Opak oder transparent, Wunschformat bis 320 mm Breite.",
+    ],
+    sidebarTitle: "Wichtig bei Tiefkühlware",
+    sidebarBullets: [
+      "Klebstoff entscheidet, nicht das Material",
+      "Etikettiertemperatur zählt mehr als Lagertemperatur",
+      "Trockene, fettfreie Oberfläche beim Aufbringen",
+    ],
+    primaryCta: {
+      label: "Preis im Kalkulator berechnen",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: {
+      label: "Musterbox anfordern",
+      href: "/de/musterbox",
+    },
+    sections: [
+      {
+        title: "Warum Etiketten im Tiefkühlbereich abfallen",
+        body: [
+          "Fast alle Ablösungen im Tiefkühlbereich haben dieselbe Ursache: Das Etikett wurde auf eine bereits kalte, feuchte oder vereiste Oberfläche geklebt. Permanentklebstoffe brauchen eine Mindestverklebetemperatur, um überhaupt zu fließen und Haftung aufzubauen – unterschreiten Sie die beim Etikettieren, entsteht nie eine belastbare Verbindung, egal wie lange das Produkt danach gelagert wird.",
+          "Der zweite Faktor ist Kondenswasser. Zwischen Etikett und Verpackung eingeschlossene Feuchtigkeit wirkt wie eine Trennschicht. Papieretiketten wellen sich zusätzlich und reißen beim Handling ein – PP-Folie bleibt maßhaltig.",
+        ],
+      },
+      {
+        title: "Standard-PP oder tiefkühlgeeignete Ausführung?",
+        body: [
+          "Standard-PP mit Permanentklebstoff deckt Kühlregal (typisch +2 °C bis +8 °C) und normale Lagerbedingungen zuverlässig ab. Für die Tiefkühltruhe reicht es, wenn bei Raumtemperatur etikettiert und erst danach eingefroren wird.",
+          "Die Option „Tiefkühlgeeignet (bis −20 °C)“ wählen Sie dann, wenn auf bereits gekühlter oder gefrorener Oberfläche etikettiert wird, wenn die Ware dauerhaft im Tiefkühlbereich bleibt oder wenn Kondensfeuchte beim Aufbringen nicht ausgeschlossen werden kann. Der Aufschlag wird im Kalkulator sofort im Preis ausgewiesen.",
+        ],
+      },
+      {
+        title: "Etikettieren: die Reihenfolge entscheidet",
+        body: [
+          "Wenn es Ihr Prozess erlaubt, etikettieren Sie vor dem Einfrieren, auf trockener und fettfreier Oberfläche bei Raumtemperatur. Diese Reihenfolge löst mehr Haftungsprobleme als jede Materialentscheidung.",
+          "Lässt sich das nicht ändern – etwa weil Ware aus dem Lager nachetikettiert wird – ist die tiefkühlgeeignete Ausführung Pflicht und nicht optional.",
+        ],
+      },
+      {
+        title: "Gestaltung für Reif und Kondens",
+        body: [
+          "Im Tiefkühlregal sind Etiketten regelmäßig von Reif oder beschlagener Folie verdeckt. Kontraststarke Typografie und deutliche Schriftgrößen bei Pflichtangaben zahlen sich hier stärker aus als in jedem anderen Regal.",
+          "Opakes PP ist im Tiefkühlbereich meist die sicherere Wahl: Es deckt die Verpackung vollständig ab und bleibt auch bei beschlagener Oberfläche lesbar. Transparentes PP wirkt hochwertiger, verliert bei Reifbildung aber schneller an Kontrast.",
+        ],
+      },
+      {
+        title: "Was wir nicht versprechen",
+        body: [
+          "Wir nennen den Temperaturbereich, für den die Ausführung ausgelegt ist – wir geben keine Haftungsgarantie für Ihre konkrete Verpackung ab. Oberflächenbeschaffenheit, Beschichtung, Restfeuchte und Ihr Etikettierprozess bestimmen das Ergebnis mit.",
+          "Wenn Haftung geschäftskritisch ist, testen Sie vorab: Musterbox anfordern, auf Ihrer echten Verpackung aufbringen und einen vollständigen Kühlzyklus durchlaufen lassen. Das kostet wenige Tage und ersetzt jede Vermutung.",
+        ],
+      },
+    ],
+    table: {
+      title: "Standard-PP und tiefkühlgeeignete Ausführung im Vergleich",
+      lead: "Wann welche Ausführung die richtige Wahl ist.",
+      columns: ["Kriterium", "Standard-PP permanent", "Tiefkühlgeeignet bis −20 °C"],
+      rows: [
+        ["Etikettieren bei Raumtemperatur, danach einfrieren", "geeignet", "geeignet"],
+        ["Etikettieren auf bereits gekühlter Oberfläche", "nicht empfohlen", "geeignet"],
+        ["Dauerlagerung bei −18 °C bis −20 °C", "eingeschränkt", "geeignet"],
+        ["Kondensfeuchte beim Aufbringen", "nicht empfohlen", "geeignet"],
+        ["Preis", "Standardpreis", "Materialaufschlag, im Kalkulator ausgewiesen"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Bis zu welcher Temperatur sind die Etiketten geeignet?",
+        answer:
+          "Die tiefkühlgeeignete Ausführung ist bis −20 °C ausgelegt und deckt damit die üblichen Tiefkühlbedingungen im Handel ab. Standard-PP mit Permanentklebstoff ist für Kühlregal und normale Lagerbedingungen ausgelegt.",
+      },
+      {
+        question: "Kann ich auf bereits gefrorene Produkte etikettieren?",
+        answer:
+          "Nur mit der tiefkühlgeeigneten Ausführung. Standard-Permanentklebstoff braucht eine Mindestverklebetemperatur; auf kalter oder vereister Oberfläche baut er keine belastbare Haftung auf.",
+      },
+      {
+        question: "Sind Papieretiketten für Tiefkühlware eine Alternative?",
+        answer:
+          "In der Regel nicht. Papier nimmt Kondenswasser auf, wellt sich und reißt beim Handling ein. PP-Folie bleibt maßhaltig und ist für Kondens und Reif die deutlich robustere Wahl.",
+      },
+      {
+        question: "Wie wähle ich die Option aus?",
+        answer:
+          "Im Kalkulator gibt es die Auswahl „Tiefkühlgeeignet (bis −20 °C)“. Der Materialaufschlag wird sofort im Netto- und Bruttopreis berücksichtigt – Sie sehen den Unterschied direkt.",
+      },
+      {
+        question: "Kann ich die Haftung vorab testen?",
+        answer:
+          "Ja, und das empfehlen wir bei geschäftskritischen Anwendungen ausdrücklich. Fordern Sie die Musterbox an, bringen Sie die Muster auf Ihrer echten Verpackung auf und lassen Sie einen vollständigen Kühlzyklus laufen.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Lebensmitteletiketten",
+        href: "/de/lebensmittel-etiketten",
+        description: "Branchenseite mit Pflichtangaben und Materialwahl für Lebensmittel.",
+      },
+      {
+        label: "Opake PP-Etiketten",
+        href: "/de/opake-pp-etiketten",
+        description: "Deckendes Material – im Tiefkühlregal meist die lesbarere Wahl.",
+      },
+      {
+        label: "Musterbox",
+        href: "/de/musterbox",
+        description: "Haftung auf der eigenen Verpackung testen, bevor eine Auflage startet.",
+      },
+      ...commonCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/kosmetik-etiketten",
+    slug: "kosmetik-etiketten",
+    kind: "industry",
+    title: "Kosmetik-Etiketten drucken",
+    eyebrow: "Branche",
+    lead:
+      "PP-Rollenetiketten für Kosmetik: Tiegel, Pumpflaschen, Tuben und Sprühflaschen – transparent für Premium-Optik, opak für Pflichtangaben.",
+    directAnswer:
+      "Kosmetiketiketten müssen zwei Dinge gleichzeitig leisten: eine hochwertige Regaloptik und viel Pflichttext auf wenig Fläche. PP-Folie ist dafür der passende Träger, weil sie gegen Cremes, Öle, Tenside und feuchte Badezimmerluft beständiger ist als Papier. Transparentes PP wirkt auf Glas- und Klarsichtverpackungen wie ein direkter Aufdruck, opakes PP schafft die nötige Deckung für INCI-Listen und Chargenangaben.",
+    updatedAt: "2026-09-07",
+    heroBullets: [
+      "PP-Folie: beständig gegen Cremes, Öle und Feuchtigkeit im Bad.",
+      "Transparent für den No-Label-Look auf Glas, opak für dichte Pflichttexte.",
+      "Kleine Formate mit sehr kleinen Schriftgrößen – Datenprüfung inklusive.",
+    ],
+    sidebarTitle: "Für Kosmetikmarken wichtig",
+    sidebarBullets: [
+      "Viel Pflichttext auf kleiner Fläche",
+      "Beständigkeit gegen Inhaltsstoffe und Feuchtigkeit",
+      "Gleiche Optik über mehrere Produktvarianten",
+    ],
+    primaryCta: {
+      label: "Jetzt konfigurieren",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: {
+      label: "Musterbox anfordern",
+      href: "/de/musterbox",
+    },
+    sections: [
+      {
+        title: "Das Flächenproblem der Kosmetikbranche",
+        body: [
+          "Kaum eine Branche muss so viel Text auf so wenig Fläche bringen: INCI-Liste, Füllmenge, Chargenangabe, Verwendbarkeitsdauer nach Öffnung, Verantwortlicher und Warnhinweise – oft auf einem Tiegel mit 40 mm Durchmesser.",
+          "Praktisch heißt das: Schriftgröße und Druckqualität sind hier keine Designfrage, sondern eine Machbarkeitsfrage. Sehr feine Serifen und dünne Strichstärken brechen bei kleinen Punktgrößen weg. In der Datenprüfung schauen wir deshalb gezielt auf die kleinste vorkommende Schriftgröße und melden zurück, wenn ein Text im Druck nicht mehr sauber stehen wird.",
+        ],
+      },
+      {
+        title: "Beständigkeit gegen Inhaltsstoffe",
+        body: [
+          "Kosmetikverpackungen bekommen Produktreste ab – Creme am Tiegelrand, Öl an der Pumpflasche, Tensidschaum an der Duschgelflasche. Papieretiketten saugen sich voll und werden fleckig; PP-Folie bleibt formstabil und lässt sich abwischen.",
+          "Dazu kommt die Dauerbelastung durch feuchte Badezimmerluft. Genau dieser Alltagsfall ist der Hauptgrund, warum Kosmetikmarken von Papier auf PP wechseln.",
+        ],
+      },
+      {
+        title: "Transparent oder opak – die Optikentscheidung",
+        body: [
+          "Transparentes PP erzeugt auf Klarglas und klaren Kunststoffflaschen den No-Label-Look: Nur Farbe und Schrift sind sichtbar, der Etikettenrand verschwindet optisch. Das ist die typische Premium-Wirkung bei Seren, Ölen und Tonics.",
+          "Wichtig dabei: Ohne weißen Unterdruck wirken Farben auf transparentem Material lasierend und der Untergrund scheint durch. Sollen Weißtöne oder kräftige Farben deckend stehen, ist ein Weißunterdruck nötig – das ist ein kostenpflichtiger Zusatz und läuft über ein Angebot.",
+          "Opakes PP ist die pragmatische Wahl, sobald viel Pflichttext sicher lesbar sein muss oder die Verpackung selbst farbig oder unruhig ist.",
+        ],
+      },
+      {
+        title: "Runde Verpackungen und kleine Durchmesser",
+        body: [
+          "Bei Tiegeln und schmalen Flaschen kommt zur Fläche die Krümmung dazu. Je kleiner der Durchmesser, desto stärker verzieht sich langer Text optisch und desto eher steht das Etikettenende ab.",
+          "Praktische Regel: Bei kleinen Durchmessern lieber ein schmaleres Etikett mit klarer Typo als ein umlaufendes mit maximalem Textvolumen. Kritische Angaben gehören in die Mitte des sichtbaren Bereichs, nicht an die Überlappung.",
+        ],
+      },
+      {
+        title: "Rechtliche Verantwortung",
+        body: [
+          "Für Pflichtangaben, INCI-Bezeichnungen, Warnhinweise, Werbeaussagen und die kosmetikrechtliche Konformität ist der Kunde verantwortlich. Labelpilot.de übernimmt Druckproduktion, technische Dateiprüfung und Layout-Unterstützung, jedoch keine rechtliche Prüfung.",
+        ],
+      },
+    ],
+    table: {
+      title: "Materialwahl nach Verpackungstyp",
+      lead: "Orientierung für die häufigsten Kosmetikverpackungen.",
+      columns: ["Verpackung", "Empfehlung", "Grund"],
+      rows: [
+        ["Klarglasflasche, Serum", "Transparentes PP", "No-Label-Look, Inhalt bleibt sichtbar"],
+        ["Cremetiegel weiß", "Opakes PP", "Deckung für INCI-Liste auf kleiner Fläche"],
+        ["Pumpflasche farbig", "Opakes PP", "Untergrundfarbe stört sonst die Lesbarkeit"],
+        ["Duschgelflasche", "Opakes PP", "Dauerkontakt mit Wasser und Tensiden"],
+        ["Tube", "Opakes PP", "Flexible Verpackung, häufiges Quetschen"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Halten die Etiketten auf Cremetiegeln und Pumpflaschen?",
+        answer:
+          "PP-Folie mit Permanentklebstoff haftet auf Glas, PET, PP und beschichteten Oberflächen zuverlässig. Bei sehr kleinen Durchmessern und stark gekrümmten Tiegeln empfehlen wir vorab einen Test mit der Musterbox.",
+      },
+      {
+        question: "Wie klein darf die Schrift auf einem Kosmetiketikett sein?",
+        answer:
+          "Technisch ist im Digitaldruck sehr kleine Schrift möglich, aber dünne Strichstärken und feine Serifen brechen weg. Wir prüfen die kleinste vorkommende Schriftgröße in Ihren Druckdaten und melden zurück, wenn ein Text im Druck nicht mehr sauber steht.",
+      },
+      {
+        question: "Brauche ich für transparente Etiketten einen Weißunterdruck?",
+        answer:
+          "Immer dann, wenn Farben oder Weißtöne deckend stehen sollen. Ohne Weißunterdruck wirken Farben auf transparentem PP lasierend und der Untergrund scheint durch. Der Weißunterdruck ist ein kostenpflichtiger Zusatz und läuft über ein Angebot.",
+      },
+      {
+        question: "Sind die Etiketten für Naturkosmetik mit Ölen geeignet?",
+        answer:
+          "PP-Folie ist gegen die üblichen kosmetischen Öle und Emulsionen deutlich beständiger als Papier. Bei stark lösemittelhaltigen Rezepturen empfehlen wir einen Vorabtest mit der Musterbox auf der echten Verpackung.",
+      },
+      {
+        question: "Prüft Labelpilot meine INCI-Angaben?",
+        answer:
+          "Nein. Wir prüfen die Druckdaten technisch – Auflösung, Beschnitt, Farbraum, Schriftgrößen – und drucken Ihr freigegebenes Layout. Die inhaltliche und rechtliche Verantwortung für INCI, Pflichtangaben und Werbeaussagen liegt bei Ihnen.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Transparente PP-Etiketten",
+        href: "/de/transparente-pp-etiketten",
+        description: "Premium-Optik für Glasflaschen, Seren und Tonics.",
+      },
+      {
+        label: "Opake PP-Etiketten",
+        href: "/de/opake-pp-etiketten",
+        description: "Deckendes Material für dichte Pflichttexte auf kleiner Fläche.",
+      },
+      {
+        label: "Etiketten mit Lotnummer und MHD",
+        href: "/de/etiketten-mit-lotnummer-skt",
+        description: "Chargenkennzeichnung fest im Layout, variabel oder als Freifläche.",
+      },
+      ...commonCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/klebeetiketten",
+    slug: "klebeetiketten",
+    kind: "collection",
+    title: "Klebeetiketten auf Rolle drucken",
+    eyebrow: "Selbstklebend",
+    lead:
+      "Selbstklebende Etiketten auf Rolle aus PP-Folie – mit permanentem Standardklebstoff, ablösbare und anwendungsspezifische Varianten auf Anfrage.",
+    directAnswer:
+      "Klebeetiketten sind selbstklebende Etiketten, die auf einem Trägerpapier sitzen und ohne Wasser oder Zusatzkleber verarbeitet werden. Entscheidend ist nicht das Wort „Klebeetikett“, sondern die Kombination aus Trägermaterial und Klebstoff: Wir liefern PP-Folie mit permanentem Klebstoff als Standard – robust gegen Feuchtigkeit, Fett und Abrieb. Ablösbare, tiefkühlgeeignete oder anwendungsspezifische Klebstoffe sind möglich, laufen aber über ein Angebot statt über den Standardpreis.",
+    updatedAt: "2026-09-07",
+    heroBullets: [
+      "Standard: PP-Folie mit permanentem Klebstoff, opak oder transparent.",
+      "Auf Rolle statt auf Bogen – für Spender und Etikettiermaschinen.",
+      "Ablösbar oder tiefkühlgeeignet: möglich, aber Angebotsfall.",
+    ],
+    sidebarTitle: "Vor der Bestellung klären",
+    sidebarBullets: [
+      "Untergrund: Glas, PET, PP, Karton oder Beutel",
+      "Soll das Etikett rückstandsfrei ablösbar sein?",
+      "Verarbeitung von Hand oder maschinell",
+    ],
+    primaryCta: {
+      label: "Preis im Kalkulator berechnen",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: {
+      label: "Musterbox anfordern",
+      href: "/de/musterbox",
+    },
+    sections: [
+      {
+        title: "Der Klebstoff ist die eigentliche Entscheidung",
+        body: [
+          "„Klebeetikett“ beschreibt nur die Bauweise: Druckmaterial, Klebstoffschicht, Trägerpapier. Ob ein Etikett in Ihrer Anwendung funktioniert, entscheidet die Klebstoffwahl – und die hängt an drei Fragen: Auf welchem Untergrund? Bei welcher Temperatur wird geklebt? Soll es später wieder abgehen?",
+          "Unser Standard ist ein permanenter Klebstoff. Er baut nach dem Aufbringen seine Endhaftung auf und ist danach nicht mehr zerstörungsfrei ablösbar. Für die meisten Produktetiketten ist genau das gewünscht.",
+        ],
+      },
+      {
+        title: "Wann Permanent die richtige Wahl ist – und wann nicht",
+        body: [
+          "Permanent passt für alles, was am Produkt bleiben soll: Lebensmittel, Getränke, Supplemente, Kosmetik, Verpackungen im Handel.",
+          "Permanent ist die falsche Wahl bei Mehrwegbehältern, Leihgebinden, Displaymaterial oder Aktionsauszeichnungen, die rückstandsfrei entfernt werden müssen. Für diese Fälle gibt es ablösbare Klebstoffe – sie sind nicht Teil des Standardpreises und werden als Angebot kalkuliert, weil Materialverfügbarkeit und Mindestmengen abweichen.",
+        ],
+      },
+      {
+        title: "Untergrund entscheidet mit",
+        body: [
+          "Glatte, energiereiche Oberflächen wie Glas, PET und beschichteter Karton sind unkritisch. Schwieriger sind fettige Oberflächen, stark strukturierte Papiere, recycelte Kartonagen mit staubiger Oberfläche und Verpackungen mit Trennmittelrückständen aus der Produktion.",
+          "Bei flexiblen Verpackungen – Standbeutel, Tuben, Folienbeutel – kommt die Verformung dazu: Das Etikett muss Quetschen und Biegen mitmachen, ohne sich an den Kanten abzuheben. PP-Folie ist hier deutlich gutmütiger als Papier.",
+        ],
+      },
+      {
+        title: "Rolle statt Bogen",
+        body: [
+          "Wir liefern ausschließlich auf Rolle. Das ist die Voraussetzung für Handspender und Etikettiermaschinen und macht bei wiederkehrenden Auflagen den Unterschied zwischen Minuten und Stunden Handarbeit.",
+          "Für die maschinelle Verarbeitung sind Rollenkern, Wickelrichtung und Etikettenabstand relevant. Nennen Sie diese Angaben bei der Anfrage, wenn Sie eine Etikettiermaschine einsetzen – nachträgliches Umwickeln kostet Zeit und Material.",
+        ],
+      },
+      {
+        title: "Was nicht im Standard enthalten ist",
+        body: [
+          "Ablösbare und anwendungsspezifische Klebstoffe, Weißunterdruck auf transparentem Material, Laminierung, Lack, Metallic-Effekte, Kontur- und Sonderformen sowie variable Daten sind nicht Teil der Fixpreis-Pakete.",
+          "Das ist keine Ausschlussliste aus Prinzip, sondern eine Preisfrage: Diese Optionen ändern Material, Rüstzeit oder Prüfaufwand und werden deshalb einzeln kalkuliert.",
+        ],
+      },
+    ],
+    table: {
+      title: "Klebstoffvarianten im Überblick",
+      lead: "Verfügbarkeit und Einordnung der gängigen Anforderungen.",
+      columns: ["Variante", "Verfügbarkeit", "Typische Anwendung"],
+      rows: [
+        ["Permanent (Standard)", "im Standardpreis", "Produktetiketten, die dauerhaft bleiben"],
+        ["Tiefkühlgeeignet bis −20 °C", "im Kalkulator wählbar, Aufschlag", "Etikettieren auf kalter Oberfläche, Dauertiefkühlung"],
+        ["Ablösbar", "auf Anfrage, Angebotsfall", "Mehrweggebinde, Displays, Aktionsauszeichnung"],
+        ["Anwendungsspezifisch", "auf Anfrage, Angebotsfall", "schwierige Untergründe, Sonderbedingungen"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Was ist der Unterschied zwischen Klebeetiketten und Haftetiketten?",
+        answer:
+          "Es sind zwei Bezeichnungen für dasselbe: selbstklebende Etiketten auf Trägermaterial. Im B2B-Umfeld ist „Haftetikett“ der Fachbegriff, „Klebeetikett“ die umgangssprachliche Variante.",
+      },
+      {
+        question: "Sind die Etiketten rückstandsfrei ablösbar?",
+        answer:
+          "Der Standardklebstoff ist permanent und damit nicht zerstörungsfrei ablösbar. Ablösbare Klebstoffe sind möglich, laufen aber über ein Angebot, weil Material, Mindestmenge und Preis abweichen.",
+      },
+      {
+        question: "Kleben die Etiketten auch auf Beuteln und Tuben?",
+        answer:
+          "Ja. PP-Folie ist flexibel genug für Standbeutel, Folienbeutel und Tuben und hebt sich an den Kanten deutlich seltener ab als Papier. Bei stark strukturierten oder fettigen Oberflächen empfehlen wir einen Vorabtest mit der Musterbox.",
+      },
+      {
+        question: "Bekomme ich die Etiketten auch auf Bogen?",
+        answer:
+          "Nein. Wir liefern ausschließlich auf Rolle – das ist die Voraussetzung für Spender und Etikettiermaschinen und der Kern unseres Produktionsprozesses.",
+      },
+      {
+        question: "Muss ich Rollenkern und Wickelrichtung angeben?",
+        answer:
+          "Wenn Sie maschinell etikettieren: ja. Nennen Sie Rollenkern, Wickelrichtung und gewünschten Etikettenabstand bei der Anfrage. Bei Handverarbeitung ist das nicht nötig.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Rollenetiketten",
+        href: "/de/rollenetiketten",
+        description: "Übersicht über bedruckte Etiketten auf Rolle für Produktmarken.",
+      },
+      {
+        label: "Tiefkühl-Etiketten",
+        href: "/de/tiefkuehl-etiketten",
+        description: "Klebstoffwahl für gekühlte und gefrorene Ware.",
+      },
+      {
+        label: "Folienetiketten",
+        href: "/de/folienetiketten",
+        description: "Materialseite zu PP-Folie gegenüber Papier.",
+      },
+      ...commonCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/papieretiketten",
+    slug: "papieretiketten",
+    kind: "product",
+    title: "Papieretiketten auf Rolle",
+    eyebrow: "Material",
+    lead:
+      "Etikettenpapier weiß auf Rolle – auf Anfrage verfügbar. Standard bei Labelpilot ist PP-Folie, weil sie bei Feuchtigkeit und Abrieb stabiler bleibt.",
+    directAnswer:
+      "Papieretiketten sind die richtige Wahl, wenn eine matte, ungestrichene Haptik zum Produkt gehört und die Verpackung trocken bleibt – klassisch bei Trockenware, Kartonverpackungen und handwerklich positionierten Marken. Sobald Kondenswasser, Kühlkette, Fett oder Abrieb im Spiel sind, ist PP-Folie die belastbarere Wahl. Etikettenpapier weiß bieten wir auf Anfrage an; der Kalkulator zeigt Sofortpreise für die beiden PP-Standardmaterialien.",
+    updatedAt: "2026-09-07",
+    heroBullets: [
+      "Etikettenpapier weiß auf Rolle – auf Anfrage über den Angebotsweg.",
+      "Sofortpreis im Kalkulator gibt es für opakes und transparentes PP.",
+      "Ehrliche Materialberatung statt Standardantwort: Papier ist nicht immer die schlechtere Wahl.",
+    ],
+    sidebarTitle: "Papier passt, wenn",
+    sidebarBullets: [
+      "die Verpackung trocken bleibt",
+      "eine matte, natürliche Haptik gewünscht ist",
+      "kein Dauerkontakt mit Fett oder Feuchtigkeit besteht",
+    ],
+    primaryCta: {
+      label: "Papieretiketten anfragen",
+      href: "/de/angebot-anfordern",
+    },
+    secondaryCta: {
+      label: "PP-Preis im Kalkulator ansehen",
+      href: "/de/kalkulator",
+    },
+    sections: [
+      {
+        title: "Wann Papier die bessere Wahl ist",
+        body: [
+          "Papier hat einen Vorteil, den Folie nicht ersetzt: die Haptik. Ein ungestrichenes Etikettenpapier fühlt sich matt und griffig an und passt zur Positionierung handwerklicher Marken – Trockenware, Tee, Gebäck, Manufakturprodukte in Karton.",
+          "Der zweite Vorteil ist die Beschreibbarkeit: Auf Papier lassen sich Charge oder Datum mit einem Stift nachtragen, auf glänzender Folie nicht zuverlässig.",
+        ],
+      },
+      {
+        title: "Wann Papier zum Problem wird",
+        body: [
+          "Papier saugt Feuchtigkeit auf. Im Kühlregal reicht Kondenswasser, damit sich das Etikett wellt, die Ränder aufstellen und der Druck fleckig wird. Im Tiefkühlbereich ist Papier faktisch unbrauchbar.",
+          "Auch Fett ist kritisch: Bei Ölen, Nussmusen, Saucen und Kosmetik zieht schon ein kleiner Produktrest am Rand sichtbar ins Papier ein. Dazu kommt der Abrieb im Transport – Papieretiketten scheuern an den Kanten deutlich schneller auf als Folie.",
+        ],
+      },
+      {
+        title: "Warum unser Standard PP ist",
+        body: [
+          "Wir haben den Materialkern bewusst schmal gehalten: Opakes und transparentes PP decken den größten Teil der wiederkehrenden Produktetiketten in Lebensmittel, Getränk, Supplement und Kosmetik ab – und sie sind der Fall, bei dem am seltensten Reklamationen aus dem Alltagsgebrauch entstehen.",
+          "Ein schmaler Materialkern ist außerdem die Voraussetzung für Sofortpreise: Der Kalkulator kann nur das sofort kalkulieren, was in fester Spezifikation vorliegt. Papier läuft deshalb über den Angebotsweg – mit Angabe von Format, Menge und Anwendung antworten wir mit einem konkreten Preis.",
+        ],
+      },
+      {
+        title: "Der ehrliche Vergleich",
+        body: [
+          "Wenn Ihre Verpackung trocken bleibt und die Haptik zum Markenauftritt gehört, ist Papier eine gute Entscheidung – und wir sagen Ihnen das auch dann, wenn PP für uns der einfachere Weg wäre.",
+          "Wenn Feuchtigkeit, Kühlung, Fett oder maschinelle Verarbeitung dazukommen, raten wir zu PP. Nicht aus Sortimentsgründen, sondern weil Reklamationen aus aufgeweichten Etiketten teurer sind als die Materialdifferenz.",
+        ],
+      },
+    ],
+    table: {
+      title: "Papier und PP im direkten Vergleich",
+      lead: "Die Unterschiede, die im Alltag tatsächlich zählen.",
+      columns: ["Kriterium", "Etikettenpapier", "PP-Folie"],
+      rows: [
+        ["Haptik", "matt, griffig, natürlich", "glatt, glänzend oder matt"],
+        ["Feuchtigkeit und Kondens", "wellt sich, wird fleckig", "unempfindlich"],
+        ["Fett und Öl", "zieht ein, sichtbare Ränder", "abwischbar"],
+        ["Abrieb im Transport", "scheuert an Kanten auf", "reißfest"],
+        ["Handschriftlich beschreibbar", "ja", "nur bedingt"],
+        ["Preis und Verfügbarkeit", "auf Anfrage über Angebot", "Sofortpreis im Kalkulator"],
+      ],
+    },
+    faqs: [
+      {
+        question: "Bieten Sie Papieretiketten an?",
+        answer:
+          "Ja, Etikettenpapier weiß auf Anfrage. Der Kalkulator zeigt Sofortpreise für opakes und transparentes PP; für Papier senden Sie Format, Menge und Anwendung über die Angebotsanfrage und erhalten einen konkreten Preis.",
+      },
+      {
+        question: "Sind Papieretiketten günstiger als PP?",
+        answer:
+          "Das Material selbst ist meist günstiger, der Unterschied fällt bei kleinen Auflagen aber kaum ins Gewicht, weil Rüstzeit und Druck den Preis dominieren. Rechnen Sie eher mit dem Risiko: Ein ungeeignetes Material kostet im Reklamationsfall mehr als die Materialdifferenz.",
+      },
+      {
+        question: "Eignen sich Papieretiketten für Getränkeflaschen?",
+        answer:
+          "In der Regel nicht, wenn die Flaschen gekühlt werden. Kondenswasser lässt Papier aufquellen und die Ränder aufstellen. Für gekühlte Getränke ist PP-Folie die verlässlichere Wahl.",
+      },
+      {
+        question: "Kann ich Papier- und PP-Etiketten in einem Auftrag mischen?",
+        answer:
+          "Nicht innerhalb desselben Fixpreis-Pakets. Zwei Materialien bedeuten zwei Produktionsläufe – das lässt sich über ein gemeinsames Angebot abbilden.",
+      },
+      {
+        question: "Gibt es Muster zum Vergleichen?",
+        answer:
+          "Die Musterbox enthält die PP-Standardmaterialien opak und transparent. Wenn Sie Papier gegen PP vergleichen möchten, vermerken Sie das in der Anfrage.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "PP-Etiketten vs. Papieretiketten",
+        href: "/de/ratgeber/pp-etiketten-vs-papieretiketten",
+        description: "Ausführlicher Materialvergleich mit Entscheidungslogik.",
+      },
+      {
+        label: "Folienetiketten",
+        href: "/de/folienetiketten",
+        description: "Materialseite zu PP-Folie und ihren Einsatzbereichen.",
+      },
+      {
+        label: "Musterbox",
+        href: "/de/musterbox",
+        description: "Materialwirkung vor der ersten Auflage vergleichen.",
+      },
+      ...commonCommercialLinks,
+    ],
+  },
+  {
+    path: "/de/etiketten-gestalten",
+    slug: "etiketten-gestalten",
+    kind: "service",
+    title: "Etiketten gestalten und drucken lassen",
+    eyebrow: "Gestaltung",
+    lead:
+      "Von der Idee zur druckfertigen Rolle: Format im Kalkulator festlegen, Layout selbst gestalten oder gestalten lassen, technische Prüfung inklusive.",
+    directAnswer:
+      "Der verlässlichste Weg zu einem guten Etikett führt über die richtige Reihenfolge: erst Format und Material im Kalkulator festlegen, dann gestalten – nicht umgekehrt. Wer das Layout vor dem Format baut, muss fast immer nachbessern, weil Beschnitt, Sicherheitsabstand und Rollenlaufrichtung nachträglich schwer einzupassen sind. Sie können Ihr Layout selbst liefern (PDF, AI, EPS, SVG, PNG, JPG mit 3 mm Beschnitt) oder unseren Gestaltungsservice nutzen; die technische Druckdatenprüfung ist in beiden Fällen enthalten.",
+    updatedAt: "2026-09-07",
+    heroBullets: [
+      "Schritt 1: Format, Material und Menge im Kalkulator festlegen – Preis erscheint sofort.",
+      "Schritt 2: Layout selbst gestalten oder über den Gestaltungsservice erstellen lassen.",
+      "Schritt 3: Technische Prüfung und Proof – erst nach Ihrer Freigabe startet die Produktion.",
+    ],
+    sidebarTitle: "Vor dem ersten Klick klären",
+    sidebarBullets: [
+      "Etikettengröße auf der echten Verpackung ausmessen",
+      "Opak oder transparent – das ändert das Layout",
+      "Pflichtangaben vollständig sammeln",
+    ],
+    primaryCta: {
+      label: "Format im Kalkulator festlegen",
+      href: "/de/kalkulator",
+    },
+    secondaryCta: {
+      label: "Druckdaten-Anforderungen ansehen",
+      href: "/de/druckdaten",
+    },
+    sections: [
+      {
+        title: "Die richtige Reihenfolge spart die meiste Zeit",
+        body: [
+          "Der häufigste Umweg beim Etikettendesign: Es wird ein schönes Layout gebaut und erst danach gefragt, welches Format eigentlich auf die Verpackung passt. Dann stimmen Seitenverhältnis, Textmenge und Bildausschnitt nicht mehr, und die Datei muss neu aufgebaut werden.",
+          "Legen Sie deshalb zuerst Breite, Höhe und Material fest. Der Kalkulator zeigt dafür sofort den Preis – auch das ist eine Designentscheidung, denn ein 10 mm größeres Etikett kostet bei 5.000 Stück spürbar mehr Fläche.",
+        ],
+      },
+      {
+        title: "Selbst gestalten – die technischen Eckwerte",
+        body: [
+          "Sie können in jedem Programm arbeiten, das ein druckfähiges PDF ausgibt. Wichtig sind vier Dinge: 3 mm Beschnitt umlaufend, Sicherheitsabstand für alle wichtigen Inhalte zum Rand, CMYK statt RGB und eingebettete oder in Pfade umgewandelte Schriften.",
+          "Angenommen werden PDF, AI, EPS, SVG, PNG, JPG und ZIP. Vektordateien sind bei Logos und Text die sichere Wahl; Pixeldateien brauchen ausreichende Auflösung in der tatsächlichen Endgröße, nicht in der Bildschirmansicht.",
+        ],
+      },
+      {
+        title: "Gestalten lassen – wenn keine Druckdatei existiert",
+        body: [
+          "Wenn nur ein Logo, ein Text und eine Vorstellung existieren, ist der Gestaltungsservice der schnellere Weg. Wir setzen Ihre Angaben in ein druckfähiges Layout um, das den technischen Anforderungen von Anfang an entspricht.",
+          "Der Gestaltungsservice ist kostenpflichtig und wird im Checkout als Zusatz ausgewiesen; ab einem definierten Auftragswert entfällt die Gebühr. Wenn Sie eigene Druckdaten liefern, fällt sie nicht an.",
+        ],
+      },
+      {
+        title: "Was in der technischen Prüfung passiert",
+        body: [
+          "Unabhängig davon, wer gestaltet, läuft jede Datei durch dieselbe Prüfung: Format und Beschnitt, Auflösung, Farbraum, Schriftgrößen, kritische Abstände zum Rand und – bei transparentem Material – die Frage nach dem Weißunterdruck.",
+          "Was wir nicht prüfen: Rechtschreibung, inhaltliche Richtigkeit, Pflichtangaben und rechtliche Konformität. Diese Verantwortung bleibt bei Ihnen, deshalb ist der Proof vor der Freigabe der wichtigste Moment im gesamten Ablauf.",
+        ],
+      },
+      {
+        title: "Häufige Gestaltungsfehler",
+        body: [
+          "Drei Fehler kommen immer wieder: Text zu nah am Rand (er wird beim Stanzen angeschnitten), Weißtöne auf transparentem Material ohne Weißunterdruck (sie verschwinden optisch) und Barcodes in zu kleiner oder verzerrter Ausführung (sie werden am Scanner nicht gelesen).",
+          "Alle drei sind vor dem Druck leicht zu vermeiden – und nach dem Druck nur mit einer neuen Auflage zu korrigieren.",
+        ],
+      },
+    ],
+    howToSteps: [
+      "Etikettenfläche auf der echten Verpackung ausmessen und Breite × Höhe notieren.",
+      "Im Kalkulator Format, Material (opak oder transparent), Oberfläche und Menge eingeben – der Preis erscheint sofort.",
+      "Layout mit 3 mm Beschnitt, Sicherheitsabstand zum Rand, CMYK und eingebetteten Schriften aufbauen – oder den Gestaltungsservice beauftragen.",
+      "Druckdaten hochladen; die technische Prüfung meldet Beschnitt-, Auflösungs- und Farbraumprobleme zurück.",
+      "Proof prüfen und freigeben – erst danach startet die Produktion; die freigegebene Datei bleibt für Nachbestellungen gespeichert.",
+    ],
+    faqs: [
+      {
+        question: "Brauche ich ein Designprogramm, um Etiketten zu gestalten?",
+        answer:
+          "Sie brauchen ein Programm, das ein druckfähiges PDF mit 3 mm Beschnitt und CMYK-Farbraum ausgibt. Wenn Sie damit nicht arbeiten, ist der Gestaltungsservice der schnellere Weg – wir bauen das Layout technisch korrekt auf.",
+      },
+      {
+        question: "Was kostet der Gestaltungsservice?",
+        answer:
+          "Er wird im Checkout als Zusatzposition ausgewiesen und entfällt ab einem definierten Auftragswert. Wenn Sie eigene druckfähige Daten liefern, fällt er nicht an.",
+      },
+      {
+        question: "Welche Dateiformate kann ich hochladen?",
+        answer:
+          "PDF, AI, EPS, SVG, PNG, JPG und ZIP. Vektordateien sind bei Logos und Text die sichere Wahl; Pixeldateien brauchen ausreichende Auflösung in der tatsächlichen Endgröße.",
+      },
+      {
+        question: "Prüfen Sie mein Layout auf Rechtschreibung und Pflichtangaben?",
+        answer:
+          "Nein. Wir prüfen technisch: Beschnitt, Auflösung, Farbraum, Schriftgrößen und Abstände. Rechtschreibung, Inhalt und rechtliche Pflichtangaben bleiben in Ihrer Verantwortung – dafür ist der Proof vor der Freigabe da.",
+      },
+      {
+        question: "Kann ich mein Design später ändern?",
+        answer:
+          "Ja. Die freigegebene Version bleibt gespeichert; eine neue Version durchläuft dieselbe Prüfung und Freigabe. So bleibt nachvollziehbar, welche Fassung produziert wurde.",
+      },
+      {
+        question: "Muss ich mein Design vor der Preisberechnung fertig haben?",
+        answer:
+          "Nein, im Gegenteil. Der Kalkulator braucht nur Format, Material und Menge. Legen Sie diese Eckwerte zuerst fest – das Layout entsteht danach passgenau dazu.",
+      },
+    ],
+    relatedLinks: [
+      {
+        label: "Druckdaten vorbereiten",
+        href: "/de/ratgeber/druckdaten-vorbereiten",
+        description: "Schritt-für-Schritt-Anleitung für druckfähige Etikettendateien.",
+      },
+      {
+        label: "Druckdaten",
+        href: "/de/druckdaten",
+        description: "Alle technischen Anforderungen und akzeptierten Dateiformate.",
+      },
+      {
+        label: "Kalkulator",
+        href: "/de/kalkulator",
+        description: "Format, Material und Menge festlegen – Preis sofort sehen.",
+      },
+      ...commonCommercialLinks,
+    ],
+  },
 ];
 
 const guidePages: PublicPageData[] = [
@@ -3303,6 +4351,9 @@ const guidePages: PublicPageData[] = [
     eyebrow: "Ratgeber",
     lead:
       "Papieretiketten oder PP-Folienetiketten – welches Material für Lebensmittel, Getränke und Supplemente in Deutschland besser geeignet ist. Mit technischen Kennwerten, gesetzlichen Anforderungen nach EU-Recht und einem ehrlichen Kostenvergleich.",
+    directAnswer:
+      "Für Produktetiketten, die Feuchtigkeit, Fett oder Kühlung ausgesetzt sind, ist PP-Folie die belastbarere Wahl: Sie quillt nicht auf, reißt nicht an den Kanten und lässt sich abwischen. Papier bleibt sinnvoll, wenn eine matte, natürliche Haptik zum Produkt gehört und die Verpackung trocken bleibt – etwa bei Trockenware in Karton. Die Entscheidung fällt also nicht über den Preis, sondern über die Umgebung, in der das Etikett bestehen muss.",
+    updatedAt: "2026-06-30",
     heroBullets: [
       "PP-Folie und Papier unterscheiden sich in fünf messbaren Einsatzgrenzen: Feuchtigkeit, Temperatur, Abrieb, Lebensmittelkontakt und Druckreproduktion.",
       "Papier kann die richtige Wahl sein – aber nicht für Kühlregal, Flasche, Kondenswasser oder wiederkehrende Serienauflagen.",
@@ -3474,6 +4525,9 @@ const guidePages: PublicPageData[] = [
     eyebrow: "Ratgeber",
     lead:
       "Welche Pflichtangaben nach der LMIV (Lebensmittelinformationsverordnung) auf ein Lebensmitteletikett gehören – als praktische Checkliste für Produktmarken, bevor die Druckdaten in Produktion gehen.",
+    directAnswer:
+      "Die LMIV verlangt auf einem Lebensmitteletikett unter anderem Bezeichnung, Zutatenverzeichnis, Allergenkennzeichnung, Nettofüllmenge, Mindesthaltbarkeitsdatum, Verantwortlichen und Nährwertdeklaration. Für die meisten Angaben gilt eine Mindestschriftgröße von 1,2 mm x-Höhe (0,9 mm bei sehr kleinen Packungen) – das ist der Punkt, an dem Layout und Recht sich treffen. Diese Seite ist eine praktische Checkliste vor der Druckfreigabe, keine Rechtsberatung: Die Verantwortung für Vollständigkeit und Richtigkeit liegt beim Inverkehrbringer.",
+    updatedAt: "2026-06-30",
     heroBullets: [
       "Die wichtigsten LMIV-Pflichtangaben kompakt und in der richtigen Reihenfolge.",
       "Mit Hinweisen zu Allergenkennzeichnung, Nährwerttabelle und Schriftgröße.",
@@ -3588,6 +4642,9 @@ const guidePages: PublicPageData[] = [
     eyebrow: "Ratgeber",
     lead:
       "PP, PE und PET sind die gängigen Kunststofffolien für Etiketten. Dieser Guide erklärt die Unterschiede in Beständigkeit, Flexibilität und Optik – und warum Labelpilot auf PP setzt.",
+    directAnswer:
+      "PP, PE und PET unterscheiden sich vor allem in Steifigkeit und Dehnbarkeit. PP ist der ausgewogene Standard für Produktetiketten: formstabil genug für saubere Rollenverarbeitung, aber flexibel genug für Beutel und Flaschen. PE ist weicher und passt zu stark quetschbaren Verpackungen, PET ist steifer und hitzebeständiger. Für wiederkehrende Lebensmittel-, Getränke- und Supplement-Etiketten deckt PP die Anforderungen am zuverlässigsten ab – deshalb ist es unser Standardmaterial.",
+    updatedAt: "2026-06-30",
     heroBullets: [
       "Drei Folienmaterialien, drei Charaktere: PP als robuster Allrounder, PE flexibel, PET besonders fest.",
       "Mit klaren Einsatzempfehlungen für Produktverpackungen.",
@@ -3683,6 +4740,9 @@ const guidePages: PublicPageData[] = [
     eyebrow: "Ratgeber",
     lead:
       "Worauf es bei Druckdaten speziell für Rollenetiketten ankommt: Beschnitt, Stanzkontur, Auflösung, Farbprofil und Weißunterdruck bei transparentem Material. Damit die Produktion ohne Rückfragen startet.",
+    directAnswer:
+      "Druckdaten für Rollenetiketten brauchen fünf Dinge: 3 mm Beschnitt umlaufend, eine definierte Stanzkontur als eigenes Element, ausreichend Auflösung in der tatsächlichen Endgröße, CMYK statt RGB und – bei transparentem Material – eine bewusste Entscheidung über den Weißunterdruck. Wer diese fünf Punkte vor dem Upload klärt, spart die häufigste Ursache für Verzögerungen: die Rückfrage nach fehlendem Beschnitt oder fehlender Kontur.",
+    updatedAt: "2026-06-30",
     heroBullets: [
       "Rollenetiketten haben eigene Anforderungen: Stanzkontur, Wickelrichtung und Beschnitt.",
       "Transparentes Material braucht für deckende Farben einen separaten Weißunterdruck.",
@@ -3796,6 +4856,9 @@ const guidePages: PublicPageData[] = [
     eyebrow: "Ratgeber",
     lead:
       "Wie viele Etiketten lohnen sich für den Start? Dieser Guide vergleicht kleine und mittlere Auflagen für junge Produktmarken – mit Blick auf Stückpreis, Lagerrisiko und die einmalige Artwork-Investition.",
+    directAnswer:
+      "Für den ersten Test einer neuen Spezifikation sind 1.000 Stück die richtige Menge: Sie prüfen Material, Haftung und Regalwirkung, ohne Kapital in Lagerbestand zu binden. Sobald Layout und Format bestätigt sind, ist die 5.000er-Auflage in der Regel die wirtschaftlichere Wahl, weil der Stückpreis deutlich sinkt und die Rüstkosten sich auf mehr Etiketten verteilen. Die eigentliche Frage ist nicht der Stückpreis, sondern das Risiko: Wie sicher ist es, dass sich Etikett und Rezeptur in den nächsten Monaten nicht mehr ändern?",
+    updatedAt: "2026-06-30",
     heroBullets: [
       "Die Pilotauflage (1.000 Stück) senkt das Risiko beim ersten Test einer Spezifikation.",
       "Die 5.000er-Auflage senkt den Stückpreis deutlich – sinnvoll, sobald das Design steht.",
@@ -3892,6 +4955,9 @@ const guidePages: PublicPageData[] = [
     eyebrow: "Ratgeber",
     lead:
       "Vergleich transparenter und opaker PP-Etiketten für Flaschen, Gläser, Dosen und Produktverpackungen.",
+    directAnswer:
+      "Transparentes PP passt, wenn die Verpackung selbst Teil der Optik ist – Klarglas, Seren, Getränke mit sichtbarem Inhalt. Opakes PP passt, wenn Pflichtangaben sicher lesbar sein müssen oder der Untergrund farbig und unruhig ist. Der entscheidende technische Unterschied: Auf transparentem Material wirken Farben ohne weißen Unterdruck lasierend, und Weißtöne verschwinden. Sollen Farben deckend stehen, ist ein Weißunterdruck nötig – ein kostenpflichtiger Zusatz über das Angebot.",
+    updatedAt: "2026-06-30",
     heroBullets: [
       "Der Unterschied ist nicht nur optisch, sondern strategisch: Sichtbarkeit des Produkts gegen kontrollierte Deckkraft.",
       "Gerade bei Flaschen und Gläsern kann dieselbe Verpackung mit anderem Material völlig anders wirken.",
@@ -3987,6 +5053,9 @@ const guidePages: PublicPageData[] = [
     eyebrow: "Ratgeber",
     lead:
       "Wann Rollenetiketten für B2B-Produktmarken sinnvoller sind als Bogenetiketten – besonders bei wiederkehrenden Bestellungen.",
+    directAnswer:
+      "Rollenetiketten sind die richtige Wahl, sobald regelmäßig etikettiert wird: Sie laufen über Handspender und Etikettiermaschinen und machen aus stundenlanger Handarbeit einen Minutenvorgang. Bogenetiketten lohnen sich fast nur bei sehr kleinen, einmaligen Mengen ohne Wiederholung. Für B2B-Produktmarken mit wiederkehrenden Auflagen ist die Rolle der Standard – deshalb produzieren wir ausschließlich auf Rolle.",
+    updatedAt: "2026-06-30",
     heroBullets: [
       "Dieser Vergleich ist prozessbezogen, nicht nur materialbezogen.",
       "Rollenetiketten spielen ihre Stärke vor allem bei Wiederholung, Handling und größerer Bestelllogik aus.",
@@ -4062,6 +5131,9 @@ const guidePages: PublicPageData[] = [
     eyebrow: "Ratgeber",
     lead:
       "So bereiten Sie Druckdaten für PP-Rollenetiketten vor. Formate, Beschnitt, Proof und technische Dateiprüfung erklärt.",
+    directAnswer:
+      "Druckfähige Etikettendaten brauchen 3 mm Beschnitt umlaufend, ausreichenden Sicherheitsabstand aller wichtigen Inhalte zum Rand, CMYK-Farbraum und eingebettete oder in Pfade umgewandelte Schriften. Angenommen werden PDF, AI, EPS, SVG, PNG, JPG und ZIP. Nach dem Upload läuft eine technische Prüfung, die Beschnitt-, Auflösungs- und Farbraumprobleme zurückmeldet; die Produktion startet erst nach Ihrer Proof-Freigabe.",
+    updatedAt: "2026-06-30",
     heroBullets: [
       "Konkrete Schritt-für-Schritt-Anleitung für druckfertige Etikettendaten.",
       "Erklärt nicht nur Dateiformate, sondern warum Beschnitt und Proof für wiederholbare Nachbestellungen entscheidend sind.",
@@ -4631,6 +5703,12 @@ export const sitemapEntries: SitemapEntry[] = [
   { path: "/de/folienetiketten", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/etiketten-100x200", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/thermo-versandetiketten", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/de/klebeetiketten", lastModified: "2026-09-07", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/de/papieretiketten", lastModified: "2026-09-07", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/de/tiefkuehl-etiketten", lastModified: "2026-09-07", priority: 0.7, changeFrequency: "weekly" },
+  { path: "/de/variable-daten-etiketten", lastModified: "2026-09-07", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/de/etiketten-mit-lotnummer-skt", lastModified: "2026-09-07", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/de/etiketten-gestalten", lastModified: "2026-09-07", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/musterbox", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/angebot-anfordern", priority: 0.8, changeFrequency: "weekly" },
   { path: "/de/nachbestellen", priority: 0.8, changeFrequency: "weekly" },
@@ -4640,12 +5718,14 @@ export const sitemapEntries: SitemapEntry[] = [
   { path: "/de/unternehmen", priority: 0.6, changeFrequency: "monthly" },
   { path: "/de/auf-rechnung-beantragen", priority: 0.6, changeFrequency: "monthly" },
   { path: "/de/kaffee-etiketten", priority: 0.7, changeFrequency: "weekly" },
+  { path: "/de/kosmetik-etiketten", lastModified: "2026-09-07", priority: 0.7, changeFrequency: "weekly" },
   { path: "/de/gewuerz-etiketten", priority: 0.7, changeFrequency: "weekly" },
   { path: "/de/honig-marmelade-etiketten", priority: 0.7, changeFrequency: "weekly" },
   { path: "/de/flaschenetiketten", priority: 0.7, changeFrequency: "weekly" },
   { path: "/de/ratgeber", priority: 0.7, changeFrequency: "monthly" },
   ...guidePages.map((page) => ({
     path: page.path,
+    lastModified: page.updatedAt,
     priority: 0.7,
     changeFrequency: "monthly" as const,
   })),

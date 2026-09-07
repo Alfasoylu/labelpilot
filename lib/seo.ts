@@ -70,14 +70,48 @@ export function buildCanonicalMetadata(
   };
 }
 
+// Stable @id values so Organization, WebSite and every page schema resolve to
+// one entity instead of a new anonymous node per page (docs/73 §7).
+export const ORGANIZATION_ID = "#organization";
+export const WEBSITE_ID = "#website";
+
 export function buildOrganizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": buildAbsoluteUrl(`/${ORGANIZATION_ID}`),
     name: "Labelpilot.de",
+    legalName: "Alfa Soylu Elektronik",
     url: buildAbsoluteUrl("/"),
     logo: buildAbsoluteUrl("/images/logo.png"),
     sameAs: ["https://www.instagram.com/labelpilot"],
+    email: "kontakt@labelpilot.de",
+    telephone: "+90 549 688 51 90",
+    // Real registered address from the Impressum. Never a fabricated German one
+    // (docs/73 §13) — the operating entity is based in Turkey and delivers DDP.
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Yedikule Cirpici Yolu Sokak No:1/4",
+      addressLocality: "Zeytinburnu, Istanbul",
+      addressCountry: "TR",
+    },
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: "kontakt@labelpilot.de",
+        telephone: "+90 549 688 51 90",
+        availableLanguage: ["de", "en"],
+        areaServed: "DE",
+      },
+      {
+        "@type": "ContactPoint",
+        contactType: "sales",
+        email: "kontakt@labelpilot.de",
+        availableLanguage: ["de"],
+        areaServed: "DE",
+      },
+    ],
     description:
       "Labelpilot.de ist eine B2B-Plattform für individuell bedruckte PP-Rollenetiketten und Thermoetiketten für Lebensmittel-, Getränke- und Supplement-Marken in Deutschland.",
     areaServed: {
@@ -102,8 +136,12 @@ export function buildWebSiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": buildAbsoluteUrl(`/${WEBSITE_ID}`),
     name: "Labelpilot.de",
     url: buildAbsoluteUrl("/"),
+    publisher: {
+      "@id": buildAbsoluteUrl(`/${ORGANIZATION_ID}`),
+    },
     description:
       "Deutsche B2B-Plattform für PP-Rollenetiketten, Thermoetiketten, Druckdatenprüfung und Etiketten-Nachbestellung.",
     inLanguage: "de-DE",
@@ -218,6 +256,22 @@ function getProductSchemaDetails(path: string) {
         format: "Wunschformat",
         image: buildAbsoluteUrl("/images/transparente-vs-opake-pp-etiketten.webp"),
       };
+    case "/de/tiefkuehl-etiketten":
+      return {
+        sku: "pp-freezer-roll-labels",
+        category: "PP-Rollenetiketten",
+        material: "PP mit tiefkühlgeeignetem Klebstoff (bis −20 °C)",
+        format: "Wunschformat bis 320 mm Breite",
+        image: buildAbsoluteUrl("/images/lebensmittel-glasetiketten.webp"),
+      };
+    case "/de/papieretiketten":
+      return {
+        sku: "paper-roll-labels-on-request",
+        category: "Papieretiketten",
+        material: "Etikettenpapier weiß",
+        format: "Wunschformat – auf Anfrage",
+        image: buildAbsoluteUrl("/images/pp-rollenetiketten-rolle.webp"),
+      };
     case "/de/thermo-versandetiketten":
       return {
         sku: "thermal-shipping-100x150",
@@ -300,6 +354,9 @@ export function buildPageSchema(page: PublicPageData, path: string) {
           "@type": "Brand",
           name: "Labelpilot.de",
         },
+        manufacturer: {
+          "@id": buildAbsoluteUrl(`/${ORGANIZATION_ID}`),
+        },
         category: productSchemaDetails?.category,
         material: productSchemaDetails?.material,
         sku: productSchemaDetails?.sku,
@@ -329,8 +386,7 @@ export function buildPageSchema(page: PublicPageData, path: string) {
         name: page.title,
         description: page.lead,
         provider: {
-          "@type": "Organization",
-          name: "Labelpilot.de",
+          "@id": buildAbsoluteUrl(`/${ORGANIZATION_ID}`),
         },
         url: buildAbsoluteUrl(path),
         areaServed: {
@@ -357,12 +413,18 @@ export function buildPageSchema(page: PublicPageData, path: string) {
         headline: page.title,
         description: page.lead,
         author: {
-          "@type": "Organization",
-          name: "Labelpilot.de",
+          "@id": buildAbsoluteUrl(`/${ORGANIZATION_ID}`),
         },
         publisher: {
-          "@type": "Organization",
-          name: "Labelpilot.de",
+          "@id": buildAbsoluteUrl(`/${ORGANIZATION_ID}`),
+        },
+        // Only emitted when the page records a real content-review date — an
+        // invented dateModified would be a freshness claim we cannot back up.
+        datePublished: page.updatedAt,
+        dateModified: page.updatedAt,
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": buildAbsoluteUrl(path),
         },
         inLanguage: "de-DE",
         url: buildAbsoluteUrl(path),

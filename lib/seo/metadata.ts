@@ -234,6 +234,110 @@ export const metadataMap: Record<string, MetadataEntry> = {
       "PP-Etiketten 100×200",
     ],
   },
+  "/de/variable-daten-etiketten": {
+    title: "Etiketten mit variablen Daten drucken (CSV/Excel) | Labelpilot.de",
+    description:
+      "Rollenetiketten mit variablen Daten: Lotnummer, MHD/SKT und SKU je Etikett aus CSV, TSV oder Excel. Erkannte Spaltennamen, Datumsformate und Prüfablauf im Überblick.",
+    openGraphTitle: "Etiketten mit variablen Daten",
+    openGraphDescription:
+      "Lot, MHD und SKU je Etikett – aus CSV oder Excel.",
+    keywords: [
+      "variable Daten Etiketten",
+      "Etiketten per Excel importieren",
+      "Etiketten CSV Import",
+      "Batch-Etiketten drucken",
+      "Etiketten mit Seriennummer",
+    ],
+  },
+  "/de/etiketten-mit-lotnummer-skt": {
+    title: "Etiketten mit Lotnummer und MHD drucken | Labelpilot.de",
+    description:
+      "Chargennummer und Mindesthaltbarkeitsdatum auf dem Etikett: fest im Layout, variabel je Etikett aus CSV/Excel oder als Freifläche zum Selbstbedrucken. Die drei Wege im Vergleich.",
+    openGraphTitle: "Etiketten mit Lotnummer und MHD",
+    openGraphDescription:
+      "Chargenkennzeichnung: fest, variabel oder als Freifläche.",
+    keywords: [
+      "Etiketten Lotnummer",
+      "Etiketten MHD",
+      "Chargennummer Etiketten",
+      "Etiketten SKT",
+      "Chargenkennzeichnung Etiketten",
+    ],
+  },
+  "/de/tiefkuehl-etiketten": {
+    title: "Tiefkühl-Etiketten bis −20 °C drucken | Labelpilot.de",
+    description:
+      "PP-Rollenetiketten für Tiefkühlprodukte mit tiefkühlgeeignetem Klebstoff bis −20 °C. Warum der Klebstoff und die Etikettiertemperatur über die Haftung entscheiden.",
+    openGraphTitle: "Tiefkühl-Etiketten bis −20 °C",
+    openGraphDescription:
+      "PP-Etiketten für Gefrierprodukte – Klebstoff entscheidet.",
+    keywords: [
+      "Tiefkühletiketten",
+      "Etiketten für Tiefkühlprodukte",
+      "Etiketten Gefrierschrank",
+      "tiefkühlgeeignete Etiketten",
+      "Etiketten Kühlkette",
+    ],
+  },
+  "/de/kosmetik-etiketten": {
+    title: "Kosmetik-Etiketten drucken lassen | Labelpilot.de",
+    description:
+      "PP-Rollenetiketten für Kosmetik: Tiegel, Pumpflaschen, Tuben und Sprühflaschen. Beständig gegen Cremes, Öle und Feuchtigkeit – transparent oder opak.",
+    openGraphTitle: "Kosmetik-Etiketten drucken",
+    openGraphDescription:
+      "PP-Etiketten für Tiegel, Pumpflaschen und Tuben.",
+    keywords: [
+      "Kosmetik-Etiketten",
+      "Etiketten Kosmetik drucken",
+      "Etiketten Cremetiegel",
+      "Naturkosmetik Etiketten",
+      "INCI Etiketten",
+    ],
+  },
+  "/de/klebeetiketten": {
+    title: "Klebeetiketten auf Rolle drucken lassen | Labelpilot.de",
+    description:
+      "Selbstklebende Etiketten auf Rolle aus PP-Folie mit permanentem Klebstoff. Ablösbare und tiefkühlgeeignete Varianten auf Anfrage – Klebstoffvarianten im Überblick.",
+    openGraphTitle: "Klebeetiketten auf Rolle",
+    openGraphDescription:
+      "Selbstklebende PP-Etiketten auf Rolle – Klebstoff im Vergleich.",
+    keywords: [
+      "Klebeetiketten",
+      "Haftetiketten",
+      "selbstklebende Etiketten Rolle",
+      "Klebeetiketten drucken",
+      "ablösbare Etiketten",
+    ],
+  },
+  "/de/papieretiketten": {
+    title: "Papieretiketten auf Rolle – auf Anfrage | Labelpilot.de",
+    description:
+      "Etikettenpapier weiß auf Rolle auf Anfrage. Ehrlicher Vergleich: wann Papier die richtige Wahl ist und wann PP-Folie bei Feuchtigkeit, Fett und Abrieb überlegen bleibt.",
+    openGraphTitle: "Papieretiketten auf Rolle",
+    openGraphDescription:
+      "Papier oder PP-Folie – der ehrliche Materialvergleich.",
+    keywords: [
+      "Papieretiketten",
+      "Etikettenpapier Rolle",
+      "Papieretiketten drucken",
+      "Papier oder Folie Etiketten",
+    ],
+  },
+  "/de/etiketten-gestalten": {
+    title: "Etiketten gestalten und drucken lassen | Labelpilot.de",
+    description:
+      "Etiketten selbst gestalten oder gestalten lassen: erst Format und Material festlegen, dann das Layout. Mit Dateianforderungen, technischer Prüfung und Proof.",
+    openGraphTitle: "Etiketten gestalten und drucken",
+    openGraphDescription:
+      "Vom Format zum druckfähigen Layout – Schritt für Schritt.",
+    keywords: [
+      "Etiketten gestalten",
+      "Etiketten selbst gestalten",
+      "Etiketten selber gestalten",
+      "Etiketten designen lassen",
+      "Etiketten drucken lassen",
+    ],
+  },
   "/de/thermo-versandetiketten": {
     title: "Thermo-Versandetiketten 100×150 mm | Labelpilot.de",
     description:
