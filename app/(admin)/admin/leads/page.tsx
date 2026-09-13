@@ -88,7 +88,7 @@ export default async function AdminLeadsPage({ searchParams }: LeadListPageProps
             <div>
               <label htmlFor="status">Status</label>
               <select id="status" name="status" defaultValue={filters.status ?? "all"}>
-                <option value="all">Alle</option>
+                <option value="all">Alle offenen</option>
                 <option value="NEW">Neu</option>
                 <option value="QUALIFYING">In Qualifizierung</option>
                 <option value="QUALIFIED">Qualifiziert</option>

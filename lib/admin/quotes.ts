@@ -41,6 +41,12 @@ export function buildQuoteWhere(input: {
 
   if (input.status && input.status !== "all") {
     where.status = input.status;
+  } else {
+    // Die Standardliste zeigt die offenen Vorgänge. Abgelehnte werden
+    // ausgeblendet — darunter die 218 Bot-Anfragen aus dem Spam-Angriff
+    // Juni–September 2026, die sonst jede echte Anfrage überdecken. Sie sind
+    // nicht gelöscht: über den Statusfilter "Abgelehnt" bleiben sie erreichbar.
+    where.status = { not: "REJECTED" };
   }
 
   if (input.source === "wunschformat") {

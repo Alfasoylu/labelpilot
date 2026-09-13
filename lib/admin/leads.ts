@@ -50,6 +50,11 @@ export function buildLeadWhere(input: {
 
   if (input.status && input.status !== "all") {
     where.status = input.status;
+  } else {
+    // Siehe buildQuoteWhere: disqualifizierte Leads (u. a. die 434 Bot-Zeilen
+    // aus dem Spam-Angriff) sind aus der Standardliste ausgeblendet, über den
+    // Statusfilter "Disqualifiziert" aber weiterhin einsehbar.
+    where.status = { not: "DISQUALIFIED" };
   }
 
   if (input.type && input.type !== "all") {

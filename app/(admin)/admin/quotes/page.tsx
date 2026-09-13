@@ -64,7 +64,7 @@ export default async function AdminQuotesPage({ searchParams }: QuoteListPagePro
             <div>
               <label htmlFor="status">Status</label>
               <select id="status" name="status" defaultValue={filters.status ?? "all"}>
-                <option value="all">Alle</option>
+                <option value="all">Alle offenen</option>
                 <option value="NEW">Neu</option>
                 <option value="UNDER_REVIEW">In Prüfung</option>
                 <option value="NEEDS_MORE_INFO">Weitere Informationen benötigt</option>
