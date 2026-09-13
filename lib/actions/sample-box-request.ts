@@ -6,6 +6,12 @@ import { getPrismaClient } from "@/lib/db/prisma";
 import { sendTransactionalEmail } from "@/lib/email/resend";
 import { getServerEnv } from "@/lib/env";
 import { computeLeadScore } from "@/lib/leads/scoring";
+import {
+  evaluateFormSubmission,
+  HONEYPOT_FIELD,
+  logSpamRejection,
+  RENDERED_AT_FIELD,
+} from "@/lib/security/form-spam";
 
 function isValidIsoCalendarDate(value: string) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
@@ -61,6 +67,13 @@ const sampleBoxRequestSchema = z.object({
   }),
 });
 
+function asText(value: FormDataEntryValue | null) {
+  return typeof value === "string" ? value : null;
+}
+
+const SAMPLE_BOX_SUCCESS_MESSAGE =
+  "Vielen Dank. Wir prüfen Ihre Anfrage und melden uns mit dem nächsten Schritt zur Musterbox.";
+
 export type SampleBoxFormState = {
   status: "idle" | "success" | "warning" | "error";
   message: string;
@@ -70,6 +83,25 @@ export async function submitSampleBoxRequest(
   _previousState: SampleBoxFormState,
   formData: FormData,
 ): Promise<SampleBoxFormState> {
+  // Siehe lib/security/form-spam.ts — die Musterbox-Anfrage war zu 100 % von
+  // demselben Bot betroffen und ist besonders teuer, weil an jeder echten
+  // Anfrage ein physischer Versand hängt.
+  const spamVerdict = evaluateFormSubmission({
+    honeypot: formData.get(HONEYPOT_FIELD),
+    renderedAt: formData.get(RENDERED_AT_FIELD),
+    email: asText(formData.get("email")),
+    companyName: asText(formData.get("companyName")),
+    contactName: asText(formData.get("contactName")),
+    website: asText(formData.get("website")),
+    phone: asText(formData.get("phone")),
+    notes: asText(formData.get("notes")),
+  });
+
+  if (spamVerdict.isSpam) {
+    logSpamRejection("sample-box-request", spamVerdict);
+    return { status: "success", message: SAMPLE_BOX_SUCCESS_MESSAGE };
+  }
+
   const parsed = sampleBoxRequestSchema.safeParse({
     companyName: formData.get("companyName"),
     contactName: formData.get("contactName"),
@@ -202,7 +234,6 @@ export async function submitSampleBoxRequest(
 
   return {
     status: "success",
-    message:
-      "Vielen Dank. Wir prüfen Ihre Anfrage und melden uns mit dem nächsten Schritt zur Musterbox.",
+    message: SAMPLE_BOX_SUCCESS_MESSAGE,
   };
 }

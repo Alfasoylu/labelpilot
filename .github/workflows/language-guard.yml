@@ -41,5 +41,7 @@ jobs:
         run: npm run test:quote-source
       - name: Variable-data tests
         run: npm run test:variable-data
+      - name: Form spam detection tests
+        run: npm run test:form-spam
       - name: Checkout add-ons tests
         run: npm run test:addons

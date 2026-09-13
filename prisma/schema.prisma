@@ -712,12 +712,14 @@ model PricingAudit {
 }
 
 model ChatSession {
-  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  visitorId  String       @map("visitor_id")
-  pageUrl    String?      @map("page_url")
-  createdAt  DateTime     @default(now()) @map("created_at")
-  resolvedAt DateTime?    @map("resolved_at")
-  messages   ChatMessage[]
+  id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  visitorId    String       @map("visitor_id")
+  pageUrl      String?      @map("page_url")
+  contactEmail String?      @map("contact_email")
+  contactName  String?      @map("contact_name")
+  createdAt    DateTime     @default(now()) @map("created_at")
+  resolvedAt   DateTime?    @map("resolved_at")
+  messages     ChatMessage[]
 
   @@map("chat_sessions")
 }

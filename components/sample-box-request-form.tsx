@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef } from "react";
 
 import { SourceTrackingFields } from "@/components/source-tracking-fields";
+import { AntiSpamFields } from "@/components/utility/AntiSpamFields";
 import { trackLeadEvent } from "@/lib/analytics/browser";
 import {
   submitSampleBoxRequest,
@@ -57,6 +58,7 @@ export function SampleBoxRequestForm() {
   return (
     <form action={formAction} className="quote-form">
       <SourceTrackingFields />
+      <AntiSpamFields />
 
       <div>
         <h2>Musterbox anfragen</h2>

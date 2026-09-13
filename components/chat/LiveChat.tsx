@@ -48,6 +48,15 @@ function storeSessionId(id: string) {
   try { sessionStorage.setItem("lp_chat_sid", id); } catch { /* noop */ }
 }
 
+// Merkt sich nur, dass die Abfrage erledigt ist — nie die Adresse selbst.
+function readContactSaved(): boolean {
+  try { return sessionStorage.getItem("lp_chat_contact") === "1"; } catch { return false; }
+}
+
+function markContactSaved() {
+  try { sessionStorage.setItem("lp_chat_contact", "1"); } catch { /* noop */ }
+}
+
 export function LiveChat() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -56,6 +65,14 @@ export function LiveChat() {
   const [sending, setSending] = useState(false);
   const [started, setStarted] = useState(false);
   const [showPromo, setShowPromo] = useState(false);
+  // Kontaktabfrage: erscheint nach der ersten Nachricht, damit eine Anfrage
+  // beantwortbar bleibt, wenn der Besucher die Seite verlässt. Am 23.08.2026
+  // ging genau so eine echte B2B-Anfrage verloren — der Chat erfasste keine
+  // Adresse und der Kontakt war nicht mehr erreichbar.
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactSaved, setContactSaved] = useState(false);
+  const [contactPending, setContactPending] = useState(false);
+  const [contactError, setContactError] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const visitorId = useRef<string>("");
@@ -68,6 +85,9 @@ export function LiveChat() {
     if (sid) {
       setSessionId(sid);
       setStarted(true);
+    }
+    if (readContactSaved()) {
+      setContactSaved(true);
     }
   }, []);
 
@@ -163,6 +183,43 @@ export function LiveChat() {
     }
   }
 
+  async function submitContact() {
+    const email = contactEmail.trim();
+    if (!email || contactPending || !sessionId) return;
+
+    // Bewusst nur eine Grobprüfung im Browser — die verbindliche Validierung
+    // macht der Server.
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      setContactError("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
+      return;
+    }
+
+    setContactPending(true);
+    setContactError("");
+
+    try {
+      const res = await fetch("/api/chat/message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          visitorId: visitorId.current,
+          contactEmail: email,
+          pageUrl: window.location.pathname,
+        }),
+      });
+
+      if (!res.ok) throw new Error("request failed");
+
+      setContactSaved(true);
+      markContactSaved();
+    } catch {
+      setContactError("Konnte nicht gespeichert werden. Bitte erneut versuchen.");
+    } finally {
+      setContactPending(false);
+    }
+  }
+
   function handleKey(e: React.KeyboardEvent) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -202,6 +259,56 @@ export function LiveChat() {
                 <span className="livechat__msg-text">{m.content}</span>
               </div>
             ))}
+            {started && !contactSaved && messages.length > 0 && (
+              <div className="livechat__contact">
+                <p className="livechat__contact-title">
+                  Damit Ihre Anfrage nicht verloren geht
+                </p>
+                <p className="livechat__contact-sub">
+                  Hinterlassen Sie Ihre E-Mail-Adresse — dann antworten wir auch,
+                  wenn Sie die Seite inzwischen verlassen haben.
+                </p>
+                <div className="livechat__contact-row">
+                  <input
+                    className="livechat__contact-input"
+                    type="email"
+                    inputMode="email"
+                    autoComplete="email"
+                    placeholder="ihre@firma.de"
+                    value={contactEmail}
+                    onChange={(e) => setContactEmail(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        void submitContact();
+                      }
+                    }}
+                    disabled={contactPending}
+                    maxLength={200}
+                    aria-label="E-Mail-Adresse für die Antwort"
+                  />
+                  <button
+                    className="livechat__contact-save"
+                    onClick={() => void submitContact()}
+                    disabled={!contactEmail.trim() || contactPending}
+                  >
+                    {contactPending ? "…" : "Speichern"}
+                  </button>
+                </div>
+                {contactError && (
+                  <p className="livechat__contact-error" role="alert">{contactError}</p>
+                )}
+                <p className="livechat__contact-hint">
+                  Wir nutzen die Adresse ausschließlich für die Antwort auf diese
+                  Anfrage.
+                </p>
+              </div>
+            )}
+            {contactSaved && messages.length > 0 && (
+              <p className="livechat__contact-done" role="status">
+                Danke — wir melden uns auch per E-Mail.
+              </p>
+            )}
             <div ref={bottomRef} />
           </div>
 

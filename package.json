@@ -18,7 +18,8 @@
     "test:custom-size-public": "node --experimental-strip-types scripts/test-custom-size-public.ts",
     "test:quote-source": "node --experimental-strip-types scripts/test-quote-source-marker.ts",
     "test:safety": "node --experimental-strip-types scripts/test-autonomous-safety.ts && node scripts/check-language.mjs && node scripts/check-encoding.mjs",
-    "test:variable-data": "node --experimental-strip-types scripts/test-variable-data-parser.ts"
+    "test:variable-data": "node --experimental-strip-types scripts/test-variable-data-parser.ts",
+    "test:form-spam": "node --experimental-strip-types scripts/test-form-spam.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",

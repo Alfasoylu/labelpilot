@@ -9,6 +9,12 @@ import {
   quoteRequestReceivedCustomer,
 } from "@/lib/email/templates/lifecycle";
 import { getServerEnv } from "@/lib/env";
+import {
+  evaluateFormSubmission,
+  HONEYPOT_FIELD,
+  logSpamRejection,
+  RENDERED_AT_FIELD,
+} from "@/lib/security/form-spam";
 import { computeLeadScore } from "@/lib/leads/scoring";
 import {
   normalizeQuoteSource,
@@ -72,6 +78,13 @@ const quoteRequestSchema = z.object({
   }),
 });
 
+function asText(value: FormDataEntryValue | null) {
+  return typeof value === "string" ? value : null;
+}
+
+const QUOTE_SUCCESS_MESSAGE =
+  "Vielen Dank. Ihre Anfrage ist eingegangen. Wir prüfen Ihre Angaben und melden uns mit dem nächsten Schritt.";
+
 export type QuoteFormState = {
   status: "idle" | "success" | "warning" | "error";
   message: string;
@@ -81,6 +94,26 @@ export async function submitQuoteRequest(
   _previousState: QuoteFormState,
   formData: FormData,
 ): Promise<QuoteFormState> {
+  // Bot-Prüfung vor allem anderen: erkannte Anfragen erzeugen weder eine
+  // Datenbankzeile noch eine E-Mail. Die Antwort bleibt trotzdem die normale
+  // Erfolgsmeldung — eine Fehlermeldung würde dem Bot nur verraten, worauf er
+  // sich einstellen muss.
+  const spamVerdict = evaluateFormSubmission({
+    honeypot: formData.get(HONEYPOT_FIELD),
+    renderedAt: formData.get(RENDERED_AT_FIELD),
+    email: asText(formData.get("email")),
+    companyName: asText(formData.get("companyName")),
+    contactName: asText(formData.get("contactName")),
+    website: asText(formData.get("website")),
+    phone: asText(formData.get("phone")),
+    notes: asText(formData.get("notes")),
+  });
+
+  if (spamVerdict.isSpam) {
+    logSpamRejection("quote-request", spamVerdict);
+    return { status: "success", message: QUOTE_SUCCESS_MESSAGE };
+  }
+
   const parsed = quoteRequestSchema.safeParse({
     companyName: formData.get("companyName"),
     contactName: formData.get("contactName"),
@@ -256,7 +289,6 @@ export async function submitQuoteRequest(
 
   return {
     status: "success",
-    message:
-      "Vielen Dank. Ihre Anfrage ist eingegangen. Wir prüfen Ihre Angaben und melden uns mit dem nächsten Schritt.",
+    message: QUOTE_SUCCESS_MESSAGE,
   };
 }

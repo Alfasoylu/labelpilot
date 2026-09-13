@@ -3290,6 +3290,83 @@ th {
   border-bottom-left-radius: 4px;
 }
 
+/* Kontaktabfrage im Chat: erscheint nach der ersten Nachricht, damit eine
+   Anfrage auch dann beantwortbar bleibt, wenn der Besucher die Seite verlässt. */
+.livechat__contact {
+  margin-top: 6px;
+  padding: 12px;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 12px;
+  background: var(--surface-muted, #faf7f1);
+}
+
+.livechat__contact-title {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--foreground, #111);
+}
+
+.livechat__contact-sub {
+  margin: 4px 0 10px;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: var(--muted, #6b7280);
+}
+
+.livechat__contact-row {
+  display: flex;
+  gap: 8px;
+}
+
+.livechat__contact-input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border, #d1d5db);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  outline: none;
+  background: var(--surface, #fff);
+  color: var(--foreground, #111);
+}
+.livechat__contact-input:focus { border-color: var(--accent, #2563eb); }
+
+.livechat__contact-save {
+  flex-shrink: 0;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--accent, #2563eb);
+  color: #fff;
+  transition: background 0.15s;
+}
+.livechat__contact-save:disabled { background: var(--muted, #9ca3af); cursor: default; }
+.livechat__contact-save:not(:disabled):hover { background: #1d4ed8; }
+
+.livechat__contact-error {
+  margin: 8px 0 0;
+  font-size: 0.72rem;
+  color: #b91c1c;
+}
+
+.livechat__contact-hint {
+  margin: 8px 0 0;
+  font-size: 0.68rem;
+  line-height: 1.4;
+  color: var(--muted, #6b7280);
+}
+
+.livechat__contact-done {
+  margin: 6px 0 0;
+  font-size: 0.74rem;
+  text-align: center;
+  color: var(--muted, #6b7280);
+}
+
 .livechat__input-row {
   display: flex;
   gap: 8px;

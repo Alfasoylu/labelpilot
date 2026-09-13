@@ -4,6 +4,7 @@ import { useActionState, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { SourceTrackingFields } from "@/components/source-tracking-fields";
+import { AntiSpamFields } from "@/components/utility/AntiSpamFields";
 import { trackLeadEvent } from "@/lib/analytics/browser";
 import {
   submitQuoteRequest,
@@ -115,6 +116,7 @@ export function QuoteRequestForm() {
       className="quote-form"
     >
       <SourceTrackingFields />
+      <AntiSpamFields />
       <input type="hidden" name="source" value={defaults.source} readOnly />
       <div>
         <h2>B2B-Angebot anfordern</h2>

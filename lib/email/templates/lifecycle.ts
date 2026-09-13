@@ -661,3 +661,50 @@ export function quoteSentCustomer(input: {
     }),
   };
 }
+
+export function chatMessageOpsNotification(input: {
+  sessionId: string;
+  content: string;
+  pageUrl?: string | null;
+  contactEmail?: string | null;
+  contactName?: string | null;
+}): TemplateResult {
+  const subject = input.contactEmail
+    ? `Chat-Anfrage mit Kontaktdaten: ${input.contactEmail}`
+    : "Neue Chat-Nachricht auf labelpilot.de";
+
+  const rows: Array<[string, string]> = [
+    ["Nachricht", input.content],
+    ["Seite", input.pageUrl || "unbekannt"],
+    ["Kontakt", input.contactEmail || "nicht hinterlassen"],
+  ];
+
+  if (input.contactName) {
+    rows.splice(2, 0, ["Name", input.contactName]);
+  }
+
+  rows.push(["Sitzung", input.sessionId]);
+
+  const text = [
+    "Neue Nachricht aus dem Live-Chat:",
+    "",
+    ...rows.map(([label, value]) => `${label}: ${value}`),
+  ].join("\n");
+
+  return {
+    subject,
+    text,
+    html: renderShell({
+      heading: "Neue Chat-Nachricht",
+      intro: input.contactEmail
+        ? "Ein Besucher hat im Chat geschrieben und eine Kontaktadresse hinterlassen."
+        : "Ein Besucher hat im Chat geschrieben. Es liegt noch keine Kontaktadresse vor — bitte zeitnah im Chat antworten.",
+      bodyHtml: rows
+        .map(
+          ([label, value]) =>
+            `<p style="margin:0 0 10px 0;"><strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}</p>`,
+        )
+        .join(""),
+    }),
+  };
+}
