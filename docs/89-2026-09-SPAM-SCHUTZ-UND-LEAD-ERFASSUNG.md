@@ -113,27 +113,56 @@ Kontakterfassung stehen dort E-Mail-Adressen; das Frontend liest die Tabelle
 nicht, der Server nutzt den Service-Role-Key.
 
 Nachgeprüft per `set role anon`: `ConsentRecord`, `VisitorEvent`,
-`SupportRequest` und `chat_sessions` liefern 0 Zeilen, `chat_messages`
-weiterhin alle — Letzteres ist für den Chat notwendig (siehe unten).
+`SupportRequest` und `chat_sessions` liefern 0 Zeilen. `chat_messages` war zu
+diesem Zeitpunkt noch offen, weil der Chat-Client die Tabelle direkt las — das
+ist mit der Umstellung in Abschnitt 3 erledigt.
 
 ---
 
-## 3. Offene Punkte
+## 3. Nachtrag: Der Chat ist ein asynchroner Kanal
 
-1. **`chat_messages` ist für jeden mit dem anon-Key vollständig lesbar.** Die
-   Policy `public read chat_messages` schränkt nicht auf die eigene Sitzung ein.
-   Der Live-Chat liest und abonniert die Tabelle im Browser mit dem anon-Key und
-   würde ohne Policy nicht mehr funktionieren, deshalb in diesem Durchgang
-   bewusst unverändert. Saubere Lösung: sitzungsgebundenes Token statt blankem
-   anon-Key im Chat-Client, dann Policy auf die eigene `session_id`
-   einschränken. Bis dahin gilt: keine sensiblen Daten im Chat austauschen.
-2. **Chat-Antworten laufen weiterhin nur über Telegram.** Die neue
-   E-Mail-Benachrichtigung stellt sicher, dass nichts unbemerkt bleibt, ersetzt
-   aber keine Antwortmöglichkeit aus dem Admin-Panel. Ein Chat-Verlauf im
-   Admin-Bereich fehlt bislang.
-3. **Wirksamkeit beobachten.** Die `[form-spam]`-Warnungen im Vercel-Log zeigen,
+Der Betrieb ist einköpfig — niemand sitzt dauerhaft in einem Panel. Ein Widget,
+das „Antwort innerhalb weniger Minuten" verspricht, gibt damit ein Versprechen
+ab, das nicht eingehalten werden kann, und verbrennt genau die Leads, die es
+einsammeln soll. Der Chat wurde deshalb konsequent auf asynchron umgestellt.
+
+**Erwartung ehrlich gesetzt.** Die Kopfzeile nennt jetzt „Antwort in der Regel
+innerhalb eines Werktags", der Begrüßungstext sagt offen, dass das Team klein
+und nicht durchgehend besetzt ist — und erklärt daraus, warum die
+E-Mail-Adresse wichtig ist. Die Kontaktabfrage argumentiert entsprechend: ohne
+Adresse ist die Antwort nur bei geöffneter Seite sichtbar.
+
+**Antworten erreichen den Besucher auch später.** `deliverOperatorReply()`
+schreibt jede Operator-Antwort in den Verlauf **und** schickt sie per E-Mail an
+die hinterlassene Adresse. Beide Antwortwege nutzen dieselbe Funktion:
+
+- **Telegram** (vom Telefon, bestehender Weg): Der Webhook meldet jetzt zurück,
+  ob die Antwort zugestellt werden konnte — inklusive Warnung, wenn der Besucher
+  keine Adresse hinterlassen hat.
+- **Admin-Panel** (neu, `/admin/chat`): Übersicht mit den unbeantworteten
+  Verläufen zuoberst, Detailansicht mit vollem Verlauf, Antwortfeld und
+  Erledigt-Schalter. Verläufe ohne Kontaktadresse sind als solche markiert.
+
+**Realtime entfernt.** Der Client abonnierte `chat_messages` per Supabase
+Realtime — der Grund, warum die Tabelle für den anon-Key lesbar sein musste.
+Bei einem Kanal, dessen Antworten Stunden später kommen, bringt eine offene
+Verbindung ohnehin nichts. Der Verlauf kommt jetzt über `/api/chat/messages`
+(serverseitig, Service-Role, ausschließlich die angefragte Sitzung), beim Öffnen
+des Widgets und dann alle 8 Sekunden. Weil der Abruf auch beim Wiederfinden
+einer gespeicherten Sitzung läuft, sieht ein Besucher die Antwort selbst dann,
+wenn er Tage später zurückkommt.
+
+Damit ist die Policy `public read chat_messages` entfallen. Nachgeprüft per
+`set role anon`: `chat_messages`, `chat_sessions` und `ConsentRecord` liefern
+jeweils 0 Zeilen. Der unter „Offene Punkte" notierte Befund ist geschlossen.
+
+---
+
+## 4. Offene Punkte
+
+1. **Wirksamkeit beobachten.** Die `[form-spam]`-Warnungen im Vercel-Log zeigen,
    ob die Welle weiterläuft und ob die Erkennung greift. Bleiben neue Zeilen mit
    der bekannten Signatur in der Datenbank, ist die Schwelle zu hoch angesetzt.
-4. **Die Anfrage vom 23.08.2026 ist verloren.** Ohne Kontaktdaten gibt es keinen
+2. **Die Anfrage vom 23.08.2026 ist verloren.** Ohne Kontaktdaten gibt es keinen
    Rückweg. Sollte sich „Trentzsch" erneut melden, ist es ein Bestandskontakt mit
    Bedarf an Eierpappen- und Wurstwaren-Etiketten.

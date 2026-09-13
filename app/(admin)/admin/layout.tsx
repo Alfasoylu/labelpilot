@@ -91,6 +91,9 @@ export default async function AdminLayout({
           <Link href="/admin/support" className="secondary-link">
             Support
           </Link>
+          <Link href="/admin/chat" className="secondary-link">
+            Chat
+          </Link>
           <Link href="/admin/variable-data" className="secondary-link">
             Variable Data
           </Link>

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { getServerEnv } from "@/lib/env";
-import { getSupabaseServerClient } from "@/lib/auth/supabase-server";
+import { deliverOperatorReply } from "@/lib/chat/deliver-operator-reply";
 
 type TelegramMessage = {
   message_id: number;
@@ -73,18 +73,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   }
 
-  const supabase = getSupabaseServerClient();
-  if (!supabase) {
-    console.log("[webhook] supabase client unavailable");
-    return NextResponse.json({ ok: true });
-  }
+  // Die Antwort geht in den Chat-Verlauf UND per E-Mail an die hinterlassene
+  // Adresse. Ohne den zweiten Weg sieht ein Besucher, der die Seite verlassen
+  // hat, die Antwort vom Telefon nie.
+  const result = await deliverOperatorReply({ sessionId, reply: msg.text });
+  console.log("[webhook] reply delivered", { sessionId, result });
 
-  const { error: insertError } = await supabase.from("chat_messages").insert({
-    session_id: sessionId,
-    sender: "operator",
-    content: msg.text,
-  });
-  console.log("[webhook] insert result", { sessionId, error: insertError?.message });
+  // Rückmeldung an das Telefon, damit sofort sichtbar ist, ob die Antwort den
+  // Besucher tatsächlich erreichen konnte.
+  if (env.TELEGRAM_BOT_TOKEN && msg.chat?.id) {
+    const note = !result.ok
+      ? `⚠️ Antwort konnte nicht gespeichert werden: ${result.error}`
+      : result.emailed
+        ? "✅ Antwort gesendet – auch per E-Mail zugestellt."
+        : result.reason === "no-contact-email"
+          ? "⚠️ Antwort steht im Chat, aber der Besucher hat keine E-Mail-Adresse hinterlassen. Er sieht sie nur, solange die Seite offen ist."
+          : "⚠️ Antwort steht im Chat, der E-Mail-Versand ist jedoch fehlgeschlagen.";
+
+    await sendTelegramReply(env.TELEGRAM_BOT_TOKEN, msg.chat.id, note);
+  }
 
   return NextResponse.json({ ok: true });
 }

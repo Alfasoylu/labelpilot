@@ -1,0 +1,13 @@
+-- chat_messages: öffentliche Lesepolicy entfernen.
+--
+-- Die Policy erlaubte jedem mit dem anon-Key, SÄMTLICHE Chat-Nachrichten aller
+-- Besucher zu lesen — sie war nur nötig, weil der Chat-Client die Tabelle
+-- direkt aus dem Browser gelesen und per Realtime abonniert hat.
+--
+-- Der Client holt den Verlauf inzwischen über /api/chat/messages. Diese Route
+-- liest serverseitig mit dem Service-Role-Key und gibt ausschließlich die
+-- Nachrichten der angefragten Sitzung zurück. Damit wird die Policy nicht mehr
+-- gebraucht: anon und authenticated haben keinen Zugriff mehr auf die Tabelle.
+--
+-- Offener Punkt aus Migration 20260913093000 ist damit geschlossen.
+DROP POLICY IF EXISTS "public read chat_messages" ON "public"."chat_messages";

@@ -708,3 +708,52 @@ export function chatMessageOpsNotification(input: {
     }),
   };
 }
+
+export function chatReplyToVisitor(input: {
+  reply: string;
+  visitorMessage?: string | null;
+  contactName?: string | null;
+}): TemplateResult {
+  const greeting = input.contactName
+    ? `Hallo ${input.contactName},`
+    : "Hallo,";
+
+  const quoted = input.visitorMessage
+    ? [
+        "",
+        "Ihre Nachricht:",
+        ...input.visitorMessage.split("\n").map((line) => `> ${line}`),
+      ]
+    : [];
+
+  const text = [
+    greeting,
+    "",
+    "vielen Dank für Ihre Nachricht über unseren Chat. Hier ist unsere Antwort:",
+    "",
+    input.reply,
+    ...quoted,
+    "",
+    "Sie können direkt auf diese E-Mail antworten – wir melden uns zurück.",
+    "",
+    "Viele Grüße",
+    "Labelpilot.de",
+  ].join("\n");
+
+  const quotedHtml = input.visitorMessage
+    ? `<p style="margin:20px 0 0 0;color:#6B6862;font-size:14px;">Ihre Nachricht:</p>
+       <blockquote style="margin:6px 0 0 0;padding:10px 14px;border-left:3px solid #E5DED2;color:#6B6862;font-size:14px;">${escapeHtml(input.visitorMessage)}</blockquote>`
+    : "";
+
+  return {
+    subject: "Ihre Anfrage bei Labelpilot.de",
+    text,
+    html: renderShell({
+      heading: "Unsere Antwort auf Ihre Anfrage",
+      intro: `${greeting} vielen Dank für Ihre Nachricht über unseren Chat.`,
+      bodyHtml: `<p style="margin:0;white-space:pre-wrap;">${escapeHtml(input.reply)}</p>
+        ${quotedHtml}
+        <p style="margin:20px 0 0 0;">Sie können direkt auf diese E-Mail antworten – wir melden uns zurück.</p>`,
+    }),
+  };
+}

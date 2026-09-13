@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { getSupabaseBrowserClient } from "@/lib/auth/supabase-browser";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type Message = {
   id: string;
@@ -98,45 +97,47 @@ export function LiveChat() {
     return () => clearTimeout(t);
   }, [started]);
 
-  // Load existing messages + subscribe to realtime when sessionId is known
-  useEffect(() => {
+  // Nachrichten über die eigene Route laden statt direkt aus Supabase.
+  //
+  // Der Chat ist kein besetzter Live-Kanal: Antworten kommen in der Regel
+  // Stunden später. Eine Realtime-Verbindung offen zu halten hätte also kaum
+  // Nutzen — sie zwang aber dazu, chat_messages für den anon-Key lesbar zu
+  // machen, und damit für jeden mitlesbar. Polling über /api/chat/messages
+  // liest serverseitig und ausschließlich die eigene Sitzung.
+  const loadMessages = useCallback(async () => {
     if (!sessionId) return;
-    const supabase = getSupabaseBrowserClient();
-    if (!supabase) return;
 
-    // Initial load
-    void supabase
-      .from("chat_messages")
-      .select("id, sender, content, created_at")
-      .eq("session_id", sessionId)
-      .order("created_at", { ascending: true })
-      .then(({ data }) => {
-        if (data) setMessages(data as Message[]);
-      });
+    try {
+      const res = await fetch(
+        `/api/chat/messages?sessionId=${encodeURIComponent(sessionId)}`,
+        { cache: "no-store" },
+      );
+      if (!res.ok) return;
 
-    // Realtime subscription
-    const channel = supabase
-      .channel(`chat:${sessionId}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "chat_messages",
-          filter: `session_id=eq.${sessionId}`,
-        },
-        (payload) => {
-          setMessages((prev) => {
-            const msg = payload.new as Message;
-            if (prev.some((m) => m.id === msg.id)) return prev;
-            return [...prev, msg];
-          });
-        },
-      )
-      .subscribe();
-
-    return () => { void supabase.removeChannel(channel); };
+      const data = (await res.json()) as { messages?: Message[] };
+      if (data.messages) setMessages(data.messages);
+    } catch {
+      // Netzwerkfehler sind hier folgenlos — der nächste Durchlauf holt nach.
+    }
   }, [sessionId]);
+
+  // Einmal beim Wiederfinden der Sitzung: So sieht ein Besucher die Antwort,
+  // die in der Zwischenzeit eingegangen ist, auch wenn er Tage später
+  // zurückkommt.
+  useEffect(() => {
+    void loadMessages();
+  }, [loadMessages]);
+
+  // Danach nur abfragen, solange das Fenster offen ist.
+  useEffect(() => {
+    if (!open || !sessionId) return;
+
+    const interval = setInterval(() => {
+      void loadMessages();
+    }, 8000);
+
+    return () => clearInterval(interval);
+  }, [open, sessionId, loadMessages]);
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -171,10 +172,25 @@ export function LiveChat() {
         }),
       });
       const data = await res.json() as { sessionId?: string };
+      const activeId = data.sessionId ?? sessionId;
+
       if (data.sessionId && !sessionId) {
         setSessionId(data.sessionId);
         storeSessionId(data.sessionId);
         setStarted(true);
+      }
+
+      // Ohne Realtime muss der Verlauf nach dem Senden selbst nachgeladen
+      // werden, damit die eigene Nachricht sofort erscheint.
+      if (activeId) {
+        const res2 = await fetch(
+          `/api/chat/messages?sessionId=${encodeURIComponent(activeId)}`,
+          { cache: "no-store" },
+        );
+        if (res2.ok) {
+          const payload = (await res2.json()) as { messages?: Message[] };
+          if (payload.messages) setMessages(payload.messages);
+        }
       }
     } catch {
       setInput(text); // restore on error
@@ -234,7 +250,9 @@ export function LiveChat() {
         <div className="livechat__window" role="dialog" aria-label="Live Chat">
           <div className="livechat__header">
             <span className="livechat__header-title">Labelpilot Support</span>
-            <span className="livechat__header-hint">Wir antworten in der Regel innerhalb weniger Minuten</span>
+            <span className="livechat__header-hint">
+              Nachricht hinterlassen – Antwort in der Regel innerhalb eines Werktags
+            </span>
             <button
               className="livechat__close"
               onClick={() => setOpen(false)}
@@ -248,7 +266,13 @@ export function LiveChat() {
             {!started && messages.length === 0 && (
               <div className="livechat__welcome">
                 <p>Hallo! Wie können wir Ihnen helfen?</p>
-                <p className="livechat__welcome-sub">Fragen zu Format, Material, Bestellung oder Druckdaten – einfach schreiben.</p>
+                <p className="livechat__welcome-sub">
+                  Fragen zu Format, Material, Bestellung oder Druckdaten – einfach
+                  schreiben. Wir sind ein kleines Team und nicht durchgehend
+                  besetzt: Hinterlassen Sie im nächsten Schritt Ihre
+                  E-Mail-Adresse, dann erreicht Sie unsere Antwort auch, wenn Sie
+                  längst weitergeklickt haben.
+                </p>
               </div>
             )}
             {messages.map((m) => (
@@ -262,11 +286,12 @@ export function LiveChat() {
             {started && !contactSaved && messages.length > 0 && (
               <div className="livechat__contact">
                 <p className="livechat__contact-title">
-                  Damit Ihre Anfrage nicht verloren geht
+                  Wohin dürfen wir antworten?
                 </p>
                 <p className="livechat__contact-sub">
-                  Hinterlassen Sie Ihre E-Mail-Adresse — dann antworten wir auch,
-                  wenn Sie die Seite inzwischen verlassen haben.
+                  Wir sind nicht durchgehend im Chat. Ohne E-Mail-Adresse sehen
+                  Sie unsere Antwort nur, solange diese Seite offen bleibt — mit
+                  Adresse erreicht sie Sie in jedem Fall.
                 </p>
                 <div className="livechat__contact-row">
                   <input
@@ -306,7 +331,7 @@ export function LiveChat() {
             )}
             {contactSaved && messages.length > 0 && (
               <p className="livechat__contact-done" role="status">
-                Danke — wir melden uns auch per E-Mail.
+                Danke — unsere Antwort geht an Ihre E-Mail-Adresse.
               </p>
             )}
             <div ref={bottomRef} />
